@@ -18,7 +18,7 @@ Short form matrix view of all GO annotations for a given gene
 
 - zebrafish
 
-![img](docs/zfinribbon.jpg)
+![img](docs/zfinribbon.png)
 
 - mouse
 ![img](docs/mouseribbon.png)
