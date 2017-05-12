@@ -1,5 +1,5 @@
 {
-  "name": "gene-ontology-ribbon",
+  "name": "ribbon",
   "version": "0.1.0",
   "scripts": {
     "build": "nwb build-react-component",
@@ -38,7 +38,7 @@
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
-    "url": "https://github.com/geneontology"
+    "url": "https://github.com/geneontology/ribbon"
   },
   "keywords": [
     "react-component",
