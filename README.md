@@ -1,6 +1,9 @@
 # ribbon
 Short form matrix view of all GO annotations for a given gene
 
+## Acknowledgments
+- Thanks to Josh Goodman for making his code available as a launching point
+
 ## Installation
 - Make sure node.js is installed - see https://nodejs.org/en/download/
 
