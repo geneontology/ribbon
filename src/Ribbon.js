@@ -8,7 +8,7 @@ import axios from 'axios';
 
 import './index.css';
 
-import Strip from './components/strip';
+import Strip from './components/Strip';
 
 import SlimList from './slim.json';
 

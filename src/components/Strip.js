@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import Block from './block';
+import Block from './Block';
 import SlimList from '../slim.json';
 
 const baseRGB = [0,96,96];
