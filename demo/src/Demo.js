@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Ribbon from './Ribbon';
+import Ribbon from '../../src/Ribbon';
 import history from './history';
 
 /*
