@@ -50,10 +50,10 @@ class Ribbon extends React.Component {
 
   constructor(props) {
     super(props);
-    this.setState({
+    this.state = {
       title: 'nada',
       assoc_count:  SlimList.map((goSlimItem, index) => {return 0;})
-    });
+    };
   }
 
   componentDidMount() {
