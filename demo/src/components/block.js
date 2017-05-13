@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
   function Block({slimitem, count, baseRGB}) {
-    const plural = (slimitem.count > 1) ? 's' : '';
+    const plural = (count > 1) ? 's' : '';
     const tileTitle       = slimitem.golabel + ":\n" + count + " term" + plural;
     const blockTitleClass = (count > 0) ? 'ribbonBlockTitleTerm bold' : 'ribbonBlockTitleTerm';
     const color           = (count) ? heatColor(count, baseRGB, 8) : '';
