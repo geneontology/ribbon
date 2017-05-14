@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Ribbon from '../../src/Ribbon';
+import Ribbon from '../../src/';
 import history from './history';
 import { addUrlProps, UrlQueryParamTypes } from 'react-url-query';
 
