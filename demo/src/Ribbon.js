@@ -1,9 +1,6 @@
 
 import React, { Component, PropTypes } from 'react'
-//import {render} from 'react-dom';
-//import PropTypes from 'prop-types';
 import { addUrlProps, UrlQueryParamTypes } from 'react-url-query';
-
 import axios from 'axios';
 
 import './index.css';
@@ -104,5 +101,3 @@ class Ribbon extends React.Component {
  * first decoding the URL query parameters based on the urlPropsQueryConfig.
  */
 export default addUrlProps({ urlPropsQueryConfig })(Ribbon);
-
-// render(<Demo/>, document.querySelector('#demo'))
