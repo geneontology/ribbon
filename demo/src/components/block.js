@@ -1,20 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-  function Block({slimitem, count, baseRGB}) {
+class Block extends React.Component {
+  render() {
+    const {slimitem, count, baseRGB} = this.props;
     const plural = (slimitem.count > 1) ? 's' : '';
     const tileTitle       = slimitem.golabel + ":\n" + count + " term" + plural;
     const blockTitleClass = (count > 0) ? 'ribbonBlockTitleTerm bold' : 'ribbonBlockTitleTerm';
-    const color           = (count) ? heatColor(count, baseRGB, 8) : '';
+    const color           = (count) ? this.heatColor(count, baseRGB, 8) : '';
     return(
-      <div className="ribbonBlock" onClick={handleOnClick}>
+      <div className="ribbonBlock" onClick={this.handleOnClick}>
         <div className={blockTitleClass}>{slimitem.golabel}</div>
         <div className="ribbonTile" title={tileTitle} style={{backgroundColor:color}}></div>
       </div>
     );
   }
 
-  function heatColor(associations_count, rgb, heatLevels) {
+  heatColor(associations_count, rgb, heatLevels) {
     if( associations_count == 0 ) return "#fff";
     let blockColor = [];     // [r,g,b]
     for( var i=0; i<3; i++ ) {
@@ -37,11 +39,12 @@ import PropTypes from 'prop-types';
     return 'rgb('+blockColor[0]+','+blockColor[1]+','+blockColor[2]+')';
   }
 
-  function handleOnClick(evt) {
-    if (onTermClick) {
-      onTermClick(data,evt);
+  handleOnClick = (evt) => {
+    if (this.props.onTermClick) {
+      this.props.onTermClick(data,evt);
     }
   }
+}
 
 Block.propTypes = {
   slimitem: PropTypes.shape({
