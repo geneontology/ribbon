@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Ribbon from '../../src/';
+import Ribbon, { RibbonDataProvider } from '../../src/';
 import history from './history';
 import { addUrlProps, UrlQueryParamTypes } from 'react-url-query';
 
@@ -29,7 +29,7 @@ const urlPropsQueryConfig = {
  * to props for Ribbon. In this case the mapping happens automatically by
  * first decoding the URL query parameters based on the urlPropsQueryConfig.
  */
-const RibbonRoute = addUrlProps({ urlPropsQueryConfig })(Ribbon);
+const RibbonRoute = addUrlProps({ urlPropsQueryConfig })(RibbonDataProvider);
 
 class Demo extends Component {
   componentDidMount() {
@@ -43,7 +43,12 @@ class Demo extends Component {
     return (
       <div>
         <h3>slim ribbon demo</h3>
-        <RibbonRoute />
+        <RibbonRoute>
+        {({title, data, dataReceived, dataError}) => {
+          return dataReceived ?
+            <Ribbon title={title} data={data} /> : dataError
+        }}
+        </RibbonRoute>
       </div>
     );
   }
