@@ -27,7 +27,9 @@ export default class RibbonDataProvider extends React.Component {
     super(props);
     this.state = {
       title: null,
-      assocCount:  SlimList.map((goSlimItem, index) => {return 0;})
+      assocCount:  SlimList.map((goSlimItem, index) => {return 0;}),
+      dataReceived: false,
+      dataError : null
     };
   }
 
@@ -43,6 +45,7 @@ export default class RibbonDataProvider extends React.Component {
         console.debug("got results!");
         _this.setState({
           // we got it!
+          dataReceived: true,
           title:        result.data[0].assocs[0].subject.label + ' (' +
                         result.data[0].assocs[0].subject.taxon.label + ')',
           assocCount:  SlimList.map((goSlimItem, index) => {
@@ -54,6 +57,7 @@ export default class RibbonDataProvider extends React.Component {
       .catch(function(error) {
         console.debug(error);
         _this.setState({
+          dataError: 'Unable to retrieve ' + db + ':' + id,
           title:        'Unable to retrieve ' + db + ':' + id,
           assocCount:  SlimList.map((goSlimItem, index) => {return 0;})
         });
@@ -71,10 +75,12 @@ export default class RibbonDataProvider extends React.Component {
   }
 
   render() {
-    const {title, assocCount} = this.state;
+    const {title, assocCount, dataReceived, dataError } = this.state;
     return this.props.children({
       title,
-      assocCount
+      assocCount,
+      dataReceived,
+      dataError
     });
   }
 };
