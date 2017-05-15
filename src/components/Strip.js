@@ -1,18 +1,16 @@
 import React, { PropTypes } from 'react'
 import Block from './Block';
-import SlimList from '../slim.json';
 
 const baseRGB = [0,96,96];
 
-function Strip({title, assoc_count}) {
+function Strip({title, data}) {
   console.log('building strip for ' + title);
-  const assoc_size = assoc_count != null ? assoc_count.length : -1;
-  const StripOfBlocks = SlimList.map((goSlimItem, index) => {
+  const StripOfBlocks = data.map((goSlimItem, index) => {
     return <Block
       slimitem={goSlimItem}
-      count={assoc_size >= index ? assoc_count[index] : 0}
+      count={goSlimItem.assocs.length}
       baseRGB={baseRGB}
-      key={goSlimItem.id + '_' + index}
+      key={goSlimItem.goid}
     />;
   });
 
@@ -28,12 +26,11 @@ function Strip({title, assoc_count}) {
 
 Strip.propTypes = {
   title: PropTypes.string,
-  assoc_count: PropTypes.arrayOf(PropTypes.number),
-};
-
-Strip.defaultProps = {
-  title: 'blah-di-blah',
-  assoc_count: [],
+  data: PropTypes.arrayOf(PropTypes.shape({
+    goid: PropTypes.string.isRequired,
+    golabel: PropTypes.string.isRequired,
+    assocs: PropTypes.arrayOf(PropTypes.object).isRequired
+  }))
 };
 
 export default Strip;

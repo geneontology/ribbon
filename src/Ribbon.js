@@ -10,18 +10,21 @@ export default class Ribbon extends React.Component {
 
   static propTypes = {
     title: PropTypes.string,
-    assocCount: PropTypes.arrayOf(PropTypes.number),
-    onChangeDb: PropTypes.func,
-    onChangeId: PropTypes.func,
+    data: PropTypes.arrayOf(PropTypes.shape({
+      goid: PropTypes.string.isRequired,
+      golabel: PropTypes.string.isRequired,
+      assocs: PropTypes.arrayOf(PropTypes.object).isRequired
+    }))
   }
 
   render() {
-    const {title, assocCount, onChangeDb, onChangeId} = this.props;
-    console.debug('rendering ' + this.props.title);
+    const {title, data} = this.props;
+    console.log('rendering ' + title);
+
     return (
       <div className="GoView">
         <div className="blockBacker">
-          <Strip title={this.props.title} assoc_count={this.props.assocCount}  />;
+          <Strip title={title} data={data} />;
         </div>
       </div>
     );
