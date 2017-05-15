@@ -16,12 +16,13 @@ class Block extends React.Component {
     );
   }
 
+
   heatColor(associations_count, rgb, heatLevels) {
     if( associations_count == 0 ) return "#fff";
     let blockColor = [];     // [r,g,b]
-    for( var i=0; i<3; i++ ) {
+    for ( var i=0; i<3; i++ ) {
       // logarithmic heatmap (with cutoff)
-      if( associations_count < heatLevels ) {
+      if ( associations_count < heatLevels ) {
         // instead of just (256-rgb[i])/(Math.pow(2,associations_count)),
         // which divides space from 'white' (255) down to target color level in halves,
         // this starts at 3/4
@@ -31,10 +32,6 @@ class Block extends React.Component {
       else {
         blockColor[i] = rgb[i];
       }
-      // linear heatmap
-      // var heatInc = (topHue-rgb[i])/heatLevels;
-      // var depression = heatInc*Math.min(heat,heatLevels);
-      // c[i] = Math.round(topHue - depression);
     }
     return 'rgb('+blockColor[0]+','+blockColor[1]+','+blockColor[2]+')';
   }
