@@ -8,7 +8,7 @@ function Strip({title, data}) {
   const StripOfBlocks = data.map((goSlimItem, index) => {
     return <Block
       slimitem={goSlimItem}
-      count={goSlimItem.assocs.length}
+      assocs={goSlimItem.assocs}
       baseRGB={baseRGB}
       key={goSlimItem.goid}
     />;
