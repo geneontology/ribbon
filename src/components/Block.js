@@ -6,13 +6,12 @@ import PropTypes from 'prop-types';
     var count = 0;
     var assoc_list = [];
     if (assocs.length > 0) {
-      console.debug('number of assocs: ' + assocs.length);
       var labels = assocs.map((assocItem, index) => {return assocItem.object.label});
       var uniqueLabels = labels.filter(function(label, pos) {
-        return labels.indexOf(label) == pos;
+        return labels.indexOf(label) === pos;
       });
       count = uniqueLabels.length;
-      console.debug('found ' + count + ' unique associations');
+      console.debug(count + ' out of ' + assocs.length + ' are unique');
     }
     const plural = (count > 1) ? 's' : '';
     const tileTitle = (count > 0) ?
@@ -26,14 +25,6 @@ import PropTypes from 'prop-types';
         <div className="ribbonTile" title={tileTitle} style={{backgroundColor:color}}></div>
       </div>
     );
-  }
-
-  function debugArray(item, index) {
-      console.debug(item + ' at index ' + index);
-  }
-
-  function uniqueAssoc(value, index, self) {
-      return assocs.object.label.indexOf(value) === index;
   }
 
   function heatColor(associations_count, rgb, heatLevels) {
@@ -66,27 +57,7 @@ Block.propTypes = {
     "goid": PropTypes.string.isRequired,
     "golabel": PropTypes.string.isRequired,
   }).isRequired,
-  assocs: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
-    subject: PropTypes.shape({
-      id: PropTypes.string,
-      label: PropTypes.string,
-      taxon: PropTypes.shape({
-        id: PropTypes.string,
-        label: PropTypes.string
-      })
-    }),
-    object: PropTypes.shape({
-      id: PropTypes.string,
-      label: PropTypes.label
-    }),
-    relation: PropTypes.any,
-    publications: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.string
-    })),
-    provided_by: PropTypes.arrayOf(PropTypes.string),
-    slim: PropTypes.arrayOf(PropTypes.string)
-  })).isRequired,
+  assocs: PropTypes.arrayOf(PropTypes.object).isRequired,
   baseRGB: PropTypes.arrayOf((propValue, key, componentName, location, propFullName) => {
     if (propValue.length != 3) {
       return new Error('Invalid prop `' + propFullName + '` supplied to' +
