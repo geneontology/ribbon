@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-  function Block({slimitem, assocs, baseRGB}) {
+class Block extends React.Component {
+  render() {
     // usage example:
+    const {slimitem, assocs, baseRGB} = this.props;
     var count = 0;
     var assoc_list = [];
     if (assocs.length > 0) {
@@ -17,18 +19,20 @@ import PropTypes from 'prop-types';
     const tileTitle = (count > 0) ?
       uniqueLabels.join('\n') :
       'No associations to ' + slimitem.golabel;
+
     const blockTitleClass = (count > 0) ? 'ribbonBlockTitleTerm bold' : 'ribbonBlockTitleTerm';
-    const color           = (count) ? heatColor(count, baseRGB, 8) : '';
+    const color           = (count) ? this.heatColor(count, baseRGB, 8) : '';
     return(
-      <div className="ribbonBlock" onClick={handleOnClick}>
+      <div className="ribbonBlock" onClick={this.handleOnClick}>
         <div className={blockTitleClass}>{slimitem.golabel}</div>
         <div className="ribbonTile" title={tileTitle} style={{backgroundColor:color}}></div>
       </div>
     );
   }
 
-  function heatColor(associations_count, rgb, heatLevels) {
-    if ( associations_count == 0 ) return "#fff";
+
+  heatColor(associations_count, rgb, heatLevels) {
+    if( associations_count == 0 ) return "#fff";
     let blockColor = [];     // [r,g,b]
     for ( var i=0; i<3; i++ ) {
       // logarithmic heatmap (with cutoff)
@@ -46,11 +50,12 @@ import PropTypes from 'prop-types';
     return 'rgb('+blockColor[0]+','+blockColor[1]+','+blockColor[2]+')';
   }
 
-  function handleOnClick(evt) {
-    if (onTermClick) {
-      onTermClick(data,evt);
+  handleOnClick = (evt) => {
+    if (this.props.onTermClick) {
+      this.props.onTermClick(data,evt);
     }
   }
+}
 
 Block.propTypes = {
   slimitem: PropTypes.shape({
