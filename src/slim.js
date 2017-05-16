@@ -1,4 +1,4 @@
-[
+export default [
   {
     "goid": "GO:0003824",
     "golabel": "catalysis"
@@ -147,4 +147,4 @@
     "goid": "GO:0032991",
     "golabel": "macromolecular complex"
   }
-]
+];

@@ -2,8 +2,6 @@
 import React, { Component, PropTypes } from 'react'
 //import PropTypes from 'prop-types';
 
-import './index.css';
-
 import Strip from './components/Strip';
 
 export default class Ribbon extends React.Component {
