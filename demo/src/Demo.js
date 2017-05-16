@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Ribbon, { RibbonDataProvider } from '../../src/';
+import '../../src/index.css';
 import history from './history';
 import { addUrlProps, UrlQueryParamTypes } from 'react-url-query';
 
