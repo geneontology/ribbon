@@ -3,9 +3,23 @@ import PropTypes from 'prop-types';
 
 class Block extends React.Component {
   render() {
-    const {slimitem, count, baseRGB} = this.props;
-    const plural = (slimitem.count > 1) ? 's' : '';
-    const tileTitle       = slimitem.golabel + ":\n" + count + " term" + plural;
+    // usage example:
+    const {slimitem, assocs, baseRGB} = this.props;
+    var count = 0;
+    var assoc_list = [];
+    if (assocs.length > 0) {
+      var labels = assocs.map((assocItem, index) => {return assocItem.object.label});
+      var uniqueLabels = labels.filter(function(label, pos) {
+        return labels.indexOf(label) === pos;
+      });
+      count = uniqueLabels.length;
+      console.debug(count + ' out of ' + assocs.length + ' are unique');
+    }
+    const plural = (count > 1) ? 's' : '';
+    const tileTitle = (count > 0) ?
+      uniqueLabels.join('\n') :
+      'No associations to ' + slimitem.golabel;
+
     const blockTitleClass = (count > 0) ? 'ribbonBlockTitleTerm bold' : 'ribbonBlockTitleTerm';
     const color           = (count) ? this.heatColor(count, baseRGB, 8) : '';
     return(
@@ -48,7 +62,7 @@ Block.propTypes = {
     "goid": PropTypes.string.isRequired,
     "golabel": PropTypes.string.isRequired,
   }).isRequired,
-  count: PropTypes.number.isRequired,
+  assocs: PropTypes.arrayOf(PropTypes.object).isRequired,
   baseRGB: PropTypes.arrayOf((propValue, key, componentName, location, propFullName) => {
     if (propValue.length != 3) {
       return new Error('Invalid prop `' + propFullName + '` supplied to' +

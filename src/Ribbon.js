@@ -24,7 +24,7 @@ export default class Ribbon extends React.Component {
     return (
       <div className="GoView">
         <div className="blockBacker">
-          <Strip title={title} data={data} />;
+          <Strip title={title} data={data} />
         </div>
       </div>
     );
