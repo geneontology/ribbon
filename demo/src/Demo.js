@@ -44,9 +44,9 @@ class Demo extends Component {
       <div>
         <h3>slim ribbon demo</h3>
         <RibbonRoute>
-        {({title, data, dataReceived, dataError}) => {
+        {({title, queryID, data, dataReceived, dataError}) => {
           return dataReceived ?
-            <Ribbon title={title} data={data} /> : dataError
+            <Ribbon queryID={queryID} title={title} data={data} /> : dataError
         }}
         </RibbonRoute>
       </div>

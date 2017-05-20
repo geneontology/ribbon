@@ -10,6 +10,7 @@ export default class Ribbon extends React.Component {
 
   static propTypes = {
     title: PropTypes.string,
+    queryID: PropTypes.string.isRequired,
     data: PropTypes.arrayOf(PropTypes.shape({
       goid: PropTypes.string.isRequired,
       golabel: PropTypes.string.isRequired,
@@ -18,18 +19,14 @@ export default class Ribbon extends React.Component {
   }
 
   render() {
-    const {title, data} = this.props;
-    console.log('rendering ' + title);
-
+    const {title, queryID, data} = this.props;
+    console.debug('ribbon query is ' + queryID);
     return (
       <div className="GoView">
         <div className="blockBacker">
-          <Strip title={title} data={data} />
+          <Strip queryID={queryID} title={title} data={data} />
         </div>
       </div>
     );
   }
 }
-
-
-// render(<Demo/>, document.querySelector('#demo'))

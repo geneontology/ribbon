@@ -1,19 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-  function Block({slimitem, assocs, baseRGB}) {
+  function Block({slimitem, queryID, assocs, queryRGB, orthoRGB}) {
     // usage example:
     var count = 0;
     var assoc_list = [];
+    var baseRGB = orthoRGB;
     if (assocs.length > 0) {
-      var labels = assocs.map((assocItem, index) => {return assocItem.object.label});
+      var labels = assocs.map((assocItem, index) => {
+        baseRGB = assocItem.subject.id === queryID ? queryRGB : baseRGB;
+        console.debug(assocItem.subject.id + ' or ' + queryID);
+        return assocItem.subject.taxon.label + ': ' + assocItem.object.label
+      });
       var uniqueLabels = labels.filter(function(label, pos) {
         return labels.indexOf(label) === pos;
       });
       count = uniqueLabels.length;
-      console.debug(count + ' out of ' + assocs.length + ' are unique');
     }
-    const plural = (count > 1) ? 's' : '';
     const tileTitle = (count > 0) ?
       uniqueLabels.join('\n') :
       'No associations to ' + slimitem.golabel;
@@ -58,7 +61,13 @@ Block.propTypes = {
     "golabel": PropTypes.string.isRequired,
   }).isRequired,
   assocs: PropTypes.arrayOf(PropTypes.object).isRequired,
-  baseRGB: PropTypes.arrayOf((propValue, key, componentName, location, propFullName) => {
+  queryRGB: PropTypes.arrayOf((propValue, key, componentName, location, propFullName) => {
+    if (propValue.length != 3) {
+      return new Error('Invalid prop `' + propFullName + '` supplied to' +
+                       ' `' + componentName + '`. An array of 3 integers is required.');
+    }
+  }).isRequired,
+  orthoRGB: PropTypes.arrayOf((propValue, key, componentName, location, propFullName) => {
     if (propValue.length != 3) {
       return new Error('Invalid prop `' + propFullName + '` supplied to' +
                        ' `' + componentName + '`. An array of 3 integers is required.');

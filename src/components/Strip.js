@@ -1,20 +1,21 @@
 import React, { PropTypes } from 'react'
 import Block from './Block';
 
-const baseRGB = [0,96,96];
+const queryRGB = [0,96,96];
+const orthoRGB = [255, 185, 36];
 
-function Strip({title, data}) {
-  console.log('building strip for ' + title);
+function Strip({title, queryID, data}) {
+  console.log('building strip for ' + queryID);
   const StripOfBlocks = data.map((goSlimItem, index) => {
     return <Block
       slimitem={goSlimItem}
       assocs={goSlimItem.assocs}
-      baseRGB={baseRGB}
+      queryID={queryID}
+      queryRGB={queryRGB}
+      orthoRGB={orthoRGB}
       key={goSlimItem.goid}
     />;
   });
-
-  console.log('creating strip div ');
 
   return(
     <div className="ribbonStrip">
@@ -26,6 +27,7 @@ function Strip({title, data}) {
 
 Strip.propTypes = {
   title: PropTypes.string,
+  queryID: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(PropTypes.shape({
     goid: PropTypes.string.isRequired,
     golabel: PropTypes.string.isRequired,

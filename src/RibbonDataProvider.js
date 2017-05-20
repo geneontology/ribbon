@@ -1,15 +1,13 @@
-
 import React, { Component, PropTypes } from 'react'
 //import {render} from 'react-dom';
 //import PropTypes from 'prop-types';
 
 import axios from 'axios';
 
-import SlimList from './slim.json';
+import SLIM_LIST from './slim';
 
-var BIOLINK =
+var GOLINK =
 'https://api.monarchinitiative.org/api/bioentityset/slimmer/function?slim=GO:0003824&slim=GO:0004872&slim=GO:0005102&slim=GO:0005215&slim=GO:0005198&slim=GO:0008092&slim=GO:0003677&slim=GO:0003723&slim=GO:0001071&slim=GO:0036094&slim=GO:0046872&slim=GO:0030246&slim=GO:0008283&slim=GO:0071840&slim=GO:0051179&slim=GO:0032502&slim=GO:0000003&slim=GO:0002376&slim=GO:0050877&slim=GO:0050896&slim=GO:0023052&slim=GO:0010467&slim=GO:0019538&slim=GO:0006259&slim=GO:0044281&slim=GO:0050789&slim=GO:0005576&slim=GO:0005829&slim=GO:0005856&slim=GO:0005739&slim=GO:0005634&slim=GO:0005694&slim=GO:0016020&slim=GO:0071944&slim=GO:0030054&slim=GO:0042995&slim=GO:0032991&subject=';
-
 
 export default class RibbonDataProvider extends React.Component {
 
@@ -22,6 +20,7 @@ export default class RibbonDataProvider extends React.Component {
     super(props);
     this.state = {
       title: null,
+      queryID: null,
       responseData: [],
       dataReceived: false,
       dataError : null
@@ -31,27 +30,70 @@ export default class RibbonDataProvider extends React.Component {
   fetchData() {
     var _this = this;
     const {db, id} = this.props;
-    console.log ('db is ' + db + ' and id is ' + id);
-    var biolinkURL = BIOLINK + db + ':' + id;
-    console.log(biolinkURL);
-    this.serverRequest = axios
-      .get(biolinkURL)
-      .then(function(result) {
-        console.log("got results!");
-        _this.setState({
-          // we got it!
-          dataReceived: true,
-          title:        result.data[0].assocs[0].subject.label + ' (' +
-                        result.data[0].assocs[0].subject.taxon.label + ')',
-          responseData: result.data
-        })
-      })
-      .catch(function(error) {
-        console.log(error);
-        _this.setState({
-          dataError: 'Unable to retrieve ' + db + ':' + id
-        });
+    var queryResponse = [];
+    var queryID = db + ':' + id;
+    var label = queryID;
+    var orthoURL =  'https://api.monarchinitiative.org/api/bioentity/gene/' +
+                    queryID + '/homologs/?homology_type=O&fetch_objects=false';
+    // console.log(orthoURL);
+    // First get any orthologs for this gene
+    axios.get(orthoURL)
+    .then((results) => {
+      var goQueries = results.data.objects.map(function(orthologID) {
+        // console.debug('ortholog is ' + orthologID);
+        return GOLINK + orthologID;
       });
+      goQueries.push(GOLINK + queryID);
+      // console.debug('number of go queries: ' + goQueries.length);
+      let promiseArray = goQueries.map(url => axios.get(url));
+      return axios.all(promiseArray);
+    })
+    // Then run all the GO queries in a batch,
+    // both the gene of interest and all the orthologs that were found
+    .then((function(results) {
+      // console.log('Got all GO results ' + results.length);
+      results.forEach(function(result) {
+        // console.log('result size ' + result.data.length);
+        if (result.data.length > 0) {
+          // console.debug('result for ' + result.data[0].subject);
+          if (result.data[0].subject === queryID) {
+            label = result.data[0].assocs[0].subject.label + ' (' +
+                     result.data[0].assocs[0].subject.taxon.label + ')';
+            console.debug('query match ' + queryID);
+          } else {
+            console.debug('ortholog match ' + result.data[0].subject);
+          }
+          Array.prototype.push.apply(queryResponse, result.data);
+          console.log(result.data.length + ' added for ' + result.data[0].subject);
+          console.log(queryResponse.length + ' total responses ');
+        }
+      });
+      _this.setState({
+        // we got it!
+        dataReceived: true,
+        queryID: queryID,
+        title:   label,
+        responseData: queryResponse
+      })
+    }))
+    .catch(function(error) {
+      if(error.response) {
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log(error.message);
+      }
+      _this.setState({
+        dataReceived: true,
+        queryID: queryID,
+        title: label + ' ' + error,
+        responseData: queryResponse,
+        dataError: 'Unable to get data for ' + queryID
+      });
+    });
   }
 
   componentDidMount() {
@@ -65,24 +107,33 @@ export default class RibbonDataProvider extends React.Component {
   }
 
   render() {
-    const {title, responseData, dataReceived, dataError } = this.state;
-    const data = SlimList.map((slimStub) => {
-      const matchingSlim = responseData.find((responseSlimItem) => (
-        responseSlimItem.slim === slimStub.goid
-      ));
+    const {queryID, title, responseData, dataReceived, dataError } = this.state;
+    // initialize array of associations
+    const data = SLIM_LIST.map((slimStub) => {
+      /* now need to gather all of the matching associations
+        from each of the organisms
+        because there may be a matching slim from more than
+        one organism
+      */
+      var assocs = [];
+      responseData.forEach(function(response) {
+        if (response.slim === slimStub.goid) {
+          Array.prototype.push.apply(assocs, response.assocs);
+        }
+      });
+
       const defaultSlim = Object.assign({
-        assocs: []
+        assocs: assocs
       }, slimStub);
-      return matchingSlim ? Object.assign(defaultSlim, matchingSlim) : defaultSlim;
+      return defaultSlim;
     });
+    console.debug('ribbon data query is ' + this.props.children.queryID);
     return this.props.children({
       title,
+      queryID,
       data,
       dataReceived,
       dataError
     });
   }
 };
-
-
-// render(<Demo/>, document.querySelector('#demo'))
