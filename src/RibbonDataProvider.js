@@ -35,27 +35,21 @@ export default class RibbonDataProvider extends React.Component {
     var label = queryID;
     var orthoURL =  'https://api.monarchinitiative.org/api/bioentity/gene/' +
                     queryID + '/homologs/?homology_type=O&fetch_objects=false';
-    // console.log(orthoURL);
     // First get any orthologs for this gene
     axios.get(orthoURL)
     .then((results) => {
       var goQueries = results.data.objects.map(function(orthologID) {
-        // console.debug('ortholog is ' + orthologID);
         return GOLINK + orthologID;
       });
       goQueries.push(GOLINK + queryID);
-      // console.debug('number of go queries: ' + goQueries.length);
       let promiseArray = goQueries.map(url => axios.get(url));
       return axios.all(promiseArray);
     })
     // Then run all the GO queries in a batch,
     // both the gene of interest and all the orthologs that were found
     .then((function(results) {
-      // console.log('Got all GO results ' + results.length);
       results.forEach(function(result) {
-        // console.log('result size ' + result.data.length);
         if (result.data.length > 0) {
-          // console.debug('result for ' + result.data[0].subject);
           if (result.data[0].subject === queryID) {
             label = result.data[0].assocs[0].subject.label + ' (' +
                      result.data[0].assocs[0].subject.taxon.label + ')';
@@ -64,7 +58,6 @@ export default class RibbonDataProvider extends React.Component {
             console.debug('ortholog match ' + result.data[0].subject);
           }
           Array.prototype.push.apply(queryResponse, result.data);
-          console.log(result.data.length + ' added for ' + result.data[0].subject);
           console.log(queryResponse.length + ' total responses ');
         }
       });
@@ -72,7 +65,7 @@ export default class RibbonDataProvider extends React.Component {
         // we got it!
         dataReceived: true,
         queryID: queryID,
-        title:   label,
+        title: label,
         responseData: queryResponse
       })
     }))
@@ -127,7 +120,6 @@ export default class RibbonDataProvider extends React.Component {
       }, slimStub);
       return defaultSlim;
     });
-    console.debug('ribbon data query is ' + this.props.children.queryID);
     return this.props.children({
       title,
       queryID,

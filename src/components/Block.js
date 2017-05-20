@@ -4,14 +4,13 @@ import PropTypes from 'prop-types';
 class Block extends React.Component {
   render() {
     // usage example:
-    const {slimitem, assocs, baseRGB} = this.props;
+    const {slimitem, assocs, queryID, queryRGB, orthoRGB} = this.props;
     var count = 0;
     var assoc_list = [];
     var baseRGB = orthoRGB;
     if (assocs.length > 0) {
       var labels = assocs.map((assocItem, index) => {
         baseRGB = assocItem.subject.id === queryID ? queryRGB : baseRGB;
-        console.debug(assocItem.subject.id + ' or ' + queryID);
         return assocItem.subject.taxon.label + ': ' + assocItem.object.label
       });
       var uniqueLabels = labels.filter(function(label, pos) {
