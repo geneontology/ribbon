@@ -47,7 +47,7 @@ class Demo extends Component {
         <RibbonRoute>
         {({title, queryID, data, dataReceived, dataError}) => {
           return dataReceived ?
-            <Ribbon queryID={queryID} title={title} data={data} /> : dataError
+            <Ribbon queryID={queryID} title={title} data={data} /> : <span>{dataError}</span>
         }}
         </RibbonRoute>
       </div>

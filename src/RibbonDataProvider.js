@@ -80,7 +80,7 @@ export default class RibbonDataProvider extends React.Component {
         console.log(error.message);
       }
       _this.setState({
-        dataReceived: true,
+        dataReceived: false,
         queryID: queryID,
         title: label + ' ' + error,
         responseData: queryResponse,
