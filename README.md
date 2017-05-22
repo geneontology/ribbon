@@ -2,7 +2,7 @@
 Short form matrix view of all GO annotations for a given gene
 
 ## Acknowledgments
-- Thanks to Sibyl Gao (@sibyl229) for knowing what to do and how to it in packaging this, Josh Goodman for making his code available as a launching point, Seth Carbon (@kltm) for bearing with my naive questions, and Chris Mungall (@cmungall) for all the usual fantastic things he does
+- Thanks to Sibyl Gao (@sibyl229) for knowing what to do and how to do it, Josh Goodman for making his code available as a launching point, Seth Carbon (@kltm) for bearing with my naive questions, and Chris Mungall (@cmungall) for all the usual fantastic things he does
 
 ## Installation
 - Make sure node.js is installed - see https://nodejs.org/en/download/
