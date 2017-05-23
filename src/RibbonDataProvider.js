@@ -12,8 +12,7 @@ var GOLINK =
 export default class RibbonDataProvider extends React.Component {
 
   static propTypes = {
-    db: PropTypes.string,
-    id: PropTypes.string
+    subject: PropTypes.string
   }
 
   constructor(props) {
@@ -29,9 +28,9 @@ export default class RibbonDataProvider extends React.Component {
 
   fetchData() {
     var _this = this;
-    const {db, id} = this.props;
+    const {subject} = this.props;
     var queryResponse = [];
-    var queryID = db + ':' + id;
+    var queryID = subject;
     var label = queryID;
     var orthoURL =  'https://api.monarchinitiative.org/api/bioentity/gene/' +
                     queryID + '/homologs/?homology_type=O&fetch_objects=false';
@@ -94,7 +93,7 @@ export default class RibbonDataProvider extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.db !== prevProps.db || this.props.id !== prevProps.id) {
+    if (this.props.subject !== prevProps.subject) {
       this.fetchData();
     }
   }

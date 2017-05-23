@@ -21,8 +21,7 @@ static dataDependencies = [
  * action.
  */
 const urlPropsQueryConfig = {
-  db: { type: UrlQueryParamTypes.string },
-  id: { type: UrlQueryParamTypes.string },
+  subject: { type: UrlQueryParamTypes.string },
 };
 
 /**
