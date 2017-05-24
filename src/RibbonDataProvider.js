@@ -6,8 +6,18 @@ import axios from 'axios';
 
 import SLIM_LIST from './slim';
 
-var GOLINK =
+const GOLINK =
 'https://api.monarchinitiative.org/api/bioentityset/slimmer/function?slim=GO:0003824&slim=GO:0004872&slim=GO:0005102&slim=GO:0005215&slim=GO:0005198&slim=GO:0008092&slim=GO:0003677&slim=GO:0003723&slim=GO:0001071&slim=GO:0036094&slim=GO:0046872&slim=GO:0030246&slim=GO:0008283&slim=GO:0071840&slim=GO:0051179&slim=GO:0032502&slim=GO:0000003&slim=GO:0002376&slim=GO:0050877&slim=GO:0050896&slim=GO:0023052&slim=GO:0010467&slim=GO:0019538&slim=GO:0006259&slim=GO:0044281&slim=GO:0050789&slim=GO:0005576&slim=GO:0005829&slim=GO:0005856&slim=GO:0005739&slim=GO:0005634&slim=GO:0005694&slim=GO:0016020&slim=GO:0071944&slim=GO:0030054&slim=GO:0042995&slim=GO:0032991&subject=';
+
+const AGR_taxons = [
+    'NCBITaxon:7227', // fly
+    'NCBITaxon:7955', // zebrafish
+    'NCBITaxon:4932', // yeast
+    'NCBITaxon:6239', // worm
+    'NCBITaxon:10116', //rat
+    'NCBITaxon:10090', // mouse
+    'NCBITaxon:9606' // human
+];
 
 export default class RibbonDataProvider extends React.Component {
 
@@ -29,16 +39,34 @@ export default class RibbonDataProvider extends React.Component {
   fetchData() {
     var _this = this;
     const {subject} = this.props;
-    var queryResponse = [];
-    var queryID = subject;
+    const queryID = subject;
     var label = queryID;
+    var queryResponse = [];
+    var queryTaxon = '';
     var orthoURL =  'https://api.monarchinitiative.org/api/bioentity/gene/' +
                     queryID + '/homologs/?homology_type=O&fetch_objects=false';
     // First get any orthologs for this gene
     axios.get(orthoURL)
     .then((results) => {
+      /*
       var goQueries = results.data.objects.map(function(orthologID) {
         return GOLINK + orthologID;
+      });
+      */
+      if (results.data.associations.length > 0) {
+        queryTaxon = results.data.associations[0].subject.taxon.id;
+      }
+      console.debug('# of ortholog associations ' + results.data.associations.length);
+      var goQueries = [];
+      results.data.associations.forEach(function(ortholog_assoc) {
+        // ignore paralogs, not expecting any but just in case
+        if (ortholog_assoc.object.taxon.id !== queryTaxon) {
+          var index = AGR_taxons.indexOf(ortholog_assoc.object.taxon.id);
+          if (index >= 0) {
+            console.debug('adding ' + ortholog_assoc.object.id);
+            goQueries.push(GOLINK + ortholog_assoc.object.id);
+          }
+        }
       });
       goQueries.push(GOLINK + queryID);
       let promiseArray = goQueries.map(url => axios.get(url));
@@ -52,12 +80,8 @@ export default class RibbonDataProvider extends React.Component {
           if (result.data[0].subject === queryID) {
             label = result.data[0].assocs[0].subject.label + ' (' +
                      result.data[0].assocs[0].subject.taxon.label + ')';
-            console.debug('query match ' + queryID);
-          } else {
-            console.debug('ortholog match ' + result.data[0].subject);
           }
           Array.prototype.push.apply(queryResponse, result.data);
-          console.log(queryResponse.length + ' total responses ');
         }
       });
       _this.setState({
