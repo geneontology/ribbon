@@ -10,6 +10,13 @@ class Block extends React.Component {
     var baseRGB = orthoRGB;
     if (assocs.length > 0) {
       var labels = assocs.map((assocItem, index) => {
+        /*
+          Short term interim hack because of differences in resource naming
+          e.g. FlyBase === FB
+        */
+        var subjectID = assocItem.subject.id;
+        assocItem.subject.id = subjectID.replace('FlyBase', 'FB');
+        assocItem.subject.id = subjectID.replace('NCBIGene', 'NCBI_Gene');
         baseRGB = assocItem.subject.id === queryID ? queryRGB : baseRGB;
         return assocItem.subject.taxon.label + ': ' + assocItem.object.label
       });
