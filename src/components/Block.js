@@ -12,12 +12,10 @@ class Block extends React.Component {
       var labels = assocs.map((assocItem, index) => {
         /*
           Short term interim hack because of differences in resource naming
-          e.g. FlyBase === FB
+          e.g. FlyBase (BioLink) === FB (AGR)
         */
-        var subjectID = assocItem.subject.id;
-        assocItem.subject.id = subjectID.replace('FlyBase', 'FB');
-        assocItem.subject.id = subjectID.replace('NCBIGene', 'NCBI_Gene');
-        baseRGB = assocItem.subject.id === queryID ? queryRGB : baseRGB;
+        var subjectID = assocItem.subject.id.replace('FlyBase', 'FB');
+        baseRGB = subjectID === queryID ? queryRGB : baseRGB;
         return assocItem.subject.taxon.label + ': ' + assocItem.object.label
       });
       var uniqueLabels = labels.filter(function(label, pos) {
@@ -72,6 +70,7 @@ Block.propTypes = {
     "golabel": PropTypes.string.isRequired,
   }).isRequired,
   assocs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  queryID: PropTypes.string.isRequired,
   queryRGB: PropTypes.arrayOf((propValue, key, componentName, location, propFullName) => {
     if (propValue.length != 3) {
       return new Error('Invalid prop `' + propFullName + '` supplied to' +

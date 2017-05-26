@@ -1,6 +1,5 @@
 
 import React, { Component, PropTypes } from 'react'
-//import PropTypes from 'prop-types';
 
 import Strip from './components/Strip';
 
@@ -18,7 +17,6 @@ export default class Ribbon extends React.Component {
 
   render() {
     const {title, queryID, data} = this.props;
-    console.debug('ribbon query is ' + queryID);
     return (
       <div className="GoView">
         <div className="blockBacker">
