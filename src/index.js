@@ -1,8 +1,8 @@
 import Ribbon from './Ribbon';
-import RibbonDataProvider from './RibbonDataProvider';
+import RibbonStore from './data/RibbonStore';
 
 export default Ribbon;
 
 export {
-  RibbonDataProvider
+  RibbonStore
 };

@@ -8,4 +8,5 @@ import history from './history';
 // link the history used in our app to url-query so it can update the URL with it.
 configureUrlQuery({ history });
 
-ReactDOM.render(<Demo/>, document.querySelector('#demo'))
+//ReactDOM.render(<DemoContainer />, document.querySelector('#demo'))
+ReactDOM.render(<Demo />, document.getElementById('demo'));

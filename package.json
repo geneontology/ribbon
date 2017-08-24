@@ -1,6 +1,6 @@
 {
   "name": "gene-ontology-ribbon",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "scripts": {
     "build": "nwb build-react-component --copy-files",
     "clean": "nwb clean-module && npm clean-demo",
@@ -19,7 +19,13 @@
     "umd"
   ],
   "dependencies": {
-    "axios": "0.16.1"
+    "axios": "0.16.1",
+    "bluebird": "^3.5.0",
+    "halogen": "^0.2.0",
+    "react-spinners": "0.0.30",
+    "react-url-query": "^1.1.3",
+    "redux": "^3.7.2",
+    "shallowequal": "^1.0.2"
   },
   "peerDependencies": {
     "react": "*"
@@ -36,11 +42,11 @@
     "react-dom": "^15.4.2"
   },
   "author": "Suzanna Lewis",
-  "homepage": "",
+  "homepage": "https://github.com/geneontology/ribbon#readme",
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
-    "url": "https://github.com/geneontology/ribbon"
+    "url": "git+https://github.com/geneontology/ribbon.git"
   },
   "keywords": [
     "react-component",
@@ -48,6 +54,10 @@
     "slim"
   ],
   "directories": {
+    "doc": "docs",
     "test": "tests"
+  },
+  "bugs": {
+    "url": "https://github.com/geneontology/ribbon/issues"
   }
 }

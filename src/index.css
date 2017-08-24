@@ -18,19 +18,55 @@
     /*font-weight: bold;*/
     color: #699;
 }
-.ribbonBlockTitleTerm {
+.blockTitle {
     transform: rotate(-45deg);
     text-indent: 10px;
     width: 16px;
     white-space: nowrap;
 }
-.ribbonTile {
-    border: 1px solid black;
+.blockTile {
+    border: 1px solid silver;
     height: 16px;
     margin-right: -1px;
     position: relative;
 }
-.ribbonTile:hover {
+.blockTile:hover {
     border: 1px solid #acd;
     z-index: 10;
+}
+.blockTable {
+    border: 1px solid silver;
+    margin-right: -1px;
+    position: relative;
+}
+.tileSeparator {
+    height: 16px;
+    width: 32px;
+    margin-right: -1px;
+    position: relative;
+    display: table-cell;
+}
+.ContentBox {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #FFF;
+  padding: 0 1rem 1rem 1rem;
+  overflow: auto;
+  background: white;
+}
+.ContentBox:first-of-type {
+  padding-top: 1rem;
+}
+.tableRow {
+  border-bottom: 1px solid #eee;
+}
+.tableColumn {
+  padding: 5px 15px 5px 0;
+}
+
+.spinner {
+  color: "#26A65B";
+  size: 16px;
+  margin: 4px;
 }

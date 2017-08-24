@@ -48,6 +48,11 @@ export default [
     "golabel": "carbohydrate binding"
   },
   {
+    "goid": "GO:0008150",
+    "golabel": "bp",
+    "separator": true
+  },
+  {
     "goid": "GO:0008283",
     "golabel": "cell proliferation"
   },
@@ -102,6 +107,11 @@ export default [
   {
     "goid": "GO:0050789",
     "golabel": "regulation"
+  },
+  {
+    "goid": "GO:0005575",
+    "golabel": "cc",
+    "separator": true
   },
   {
     "goid": "GO:0005576",

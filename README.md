@@ -2,7 +2,7 @@
 Short form matrix view of all GO annotations for a given gene
 
 ## Acknowledgments
-- Thanks to Sibyl Gao (@sibyl229) for knowing what to do and how to do it, Josh Goodman for making his code available as a launching point, Seth Carbon (@kltm) for bearing with my naive questions, and Chris Mungall (@cmungall) for all the usual fantastic things he does
+- Thanks to Sibyl Gao (@sibyl229) for knowing what to do and how to do it for AGR usage, Josh Goodman for making his code available as a start point, Seth Carbon (@kltm) for bearing with my naive questions, and Chris Mungall (@cmungall) for all the usual fantastic things he does
 
 ## Installation
 - Make sure node.js is installed - see https://nodejs.org/en/download/
@@ -13,7 +13,7 @@ Short form matrix view of all GO annotations for a given gene
 ## Demo Ribbon Server
 
 - `npm start` will run a local server with the ribbon's demo app at [http://localhost:3000](http://localhost:3000) with hot module reloading.
-- To actually see a populated 'ribbon' you will need to provide the resource name and the resource's gene identifier in the URL. That is:  [http://localhost:3000/?db=MGI&id=MGI:97490](http://localhost:3000/?db=MGI&id=MGI:97490) or [http://localhost:3000/?db=ZFIN&id=ZDB-GENE-990415-173](http://localhost:3000/?db=ZFIN&id=ZDB-GENE-990415-173)
+- To actually see a populated 'ribbon' you will need to provide the resource name and the resource's gene identifier in the URL. That is:  [http://localhost:3000/?subject=MGI:MGI:97490](http://localhost:3000/?subject=MGI:MGI:97490) or [http://localhost:3000/?subject=ZFIN:ZDB-GENE-990415-173](http://localhost:3000/?subject=ZFIN:ZDB-GENE-990415-173)
 
 ## Examples
 - fly

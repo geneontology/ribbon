@@ -1,38 +1,27 @@
 import React, { PropTypes } from 'react'
 import Block from './Block';
 
-const queryRGB = [0,96,96];
-const orthoRGB = [255, 185, 36];
+export default class Strip extends React.Component {
 
-function Strip({title, queryID, data}) {
-  console.log('building strip for ' + queryID);
-  const StripOfBlocks = data.map((goSlimItem, index) => {
-    return <Block
-      slimitem={goSlimItem}
-      assocs={goSlimItem.assocs}
-      queryID={queryID}
-      queryRGB={queryRGB}
-      orthoRGB={orthoRGB}
-      key={goSlimItem.goid}
-    />;
-  });
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+    slimlist: PropTypes.arrayOf(PropTypes.object).isRequired,
+  };
 
-  return(
-    <div className="ribbonStrip">
-      <div className="blockBacker">{StripOfBlocks}</div>
-      <div className="stripTitle">{title}</div>
-    </div>
-  );
+  render() {
+    const {title, slimlist} = this.props;
+    const StripOfBlocks = slimlist.map((slimitem, index) => {
+      return <Block
+        slimitem={slimitem}
+        key={slimitem.goid}
+      />;
+    });
+    console.log('title: '+title);
+    return(
+      <div className="ribbonStrip">
+        <div className="blockBacker">{StripOfBlocks}</div>
+        <div className="stripTitle">{title}</div>
+      </div>
+    );
+  }
 }
-
-Strip.propTypes = {
-  title: PropTypes.string,
-  queryID: PropTypes.string.isRequired,
-  data: PropTypes.arrayOf(PropTypes.shape({
-    goid: PropTypes.string.isRequired,
-    golabel: PropTypes.string.isRequired,
-    assocs: PropTypes.arrayOf(PropTypes.object).isRequired
-  }))
-};
-
-export default Strip;
