@@ -46,6 +46,11 @@
     position: relative;
     display: table-cell;
 }
+.ribbonInfo {
+    margin: 0 2em;
+    float: left;
+    font-size: 9pt;
+}
 .ContentBox {
   flex: 1 0 auto;
   display: flex;
@@ -63,10 +68,4 @@
 }
 .tableColumn {
   padding: 5px 15px 5px 0;
-}
-
-.spinner {
-  color: "#26A65B";
-  size: 16px;
-  margin: 4px;
 }

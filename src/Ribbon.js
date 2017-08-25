@@ -2,7 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import axios from 'axios';
 import { GridLoader } from 'react-spinners';
 
-import Strip from './components/Strip';
+import Strip from './view/Strip';
+import Info from './view/Info';
+import BlockStore from './data/BlockStore';
 
 import AGR_LIST from './data/agr';
 import TCAG_LIST from './data/tcag';
@@ -22,10 +24,7 @@ const AGR_taxons = [
     'NCBITaxon:9606' // human
 ];
 
-const queryRGB = [0,96,96];
-const orthoRGB = [255, 185, 36];
-
-export default class RibbonData extends React.Component {
+export default class Ribbon extends React.Component {
   static propTypes = {
     subject: PropTypes.string.isRequired,
     mode: PropTypes.string,
@@ -102,7 +101,7 @@ export default class RibbonData extends React.Component {
         }
       });
       console.log('got assocs for '+queryResponse.length+' go terms');
-      initSlimItems(queryResponse, subject, slimlist);
+      BlockStore.initSlimItems(queryResponse, subject, slimlist);
       self.setState({
         fetching: false,
         title: title
@@ -140,9 +139,11 @@ export default class RibbonData extends React.Component {
   render() {
     if (this.state.fetching) {
       return (
-        <div className='sweet-loading'>
-          <GridLoader
-            color={'#123abc'}
+        <div >
+          <GridLoader className='spinner'
+            color='#acd'
+            size='8px'
+            margin='2px'
             loading={this.state.fetching}
           />
         </div>
@@ -152,7 +153,8 @@ export default class RibbonData extends React.Component {
       return(
         <div>
           <div className="blockBacker">
-            <Strip title={this.state.title} slimlist={this.state.slimlist}/>
+            <Strip title={this.state.title} />
+            <Info />
           </div>
         </div>
       );
@@ -165,91 +167,4 @@ export default class RibbonData extends React.Component {
       );
     }
   }
-}
-/* now need to gather all of the matching associations
-from each of the organisms
-because there may be a matching slim from more than
-one organism
-*/
-function initSlimItems(queryResponse, subject, slimlist) {
-  slimlist.forEach(function(slimitem) {
-    var assocs = [];
-    var color = orthoRGB;
-    queryResponse.forEach(function(response) {
-      if (response.slim === slimitem.goid) {
-        Array.prototype.push.apply(assocs, response.assocs);
-      }
-    });
-    slimitem.assocs = assocs;
-    // set up uniques and color too
-    slimitem.uniqueAssocs = [];
-    if (slimitem.assocs.length > 0) {
-      var hits = [];
-      slimitem.uniqueAssocs = slimitem.assocs.filter(function(assocItem, index) {
-        /*
-        Short term interim hack because of differences in resource naming
-        e.g. FlyBase (BioLink) === FB (AGR)
-        */
-        var subjectID = assocItem.subject.id.replace('FlyBase', 'FB');
-        if (subjectID === subject) {
-          color = queryRGB;
-        }
-        var label = assocItem.subject.id + ': ' + assocItem.object.label;
-        if (!hits.includes(label)) {
-          hits.push(label);
-          return true;
-        } else {
-          return false;
-        }
-      });
-      slimitem.uniqueAssocs.sort(sortAssociations);
-      slimitem.color = heatColor(slimitem.uniqueAssocs.length, color, 8);
-    } else {
-      slimitem.color = "#fff";
-    }
-  });
-}
-
-function sortAssociations (assoc_a, assoc_b) {
-  if (assoc_a.subject.taxon.label < assoc_b.subject.taxon.label) {
-    return -1;
-  }
-  if (assoc_a.subject.taxon.label > assoc_b.subject.taxon.label) {
-    return 1;
-  }
-  if (assoc_a.subject.id < assoc_b.subject.id) {
-    return -1;
-  }
-  if (assoc_a.subject.id > assoc_b.subject.id) {
-    return 1;
-  }
-  if (assoc_a.object.label < assoc_b.object.label) {
-    return -1;
-  }
-  if (assoc_a.object.label > assoc_b.object.label) {
-    return 1;
-  }
-  console.log('non-unique list');
-  // a must be equal to b
-  return 0;
-}
-
-function heatColor(associations_count, rgb, heatLevels) {
-  if( associations_count === 0 )
-    return "#fff";
-  let blockColor = [];     // [r,g,b]
-  for ( var i=0; i<3; i++ ) {
-    // logarithmic heatmap (with cutoff)
-    if ( associations_count < heatLevels ) {
-      // instead of just (256-rgb[i])/(Math.pow(2,associations_count)),
-      // which divides space from 'white' (255) down to target color level in halves,
-      // this starts at 3/4
-      const heatCoef = 3 * (256 - rgb[i]) / (Math.pow(2,associations_count+1));
-      blockColor[i] = Math.round( rgb[i] + heatCoef);
-    }
-    else {
-      blockColor[i] = rgb[i];
-    }
-  }
-  return 'rgb('+blockColor[0]+','+blockColor[1]+','+blockColor[2]+')';
 }

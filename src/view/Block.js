@@ -1,10 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import BlockStore from '../data/BlockStore';
+import BlockDispatcher from '../event/BlockDispatcher';
+import ActionType from '../event/ActionType';
+
 class Block extends React.Component {
+
   render() {
-    // usage example:
-    const {slimitem} = this.props;
+    const {goid} = this.props;
+    var slimitem = BlockStore.getSlimItem(goid);
     if (slimitem.separator === undefined) {
       const tileHoverString = (slimitem.uniqueAssocs.length > 0) ?
         slimitem.uniqueAssocs.length + ' associations ' : //uniqueHits.join('\n') :
@@ -31,22 +36,21 @@ class Block extends React.Component {
   }
 
   handleOnClick = (evt) => {
-    if (this.props.slimitem.uniqueAssocs.length > 0) {
-      console.log('got a click for ' + this.props.slimitem.count);
-      setTimeout(function() {}, 0);
-      // BlockStore.reduce(slimitem.visible, ActionTypes.TOGGLE);
-    } else {
-      console.log('nothing here');
+    var slimitem = BlockStore.getSlimItem(this.props.goid);
+    if (slimitem.uniqueAssocs.length > 0) {
+      BlockDispatcher.dispatch({
+        type: ActionType.TOGGLE,
+        value: {
+          goid: slimitem.goid,
+          visible: !(BlockStore.isVisible(slimitem.goid))
+        }
+      });
     }
   }
 }
 
 Block.propTypes = {
-  slimitem: PropTypes.shape({
-    "goid": PropTypes.string.isRequired,
-    "golabel": PropTypes.string.isRequired,
-    "separator": PropTypes.boolean,
-  }).isRequired,
+  goid: PropTypes.string.isRequired
 };
 
 export default Block;

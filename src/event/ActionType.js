@@ -1,6 +1,5 @@
 const ActionType = {
-  TOGGLE: 'TOGGLE',
-  FETCH: 'FETCH'
+  TOGGLE: 'TOGGLE'
 };
 
 export default ActionType;
