@@ -1,10 +1,12 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types';
+
 import axios from 'axios';
 import { GridLoader } from 'react-spinners';
 
 import Strip from './view/Strip';
-import Info from './view/Info';
-import BlockStore from './data/BlockStore';
+import AssociationsView from './view/AssociationsView';
+import RibbonStore from './data/RibbonStore';
 
 import AGR_LIST from './data/agr';
 import TCAG_LIST from './data/tcag';
@@ -27,7 +29,7 @@ const AGR_taxons = [
 export default class Ribbon extends React.Component {
   static propTypes = {
     subject: PropTypes.string.isRequired,
-    mode: PropTypes.string,
+    slim: PropTypes.string,
   }
   constructor(props) {
     super(props);
@@ -39,31 +41,27 @@ export default class Ribbon extends React.Component {
   }
 
   componentDidMount() {
-    const {subject, mode} = this.props;
-    var usemode = (typeof mode === "undefined" || mode === null)
-                  ? 'agr' : mode;
-    console.log('In Ribbon fetching '+subject);
-    this.fetchData(usemode, subject);
+    const {subject, slim} = this.props;
+    var useslim = (typeof slim === "undefined" || slim === null)
+                  ? 'agr' : slim;
+    this.setState({
+      fetching: true,
+    });
+    this.fetchData(useslim, subject);
   }
 
-  fetchData(mode, subject) {
-    var title = subject;
-    var dataError = null;
-    var slimlist = mode === 'agr' ? AGR_LIST : TCAG_LIST;
-    var goLink = mode === 'agr' ? AGRLINK : TCAGLINK;
+  fetchData(slim, subject) {
+    var slimlist = slim === 'agr' ? AGR_LIST : TCAG_LIST;
+    var goLink = slim === 'agr' ? AGRLINK : TCAGLINK;
     var orthoURL =  'https://api.monarchinitiative.org/api/bioentity/gene/' +
                     subject +
                     '/homologs/?homology_type=O&fetch_objects=false';
-    this.setState({
-      fetching: true,
-      title: title,
-      slimlist: slimlist,
-      dataError: dataError
-    });
+    console.log(orthoURL);
+    var title = subject;
+    var dataError = null;
     var self = this;
     axios.get(orthoURL)
     .then(function(results) {
-      console.log('fetched orthologs');
       var queryTaxon = results.data.associations.length > 0 ?
         results.data.associations[0].subject.taxon.id :
         '';
@@ -100,11 +98,11 @@ export default class Ribbon extends React.Component {
           Array.prototype.push.apply(queryResponse, result.data);
         }
       });
-      console.log('got assocs for '+queryResponse.length+' go terms');
-      BlockStore.initSlimItems(queryResponse, subject, slimlist);
+      RibbonStore.initSlimItems(queryResponse, subject, slimlist);
       self.setState({
         fetching: false,
-        title: title
+        title: title,
+        dataError: null
       });
     })
     .catch(function(error) {
@@ -131,19 +129,24 @@ export default class Ribbon extends React.Component {
       }
       self.setState({
         fetching: false,
+        title: title,
         dataError: dataError
       });
     });
   }
 
   render() {
+    const size = 8;
+    const margin = 2;
+
     if (this.state.fetching) {
       return (
-        <div >
+        <div>
           <GridLoader className='spinner'
-            color='#acd'
-            size='8px'
-            margin='2px'
+            align='middle'
+            color='#699'
+            size={size}
+            margin={margin}
             loading={this.state.fetching}
           />
         </div>
@@ -151,11 +154,10 @@ export default class Ribbon extends React.Component {
     }
     if (this.state.dataError === null) {
       return(
-        <div>
-          <div className="blockBacker">
-            <Strip title={this.state.title} />
-            <Info />
-          </div>
+        <div >
+          <Strip />
+          <div className='caption' >{this.state.title}</div>
+          <AssociationsView title={this.state.title} />
         </div>
       );
     }

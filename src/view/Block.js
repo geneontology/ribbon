@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import BlockStore from '../data/BlockStore';
+import RibbonStore from '../data/RibbonStore';
 import BlockDispatcher from '../event/BlockDispatcher';
 import ActionType from '../event/ActionType';
 
@@ -9,7 +9,7 @@ class Block extends React.Component {
 
   render() {
     const {goid} = this.props;
-    var slimitem = BlockStore.getSlimItem(goid);
+    var slimitem = RibbonStore.getSlimItem(goid);
     if (slimitem.separator === undefined) {
       const tileHoverString = (slimitem.uniqueAssocs.length > 0) ?
         slimitem.uniqueAssocs.length + ' associations ' : //uniqueHits.join('\n') :
@@ -36,13 +36,13 @@ class Block extends React.Component {
   }
 
   handleOnClick = (evt) => {
-    var slimitem = BlockStore.getSlimItem(this.props.goid);
+    var slimitem = RibbonStore.getSlimItem(this.props.goid);
     if (slimitem.uniqueAssocs.length > 0) {
       BlockDispatcher.dispatch({
         type: ActionType.TOGGLE,
         value: {
           goid: slimitem.goid,
-          visible: !(BlockStore.isVisible(slimitem.goid))
+          visible: !(RibbonStore.isVisible(slimitem.goid))
         }
       });
     }

@@ -1,5 +1,7 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 import { addUrlProps, UrlQueryParamTypes } from 'react-url-query';
+import 'react-virtualized/styles.css';
 
 import '../../src/index.css';
 import Ribbon from '../../src/Ribbon';
@@ -16,7 +18,7 @@ import history from './history';
 
 const urlPropsQueryConfig = {
  subject: { type: UrlQueryParamTypes.string },
- mode: { type: UrlQueryParamTypes.string },
+ slim: { type: UrlQueryParamTypes.string },
 };
 
 /**
@@ -26,20 +28,14 @@ const urlPropsQueryConfig = {
 function mapUrlToProps(url, props) {
   return {
     subject: url.subject,
-    mode: url.mode,
+    slim: url.slim,
   };
 }
 
 class Demo extends Component {
   static propTypes = {
     subject: PropTypes.string,
-    mode: PropTypes.string,
-    // change handlers are automatically generated and passed if a config is provided
-    // and `addChangeHandlers` isn't false. They use `replaceIn` by default, just
-    // updating that single query parameter and keeping the other existing ones.
-    // onChangeFoo: PropTypes.func,
-    // onChangeBar: PropTypes.func,
-    // onChangeUrlQueryParams: PropTypes.func,
+    slim: PropTypes.string,
   }
 
   constructor(props) {
@@ -52,11 +48,10 @@ class Demo extends Component {
   }
 
   render() {
-    const {subject, mode} = this.props;
+    const {subject, slim} = this.props;
     return (
-      <div id='demo' >
-        <h3>slim ribbon demo</h3>
-        <Ribbon subject={subject} mode={mode} />
+      <div id='demo'>
+        <Ribbon subject={subject} slim={slim} />
       </div>
     )
   }

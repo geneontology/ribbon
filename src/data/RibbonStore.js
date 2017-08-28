@@ -9,7 +9,7 @@ var _blocks;
 const queryRGB = [0, 96, 96];
 const orthoRGB = [255, 185, 36];
 
-class BlockStore extends ReduceStore {
+class RibbonStore extends ReduceStore {
 
   constructor() {
     super(BlockDispatcher);
@@ -31,8 +31,14 @@ class BlockStore extends ReduceStore {
   reduce(before, action) {
     if (action.type === ActionType.TOGGLE) {
       var slimitem = _blocks.get(action.value.goid);
-      var after = new Map(_blocks);
+      _blocks.forEach(function (goclass, goid) {
+        // only one at a time can be visible
+        if (goid !== action.value.goid && goclass.visible) {
+          goclass.visible = false;
+        }
+      });
       slimitem.visible = !slimitem.visible;
+      var after = new Map(_blocks);
       return after;
     }
     else {
@@ -57,11 +63,7 @@ class BlockStore extends ReduceStore {
   getSlimItem(goid) {
     return _blocks.get(goid);
   }
-  /* now need to gather all of the matching associations
-  from each of the organisms
-  because there may be a matching slim from more than
-  one organism
-  */
+
   initSlimItems(queryResponse, subject, slimlist) {
     slimlist.forEach(function(slimitem) {
       var assocs = [];
@@ -94,7 +96,8 @@ class BlockStore extends ReduceStore {
           }
         });
         slimitem.uniqueAssocs.sort(sortAssociations);
-        slimitem.color = heatColor(slimitem.uniqueAssocs.length, color, 8);
+        slimitem.uniqueAssocs = subjectFirst(subject, slimitem.uniqueAssocs);
+        slimitem.color = heatColor(slimitem.uniqueAssocs.length, color, 48);
       } else {
         slimitem.color = "#fff";
       }
@@ -128,6 +131,26 @@ function sortAssociations (assoc_a, assoc_b) {
   return 0;
 }
 
+function subjectFirst(subject, uniqueAssocs) {
+  var subjectAssocs = [];
+  // myFish.splice(2, 1);
+  // remove 1 item at 2-index position (that is, "drum")
+  for (var i = uniqueAssocs.length -1; i >= 0; i--) {
+    var assoc = uniqueAssocs[i];
+    if (assoc.subject.id === subject) {
+      // remove this from current list
+      uniqueAssocs.splice(i, 1);
+      // add it to the top of the revised list
+      subjectAssocs.splice(0, 0, assoc);
+      assoc.color = '#c0d8d8';
+    } else {
+      assoc.color = '#ffeec9';
+    }
+  }
+  // now collect the remaining associations to orthologs
+  return subjectAssocs.concat(uniqueAssocs);
+}
+
 function heatColor(associations_count, rgb, heatLevels) {
   if( associations_count === 0 )
     return "#fff";
@@ -148,4 +171,4 @@ function heatColor(associations_count, rgb, heatLevels) {
   return 'rgb('+blockColor[0]+','+blockColor[1]+','+blockColor[2]+')';
 }
 
-export default new BlockStore();
+export default new RibbonStore();
