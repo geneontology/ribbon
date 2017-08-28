@@ -84,6 +84,7 @@ class RibbonStore extends ReduceStore {
           e.g. FlyBase (BioLink) === FB (AGR)
           */
           var subjectID = assocItem.subject.id.replace('FlyBase', 'FB');
+          assocItem.subject.id = subjectID;
           if (subjectID === subject) {
             color = queryRGB;
           }
@@ -133,8 +134,6 @@ function sortAssociations (assoc_a, assoc_b) {
 
 function subjectFirst(subject, uniqueAssocs) {
   var subjectAssocs = [];
-  // myFish.splice(2, 1);
-  // remove 1 item at 2-index position (that is, "drum")
   for (var i = uniqueAssocs.length -1; i >= 0; i--) {
     var assoc = uniqueAssocs[i];
     if (assoc.subject.id === subject) {

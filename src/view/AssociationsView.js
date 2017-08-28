@@ -124,7 +124,7 @@ class Association extends Component {
     if (taxid === 'NCBITaxon:10116') {
       return 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Fancy_rat_blaze.jpg/1024px-Fancy_rat_blaze.jpg';
     }
-    if (taxid === 'NCBITaxon:4932') {
+    if (taxid === 'NCBITaxon:559292') {
       return 'https://pbs.twimg.com/profile_images/1752488737/twitter_logo_3_400x400.gif';
     }
     if (taxid === 'NCBITaxon:6239') {
@@ -134,6 +134,7 @@ class Association extends Component {
       return 'https://zfin.org/images/betterfish.jpg';
     }
     else {
+      console.log('taxid='+taxid);
       return 'https://image.freepik.com/free-icon/text-box-without-text_318-33104.jpg';
     }
   }
