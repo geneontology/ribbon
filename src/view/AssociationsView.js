@@ -102,12 +102,18 @@ class Association extends Component {
       backgroundColor: assoc.color
     }
     var img = this.getTaxonImage(assoc.subject.taxon.id);
-
+    var genelink = `http://dev.alliancegenome.org:4001/gene/${assoc.subject.id}`;
+    var golink = `http://amigo.geneontology.org/amigo/term/${assoc.object.id}`;
+    console.log(golink);
     return (
       <li style={assocStyle}>
         <img className='assoc-img' src={img} />
-        <h3 className='assoc-subject' >{assoc.subject.id}</h3>
-        <h5 className='assoc-go'>{assoc.object.label}</h5>
+        <h3 className='assoc-subject' >
+          <a title={genelink} href={genelink}>{assoc.subject.label}</a>
+        </h3>
+        <h5 className='assoc-go'>
+          <a title={golink} href={golink}>{assoc.object.label}</a>
+        </h5>
       </li>
     )
   }
