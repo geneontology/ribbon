@@ -3,6 +3,7 @@ import FlipMove from 'react-flip-move';
 
 import RibbonStore from '../data/RibbonStore';
 import ActionType from '../event/ActionType';
+import AGR_taxons from '../data/taxa';
 
 class AssociationsView extends Component {
   static propTypes = {
@@ -112,31 +113,12 @@ class Association extends Component {
   }
 
   getTaxonImage(taxid) {
-    if (taxid === 'NCBITaxon:7227') {
-      return 'http://www.benchfly.com/blog/wp-content/uploads/2010/01/Drosophila.jpg';
-    } else
-    if (taxid === 'NCBITaxon:9606') {
-      return 'https://definicion.de/wp-content/uploads/2016/04/biopsicosocial.jpg';
-    }
-    if (taxid === 'NCBITaxon:10090') {
-      return 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE4OMLrQ2PYiqb6dI_wvxuH5fopp54mb81x7EUkmPziCu0SFPOHg';
-    }
-    if (taxid === 'NCBITaxon:10116') {
-      return 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Fancy_rat_blaze.jpg/1024px-Fancy_rat_blaze.jpg';
-    }
-    if (taxid === 'NCBITaxon:559292') {
-      return 'https://pbs.twimg.com/profile_images/1752488737/twitter_logo_3_400x400.gif';
-    }
-    if (taxid === 'NCBITaxon:6239') {
-      return 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzh7zEV3s6sjJjXkKjfgGL2yevpeBu7-HtUWNva4kGgtBZHEWCxg';
-    }
-    if (taxid === 'NCBITaxon:7955') {
-      return 'https://zfin.org/images/betterfish.jpg';
-    }
-    else {
+    var image_url = AGR_taxons.get(taxid);
+    if (image_url === 'undefined' || image_url === null) {
       console.log('taxid='+taxid);
-      return 'https://image.freepik.com/free-icon/text-box-without-text_318-33104.jpg';
+      image_url = 'https://image.freepik.com/free-icon/text-box-without-text_318-33104.jpg';
     }
+    return image_url;
   }
 }
 

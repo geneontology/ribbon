@@ -64,28 +64,65 @@ class RibbonStore extends ReduceStore {
     return _blocks.get(goid);
   }
 
-  initSlimItems(queryResponse, subject, slimlist) {
+  initSlimItems(results, subject, slimlist) {
+    var title = subject;
+    var queryResponse = [];
+    var others = [];
+    var allGOids = [];
+    results.forEach(function(result) {
+      if (result.data.length > 0) {
+        // merge these assocs into the overall response to this query
+        Array.prototype.push.apply(queryResponse, result.data);
+      }
+    });
+    /*
+    bulk of the annotations initialized first
+    */
     slimlist.forEach(function(slimitem) {
+      if (slimitem.golabel.includes('other')) {
+        others.push(slimitem);
+      }
       var assocs = [];
-      var color = orthoRGB;
       queryResponse.forEach(function(response) {
         if (response.slim === slimitem.goid) {
+          // skip noninformative annotations like protein binding
+          for (var i = response.assocs.length - 1; i >= 0; i--) {
+            var assoc = response.assocs[i];
+            if (assoc.object.id === 'GO:0005515' ||
+                assoc.object.id === 'GO:0003674' ||
+                assoc.object.id === 'GO:0008150' ||
+                assoc.object.id === 'GO:0005575') {
+              response.assocs.splice(i, 1);
+            }
+          }
+          // these are all the assocs under this slim class
           Array.prototype.push.apply(assocs, response.assocs);
+          /*
+          keep track of which associations are found for slim classes
+          so that (after this loop) these can be removed from "other"'s list
+          */
+          if (!slimitem.golabel.includes('other')) {
+            assocs.forEach(function(assoc) {
+              allGOids.push(assoc.object.id);
+            })
+          }
         }
       });
-      slimitem.assocs = assocs;
       // set up uniques and color too
+      var color = orthoRGB;
       slimitem.uniqueAssocs = [];
-      if (slimitem.assocs.length > 0) {
+      if (assocs.length > 0) {
         var hits = [];
-        slimitem.uniqueAssocs = slimitem.assocs.filter(function(assocItem, index) {
+        slimitem.uniqueAssocs = assocs.filter(function(assocItem, index) {
           /*
-          Short term interim hack because of differences in resource naming
-          e.g. FlyBase (BioLink) === FB (AGR)
+            Short term interim hack because of differences in resource naming
+            e.g. FlyBase === FB
           */
           var subjectID = assocItem.subject.id.replace('FlyBase', 'FB');
           assocItem.subject.id = subjectID;
           if (subjectID === subject) {
+            title = assocItem.subject.label + ' (' +
+                    assocItem.subject.taxon.label + ')';
             color = queryRGB;
           }
           var label = assocItem.subject.id + ': ' + assocItem.object.label;
@@ -105,6 +142,29 @@ class RibbonStore extends ReduceStore {
       slimitem.visible = false;
       _blocks.set(slimitem.goid, slimitem);
     });
+    others.forEach(function(otherItem) {
+      for (var i = otherItem.uniqueAssocs.length - 1; i >= 0; i--) {
+        var checkAssoc = otherItem.uniqueAssocs[i];
+        if (allGOids.indexOf(checkAssoc.object.id) >= 0) {
+          otherItem.uniqueAssocs.splice(i, 1);
+        }
+      }
+      /*
+        Need to update the color
+      */
+      if (otherItem.uniqueAssocs.length > 0) {
+        var color = orthoRGB;
+        otherItem.uniqueAssocs.forEach(function(otherAssoc) {
+          if (otherAssoc.subject.id === subject) {
+            color = queryRGB;
+          }
+        })
+        otherItem.color = heatColor(otherItem.uniqueAssocs.length, color, 48);
+      } else {
+        otherItem.color = "#fff";
+      }
+    });
+    return title;
   }
 }
 

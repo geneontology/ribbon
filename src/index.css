@@ -21,8 +21,8 @@ ul {
 .caption {
   background-color: #c0d8d8;
   text-align: center;
-  width: 700px;
-  max-width: 655px;
+  width: 766px;
+  max-width: 766px;
   font-weight: bold;
   font-size: 10pt;
   height: 2em;
@@ -42,7 +42,7 @@ ul {
   position: relative;
   margin: 0;
   padding: 0;
-  width: 650px;
+  width: 766px;
 }
 .assoc-img {
   float: left;

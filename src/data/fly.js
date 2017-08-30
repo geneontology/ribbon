@@ -48,11 +48,7 @@ export default [
     "golabel": "carbohydrate binding"
   },
   {
-    "goid": "GO:0003674",
-    "golabel": "other functions"
-  },
-  {
-    "goid": "separator1", // used as a key to a hashmap, so can't be blank
+    "goid": "GO:0008150",
     "golabel": "bp",
     "separator": true
   },
@@ -113,19 +109,7 @@ export default [
     "golabel": "regulation"
   },
   {
-    "goid": "GO:0042592",
-    "golabel": "homeostasis"
-  },
-  {
-    "goid": "GO:0007610",
-    "golabel": "behavior"
-  },
-  {
-    "goid": "GO:0008150",
-    "golabel": "other processes"
-  },
-  {
-    "goid": "separator2",
+    "goid": "GO:0005575",
     "golabel": "cc",
     "separator": true
   },
@@ -134,8 +118,8 @@ export default [
     "golabel": "extracellular"
   },
   {
-    "goid": "GO:0005737",
-    "golabel": "cytoplasm"
+    "goid": "GO:0005829",
+    "golabel": "cytosol"
   },
   {
     "goid": "GO:0005856",
@@ -158,10 +142,6 @@ export default [
     "golabel": "membrane"
   },
   {
-    "goid": "GO:0031982",
-    "golabel": "vesicle"
-  },
-  {
     "goid": "GO:0071944",
     "golabel": "cell periphery"
   },
@@ -176,13 +156,5 @@ export default [
   {
     "goid": "GO:0032991",
     "golabel": "macromolecular complex"
-  },
-  {
-    "goid": "GO:0045202",
-    "golabel":  "synapse"
-  },
-  {
-    "goid": "GO:0005575",
-    "golabel": "other locations"
-  },
+  }
 ];

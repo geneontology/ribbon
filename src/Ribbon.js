@@ -10,27 +10,17 @@ import RibbonStore from './data/RibbonStore';
 
 import AGR_LIST from './data/agr';
 import TCAG_LIST from './data/tcag';
+import FLY_LIST from './data/fly';
+import AGR_taxa from './data/taxa';
 
-// http://127.0.0.1:8888
-const AGRLINK = 'https://api.monarchinitiative.org/api/bioentityset/slimmer/function?slim=GO:0003824&slim=GO:0004872&slim=GO:0005102&slim=GO:0005215&slim=GO:0005198&slim=GO:0008092&slim=GO:0003677&slim=GO:0003723&slim=GO:0001071&slim=GO:0036094&slim=GO:0046872&slim=GO:0030246&slim=GO:0008283&slim=GO:0071840&slim=GO:0051179&slim=GO:0032502&slim=GO:0000003&slim=GO:0002376&slim=GO:0050877&slim=GO:0050896&slim=GO:0023052&slim=GO:0010467&slim=GO:0019538&slim=GO:0006259&slim=GO:0044281&slim=GO:0050789&slim=GO:0005576&slim=GO:0005829&slim=GO:0005856&slim=GO:0005739&slim=GO:0005634&slim=GO:0005694&slim=GO:0016020&slim=GO:0071944&slim=GO:0030054&slim=GO:0042995&slim=GO:0032991&subject=';
-
-const TCAGLINK = 'https://api.monarchinitiative.org/api/bioentityset/slimmer/function?&slim=GO:0007219&slim=GO:0035329&slim=GO:0006281&slim=GO:0000077&slim=GO:0048017&slim=GO:0016055&slim=GO:0006915&slim=GO:0022402&slim=GO:0016570&slim=GO:0034599&slim=GO:0007265&slim=GO:0007179&slim=GO:0030330&subject=';
-
-const AGR_taxons = [
-    'NCBITaxon:7227', // fly
-    'NCBITaxon:7955', // zebrafish
-    'NCBITaxon:4932', // yeast
-    'NCBITaxon:6239', // worm
-    'NCBITaxon:10116', //rat
-    'NCBITaxon:10090', // mouse
-    'NCBITaxon:9606' // human
-];
+const GOLINK = 'https://api.monarchinitiative.org/api/bioentityset/slimmer/function?';
 
 export default class Ribbon extends React.Component {
   static propTypes = {
     subject: PropTypes.string.isRequired,
     slim: PropTypes.string,
   }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -51,12 +41,21 @@ export default class Ribbon extends React.Component {
   }
 
   fetchData(slim, subject) {
-    var slimlist = slim === 'agr' ? AGR_LIST : TCAG_LIST;
-    var goLink = slim === 'agr' ? AGRLINK : TCAGLINK;
+    var slimlist =  slim.toLowerCase() === 'tcag' ? TCAG_LIST :
+                    slim.toLowerCase() === 'fly' ? FLY_LIST :
+                    AGR_LIST;
+    var goLink = GOLINK;
+    slimlist.forEach(function(slimitem) {
+      if (slimitem.separator === undefined) {
+        goLink = goLink + '&slim=' + slimitem.goid;
+      }
+    });
+
     var orthoURL =  'https://api.monarchinitiative.org/api/bioentity/gene/' +
                     subject +
                     '/homologs/?homology_type=O&fetch_objects=false';
     console.log(orthoURL);
+
     var title = subject;
     var dataError = null;
     var self = this;
@@ -69,36 +68,21 @@ export default class Ribbon extends React.Component {
       results.data.associations.forEach(function(ortholog_assoc) {
         // ignore paralogs, not expecting any but just in case
         if (ortholog_assoc.object.taxon.id !== queryTaxon) {
-          var index = AGR_taxons.indexOf(ortholog_assoc.object.taxon.id);
-          if (index >= 0) {
-            goQueries.push(goLink + ortholog_assoc.object.id);
+          var value = AGR_taxa.get(ortholog_assoc.object.taxon.id);
+          if (value !== 'undefined') {
+            goQueries.push(goLink + '&subject=' + ortholog_assoc.object.id);
           }
         }
       });
-      goQueries.push(goLink + subject);
-      console.log(goLink+subject);
+      goQueries.push(goLink + '&subject=' + subject);
+      console.log(goLink+'&subject=' + subject);
       // Then run all the GO queries in a batch,
       // both the gene of interest and all the orthologs that were found        let orthologArray = goQueries.map(url => axios.get(url));
       let orthologArray = goQueries.map(url => axios.get(url));
       return axios.all(orthologArray);
     })
     .then(function(results) {
-      var queryResponse = [];
-      results.forEach(function(result) {
-        if (result.data.length > 0) {
-          /*
-            Short term interim hack because of differences in resource naming
-            e.g. FlyBase === FB
-          */
-          var subjectID = result.data[0].subject.replace('FlyBase', 'FB');
-          if (subjectID === subject) {
-            title = result.data[0].assocs[0].subject.label + ' (' +
-                    result.data[0].assocs[0].subject.taxon.label + ')';
-          }
-          Array.prototype.push.apply(queryResponse, result.data);
-        }
-      });
-      RibbonStore.initSlimItems(queryResponse, subject, slimlist);
+      title = RibbonStore.initSlimItems(results, subject, slimlist);
       self.setState({
         fetching: false,
         title: title,
@@ -106,7 +90,7 @@ export default class Ribbon extends React.Component {
       });
     })
     .catch(function(error) {
-      if(error.response) {
+      if (error.response) {
         console.log(error.response.data);
         console.log(error.response.status);
         console.log(error.response.headers);
