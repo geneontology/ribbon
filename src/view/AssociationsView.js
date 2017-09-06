@@ -29,6 +29,8 @@ class AssociationsView extends Component {
       return <AssociationList
         goid={slimitem.goid}
         key={slimitem.goid}
+        slimitem={slimitem}
+        visible={slimitem.visible}
       />;
     });
     return (
@@ -40,29 +42,13 @@ class AssociationsView extends Component {
 };
 
 class AssociationList extends Component {
-  constructor(props) {
-    super(props);
-    const {goid} = this.props;
-    var visible = RibbonStore.isVisible(goid);
-    this.state = ({
-      visible: visible
-    });
-  }
 
-  componentDidMount() {
-    RibbonStore.addListener(this.onToggle.bind(this), ActionType.TOGGLE );
-  }
-
-  onToggle() {
-    var visible = RibbonStore.isVisible(this.props.goid);
-    this.setState({
-      visible: visible}
-    );
-  }
-
-  componentWillUnmount() {
-    //RibbonStore.removeListener(this.onToggle.bind(this) );
-  }
+  static propTypes = {
+    slimitem: PropTypes.shape({
+      uniqueAssocs: PropTypes.array
+    }),
+    visible: PropTypes.bool
+  };
 
   renderAssociations(slimitem) {
     return slimitem.uniqueAssocs.map((assoc, index) => {
@@ -77,9 +63,8 @@ class AssociationList extends Component {
     return `cubic-bezier(${ easingValues.join(',') })`;
   }
   render() {
-    const {goid} = this.props;
-    var slimitem = RibbonStore.getSlimItem(goid);
-    var rows = ( this.state.visible &&
+    const {goid, slimitem} = this.props;
+    var rows = ( this.props.visible &&
       <div className='assoc-list'>
         <div>
         <FlipMove
@@ -101,6 +86,23 @@ class AssociationList extends Component {
 
 class Association extends Component {
 
+  static propTypes = {
+    assoc: PropTypes.shape({
+      subject: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        label: PropTypes.string.isRequired,
+        taxon: PropTypes.shape({
+          id: PropTypes.string.isRequired
+        }).isRequired,
+      }),
+      object: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        label: PropTypes.string.isRequired,
+      }),
+      color: PropTypes.string
+    })
+  };
+
   render() {
     const { assoc } = this.props;
     const assocStyle = {
@@ -114,6 +116,7 @@ class Association extends Component {
     var genelink = `http://dev.alliancegenome.org:4001/gene/${assoc.subject.id}`;
     var golink = `http://amigo.geneontology.org/amigo/term/${assoc.object.id}`;
     console.log(golink);
+        console.log(assoc);
     return (
       <li style={assocStyle}>
         <img className='assoc-img' src={img} />
