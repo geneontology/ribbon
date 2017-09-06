@@ -141,7 +141,10 @@ export default class Ribbon extends React.Component {
         <div >
           <Strip />
           <div className='caption' >{this.state.title}</div>
-          <AssociationsView title={this.state.title} />
+          <AssociationsView
+            title={this.state.title}
+            slimlist={RibbonStore.getSlimList()}
+          />
         </div>
       );
     }

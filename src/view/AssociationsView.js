@@ -8,6 +8,15 @@ import AGR_taxons from '../data/taxa';
 class AssociationsView extends Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
+    slimlist: PropTypes.arrayOf(
+      PropTypes.shape({
+        color: PropTypes.string,
+        goid: PropTypes.string,
+        golabel: PropTypes.string,
+        uniqueAssocs: PropTypes.array,
+        visible: PropTypes.bool
+      })
+    )
   };
 
   constructor(props) {
@@ -15,8 +24,8 @@ class AssociationsView extends Component {
   }
 
   render() {
-    var slimlist = RibbonStore.getSlimList();
-    const InfoArray = slimlist.map((slimitem, index) => {
+    const {slimlist} = this.props;
+    const infoArray = slimlist.map((slimitem, index) => {
       return <AssociationList
         goid={slimitem.goid}
         key={slimitem.goid}
@@ -24,7 +33,7 @@ class AssociationsView extends Component {
     });
     return (
       <div className='assoc-view'>
-        <div > {InfoArray} </div>
+        <div > {infoArray} </div>
       </div>
     );
   }
