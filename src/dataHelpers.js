@@ -1,3 +1,6 @@
+const queryRGB = [0, 96, 96];
+const orthoRGB = [255, 185, 36];
+
 export function unpackSlimItems(results, subject, slimlist) {
   var title = subject;
   var queryResponse = [];
@@ -12,7 +15,7 @@ export function unpackSlimItems(results, subject, slimlist) {
   /*
   bulk of the annotations initialized first
   */
-  slimlist.forEach(function(slimitem) {
+  const blocks = slimlist.map(function(slimitem) {
     if (slimitem.golabel.includes('other')) {
       others.push(slimitem);
     }
@@ -74,7 +77,7 @@ export function unpackSlimItems(results, subject, slimlist) {
       slimitem.color = "#fff";
     }
     slimitem.visible = false;
-    _blocks.set(slimitem.goid, slimitem);
+    return slimitem;
   });
   others.forEach(function(otherItem) {
     for (var i = otherItem.uniqueAssocs.length - 1; i >= 0; i--) {
@@ -98,7 +101,10 @@ export function unpackSlimItems(results, subject, slimlist) {
       otherItem.color = "#fff";
     }
   });
-  return title;
+  return {
+    title: title,
+    data: blocks
+  };
 }
 
 function sortAssociations (assoc_a, assoc_b) {
