@@ -8,8 +8,7 @@ import ActionType from '../event/ActionType';
 class Block extends React.Component {
 
   render() {
-    const {goid} = this.props;
-    var slimitem = RibbonStore.getSlimItem(goid);
+    const slimitem = this.props;
     if (slimitem.separator === undefined) {
       const tileHoverString = (slimitem.uniqueAssocs.length > 0) ?
         slimitem.uniqueAssocs.length + ' associations ' : //uniqueHits.join('\n') :
@@ -43,6 +42,9 @@ class Block extends React.Component {
 
 Block.propTypes = {
   goid: PropTypes.string.isRequired,
+  golabel: PropTypes.string,
+  color: PropTypes.string,
+  uniqueAssocs: PropTypes.array.isRequired,
   onTermSelect: PropTypes.func.isRequired
 };
 

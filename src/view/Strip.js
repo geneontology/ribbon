@@ -9,9 +9,8 @@ export default class Strip extends React.Component {
   render() {
     const blocks = this.props.slimlist.map((slimitem, index) => {
       return <Block
-        goid={slimitem.goid}
+        {...slimitem}
         key={slimitem.goid}
-        slimlist={this.props.slimlist}
         onTermSelect={this.props.onTermSelect}
       />;
     });
