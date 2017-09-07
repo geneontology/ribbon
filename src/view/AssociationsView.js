@@ -1,8 +1,6 @@
 import React, { Component, PropTypes }  from 'react';
 import FlipMove from 'react-flip-move';
 
-import RibbonStore from '../data/RibbonStore';
-import ActionType from '../event/ActionType';
 import AGR_taxons from '../data/taxa';
 
 class AssociationsView extends Component {

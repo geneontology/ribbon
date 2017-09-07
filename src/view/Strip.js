@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types';
 
 import Block from './Block';
-import RibbonStore from '../data/RibbonStore';
 
 export default class Strip extends React.Component {
 
