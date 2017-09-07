@@ -5,15 +5,10 @@ import AGR_taxons from '../data/taxa';
 
 class AssociationsView extends Component {
   static propTypes = {
-    title: PropTypes.string.isRequired,
     currentTermId: PropTypes.string,
     slimlist: PropTypes.arrayOf(
       PropTypes.shape({
-        color: PropTypes.string,
-        goid: PropTypes.string,
-        golabel: PropTypes.string,
-        uniqueAssocs: PropTypes.array,
-        visible: PropTypes.bool
+        color: PropTypes.string
       })
     )
   };
