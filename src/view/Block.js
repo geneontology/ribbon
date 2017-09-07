@@ -36,21 +36,14 @@ class Block extends React.Component {
   }
 
   handleOnClick = (evt) => {
-    var slimitem = RibbonStore.getSlimItem(this.props.goid);
-    if (slimitem.uniqueAssocs.length > 0) {
-      BlockDispatcher.dispatch({
-        type: ActionType.TOGGLE,
-        value: {
-          goid: slimitem.goid,
-          visible: !(RibbonStore.isVisible(slimitem.goid))
-        }
-      });
-    }
+    const {onTermSelect, goid} = this.props;
+    onTermSelect(goid);
   }
 }
 
 Block.propTypes = {
-  goid: PropTypes.string.isRequired
+  goid: PropTypes.string.isRequired,
+  onTermSelect: PropTypes.func.isRequired
 };
 
 export default Block;

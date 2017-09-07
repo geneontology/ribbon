@@ -119,6 +119,12 @@ export default class Ribbon extends React.Component {
     });
   }
 
+  handleTermSelect = (termId) => {
+    this.setState({
+      currentTermId: termId
+    });
+  }
+
   render() {
     const size = 8;
     const margin = 2;
@@ -139,10 +145,14 @@ export default class Ribbon extends React.Component {
     if (this.state.dataError === null) {
       return(
         <div >
-          <Strip />
+          <Strip
+            onTermSelect={(termId) => this.handleTermSelect(termId)}
+            slimlist={RibbonStore.getSlimList()}
+          />
           <div className='caption' >{this.state.title}</div>
           <AssociationsView
             title={this.state.title}
+            currentTermId={this.state.currentTermId}
             slimlist={RibbonStore.getSlimList()}
           />
         </div>

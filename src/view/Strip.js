@@ -7,17 +7,23 @@ import RibbonStore from '../data/RibbonStore';
 export default class Strip extends React.Component {
 
   render() {
-    var slimlist = RibbonStore.getSlimList();
-    const StripOfBlocks = slimlist.map((slimitem, index) => {
+    const blocks = this.props.slimlist.map((slimitem, index) => {
       return <Block
         goid={slimitem.goid}
         key={slimitem.goid}
+        slimlist={this.props.slimlist}
+        onTermSelect={this.props.onTermSelect}
       />;
     });
     return(
       <div className='strip'>
-        <div>{StripOfBlocks}</div>
+        <div>{blocks}</div>
       </div>
     );
   }
+}
+
+Strip.propTypes = {
+  slimlist: PropTypes.array,
+  onTermSelect: PropTypes.func.isRequired
 }

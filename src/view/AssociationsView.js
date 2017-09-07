@@ -8,6 +8,7 @@ import AGR_taxons from '../data/taxa';
 class AssociationsView extends Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
+    currentTermId: PropTypes.string,
     slimlist: PropTypes.arrayOf(
       PropTypes.shape({
         color: PropTypes.string,
@@ -19,23 +20,22 @@ class AssociationsView extends Component {
     )
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const {slimlist} = this.props;
-    const infoArray = slimlist.map((slimitem, index) => {
-      return <AssociationList
-        goid={slimitem.goid}
-        key={slimitem.goid}
-        slimitem={slimitem}
-        visible={slimitem.visible}
-      />;
-    });
     return (
       <div className='assoc-view'>
-        <div > {infoArray} </div>
+      {
+        slimlist.filter((slimitem) => {
+          return slimitem.goid === this.props.currentTermId;
+        }).map((slimitem) => {
+          return (
+            <AssociationList
+              key={slimitem.goid}
+              slimitem={slimitem}
+            />
+          )
+        })
+      }
       </div>
     );
   }
@@ -46,8 +46,7 @@ class AssociationList extends Component {
   static propTypes = {
     slimitem: PropTypes.shape({
       uniqueAssocs: PropTypes.array
-    }),
-    visible: PropTypes.bool
+    })
   };
 
   renderAssociations(slimitem) {
@@ -64,7 +63,7 @@ class AssociationList extends Component {
   }
   render() {
     const {goid, slimitem} = this.props;
-    var rows = ( this.props.visible &&
+    return (
       <div className='assoc-list'>
         <div>
         <FlipMove
@@ -79,8 +78,7 @@ class AssociationList extends Component {
         </FlipMove>
         </div>
       </div>
-    )
-    return rows;
+    );
   }
 }
 
@@ -116,7 +114,7 @@ class Association extends Component {
     var genelink = `http://dev.alliancegenome.org:4001/gene/${assoc.subject.id}`;
     var golink = `http://amigo.geneontology.org/amigo/term/${assoc.object.id}`;
     console.log(golink);
-        console.log(assoc);
+
     return (
       <li style={assocStyle}>
         <img className='assoc-img' src={img} />
