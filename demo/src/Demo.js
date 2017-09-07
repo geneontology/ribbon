@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { addUrlProps, UrlQueryParamTypes } from 'react-url-query';
+import { GridLoader } from 'react-spinners';
 import 'react-virtualized/styles.css';
 
 import '../../src/index.css';
 import Ribbon from '../../src/Ribbon';
+import RibbonDataProvider from '../../src/RibbonDataProvider';
 import history from './history';
 
 /**
@@ -51,7 +53,29 @@ class Demo extends Component {
     const {subject, slim} = this.props;
     return (
       <div id='demo'>
-        <Ribbon subject={subject} slim={slim} />
+        <RibbonDataProvider subject={subject} slim={slim}>
+        {
+          ({title, data, dataError, dataReceived}) => (
+            <div>
+            {
+              dataReceived ? <Ribbon title={title} slimlist={data} /> : null
+            }
+            {dataError ? dataError : null}
+            {
+              (!dataReceived && !dataError) ?
+                <GridLoader className='spinner'
+                  align='middle'
+                  color='#699'
+                  size={8}
+                  margin={2}
+                  loading={true}
+                /> :
+                null
+            }
+            </div>
+          )
+        }
+        </RibbonDataProvider>
       </div>
     )
   }
