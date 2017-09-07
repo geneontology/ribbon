@@ -119,7 +119,7 @@ export default class Ribbon extends React.Component {
     });
   }
 
-  handleTermSelect = (termId) => {
+  handleSlimSelect = (termId) => {
     this.setState({
       currentTermId: termId
     });
@@ -146,7 +146,7 @@ export default class Ribbon extends React.Component {
       return(
         <div >
           <Strip
-            onTermSelect={(termId) => this.handleTermSelect(termId)}
+            onSlimSelect={(termId) => this.handleSlimSelect(termId)}
             slimlist={RibbonStore.getSlimList()}
           />
           <div className='caption' >{this.state.title}</div>

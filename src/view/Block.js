@@ -33,8 +33,8 @@ class Block extends React.Component {
   }
 
   handleOnClick = (evt) => {
-    const {onTermSelect, goid} = this.props;
-    onTermSelect(goid);
+    const {onSlimSelect, goid} = this.props;
+    onSlimSelect(goid);
   }
 }
 
@@ -43,7 +43,7 @@ Block.propTypes = {
   golabel: PropTypes.string,
   color: PropTypes.string,
   uniqueAssocs: PropTypes.array.isRequired,
-  onTermSelect: PropTypes.func.isRequired
+  onSlimSelect: PropTypes.func.isRequired
 };
 
 export default Block;

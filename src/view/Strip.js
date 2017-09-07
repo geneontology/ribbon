@@ -10,7 +10,7 @@ export default class Strip extends React.Component {
       return <Block
         {...slimitem}
         key={slimitem.goid}
-        onTermSelect={this.props.onTermSelect}
+        onSlimSelect={this.props.onSlimSelect}
       />;
     });
     return(
@@ -23,5 +23,5 @@ export default class Strip extends React.Component {
 
 Strip.propTypes = {
   slimlist: PropTypes.array,
-  onTermSelect: PropTypes.func.isRequired
+  onSlimSelect: PropTypes.func.isRequired
 }
