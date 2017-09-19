@@ -25,35 +25,35 @@ class RibbonStore extends ReduceStore {
     return _blocks;
   }
 
-  /*
-  Apparently this is what the dispatcher calls to deliver the data to the store
-  */
-  reduce(before, action) {
-    if (action.type === ActionType.TOGGLE) {
-      var slimitem = _blocks.get(action.value.goid);
-      _blocks.forEach(function (goclass, goid) {
-        // only one at a time can be visible
-        if (goid !== action.value.goid && goclass.visible) {
-          goclass.visible = false;
-        }
-      });
-      slimitem.visible = !slimitem.visible;
-      var after = new Map(_blocks);
-      return after;
-    }
-    else {
-      return before;
-    }
-  }
-
-  isVisible(goid) {
-    var slimitem = _blocks.get(goid);
-    var visible = slimitem.visible;
-    if (typeof(visible) === 'undefined' || visible === null) {
-      visible = false
-    }
-    return visible;
-  }
+  // /*
+  // Apparently this is what the dispatcher calls to deliver the data to the store
+  // */
+  // reduce(before, action) {
+  //   if (action.type === ActionType.TOGGLE) {
+  //     var slimitem = _blocks.get(action.value.goid);
+  //     _blocks.forEach(function (goclass, goid) {
+  //       // only one at a time can be visible
+  //       if (goid !== action.value.goid && goclass.visible) {
+  //         goclass.visible = false;
+  //       }
+  //     });
+  //     slimitem.visible = !slimitem.visible;
+  //     var after = new Map(_blocks);
+  //     return after;
+  //   }
+  //   else {
+  //     return before;
+  //   }
+  // }
+  //
+  // isVisible(goid) {
+  //   var slimitem = _blocks.get(goid);
+  //   var visible = slimitem.visible;
+  //   if (typeof(visible) === 'undefined' || visible === null) {
+  //     visible = false
+  //   }
+  //   return visible;
+  // }
 
   getSlimList() {
     var list = _blocks.values();

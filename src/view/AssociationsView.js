@@ -1,59 +1,46 @@
 import React, { Component, PropTypes }  from 'react';
 import FlipMove from 'react-flip-move';
 
-import RibbonStore from '../data/RibbonStore';
-import ActionType from '../event/ActionType';
 import AGR_taxons from '../data/taxa';
 
 class AssociationsView extends Component {
   static propTypes = {
-    title: PropTypes.string.isRequired,
+    currentTermId: PropTypes.string,
+    slimlist: PropTypes.arrayOf(
+      PropTypes.shape({
+        color: PropTypes.string
+      })
+    )
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
-    var slimlist = RibbonStore.getSlimList();
-    const InfoArray = slimlist.map((slimitem, index) => {
-      return <AssociationList
-        goid={slimitem.goid}
-        key={slimitem.goid}
-      />;
-    });
+    const {slimlist} = this.props;
     return (
       <div className='assoc-view'>
-        <div > {InfoArray} </div>
+      {
+        slimlist.filter((slimitem) => {
+          return slimitem.goid === this.props.currentTermId;
+        }).map((slimitem) => {
+          return (
+            <AssociationList
+              key={slimitem.goid}
+              slimitem={slimitem}
+            />
+          )
+        })
+      }
       </div>
     );
   }
 };
 
 class AssociationList extends Component {
-  constructor(props) {
-    super(props);
-    const {goid} = this.props;
-    var visible = RibbonStore.isVisible(goid);
-    this.state = ({
-      visible: visible
-    });
-  }
 
-  componentDidMount() {
-    RibbonStore.addListener(this.onToggle.bind(this), ActionType.TOGGLE );
-  }
-
-  onToggle() {
-    var visible = RibbonStore.isVisible(this.props.goid);
-    this.setState({
-      visible: visible}
-    );
-  }
-
-  componentWillUnmount() {
-    //RibbonStore.removeListener(this.onToggle.bind(this) );
-  }
+  static propTypes = {
+    slimitem: PropTypes.shape({
+      uniqueAssocs: PropTypes.array
+    })
+  };
 
   renderAssociations(slimitem) {
     return slimitem.uniqueAssocs.map((assoc, index) => {
@@ -68,9 +55,8 @@ class AssociationList extends Component {
     return `cubic-bezier(${ easingValues.join(',') })`;
   }
   render() {
-    const {goid} = this.props;
-    var slimitem = RibbonStore.getSlimItem(goid);
-    var rows = ( this.state.visible &&
+    const {goid, slimitem} = this.props;
+    return (
       <div className='assoc-list'>
         <div>
         <FlipMove
@@ -85,12 +71,28 @@ class AssociationList extends Component {
         </FlipMove>
         </div>
       </div>
-    )
-    return rows;
+    );
   }
 }
 
 class Association extends Component {
+
+  static propTypes = {
+    assoc: PropTypes.shape({
+      subject: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        label: PropTypes.string.isRequired,
+        taxon: PropTypes.shape({
+          id: PropTypes.string.isRequired
+        }).isRequired,
+      }),
+      object: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        label: PropTypes.string.isRequired,
+      }),
+      color: PropTypes.string
+    })
+  };
 
   render() {
     const { assoc } = this.props;
@@ -105,6 +107,7 @@ class Association extends Component {
     var genelink = `http://dev.alliancegenome.org:4001/gene/${assoc.subject.id}`;
     var golink = `http://amigo.geneontology.org/amigo/term/${assoc.object.id}`;
     console.log(golink);
+
     return (
       <li style={assocStyle}>
         <img className='assoc-img' src={img} />

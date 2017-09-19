@@ -119,6 +119,12 @@ export default class Ribbon extends React.Component {
     });
   }
 
+  handleSlimSelect = (termId) => {
+    this.setState({
+      currentTermId: termId
+    });
+  }
+
   render() {
     const size = 8;
     const margin = 2;
@@ -139,9 +145,16 @@ export default class Ribbon extends React.Component {
     if (this.state.dataError === null) {
       return(
         <div >
-          <Strip />
+          <Strip
+            onSlimSelect={(termId) => this.handleSlimSelect(termId)}
+            slimlist={RibbonStore.getSlimList()}
+          />
           <div className='caption' >{this.state.title}</div>
-          <AssociationsView title={this.state.title} />
+          <AssociationsView
+            title={this.state.title}
+            currentTermId={this.state.currentTermId}
+            slimlist={RibbonStore.getSlimList()}
+          />
         </div>
       );
     }
