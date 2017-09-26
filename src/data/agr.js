@@ -49,7 +49,7 @@ export default [
   },
   {
     "goid": "GO:0003674",
-    "golabel": "other functions"
+    "golabel": "other activities"
   },
   {
     "goid": "separator1", // used as a key to a hashmap, so can't be blank
