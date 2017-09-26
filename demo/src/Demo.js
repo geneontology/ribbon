@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { addUrlProps, UrlQueryParamTypes } from 'react-url-query';
 import { GridLoader } from 'react-spinners';
-import 'react-virtualized/styles.css';
+//import 'react-virtualized/styles.css';
 
 import '../../src/index.css';
 import Ribbon from '../../src/Ribbon';

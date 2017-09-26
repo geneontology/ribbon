@@ -51,7 +51,7 @@ export default class Ribbon extends React.Component {
     var orthoURL =  'https://api.monarchinitiative.org/api/bioentity/gene/' +
                     subject +
                     '/homologs/?homology_type=O&fetch_objects=false';
-    console.log(orthoURL);
+    // console.log(orthoURL);
 
     var title = subject;
     var dataError = null;
@@ -72,7 +72,7 @@ export default class Ribbon extends React.Component {
         }
       });
       goQueries.push(goLink + '&subject=' + subject);
-      console.log(goLink+'&subject=' + subject);
+      // console.log(goLink+'&subject=' + subject);
       // Then run all the GO queries in a batch,
       // both the gene of interest and all the orthologs that were found        let orthologArray = goQueries.map(url => axios.get(url));
       let orthologArray = goQueries.map(url => axios.get(url));

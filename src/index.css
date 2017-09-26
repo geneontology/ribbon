@@ -1,31 +1,13 @@
-.flex-container {
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-flow: row wrap;
-    flex-flow: row wrap;
-    text-align: center;
-}
-.flex-container > * {
-    padding: 15px;
-    -webkit-flex: 1 100%;
-    flex: 1 100%;
-}
-h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  padding: 0;
-}
+
 a {
-  color: black;
-}
-ul {
-  margin: 0;
-  list-style-type: none;
+  color: #37474f;
 }
 .caption {
   background-color: #c0d8d8;
   text-align: center;
-  width: 766px;
-  max-width: 766px;
+  width: 767px;
+  max-width: 767px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: bold;
   font-size: 10pt;
   height: 2em;
@@ -33,40 +15,10 @@ ul {
   margin: 2px;
   padding: 0;
 }
-.assoc-view {
-  position: relative;
-  float: left;
-  display: flex;
-  top: 1px;
-  width: 96%;
-  margin: 0rem auto 0;
-}
-.assoc-list {
-  position: relative;
-  margin: 0;
-  padding: 0;
-  width: 766px;
-}
-.assoc-img {
-  float: left;
-  margin-right: 8px;
-  width: 40px;
-  height: 30px;
-  background-size: cover;
-  border-radius: 2px 0 0 2px;
-}
-.assoc-subject {
-  font-weight: 500;
-  font-size: 12px;
-}
-.assoc-go {
-  font-weight: 800;
-  font-size: 12px;
-  color: lighten($darkgray, 25%);
-}
 .strip {
     font-size: 9pt;
     width: 96%;
+    margin: 2px;
 }
 .ribbonBlock {
     height: 18em;
@@ -81,6 +33,7 @@ ul {
   color: #699;
 }
 .blockTitle {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   transform: rotate(-45deg);
   text-indent: 10px;
   width: 16px;
@@ -101,4 +54,35 @@ ul {
   width: 32px;
   margin-right: -1px;
   position: relative;
+}
+.assoc-view {
+    margin-top: 2px;
+}
+.assoc-row {
+  display: grid;
+  grid-template-columns: 40px 50px auto;
+  grid-column-gap: 8px;
+  top: 1px;
+  bottom: 1px;
+  margin-left: 2px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  width: 767px;
+  justify-content: flex-start;
+  align-items: baseline;
+}
+.taxon-img {
+  width: 40px;
+  height: 30px;
+  margin-top: 8px;
+  margin-left: 4px;
+  background-size: cover;
+  border-radius: 8px;
+}
+.assoc-gene {
+  margin: 4px;
+  font-size: 12px;
+}
+.assoc-go {
+  margin: 4px;
+  font-size: 12px;
 }

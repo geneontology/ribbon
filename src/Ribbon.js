@@ -14,14 +14,21 @@ export default class Ribbon extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentTermId: this.props.initialTermId
+      currentTermId: undefined
     }
   }
 
   handleSlimSelect = (termId) => {
-    this.setState({
-      currentTermId: termId
-    });
+    if (termId !== this.state.currentTermId) {
+      this.setState({
+        currentTermId: termId
+      });
+    }
+    else {
+      this.setState({
+        currentTermId: undefined
+      })
+    }
   }
 
   render() {
@@ -34,7 +41,6 @@ export default class Ribbon extends React.Component {
         />
         <div className='caption' >{this.props.title}</div>
         <AssociationsView
-          title={this.state.title}
           currentTermId={this.state.currentTermId}
           slimlist={slimlist}
         />

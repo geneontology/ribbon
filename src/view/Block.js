@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ActionType from '../event/ActionType';
-
 class Block extends React.Component {
 
   render() {
