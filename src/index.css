@@ -60,7 +60,7 @@ a {
 }
 .assoc-row {
   display: grid;
-  grid-template-columns: 40px 50px auto;
+  grid-template-columns: 40px 112px auto;
   grid-column-gap: 8px;
   top: 1px;
   bottom: 1px;
@@ -76,9 +76,10 @@ a {
   margin-top: 8px;
   margin-left: 4px;
   background-size: cover;
-  border-radius: 8px;
+  border-radius: 2px;
 }
 .assoc-gene {
+  text-align: right;
   margin: 4px;
   font-size: 12px;
 }

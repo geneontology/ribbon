@@ -2,7 +2,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import {VelocityComponent, VelocityTransitionGroup} from 'velocity-react';
 
 import taxa from '../data/taxa';
 
@@ -40,7 +39,7 @@ class AssociationsRowView extends React.Component {
 
     var rows = (
       genes.map((gene_node, i) => {
-        var genelink = `http://alliancegenome.org/gene/${gene_node.about.id}`;
+        var genelink = `http://dev.alliancegenome.org/gene/${gene_node.about.id}`;
         return (
           gene_node.children.map((go_node, j) => {
             var golink = `http://amigo.geneontology.org/amigo/term/${go_node.about.id}`;
