@@ -45,14 +45,14 @@ class AssociationsRowView extends React.Component {
             var golink = `http://amigo.geneontology.org/amigo/term/${go_node.about.id}`;
             if (i === 0 && j === 0) {
               return (
-                <div className='assoc-row' style={{backgroundColor: taxon_node.color}}>
-                  <div className="taxon-toggle" >
-                    <img className='taxon-img' src={img} />
+                <div className='ontology-ribbon-assoc__row' style={{backgroundColor: taxon_node.color}}>
+                  <div className="ontology-ribbon-assoc__taxon-toggle" >
+                    <img className='ontology-ribbon-assoc__taxon-img' src={img} />
                   </div>
-                  <div className='assoc-gene' >
+                  <div className='ontology-ribbon-assoc__gene' >
                     <a title={genelink} href={genelink}>{gene_node.about.label}</a>
                   </div>
-                  <div className='assoc-go'>
+                  <div className='ontology-ribbon-assoc__go'>
                     <a title={golink} href={golink}>{go_node.about.label}</a>
                   </div>
                 </div>
@@ -60,22 +60,22 @@ class AssociationsRowView extends React.Component {
             }
             if (j === 0) {
               return (
-                <div className='assoc-row' style={{backgroundColor: taxon_node.color}}>
-                  <div className="taxon-toggle" />
-                  <div className='assoc-gene' >
+                <div className='ontology-ribbon-assoc__row' style={{backgroundColor: taxon_node.color}}>
+                  <div className="ontology-ribbon-assoc__taxon-toggle" />
+                  <div className='ontology-ribbon-assoc__gene' >
                     <a title={genelink} href={genelink}>{gene_node.about.label}</a>
                   </div>
-                  <div className='assoc-go'>
+                  <div className='ontology-ribbon-assoc__go'>
                     <a title={golink} href={golink}>{go_node.about.label}</a>
                   </div>
                 </div>
               );
             }
             return (
-              <div className='assoc-row' style={{backgroundColor: taxon_node.color}}>
-                <div className="taxon-toggle" />
-                <div className='assoc-gene' />
-                <div className='assoc-go'>
+              <div className='ontology-ribbon-assoc__row' style={{backgroundColor: taxon_node.color}}>
+                <div className="ontology-ribbon-assoc__taxon-toggle" />
+                <div className='ontology-ribbon-assoc__gene' />
+                <div className='ontology-ribbon-assoc__go'>
                   <a title={golink} href={golink}>{go_node.about.label}</a>
                 </div>
               </div>
@@ -85,7 +85,7 @@ class AssociationsRowView extends React.Component {
       })
     );
     return (
-      <div className='assoc-view'>{rows}</div>
+      <div className='ontology-ribbon-assoc__view'>{rows}</div>
     );
   }
 }

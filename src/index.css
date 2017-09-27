@@ -1,8 +1,9 @@
 
-a {
+.ontology-ribbon a {
   color: #37474f;
 }
-.caption {
+
+.ontology-ribbon__caption {
   background-color: #c0d8d8;
   text-align: center;
   width: 767px;
@@ -15,50 +16,60 @@ a {
   margin: 2px;
   padding: 0;
 }
-.strip {
+
+.ontology-ribbon__strip {
     font-size: 9pt;
     width: 96%;
     margin: 2px;
 }
-.ribbonBlock {
+
+.ontology-ribbon__block {
     height: 18em;
     display: table-cell;
     vertical-align: bottom;
 }
-.bold {
+
+.ontology-ribbon__block_match {
   font-weight: bold;
 }
-.ribbonBlock:hover {
+
+.ontology-ribbon__block:hover {
     /*font-weight: bold;*/
   color: #699;
 }
-.blockTitle {
+
+.ontology-ribbon__block-title {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   transform: rotate(-45deg);
   text-indent: 10px;
   width: 16px;
   white-space: nowrap;
 }
-.blockTile {
+
+.ontology-ribbon__block-tile {
   border: 1px solid silver;
   height: 16px;
   margin-right: -1px;
   position: relative;
 }
-.blockTile:hover {
+
+.ontology-ribbon__block-tile:hover {
   border: 1px solid #acd;
   z-index: 10;
 }
-.tileSeparator {
+
+.ontology-ribbon__tile-separator {
   height: 16px;
   width: 32px;
   margin-right: -1px;
   position: relative;
 }
-.assoc-view {
+
+.ontology-ribbon-assoc__view {
     margin-top: 2px;
 }
-.assoc-row {
+
+.ontology-ribbon-assoc__row {
   display: grid;
   grid-template-columns: 40px 112px auto;
   grid-column-gap: 8px;
@@ -70,7 +81,8 @@ a {
   justify-content: flex-start;
   align-items: baseline;
 }
-.taxon-img {
+
+.ontology-ribbon-assoc__taxon-img {
   width: 40px;
   height: 30px;
   margin-top: 8px;
@@ -78,12 +90,14 @@ a {
   background-size: cover;
   border-radius: 2px;
 }
-.assoc-gene {
+
+.ontology-ribbon-assoc__gene {
   text-align: right;
   margin: 4px;
   font-size: 12px;
 }
-.assoc-go {
+
+.ontology-ribbon-assoc__go {
   margin: 4px;
   font-size: 12px;
 }
