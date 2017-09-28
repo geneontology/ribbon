@@ -2,6 +2,7 @@
 .ontology-ribbon {
   font-family: Lato, Helvetica, sans-serif;
   font-size: 1rem;
+  width: 100%;
 }
 
 .ontology-ribbon a {
@@ -73,33 +74,54 @@
 }
 
 .ontology-ribbon-assoc__row {
-  display: grid;
-  grid-template-columns: 40px 112px auto;
-  grid-column-gap: 8px;
-  top: 1px;
-  bottom: 1px;
-  margin-left: 2px;
-  width: 767px;
-  justify-content: flex-start;
-  align-items: baseline;
+  display: flex;
+  flex-direction: row;
+
+  align-items: top;
+  margin: 0;
+  border-bottom: 1px solid #ccc;
 }
 
-.ontology-ribbon-assoc__taxon-img {
-  width: 40px;
-  height: 30px;
-  margin-top: 8px;
-  margin-left: 4px;
-  background-size: cover;
-  border-radius: 2px;
+.ontology-ribbon-assoc__row:last-child {
+  border-bottom: none;
+}
+
+.ontology-ribbon-assoc__species {
+  flex: 0 1 30%;
+  min-width: 150px;
+}
+
+.ontology-ribbon-assoc__species-content {
+  flex: 0 0 70%;
+  min-width: 200px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  /*align-items: left;*/
+  margin: 0;
+  padding: 1em;
 }
 
 .ontology-ribbon-assoc__gene {
-  text-align: right;
-  margin: 4px;
+  flex: 0 1 20%;
+  min-width: 100px;
+  margin: 0;
+}
+
+.ontology-ribbon-assoc__gene-content {
+  flex: 0 0 80%;
+  margin: 0;
+}
+
+.ontology-ribbon-assoc__gene-association-list {
+  margin: 0;
+}
+
+.ontology-ribbon-assoc__gene-association-item {
+
 }
 
 .ontology-ribbon-assoc__go {
-  margin: 4px;
 
 }
 
