@@ -55,7 +55,7 @@ class AssociationsGeneView extends Component {
 
 AssociationsGeneView.propTypes = {
   slimitem: PropTypes.shape({
-    tree: PropTypes.object,
+    tree: PropTypes.array,
   }),
   geneUrlFormatter: PropTypes.any,
 };
