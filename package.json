@@ -43,7 +43,7 @@
     "nwb": "0.14.x",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "react-url-query": "1.1.3"
+    "react-url-query": "1.2.0"
   },
   "author": "Suzanna Lewis",
   "homepage": "https://github.com/geneontology/ribbon#readme",
