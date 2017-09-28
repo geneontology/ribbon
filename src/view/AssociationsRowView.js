@@ -49,7 +49,7 @@ class AssociationsRowView extends React.Component {
             return (
               [
                 <dt className="ontology-ribbon-assoc__gene">
-                  <a href={`http://dev.alliancegenome.org/gene/${gene_node.about.id}`}>
+                  <a href={this.props.geneUrlFormatter(gene_node.about.id)}>
                     {gene_node.about.label}
                   </a>
                 </dt>,
@@ -88,6 +88,7 @@ class AssociationsRowView extends React.Component {
 }
 AssociationsRowView.propTypes = {
   taxon_node: PropTypes.object.isRequired,
+  geneUrlFormatter: PropTypes.func,
 };
 
 export default AssociationsRowView;

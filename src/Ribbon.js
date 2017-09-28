@@ -5,11 +5,6 @@ import Strip from './view/Strip';
 import AssociationsView from './view/AssociationsView';
 
 export default class Ribbon extends React.Component {
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    slimlist: PropTypes.array.isRequired,
-    initialTermId: PropTypes.string
-  }
 
   constructor(props) {
     super(props);
@@ -43,8 +38,17 @@ export default class Ribbon extends React.Component {
         <AssociationsView
           currentTermId={this.state.currentTermId}
           slimlist={slimlist}
+          geneUrlFormatter={this.props.geneUrlFormatter}
         />
       </div>
     );
   }
 }
+
+
+Ribbon.propTypes = {
+  geneUrlFormatter: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  slimlist: PropTypes.array.isRequired,
+  initialTermId: PropTypes.string,
+};
