@@ -48,17 +48,17 @@ class AssociationsRowView extends React.Component {
           this.props.taxon_node.children.map((gene_node) => {
             return (
               [
-                <dt className="ontology-ribbon-assoc__gene">
+                <dt className="ontology-ribbon-assoc__gene" key={`${gene_node.about.id}_gene`}>
                   <a href={`http://dev.alliancegenome.org/gene/${gene_node.about.id}`}>
                     {gene_node.about.label}
                   </a>
                 </dt>,
-                <dd className="ontology-ribbon-assoc__gene-content">
+                <dd className="ontology-ribbon-assoc__gene-content" key={`${gene_node.about.id}_gene-content`}>
                   <ul className="ontology-ribbon-assoc__gene-association-list">
                     {
                       gene_node.children.map((go_node) => {
                         return (
-                          <li className="ontology-ribbon-assoc__gene-association-item">
+                          <li className="ontology-ribbon-assoc__gene-association-item" key={go_node.about.id}>
                             <div className='ontology-ribbon-assoc__go'>
                               <a
                                 title={go_node.about.label}
