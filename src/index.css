@@ -1,16 +1,20 @@
 
+.ontology-ribbon {
+  font-family: Lato, Helvetica, sans-serif;
+  font-size: 1rem;
+}
+
 .ontology-ribbon a {
   color: #37474f;
 }
 
 .ontology-ribbon__caption {
-  background-color: #c0d8d8;
+  /*background-color: #c0d8d8;*/
   text-align: center;
   width: 767px;
   max-width: 767px;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: bold;
-  font-size: 10pt;
+  font-size: 0.9rem;
   height: 2em;
   line-height: 2em;
   margin: 2px;
@@ -18,7 +22,7 @@
 }
 
 .ontology-ribbon__strip {
-    font-size: 9pt;
+    font-size: 0.8rem;
     width: 96%;
     margin: 2px;
 }
@@ -39,7 +43,6 @@
 }
 
 .ontology-ribbon__block-title {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   transform: rotate(-45deg);
   text-indent: 10px;
   width: 16px;
@@ -76,7 +79,6 @@
   top: 1px;
   bottom: 1px;
   margin-left: 2px;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   width: 767px;
   justify-content: flex-start;
   align-items: baseline;
@@ -94,12 +96,11 @@
 .ontology-ribbon-assoc__gene {
   text-align: right;
   margin: 4px;
-  font-size: 12px;
 }
 
 .ontology-ribbon-assoc__go {
   margin: 4px;
-  font-size: 12px;
+
 }
 
 
