@@ -1,9 +1,9 @@
 import taxa from './data/taxa';
 
 const queryRGB = [0, 96, 96];
-const orthoRGB = [255, 185, 36];
-const queryColor = "#e5efef"; //"#c0d8d8";
-const orthoColor = "#fffbf4"; //"#ffeec9";
+const orthoRGB = [86, 148, 27];
+const queryColor = "#dfebeb"; //"#c0d8d8";
+const orthoColor = "#f3f9f0"; //"#d8eecd";
 
 export function unpackSlimItems(results, subject, slimlist) {
   var title = subject;
