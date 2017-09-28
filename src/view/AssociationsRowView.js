@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import taxa from '../data/taxa';
+import SpeciesLabel from './SpeciesLabel';
 
 class AssociationsRowView extends React.Component {
 
@@ -31,62 +32,58 @@ class AssociationsRowView extends React.Component {
   }
 
   render() {
-    const {taxon_node} = this.props;
-    var genes = taxon_node.children;
-    var row = null;
 
-    var img = this.getTaxonImage(taxon_node.about.id);
-
-    var rows = (
-      genes.map((gene_node, i) => {
-        var genelink = `http://dev.alliancegenome.org/gene/${gene_node.about.id}`;
-        return (
-          gene_node.children.map((go_node, j) => {
-            var golink = `http://amigo.geneontology.org/amigo/term/${go_node.about.id}`;
-            if (i === 0 && j === 0) {
-              return (
-                <div className='assoc-row' style={{backgroundColor: taxon_node.color}}>
-                  <div className="taxon-toggle" >
-                    <img className='taxon-img' src={img} />
-                  </div>
-                  <div className='assoc-gene' >
-                    <a title={genelink} href={genelink}>{gene_node.about.label}</a>
-                  </div>
-                  <div className='assoc-go'>
-                    <a title={golink} href={golink}>{go_node.about.label}</a>
-                  </div>
-                </div>
-              );
-            }
-            if (j === 0) {
-              return (
-                <div className='assoc-row' style={{backgroundColor: taxon_node.color}}>
-                  <div className="taxon-toggle" />
-                  <div className='assoc-gene' >
-                    <a title={genelink} href={genelink}>{gene_node.about.label}</a>
-                  </div>
-                  <div className='assoc-go'>
-                    <a title={golink} href={golink}>{go_node.about.label}</a>
-                  </div>
-                </div>
-              );
-            }
-            return (
-              <div className='assoc-row' style={{backgroundColor: taxon_node.color}}>
-                <div className="taxon-toggle" />
-                <div className='assoc-gene' />
-                <div className='assoc-go'>
-                  <a title={golink} href={golink}>{go_node.about.label}</a>
-                </div>
-              </div>
-            );
-          })
-        );
-      })
-    );
     return (
-      <div className='assoc-view'>{rows}</div>
+      <div
+        className='ontology-ribbon-assoc__row'
+      >
+        <div className="ontology-ribbon-assoc__species">
+          <SpeciesLabel species={this.props.taxon_node.about.id} />
+        </div>
+        <dl
+          className="ontology-ribbon-assoc__species-content"
+          style={{backgroundColor: this.props.taxon_node.color}}
+        >
+        {
+          this.props.taxon_node.children.map((gene_node) => {
+            return (
+              [
+                <dt className="ontology-ribbon-assoc__gene">
+                  <a href={`http://dev.alliancegenome.org/gene/${gene_node.about.id}`}>
+                    {gene_node.about.label}
+                  </a>
+                </dt>,
+                <dd className="ontology-ribbon-assoc__gene-content">
+                  <ul className="ontology-ribbon-assoc__gene-association-list">
+                    {
+                      gene_node.children.map((go_node) => {
+                        return (
+                          <li className="ontology-ribbon-assoc__gene-association-item">
+                            <div className='ontology-ribbon-assoc__go'>
+                              <a
+                                title={go_node.about.label}
+                                href={`http://amigo.geneontology.org/amigo/term/${go_node.about.id}`}
+                                rel="noopener noreferrer"
+                                target="_blank"
+                              >
+                                {go_node.about.label}
+                              </a>
+                            </div>
+                          </li>
+                        )
+                      })
+                    }
+                  </ul>
+                </dd>
+              ]
+            )
+          })
+        }
+        </dl>
+
+      </div>
     );
+
   }
 }
 AssociationsRowView.propTypes = {

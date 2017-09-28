@@ -10,12 +10,12 @@ class Block extends React.Component {
         slimitem.uniqueAssocs.length + ' associations ' : //uniqueHits.join('\n') :
         'No associations to ' + slimitem.golabel;
       const blockTitleClass = (slimitem.uniqueAssocs.length > 0) ?
-        'blockTitle bold' :
-        'blockTitle';
+        'ontology-ribbon__block-title ontology-ribbon__block-title_match' :
+        'ontology-ribbon__block-title';
       return(
-        <div className="ribbonBlock" onClick={this.handleOnClick}>
+        <div className="ontology-ribbon__block" onClick={this.handleOnClick}>
           <div className={blockTitleClass}>{slimitem.golabel}</div>
-          <div className="blockTile"
+          <div className="ontology-ribbon__block-tile"
             title={tileHoverString}
             style={{backgroundColor:slimitem.color}}>
           </div>
@@ -23,8 +23,8 @@ class Block extends React.Component {
       );
     } else {
       return (
-        <div className="ribbonBlock">
-          <div className="tileSeparator"></div>
+        <div className="ontology-ribbon__block">
+          <div className="ontology-ribbon__tile-separator"></div>
         </div>
       );
     }

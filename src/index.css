@@ -1,89 +1,181 @@
 
-a {
+.ontology-ribbon {
+  font-family: Lato, Helvetica, sans-serif;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.ontology-ribbon a {
   color: #37474f;
 }
-.caption {
-  background-color: #c0d8d8;
+
+.ontology-ribbon__caption {
+  /*background-color: #c0d8d8;*/
   text-align: center;
   width: 767px;
   max-width: 767px;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: bold;
-  font-size: 10pt;
+  font-size: 0.9rem;
   height: 2em;
   line-height: 2em;
   margin: 2px;
   padding: 0;
 }
-.strip {
-    font-size: 9pt;
+
+.ontology-ribbon__strip {
+    font-size: 0.8rem;
     width: 96%;
     margin: 2px;
 }
-.ribbonBlock {
+
+.ontology-ribbon__block {
     height: 18em;
     display: table-cell;
     vertical-align: bottom;
 }
-.bold {
+
+.ontology-ribbon__block_match {
   font-weight: bold;
 }
-.ribbonBlock:hover {
+
+.ontology-ribbon__block:hover {
     /*font-weight: bold;*/
   color: #699;
 }
-.blockTitle {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+.ontology-ribbon__block-title {
   transform: rotate(-45deg);
   text-indent: 10px;
   width: 16px;
   white-space: nowrap;
 }
-.blockTile {
+
+.ontology-ribbon__block-tile {
   border: 1px solid silver;
   height: 16px;
   margin-right: -1px;
   position: relative;
 }
-.blockTile:hover {
+
+.ontology-ribbon__block-tile:hover {
   border: 1px solid #acd;
   z-index: 10;
 }
-.tileSeparator {
+
+.ontology-ribbon__tile-separator {
   height: 16px;
   width: 32px;
   margin-right: -1px;
   position: relative;
 }
-.assoc-view {
+
+.ontology-ribbon-assoc__view {
     margin-top: 2px;
 }
-.assoc-row {
-  display: grid;
-  grid-template-columns: 40px 112px auto;
-  grid-column-gap: 8px;
-  top: 1px;
-  bottom: 1px;
-  margin-left: 2px;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  width: 767px;
-  justify-content: flex-start;
-  align-items: baseline;
+
+.ontology-ribbon-assoc__row {
+  display: flex;
+  flex-direction: row;
+
+  align-items: top;
+  margin: 0;
+  border-bottom: 1px solid #ccc;
 }
-.taxon-img {
-  width: 40px;
+
+.ontology-ribbon-assoc__row:last-child {
+  border-bottom: none;
+}
+
+.ontology-ribbon-assoc__species {
+  flex: 0 1 30%;
+  min-width: 150px;
+}
+
+.ontology-ribbon-assoc__species-content {
+  flex: 0 0 70%;
+  min-width: 200px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  /*align-items: left;*/
+  margin: 0;
+  padding: 1em;
+}
+
+.ontology-ribbon-assoc__gene {
+  flex: 0 1 20%;
+  min-width: 100px;
+  margin: 0;
+}
+
+.ontology-ribbon-assoc__gene-content {
+  flex: 0 0 80%;
+  margin: 0;
+}
+
+.ontology-ribbon-assoc__gene-association-list {
+  margin: 0;
+}
+
+.ontology-ribbon-assoc__gene-association-item {
+
+}
+
+.ontology-ribbon-assoc__go {
+
+}
+
+
+
+/* start of species icon */
+.ontology-ribbon-species-icon_agr {
+  background-image: url(./icon/speciesSprite.png);
+  width: 78px;
+  height: 90px;
+  background-size: 700% 100%;
+  display: inline-block;
+}
+
+.ontology-ribbon-species-icon_agr.small {
+  width: 26px;
   height: 30px;
-  margin-top: 8px;
-  margin-left: 4px;
-  background-size: cover;
-  border-radius: 8px;
 }
-.assoc-gene {
-  text-align: right;
-  margin: 4px;
-  font-size: 12px;
+
+@media (min--moz-device-pixel-ratio: 1.5), (-o-min-device-pixel-ratio: 3/2), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5), (min-resolution: 1.5dppx) {
+  .ontology-ribbon-species-icon_agr {
+    background-image: url(./icon/speciesSprite-2x.png);
+  }
 }
-.assoc-go {
-  margin: 4px;
-  font-size: 12px;
+
+.ontology-ribbon-species-icon_agr.Drosophila-melanogaster { /* fly */
+  background-position: 0 0;
 }
+
+.ontology-ribbon-species-icon_agr.Homo-sapiens { /* human */
+  background-position: 16.6667% 0;
+}
+
+.ontology-ribbon-species-icon_agr.Mus-musculus { /* mouse */
+  background-position: 33.3333% 0;
+}
+
+.ontology-ribbon-species-icon_agr.Rattus-norvegicus { /* rat */
+  background-position: 50% 0;
+}
+
+.ontology-ribbon-species-icon_agr.Saccharomyces-cerevisiae { /* yeast */
+  background-position: 66.6667% 0;
+}
+
+.ontology-ribbon-species-icon_agr.Saccharomyces-cerevisiae-S288C { /* also yeast */
+  background-position: 66.6667% 0;
+}
+
+.ontology-ribbon-species-icon_agr.Caenorhabditis-elegans { /* worm */
+  background-position: 83.3333% 0;
+}
+
+.ontology-ribbon-species-icon_agr.Danio-rerio { /* zebrafish */
+  background-position: 100% 0;
+}
+/* end of species icon */

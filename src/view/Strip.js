@@ -14,7 +14,7 @@ export default class Strip extends React.Component {
       />;
     });
     return(
-      <div className='strip'>
+      <div className='ontology-ribbon__strip'>
         <div>{blocks}</div>
       </div>
     );

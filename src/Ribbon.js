@@ -34,12 +34,12 @@ export default class Ribbon extends React.Component {
   render() {
     const slimlist = this.props.slimlist;
     return(
-      <div >
+      <div className="ontology-ribbon">
         <Strip
           onSlimSelect={(termId) => this.handleSlimSelect(termId)}
           slimlist={slimlist}
         />
-        <div className='caption' >{this.props.title}</div>
+        <div className='ontology-ribbon__caption' >{this.props.title}</div>
         <AssociationsView
           currentTermId={this.state.currentTermId}
           slimlist={slimlist}

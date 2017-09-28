@@ -37,7 +37,7 @@ class AssociationsGeneView extends Component {
 
   render() {
     const {slimitem} = this.props;
-    const tree = slimitem.tree;
+    const tree = slimitem.tree || [];
 
     return (
       <div >
