@@ -1,16 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const taxonomyToSpecies = {
-  'NCBITaxon:9606': 'Homo sapiens',  // human
-  'NCBITaxon:10090': 'Mus musculus',  // mouse
-  'NCBITaxon:10116': 'Rattus norvegicus',  // rat
-  'NCBITaxon:7955': 'Danio rerio',  // zebrafish
-  'NCBITaxon:7227': 'Drosophila melanogaster',  // fly
-  'NCBITaxon:6239': 'Caenorhabditis elegans',  // worm
-  'NCBITaxon:4932': 'Saccharomyces cerevisiae',  // yeast
-  'NCBITaxon:559292': 'Saccharomyces cerevisiae S288C',  // also yeast
-};
+
 
 const sizeToScale = {
   small: 0.4,
@@ -19,18 +10,24 @@ const sizeToScale = {
 };
 
 const SpeciesIcon = ({species, theme, size}) => {
-  const speciesName = taxonomyToSpecies[species] || species;
-  const speciesClass = speciesName.replace(' ', '-');
+  const speciesClass = species.replace(' ', '-');
+  const scale = sizeToScale[size];
 
   return (
-    <span
-      className={`ontology-ribbon-species-icon_${theme} ${speciesClass}`}
+    <div
       style={{
-        transform: `scale(${sizeToScale[size]})`,
-        transformOrigin: '0 0',
+        padding: 5,
       }}
-      title={speciesClass}
-    />
+    >
+      <div
+        className={`ontology-ribbon-species-icon_${theme} ${speciesClass}`}
+        style={{
+          height: 90 * scale,
+          width: 80 * scale,
+        }}
+        title={species}
+      />
+    </div>
   );
 };
 

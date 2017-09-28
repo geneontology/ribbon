@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import taxa from '../data/taxa';
-import SpeciesIcon from './SpeciesIcon';
+import SpeciesLabel from './SpeciesLabel';
 
 class AssociationsRowView extends React.Component {
 
@@ -48,7 +48,9 @@ class AssociationsRowView extends React.Component {
               return (
                 <div className='ontology-ribbon-assoc__row' style={{backgroundColor: taxon_node.color}}>
                   <div className="ontology-ribbon-assoc__taxon-toggle" >
-                    <SpeciesIcon species={taxon_node.about.id} />
+                    <div>
+                      <SpeciesLabel species={taxon_node.about.id} />
+                    </div>
                   </div>
                   <div className='ontology-ribbon-assoc__gene' >
                     <a title={genelink} href={genelink}>{gene_node.about.label}</a>
