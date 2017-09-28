@@ -36,13 +36,14 @@ class AssociationsGeneView extends Component {
   }
 
   render() {
-    const {slimitem} = this.props;
+    const {slimitem, geneUrlFormatter} = this.props;
     const tree = slimitem.tree || [];
 
     return (
       <div >
         {tree.map((taxon_node, index) =>
           <AssociationsRowView
+            geneUrlFormatter={geneUrlFormatter}
             taxon_node={taxon_node}
             key={index}
           />
@@ -51,4 +52,12 @@ class AssociationsGeneView extends Component {
     );
   }
 }
+
+AssociationsGeneView.propTypes = {
+  slimitem: PropTypes.shape({
+    tree: PropTypes.array,
+  }),
+  geneUrlFormatter: PropTypes.any,
+};
+
 export default AssociationsGeneView;
