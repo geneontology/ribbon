@@ -31,6 +31,7 @@ export default class Ribbon extends React.Component {
     return(
       <div className="ontology-ribbon">
         <Strip
+          currentTermId={this.state.currentTermId}
           onSlimSelect={(termId) => this.handleSlimSelect(termId)}
           slimlist={slimlist}
         />
