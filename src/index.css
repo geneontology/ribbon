@@ -55,6 +55,7 @@
   text-indent: 10px;
   width: 16px;
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .ontology-ribbon__block-tile {
@@ -67,6 +68,7 @@
   text-align: center;
   vertical-align: middle;
   text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+  cursor: pointer;
 }
 
 .ontology-ribbon__block-tile:hover {
