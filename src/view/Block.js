@@ -21,7 +21,7 @@ class Block extends React.Component {
             title={tileHoverString}
             style={{backgroundColor:slimitem.color}}>
             {
-              this.props.isActive ? 'x' :null
+              this.props.isActive ? <span>&#10005;</span> :null
             }
           </div>
         </div>
