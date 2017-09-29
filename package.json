@@ -3,7 +3,7 @@
   "config": {
     "access": "public"
   },
-  "version": "1.2.2",
+  "version": "1.2.3",
   "scripts": {
     "build": "nwb build-react-component --copy-files",
     "clean": "nwb clean-module && npm clean-demo",
