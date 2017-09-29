@@ -9,15 +9,20 @@ class Block extends React.Component {
       const tileHoverString = (slimitem.uniqueAssocs.length > 0) ?
         slimitem.uniqueAssocs.length + ' associations ' : //uniqueHits.join('\n') :
         'No associations to ' + slimitem.golabel;
-      const blockTitleClass = (slimitem.uniqueAssocs.length > 0) ?
-        'ontology-ribbon__block-title ontology-ribbon__block-title_match' :
-        'ontology-ribbon__block-title';
+      const blockTitleClass = `ontology-ribbon__block ${
+        slimitem.uniqueAssocs.length > 0 ? 'ontology-ribbon__block_match' : ''
+      } ${
+        this.props.isActive ? 'ontology-ribbon__block_active' : ''
+      }`;
       return(
-        <div className="ontology-ribbon__block" onClick={this.handleOnClick}>
-          <div className={blockTitleClass}>{slimitem.golabel}</div>
+        <div className={blockTitleClass} onClick={this.handleOnClick}>
+          <div className="ontology-ribbon__block-title">{slimitem.golabel}</div>
           <div className="ontology-ribbon__block-tile"
             title={tileHoverString}
             style={{backgroundColor:slimitem.color}}>
+            {
+              this.props.isActive ? 'x' :null
+            }
           </div>
         </div>
       );
@@ -40,6 +45,7 @@ Block.propTypes = {
   goid: PropTypes.string.isRequired,
   golabel: PropTypes.string,
   color: PropTypes.string,
+  isActive: PropTypes.bool,
   uniqueAssocs: PropTypes.array.isRequired,
   onSlimSelect: PropTypes.func.isRequired
 };
