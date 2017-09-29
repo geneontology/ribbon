@@ -5,8 +5,7 @@ import { GridLoader } from 'react-spinners';
 //import 'react-virtualized/styles.css';
 
 import '../../src/index.css';
-import Ribbon from '../../src/Ribbon';
-import RibbonDataProvider from '../../src/RibbonDataProvider';
+import Ribbon, { RibbonDataProvider } from '../../src/index';
 import history from './history';
 
 /**
