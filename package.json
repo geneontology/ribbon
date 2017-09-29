@@ -1,6 +1,9 @@
 {
-  "name": "gene-ontology-ribbon",
-  "version": "@sibyl229/1.2.0",
+  "name": "@sibyl229/gene-ontology-ribbon",
+  "config": {
+    "access": "public"
+  },
+  "version": "1.2.0",
   "scripts": {
     "build": "nwb build-react-component --copy-files",
     "clean": "nwb clean-module && npm clean-demo",
