@@ -11,6 +11,7 @@ export default class Strip extends React.Component {
         {...slimitem}
         key={slimitem.goid}
         onSlimSelect={this.props.onSlimSelect}
+        isActive={slimitem.goid === this.props.currentTermId}
       />;
     });
     return(
@@ -22,6 +23,9 @@ export default class Strip extends React.Component {
 }
 
 Strip.propTypes = {
-  slimlist: PropTypes.array,
+  currentTermId: PropTypes.string,
+  slimlist: PropTypes.arrayOf(PropTypes.shape({
+    goid: PropTypes.any,
+  })),
   onSlimSelect: PropTypes.func.isRequired
 }
