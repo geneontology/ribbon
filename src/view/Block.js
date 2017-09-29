@@ -15,10 +15,11 @@ class Block extends React.Component {
         this.props.isActive ? 'ontology-ribbon__block_active' : ''
       }`;
       return(
-        <div className={blockTitleClass} onClick={this.handleOnClick}>
-          <div className="ontology-ribbon__block-title">{slimitem.golabel}</div>
+        <div className={blockTitleClass}>
+          <div className="ontology-ribbon__block-title" onClick={this.handleOnClick}>{slimitem.golabel}</div>
           <div className="ontology-ribbon__block-tile"
             title={tileHoverString}
+            onClick={this.handleOnClick}
             style={{backgroundColor:slimitem.color}}>
             {
               this.props.isActive ? <span>&#10005;</span> :null
