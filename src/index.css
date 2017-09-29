@@ -6,7 +6,9 @@
 }
 
 .ontology-ribbon a {
-  color: #37474f;
+  /*color: #37474f;*/
+  color: #0275d8;
+  text-decoration: none;
 }
 
 .ontology-ribbon__caption {
@@ -29,7 +31,7 @@
 }
 
 .ontology-ribbon__block {
-    height: 18em;
+    height: 13em;
     display: table-cell;
     vertical-align: bottom;
 }
@@ -106,11 +108,21 @@
   flex: 0 1 20%;
   min-width: 100px;
   margin: 0;
+  padding: 0.5em 0;
 }
 
 .ontology-ribbon-assoc__gene-content {
   flex: 0 0 80%;
   margin: 0;
+  padding: 0.5em 0;
+}
+
+.ontology-ribbon-assoc__gene:first-of-type {
+  padding: 0;
+}
+
+.ontology-ribbon-assoc__gene-content:first-of-type {
+  padding: 0;
 }
 
 .ontology-ribbon-assoc__gene-association-list {
