@@ -3,6 +3,7 @@
   font-family: Lato, Helvetica, sans-serif;
   font-size: 1rem;
   width: 100%;
+  line-height: 1;
 }
 
 .ontology-ribbon a {
@@ -54,15 +55,20 @@
   text-indent: 10px;
   width: 16px;
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .ontology-ribbon__block-tile {
   border: 1px solid silver;
   height: 16px;
+  width: 16px;
+  font-size: 0.9rem;
   margin-right: -1px;
   position: relative;
   text-align: center;
+  vertical-align: middle;
   text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+  cursor: pointer;
 }
 
 .ontology-ribbon__block-tile:hover {
