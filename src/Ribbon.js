@@ -5,11 +5,6 @@ import Strip from './view/Strip';
 import AssociationsView from './view/AssociationsView';
 
 export default class Ribbon extends React.Component {
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    slimlist: PropTypes.array.isRequired,
-    initialTermId: PropTypes.string
-  }
 
   constructor(props) {
     super(props);
@@ -34,17 +29,27 @@ export default class Ribbon extends React.Component {
   render() {
     const slimlist = this.props.slimlist;
     return(
-      <div >
+      <div className="ontology-ribbon">
         <Strip
+          currentTermId={this.state.currentTermId}
           onSlimSelect={(termId) => this.handleSlimSelect(termId)}
           slimlist={slimlist}
         />
-        <div className='caption' >{this.props.title}</div>
+        <div className='ontology-ribbon__caption' >{this.props.title}</div>
         <AssociationsView
           currentTermId={this.state.currentTermId}
           slimlist={slimlist}
+          geneUrlFormatter={this.props.geneUrlFormatter}
         />
       </div>
     );
   }
 }
+
+
+Ribbon.propTypes = {
+  geneUrlFormatter: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  slimlist: PropTypes.array.isRequired,
+  initialTermId: PropTypes.string,
+};

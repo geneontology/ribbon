@@ -5,8 +5,7 @@ import { GridLoader } from 'react-spinners';
 //import 'react-virtualized/styles.css';
 
 import '../../src/index.css';
-import Ribbon from '../../src/Ribbon';
-import RibbonDataProvider from '../../src/RibbonDataProvider';
+import Ribbon, { RibbonDataProvider } from '../../src/index';
 import history from './history';
 
 /**
@@ -58,7 +57,12 @@ class Demo extends Component {
           ({title, data, dataError, dataReceived}) => (
             <div>
             {
-              dataReceived ? <Ribbon title={title} slimlist={data} /> : null
+              dataReceived ?
+                <Ribbon
+                  geneUrlFormatter={(geneId) => `http://staging.alliancegenome.org/gene/${geneId}`}
+                  title={title}
+                  slimlist={data} /> :
+                null
             }
             {dataError ? dataError : null}
             {

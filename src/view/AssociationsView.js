@@ -15,7 +15,7 @@ class AssociationsView extends Component {
   };
 
   render() {
-    const {slimlist, currentTermId} = this.props;
+    const {slimlist, currentTermId, geneUrlFormatter} = this.props;
     return (
       <div >
         {
@@ -26,6 +26,7 @@ class AssociationsView extends Component {
               <AssociationsGeneView
                 key={slimitem.goid}
                 slimitem={slimitem}
+                geneUrlFormatter={geneUrlFormatter}
               />
             )
           })
