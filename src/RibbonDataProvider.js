@@ -8,9 +8,12 @@ import { unpackSlimItems } from './dataHelpers';
 import AGR_LIST from './data/agr';
 import TCAG_LIST from './data/tcag';
 import FLY_LIST from './data/fly';
+import JAX_LIST from './data/jax';
+import POMBE_LIST from './data/pombe';
 import AGR_taxa from './data/taxa';
 
-const GOLINK = 'https://api.monarchinitiative.org/api/bioentityset/slimmer/function?';
+//const GOLINK = 'https://api.monarchinitiative.org/api/';
+const GOLINK = 'http://localhost:8888/api/';
 
 export default class Ribbon extends React.Component {
   static propTypes = {
@@ -40,18 +43,20 @@ export default class Ribbon extends React.Component {
   fetchData(slim, subject) {
     var slimlist =  slim.toLowerCase() === 'tcag' ? TCAG_LIST :
                     slim.toLowerCase() === 'fly' ? FLY_LIST :
+                    slim.toLowerCase() === 'jax' ? JAX_LIST :
+                    slim.toLowerCase() === 'pombe' ? POMBE_LIST :
                     AGR_LIST;
-    var goLink = GOLINK;
+    var goLink = GOLINK + 'bioentityset/slimmer/function?';
     slimlist.forEach(function(slimitem) {
       if (slimitem.separator === undefined) {
         goLink = goLink + '&slim=' + slimitem.goid;
       }
     });
-
-    var orthoURL =  'https://api.monarchinitiative.org/api/bioentity/gene/' +
+    console.log('slim query: '+ goLink);
+    var orthoURL =  GOLINK + 'bioentity/gene/' +
                     subject +
                     '/homologs/?homology_type=O&fetch_objects=false';
-    // console.log(orthoURL);
+    console.log(orthoURL);
 
     var title = subject;
     var dataError = null;
@@ -72,7 +77,6 @@ export default class Ribbon extends React.Component {
         }
       });
       goQueries.push(goLink + '&subject=' + subject);
-      // console.log(goLink+'&subject=' + subject);
       // Then run all the GO queries in a batch,
       // both the gene of interest and all the orthologs that were found        let orthologArray = goQueries.map(url => axios.get(url));
       let orthologArray = goQueries.map(url => axios.get(url));
