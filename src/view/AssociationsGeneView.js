@@ -38,17 +38,22 @@ class AssociationsGeneView extends Component {
   render() {
     const {slimitem} = this.props;
     const tree = slimitem.tree;
-
-    return (
-      <div >
-        {tree.map((taxon_node, index) =>
-          <AssociationsRowView
-            taxon_node={taxon_node}
-            key={index}
-          />
-        )}
-      </div>
-    );
+    console.log('tree='+tree);
+    if (tree !== undefined) {
+      return (
+        <div >
+          {tree.map((taxon_node, index) =>
+            <AssociationsRowView
+              taxon_node={taxon_node}
+              key={index}
+            />
+          )}
+        </div>
+      );
+    }
+    else {
+      return null;
+    }  
   }
 }
 export default AssociationsGeneView;

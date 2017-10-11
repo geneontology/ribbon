@@ -56,7 +56,13 @@ export function unpackSlimItems(results, subject, slimlist) {
       var hits = [];
       slimitem.uniqueAssocs = assocs.filter(function(assocItem, index) {
         /*
-          Short term interim hack because of differences in resource naming
+          First a hack to accomodate swapping out HGNC ids for UniProtKB ids
+        */
+        if (subject.startsWith('HGNC') && assocItem.subject.taxon.id == 'NCBITaxon:9606') {
+          assocItem.subject.id = subject; // Clobber the UniProtKB id
+        }
+        /*
+          Then another interim hack because of differences in resource naming
           e.g. FlyBase === FB
         */
         var subjectID = assocItem.subject.id.replace('FlyBase', 'FB');
