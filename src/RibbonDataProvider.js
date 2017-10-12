@@ -12,8 +12,8 @@ import JAX_LIST from './data/jax';
 import POMBE_LIST from './data/pombe';
 import AGR_taxa from './data/taxa';
 
-//const GOLINK = 'https://api.monarchinitiative.org/api/';
-const GOLINK = 'http://localhost:8888/api/';
+const GOLINK = 'https://api.monarchinitiative.org/api/';
+//const GOLINK = 'http://localhost:8888/api/';
 
 export default class Ribbon extends React.Component {
   static propTypes = {
@@ -52,9 +52,10 @@ export default class Ribbon extends React.Component {
         goLink = goLink + '&slim=' + slimitem.goid;
       }
     });
-    console.log('slim query: '+ goLink);
+    var subjectID = subject.replace('WB', 'WormBase');
+    console.log('subjectID='+subjectID);
     var orthoURL =  GOLINK + 'bioentity/gene/' +
-                    subject +
+                    subjectID +
                     '/homologs/?homology_type=O&fetch_objects=false';
     console.log(orthoURL);
 
@@ -77,6 +78,8 @@ export default class Ribbon extends React.Component {
         }
       });
       goQueries.push(goLink + '&subject=' + subject);
+      console.log('slim query: '+ goQueries[goQueries.length-1]);
+
       // Then run all the GO queries in a batch,
       // both the gene of interest and all the orthologs that were found        let orthologArray = goQueries.map(url => axios.get(url));
       let orthologArray = goQueries.map(url => axios.get(url));
