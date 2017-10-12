@@ -29,7 +29,7 @@ const SpeciesLabel = (props) => {
         species={speciesName}
         {...iconProps}
       />
-      {speciesName}
+      <i>{speciesName}</i>
     </div>
   );
 };

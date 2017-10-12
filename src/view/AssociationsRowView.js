@@ -14,21 +14,19 @@ class AssociationsRowView extends React.Component {
       expanded: false,
       duration: 500,
     }
-    this.whenToggleClicked = this.whenToggleClicked.bind(this);
+    this.renderTerm = this.renderTerm.bind(this);
   }
 
-  whenToggleClicked () {
-    this.setState({
-      expanded: !this.state.expanded
-    });
-  }
-
-  getTaxonImage(taxid) {
-    var image_url = taxa.get(taxid);
-    if (image_url === 'undefined' || image_url === null) {
-      image_url = 'https://image.freepik.com/free-icon/text-box-without-text_318-33104.jpg';
+  renderTerm(go_node) {
+    if (go_node.negated === true) {
+      var styles = {
+	       color:'gray',
+      };
+      return <del style={styles}><span>{go_node.about.label}</span></del>;
     }
-    return image_url;
+    else {
+      return go_node.about.label;
+    }
   }
 
   render() {
@@ -66,7 +64,7 @@ class AssociationsRowView extends React.Component {
                                 rel="noopener noreferrer"
                                 target="_blank"
                               >
-                                {go_node.about.label}
+                                {this.renderTerm(go_node)}
                               </a>
                             </div>
                           </li>

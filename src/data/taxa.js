@@ -8,7 +8,6 @@ export default new Map([
   'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/Fancy_rat_blaze.jpg/1024px-Fancy_rat_blaze.jpg'],
   ['NCBITaxon:7955', // zebrafish
   'https://zfin.org/images/betterfish.jpg'],
-  //'https://drive.google.com/open?id=0B0LCbyBHY0XVbzRWOHdmbzhzR3c'],
   ['NCBITaxon:7227', // fly
   'http://www.benchfly.com/blog/wp-content/uploads/2010/01/Drosophila.jpg'],
   ['NCBITaxon:6239', // worm
