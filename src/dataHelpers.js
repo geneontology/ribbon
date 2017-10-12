@@ -212,6 +212,7 @@ export function buildAssocTree(assocs, subject) {
 
       var go_node = {
         about: assoc.object,
+        negated: assoc.negated
       }
       current_gene_node.children.push(go_node);
 
@@ -227,6 +228,7 @@ export function buildAssocTree(assocs, subject) {
 
       var go_node = {
         about: assoc.object,
+        negated: assoc.negated
       }
       current_gene_node.children.push(go_node);
 
@@ -235,6 +237,7 @@ export function buildAssocTree(assocs, subject) {
     } else {
       var go_node = {
         about: assoc.object,
+        negated: assoc.negated
       }
       current_gene_node.children.push(go_node);
     }

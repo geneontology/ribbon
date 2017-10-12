@@ -12,8 +12,8 @@ import JAX_LIST from './data/jax';
 import POMBE_LIST from './data/pombe';
 import AGR_taxa from './data/taxa';
 
-const GOLINK = 'https://api.monarchinitiative.org/api/';
-//const GOLINK = 'http://localhost:8888/api/';
+//const GOLINK = 'https://api.monarchinitiative.org/api/';
+const GOLINK = 'http://localhost:8888/api/';
 
 export default class Ribbon extends React.Component {
   static propTypes = {
