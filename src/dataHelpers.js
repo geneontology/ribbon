@@ -69,7 +69,7 @@ export function unpackSlimItems(results, subject, slimlist) {
         assocItem.subject.id = subjectID;
         if (subjectID === subject) {
           title = assocItem.subject.label + ' (' +
-                  assocItem.subject.taxon.label + ')';
+                  assocItem.subject.id + ')';
           block_color = queryRGB;
         }
         var label = assocItem.subject.id + ': ' + assocItem.object.label;
