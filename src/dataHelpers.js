@@ -72,8 +72,8 @@ export function unpackSlimItems(results, subject, slimlist) {
                   assocItem.subject.id + ')';
           block_color = queryRGB;
         }
-        var label = assocItem.subject.id + ': ' + assocItem.object.label;
-        if (!hits.includes(label)) {
+        var label = assocItem.subject.id + ': ' + assocItem.object.label + ' ' + assoc.negated;
+        if (!hits.includes(label) && ) {
           hits.push(label);
           return true;
         } else {

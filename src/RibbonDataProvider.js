@@ -52,10 +52,8 @@ export default class Ribbon extends React.Component {
         goLink = goLink + '&slim=' + slimitem.goid;
       }
     });
-    var subjectID = subject.replace('WB', 'WormBase');
-    console.log('subjectID='+subjectID);
     var orthoURL =  GOLINK + 'bioentity/gene/' +
-                    subjectID +
+                    subject +
                     '/homologs/?homology_type=O&fetch_objects=false';
     console.log(orthoURL);
 
@@ -72,7 +70,7 @@ export default class Ribbon extends React.Component {
         // ignore paralogs, not expecting any but just in case
         if (ortholog_assoc.object.taxon.id !== queryTaxon) {
           var value = AGR_taxa.get(ortholog_assoc.object.taxon.id);
-          if (value !== 'undefined') {
+          if (value !== undefined) {
             goQueries.push(goLink + '&subject=' + ortholog_assoc.object.id);
           }
         }

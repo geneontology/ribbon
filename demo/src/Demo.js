@@ -59,7 +59,7 @@ class Demo extends Component {
             {
               dataReceived ?
                 <Ribbon
-                  geneUrlFormatter={(geneId) => `http://stage.alliancegenome.org/gene/${geneId}`}
+                  geneUrlFormatter={(geneId) => `http://stagebuild.alliancegenome.org/gene/${geneId}`}
                   title={title}
                   slimlist={data} /> :
                 null
