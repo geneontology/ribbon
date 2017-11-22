@@ -54,7 +54,7 @@ export default class Ribbon extends React.Component {
     });
     var orthoURL =  GOLINK + 'bioentity/gene/' +
                     subject +
-                    '/homologs/?homology_type=O&fetch_objects=false';
+                    '/homologs/?homology_type=LDO&fetch_objects=false';
     console.log(orthoURL);
 
     var title = subject;
