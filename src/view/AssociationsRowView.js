@@ -54,9 +54,9 @@ class AssociationsRowView extends React.Component {
                 <dd className="ontology-ribbon-assoc__gene-content" key={`${gene_node.about.id}_gene-content`}>
                   <ul className="ontology-ribbon-assoc__gene-association-list">
                     {
-                      gene_node.children.map((go_node) => {
+                      gene_node.children.map((go_node, index) => {
                         return (
-                          <li className="ontology-ribbon-assoc__gene-association-item" key={go_node.about.id}>
+                          <li className="ontology-ribbon-assoc__gene-association-item" key={index}>
                             <div className='ontology-ribbon-assoc__go'>
                               <a
                                 title={go_node.about.label}
