@@ -24,7 +24,6 @@ export default class Ribbon extends React.Component {
         this.state = {
             fetching: true,
         };
-        this.setState = this.setState.bind(this);
     }
 
     componentDidMount() {
