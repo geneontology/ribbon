@@ -60,25 +60,30 @@ export default class Ribbon extends React.Component {
         axios.get(goLink + '&subject=' + subject)
             .then(function (results) {
                 console.log(results);
-                let renderedData = [] ;
+                let renderedData = {} ;
                 for(let d of results.data){
-                    console.log(d);
                     let goid = d.assocs[0].object.id;
                     let golabel = d.assocs[0].object.label;
-                    renderedData.push({
-                        goid: goid,
-                        golabel: golabel,
-                        uniqueAssocs: d.assocs,
-                        tree: [],
-                        color: '#fff',
-                    })
+
+                    if(renderedData[goid]){
+                        renderedData[goid].uniqueAssocs.push(d.assocs);
+                    }
+                    else{
+                        renderedData[goid] = {
+                            goid: goid,
+                            golabel: golabel,
+                            uniqueAssocs: d.assocs,
+                            tree: [],
+                            color: '#fff',
+                        };
+                    }
                 }
-                // const {title, data} = unpackSlimItems(results, subject, slimList);
+
                 self.setState({
                     fetching: false,
                     title: subject,
                     dataError: null,
-                    data: renderedData
+                    data: Object.values(renderedData)
                 });
             })
             .catch(function (error) {
