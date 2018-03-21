@@ -37,7 +37,7 @@ class Demo extends Component {
   static propTypes = {
     subject: PropTypes.string,
     slim: PropTypes.string,
-  }
+  };
 
   constructor(props) {
     super(props);
