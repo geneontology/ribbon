@@ -4,6 +4,7 @@ import React, { Component }  from 'react';
 import PropTypes from 'prop-types';
 
 import AssociationsRowView from './AssociationsRowView';
+import AssociationsWithEvidenceRowView from "./AssociationsWithEvidenceRowView";
 
 class AssociationsGeneView extends Component {
 
@@ -41,9 +42,9 @@ class AssociationsGeneView extends Component {
 
     if (tree !== undefined) {
       return (
-        <div >
+        <div>
           {tree.map((taxon_node, index) =>
-            <AssociationsRowView
+            <AssociationsWithEvidenceRowView
               geneUrlFormatter={geneUrlFormatter}
               taxon_node={taxon_node}
               key={index}
