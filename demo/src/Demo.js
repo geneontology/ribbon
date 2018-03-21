@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types';
 import { addUrlProps, UrlQueryParamTypes } from 'react-url-query';
 import { GridLoader } from 'react-spinners';
 //import 'react-virtualized/styles.css';
@@ -34,10 +33,6 @@ function mapUrlToProps(url, props) {
 }
 
 class Demo extends Component {
-  static propTypes = {
-    subject: PropTypes.string,
-    slim: PropTypes.string,
-  };
 
   constructor(props) {
     super(props);
