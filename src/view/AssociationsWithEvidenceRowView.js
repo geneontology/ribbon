@@ -29,11 +29,11 @@ class AssociationsWithEvidenceRowView extends React.Component {
     }
 
     renderEvidenceLink(evidence) {
-        let label = evidence.label ;
+        let label = evidence.label;
 
         // TODO: create a map for evidence types / ids
 
-        label = label.replace(new RegExp(' ','g'),'-');
+        label = label.replace(new RegExp(' ', 'g'), '-');
         return (
             <a href={`http://www.geneontology.org/page/${label}`}>
                 {/*{go_node.evidence.id}*/}
@@ -45,38 +45,52 @@ class AssociationsWithEvidenceRowView extends React.Component {
 
     render() {
 
+        // {this.props.taxon_node}
+
+        // console.log(this.props.taxon_node)
         return (
-            <div
-                className='ontology-ribbon-assoc__row'
-            >
-                {/*<div className="ontology-ribbon-assoc__species">*/}
-                {/*<SpeciesLabel species={this.props.taxon_node.about.id} />*/}
-                {/*</div>*/}
-                <dl
-                    className="ontology-ribbon-assoc__species-content"
-                    style={{backgroundColor: this.props.taxon_node.color}}
+            <div>
+                <div className='ontology-ribbon-assoc__row'>
+                    <div className="ontology-ribbon-assoc__species">
+                        <SpeciesLabel species={this.props.taxon_node.about.id}/>
+                        {/*<a href={this.props.geneUrlFormatter(this.props.taxon_node)}>*/}
+                            {/*{gene_node.about.label}*/}
+                        {/*</a>*/}
+                    </div>
+                    <div className="ontology-ribbon-assoc__evidence-type">
+                        Evidence
+                    </div>
+                    <div className="ontology-ribbon-assoc__evidence-with">
+                        With
+                    </div>
+                </div>
+                <div className='ontology-ribbon-assoc__row'
+                     style={{backgroundColor: this.props.taxon_node.color}}
                 >
-                    {
-                        this.props.taxon_node.children.map((gene_node) => {
-                            return (
-                                [
-                                    <dt>
-                                    </dt>
-                                    // <dt className="ontology-ribbon-assoc__gene" key={`${gene_node.about.id}_gene`}>
-                                    //   <a href={this.props.geneUrlFormatter(gene_node.about.id)}>
-                                    //     {gene_node.about.label}
-                                    //   </a>
-                                    // </dt>
-                                    ,
-                                    <dd className="ontology-ribbon-assoc__gene-content"
-                                        key={`${gene_node.about.id}_gene-content`}>
-                                        <ul className="ontology-ribbon-assoc__gene-association-list">
+                        {
+                            this.props.taxon_node.children.map((gene_node) => {
+                                console.log('children_node');
+                                console.log(this.props.taxon_node.children);
+                                console.log('gene_node');
+                                console.log(gene_node);
+                                return (
+                                    [
+                                        <dt className="ontology-ribbon-assoc__species">
+
+                                        </dt>
+                                        // <dt className="ontology-ribbon-assoc__gene" key={`${gene_node.about.id}_gene`}>
+                                        //   <a href={this.props.geneUrlFormatter(gene_node.about.id)}>
+                                        //     {gene_node.about.label}
+                                        //   </a>
+                                        // </dt>
+                                        ,
+                                        <div>
                                             {
                                                 gene_node.children.map((go_node, index) => {
                                                     return (
-                                                        <li className="ontology-ribbon-assoc__gene-association-item"
-                                                            key={index}>
-                                                            <div className='ontology-ribbon-assoc__go'>
+                                                        <div className='ontology-ribbon-assoc__row'  key={index}>
+                                                            <div className='ontology-ribbon-assoc__species'>
+                                                                [
                                                                 <a
                                                                     title={go_node.about.label}
                                                                     href={`http://amigo.geneontology.org/amigo/term/${go_node.about.id}`}
@@ -85,36 +99,33 @@ class AssociationsWithEvidenceRowView extends React.Component {
                                                                 >
                                                                     {this.renderTerm(go_node)}
                                                                 </a>
+                                                                ]
+                                                            </div>
 
+                                                            <div className="ontology-ribbon-assoc__evidence-type">
+                                                                [
                                                                 {this.renderEvidenceLink(go_node.evidence)}
-
-
+                                                                ]
+                                                            </div>
+                                                            <div className="ontology-ribbon-assoc__evidence-with">
+                                                                [
                                                                 {go_node.evidence.with &&
                                                                 <a href={`https://google.com/?q=${go_node.evidence.with}`}>
                                                                     {go_node.evidence.with}
                                                                 </a>
                                                                 }
-
-                                                                {/*{go_node.publications}*/}
-                                                                {/*evidence: {*/}
-                                                                {/*id: assoc.evidence,*/}
-                                                                {/*type: assoc.evidence_type,*/}
-                                                                {/*label: assoc.evidence_label,*/}
-                                                                {/*with: assoc.evidence_with,*/}
-                                                                {/*},*/}
-                                                                {/*publications: assoc.publications*/}
+                                                                ]
                                                             </div>
-                                                        </li>
+                                                        </div>
                                                     )
                                                 })
                                             }
-                                        </ul>
-                                    </dd>
-                                ]
-                            )
-                        })
-                    }
-                </dl>
+                                                    </div>
+                                    ]
+                                )
+                            })
+                        }
+                </div>
 
             </div>
         );
