@@ -24,7 +24,6 @@ export default class Ribbon extends React.Component {
         this.state = {
             fetching: true,
         };
-        this.fetchData = this.fetchData.bind(this);
         this.setState = this.setState.bind(this);
     }
 
@@ -38,7 +37,7 @@ export default class Ribbon extends React.Component {
         this.fetchData(useslim, subject);
     }
 
-    fetchData(slim, subject) {
+    fetchData = (slim, subject) => {
         console.log('slim: ' + slim)
         let slimList = slim.toLowerCase() === 'tcag' ? TCAG_LIST :
             slim.toLowerCase() === 'fly' ? FLY_LIST :
