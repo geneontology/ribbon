@@ -6,11 +6,13 @@ const queryColor = "#dfebeb"; //"#c0d8d8";
 const orthoColor = "#f3f9f0"; //"#d8eecd";
 
 export function unpackSlimItems(results, subject, slimlist) {
-  var title = subject;
-  var queryResponse = [];
-  var others = [];
-  var allGOids = [];
+  let title = subject;
+  let queryResponse = [];
+  let others = [];
+  let allGOids = [];
+    console.log(results)
   results.forEach(function(result) {
+    console.log(result)
     if (result.data.length > 0) {
       // merge these assocs into the overall response to this query
       Array.prototype.push.apply(queryResponse, result.data);
@@ -23,12 +25,14 @@ export function unpackSlimItems(results, subject, slimlist) {
     if (slimitem.golabel.includes('other')) {
       others.push(slimitem);
     }
-    var assocs = [];
+    let assocs = [];
+      console.log(queryResponse)
     queryResponse.forEach(function(response) {
       if (response.slim === slimitem.goid) {
         // skip noninformative annotations like protein binding
-        for (var i = response.assocs.length - 1; i >= 0; i--) {
-          var assoc = response.assocs[i];
+          console.log(response)
+        for (let i = response.assocs.length - 1; i >= 0; i--) {
+          let assoc = response.assocs[i];
           if (assoc.object.id === 'GO:0005515' ||
               assoc.object.id === 'GO:0003674' ||
               assoc.object.id === 'GO:0008150' ||
@@ -50,22 +54,22 @@ export function unpackSlimItems(results, subject, slimlist) {
       }
     });
     // set up uniques and color too
-    var block_color = orthoRGB;
+    let block_color = orthoRGB;
     slimitem.uniqueAssocs = [];
     if (assocs.length > 0) {
-      var hits = [];
+      let hits = [];
       slimitem.uniqueAssocs = assocs.filter(function(assocItem, index) {
         /*
           First a hack to accomodate swapping out HGNC ids for UniProtKB ids
         */
-        if (subject.startsWith('HGNC') && assocItem.subject.taxon.id == 'NCBITaxon:9606') {
+        if (subject.startsWith('HGNC') && assocItem.subject.taxon.id === 'NCBITaxon:9606') {
           assocItem.subject.id = subject; // Clobber the UniProtKB id
         }
         /*
           Then another interim hack because of differences in resource naming
           e.g. FlyBase === FB
         */
-        var subjectID = assocItem.subject.id.replace('FlyBase', 'FB');
+        let subjectID = assocItem.subject.id.replace('FlyBase', 'FB');
         assocItem.subject.id = subjectID;
         if (subjectID === subject) {
           title = assocItem.subject.label + ' (' +
@@ -73,7 +77,7 @@ export function unpackSlimItems(results, subject, slimlist) {
           block_color = queryRGB;
         }
 
-        var label = assocItem.subject.id + ': ' +
+        let label = assocItem.subject.id + ': ' +
                     assocItem.object.label + ' ' + assocItem.negated;
         console.log('label is '+ label);
         if (!hits.includes(label)) {
@@ -94,8 +98,8 @@ export function unpackSlimItems(results, subject, slimlist) {
     return slimitem;
   });
   others.forEach(function(otherItem) {
-    for (var i = otherItem.uniqueAssocs.length - 1; i >= 0; i--) {
-      var checkAssoc = otherItem.uniqueAssocs[i];
+    for (let i = otherItem.uniqueAssocs.length - 1; i >= 0; i--) {
+      let checkAssoc = otherItem.uniqueAssocs[i];
       if (allGOids.indexOf(checkAssoc.object.id) >= 0) {
         otherItem.uniqueAssocs.splice(i, 1);
       }
@@ -104,8 +108,8 @@ export function unpackSlimItems(results, subject, slimlist) {
       Need to update the color
     */
     if (otherItem.uniqueAssocs.length > 0) {
-      var block_color = orthoRGB;
-      var taxon_color = orthoColor;
+      let block_color = orthoRGB;
+      let taxon_color = orthoColor;
       otherItem.uniqueAssocs.forEach(function(otherAssoc) {
         if (otherAssoc.subject.id === subject) {
           block_color = queryRGB;
@@ -128,9 +132,9 @@ export function unpackSlimItems(results, subject, slimlist) {
 }
 
 function sortAssociations (assoc_a, assoc_b) {
-  var taxa_ids = Array.from(taxa.keys());
-  var index_a = taxa_ids.indexOf(assoc_a.subject.taxon.id);
-  var index_b = taxa_ids.indexOf(assoc_b.subject.taxon.id);
+  let taxa_ids = Array.from(taxa.keys());
+  let index_a = taxa_ids.indexOf(assoc_a.subject.taxon.id);
+  let index_b = taxa_ids.indexOf(assoc_b.subject.taxon.id);
   if (index_a < index_b) {
     return -1;
   }
@@ -155,9 +159,9 @@ function sortAssociations (assoc_a, assoc_b) {
 }
 
 function subjectFirst(subject, uniqueAssocs) {
-  var subjectAssocs = [];
-  for (var i = uniqueAssocs.length -1; i >= 0; i--) {
-    var assoc = uniqueAssocs[i];
+  let subjectAssocs = [];
+  for (let i = uniqueAssocs.length -1; i >= 0; i--) {
+    let assoc = uniqueAssocs[i];
     if (assoc.subject.id === subject) {
       // remove this from current list
       uniqueAssocs.splice(i, 1);
@@ -173,7 +177,7 @@ export function heatColor(associations_count, rgb, heatLevels) {
   if( associations_count === 0 )
     return "#fff";
   let blockColor = [];     // [r,g,b]
-  for ( var i=0; i<3; i++ ) {
+  for ( let i=0; i<3; i++ ) {
     // logarithmic heatmap (with cutoff)
     if ( associations_count < heatLevels ) {
       // instead of just (256-rgb[i])/(Math.pow(2,associations_count)),
@@ -190,14 +194,14 @@ export function heatColor(associations_count, rgb, heatLevels) {
 }
 
 export function buildAssocTree(assocs, subject) {
-  var prev_species = '';
-  var prev_gene = '';
-  var current_taxon_node;
-  var current_gene_node;
-  var assocTree = [];
+  let prev_species = '';
+  let prev_gene = '';
+  let current_taxon_node;
+  let current_gene_node;
+  let assocTree = [];
 
   assocs.forEach(function (assoc) {
-    var taxon_color = assoc.subject.id === subject ?
+    let taxon_color = assoc.subject.id === subject ?
       queryColor : orthoColor;
     if (assoc.subject.taxon.id !== prev_species) {
       current_taxon_node = {
@@ -213,10 +217,10 @@ export function buildAssocTree(assocs, subject) {
       };
       current_taxon_node.children.push(current_gene_node);
 
-      var go_node = {
+      let go_node = {
         about: assoc.object,
         negated: assoc.negated
-      }
+      };
       current_gene_node.children.push(go_node);
 
       prev_species = assoc.subject.taxon.id;
@@ -229,19 +233,19 @@ export function buildAssocTree(assocs, subject) {
       };
       current_taxon_node.children.push(current_gene_node);
 
-      var go_node = {
+      let go_node = {
         about: assoc.object,
         negated: assoc.negated
-      }
+      };
       current_gene_node.children.push(go_node);
 
       prev_gene = assoc.subject.id;
 
     } else {
-      var go_node = {
+      let go_node = {
         about: assoc.object,
         negated: assoc.negated
-      }
+      };
       current_gene_node.children.push(go_node);
     }
   });

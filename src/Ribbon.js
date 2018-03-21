@@ -24,7 +24,7 @@ export default class Ribbon extends React.Component {
         currentTermId: undefined
       })
     }
-  }
+  };
 
   render() {
     const slimlist = this.props.slimlist;
