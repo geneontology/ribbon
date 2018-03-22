@@ -82,9 +82,9 @@ class AssociationsWithEvidenceRowView extends Component {
                 <div className='ontology-ribbon-assoc__row'>
                     <div className="ontology-ribbon-assoc__species">
                         <SpeciesLabel species={this.props.taxon_node.about.id}/>
-                        {/*<a href={this.props.geneUrlFormatter(this.props.taxon_node)}>*/}
-                        {/*{gene_node.about.label}*/}
-                        {/*</a>*/}
+                        <a href={this.props.geneUrlFormatter(taxon_result.about.id)}>
+                        {taxon_result.about.label}
+                        </a>
                     </div>
                     <div className="ontology-ribbon-assoc__evidence-type">
                         Evidence
@@ -100,7 +100,7 @@ class AssociationsWithEvidenceRowView extends Component {
                         console.log('go_node');
                         console.log(go_node);
                         return (
-                            <div className='ontology-ribbon-assoc__row'
+                            <div className='ontology-ribbon-assoc__row' key={go_node.about.id}
                                  style={{backgroundColor: this.props.taxon_node.color}}>
                                 <div className='ontology-ribbon-assoc__species'>
                                     <a
@@ -120,7 +120,11 @@ class AssociationsWithEvidenceRowView extends Component {
                                     className="ontology-ribbon-assoc__evidence-with">
                                     {go_node.evidence.with &&
                                         go_node.evidence.with.map( (e,index) => {
-                                            return this.generatedEvidenceWithLink(e)
+                                            return (
+                                                <div key={index}>
+                                                {this.generatedEvidenceWithLink(e)}
+                                                </div>
+                                            )
                                         })
                                     }
                                 </div>
