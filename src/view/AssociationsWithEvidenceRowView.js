@@ -28,7 +28,7 @@ class AssociationsWithEvidenceRowView extends React.Component {
         }
     }
 
-    renderEvidenceLink(evidence) {
+    renderEvidenceTypeLink(evidence) {
         let label = evidence.label;
 
         // TODO: create a map for evidence types / ids
@@ -41,6 +41,32 @@ class AssociationsWithEvidenceRowView extends React.Component {
                 {/*{go_node.evidence.label}*/}
             </a>
         )
+    }
+
+    generatedEvidenceWithLink(evidenceWith) {
+        // TODO: should go to AGR Evidence Code`
+        if(evidenceWith.startsWith('RGD')){
+            return (
+                <a href={`https://google.com/?q=${evidenceWith}`}>
+                    {evidenceWith}
+                </a>
+            )
+        }
+        // TODO: should go to UniProt
+        if(evidenceWith.startsWith('UniProt')){
+            return (
+                <a href={`https://google.com/?q=${evidenceWith}`}>
+                    {evidenceWith}
+                </a>
+            )
+        }
+        else{
+            return (
+                <a href={`https://google.com/?q=${evidenceWith}`}>
+                    {evidenceWith}
+                </a>
+            )
+        }
     }
 
     render() {
@@ -88,14 +114,14 @@ class AssociationsWithEvidenceRowView extends React.Component {
                                 </div>
 
                                 <div className="ontology-ribbon-assoc__evidence-type">
-                                    {this.renderEvidenceLink(go_node.evidence)}
+                                    {this.renderEvidenceTypeLink(go_node.evidence)}
                                 </div>
                                 <div
                                     className="ontology-ribbon-assoc__evidence-with">
                                     {go_node.evidence.with &&
-                                    <a href={`https://google.com/?q=${go_node.evidence.with}`}>
-                                        {go_node.evidence.with}
-                                    </a>
+                                        go_node.evidence.with.map( (e) => {
+                                            return this.generatedEvidenceWithLink(e)
+                                        })
                                     }
                                 </div>
                             </div>
