@@ -3,7 +3,6 @@
 import React, { Component }  from 'react';
 import PropTypes from 'prop-types';
 
-import AssociationsRowView from './AssociationsRowView';
 import AssociationsWithEvidenceRowView from "./AssociationsWithEvidenceRowView";
 
 class AssociationsGeneView extends Component {

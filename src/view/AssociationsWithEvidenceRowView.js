@@ -1,11 +1,11 @@
 'use strict';
 
-import React from 'react';
+import React, { Component }  from 'react';
 import PropTypes from 'prop-types';
 
 import SpeciesLabel from './SpeciesLabel';
 
-class AssociationsWithEvidenceRowView extends React.Component {
+class AssociationsWithEvidenceRowView extends Component {
 
     constructor() {
         super();
@@ -74,8 +74,8 @@ class AssociationsWithEvidenceRowView extends React.Component {
         // {this.props.taxon_node}
 
         let taxon_result = this.props.taxon_node.children[0];
-        console.log('taxon_results')
-        console.log(taxon_result)
+        // console.log('taxon_results')
+        // console.log(taxon_result)
         // console.log(this.props.taxon_node)
         return (
             <div>
@@ -119,7 +119,7 @@ class AssociationsWithEvidenceRowView extends React.Component {
                                 <div
                                     className="ontology-ribbon-assoc__evidence-with">
                                     {go_node.evidence.with &&
-                                        go_node.evidence.with.map( (e) => {
+                                        go_node.evidence.with.map( (e,index) => {
                                             return this.generatedEvidenceWithLink(e)
                                         })
                                     }
@@ -138,6 +138,7 @@ class AssociationsWithEvidenceRowView extends React.Component {
 AssociationsWithEvidenceRowView.propTypes = {
     taxon_node: PropTypes.object.isRequired,
     geneUrlFormatter: PropTypes.func,
+    key: PropTypes.any,
 };
 
 export default AssociationsWithEvidenceRowView;
