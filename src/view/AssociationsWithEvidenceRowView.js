@@ -47,6 +47,9 @@ class AssociationsWithEvidenceRowView extends React.Component {
 
         // {this.props.taxon_node}
 
+        let taxon_result = this.props.taxon_node.children[0];
+        console.log('taxon_results')
+        console.log(taxon_result)
         // console.log(this.props.taxon_node)
         return (
             <div>
@@ -54,7 +57,7 @@ class AssociationsWithEvidenceRowView extends React.Component {
                     <div className="ontology-ribbon-assoc__species">
                         <SpeciesLabel species={this.props.taxon_node.about.id}/>
                         {/*<a href={this.props.geneUrlFormatter(this.props.taxon_node)}>*/}
-                            {/*{gene_node.about.label}*/}
+                        {/*{gene_node.about.label}*/}
                         {/*</a>*/}
                     </div>
                     <div className="ontology-ribbon-assoc__evidence-type">
@@ -64,69 +67,41 @@ class AssociationsWithEvidenceRowView extends React.Component {
                         With
                     </div>
                 </div>
-                <div className='ontology-ribbon-assoc__row'
-                     style={{backgroundColor: this.props.taxon_node.color}}
-                >
-                        {
-                            this.props.taxon_node.children.map((gene_node) => {
-                                console.log('children_node');
-                                console.log(this.props.taxon_node.children);
-                                console.log('gene_node');
-                                console.log(gene_node);
-                                return (
-                                    [
-                                        <dt className="ontology-ribbon-assoc__species">
+                {
+                    taxon_result.children.map((go_node) => {
+                        // console.log('children_node');
+                        // console.log(this.props.taxon_node.children);
+                        console.log('go_node');
+                        console.log(go_node);
+                        return (
+                            <div className='ontology-ribbon-assoc__row'
+                                 style={{backgroundColor: this.props.taxon_node.color}}>
+                                <div className='ontology-ribbon-assoc__species'>
+                                    <a
+                                        title={go_node.about.label}
+                                        href={`http://amigo.geneontology.org/amigo/term/${go_node.about.id}`}
+                                        rel="noopener noreferrer"
+                                        target="_blank"
+                                    >
+                                        {this.renderTerm(go_node)}
+                                    </a>
+                                </div>
 
-                                        </dt>
-                                        // <dt className="ontology-ribbon-assoc__gene" key={`${gene_node.about.id}_gene`}>
-                                        //   <a href={this.props.geneUrlFormatter(gene_node.about.id)}>
-                                        //     {gene_node.about.label}
-                                        //   </a>
-                                        // </dt>
-                                        ,
-                                        <div>
-                                            {
-                                                gene_node.children.map((go_node, index) => {
-                                                    return (
-                                                        <div className='ontology-ribbon-assoc__row'  key={index}>
-                                                            <div className='ontology-ribbon-assoc__species'>
-                                                                [
-                                                                <a
-                                                                    title={go_node.about.label}
-                                                                    href={`http://amigo.geneontology.org/amigo/term/${go_node.about.id}`}
-                                                                    rel="noopener noreferrer"
-                                                                    target="_blank"
-                                                                >
-                                                                    {this.renderTerm(go_node)}
-                                                                </a>
-                                                                ]
-                                                            </div>
-
-                                                            <div className="ontology-ribbon-assoc__evidence-type">
-                                                                [
-                                                                {this.renderEvidenceLink(go_node.evidence)}
-                                                                ]
-                                                            </div>
-                                                            <div className="ontology-ribbon-assoc__evidence-with">
-                                                                [
-                                                                {go_node.evidence.with &&
-                                                                <a href={`https://google.com/?q=${go_node.evidence.with}`}>
-                                                                    {go_node.evidence.with}
-                                                                </a>
-                                                                }
-                                                                ]
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                })
-                                            }
-                                                    </div>
-                                    ]
-                                )
-                            })
-                        }
-                </div>
-
+                                <div className="ontology-ribbon-assoc__evidence-type">
+                                    {this.renderEvidenceLink(go_node.evidence)}
+                                </div>
+                                <div
+                                    className="ontology-ribbon-assoc__evidence-with">
+                                    {go_node.evidence.with &&
+                                    <a href={`https://google.com/?q=${go_node.evidence.with}`}>
+                                        {go_node.evidence.with}
+                                    </a>
+                                    }
+                                </div>
+                            </div>
+                        )
+                    })
+                }
             </div>
         );
 
