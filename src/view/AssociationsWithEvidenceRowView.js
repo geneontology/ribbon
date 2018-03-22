@@ -29,16 +29,9 @@ class AssociationsWithEvidenceRowView extends Component {
     }
 
     renderEvidenceTypeLink(evidence) {
-        let label = evidence.label;
-
-        // TODO: create a map for evidence types / ids
-
-        label = label.replace(new RegExp(' ', 'g'), '-');
         return (
-            <a href={`http://www.geneontology.org/page/${label}`}>
-                {/*{go_node.evidence.id}*/}
+            <a title={evidence.label} href={`http://www.evidenceontology.org/term/${evidence.id}`}>
                 {evidence.type}
-                {/*{go_node.evidence.label}*/}
             </a>
         )
     }
@@ -92,6 +85,9 @@ class AssociationsWithEvidenceRowView extends Component {
                     <div className="ontology-ribbon-assoc__evidence-with">
                         With
                     </div>
+                    <div className="ontology-ribbon-assoc__evidence-reference">
+                        Reference
+                    </div>
                 </div>
                 {
                     taxon_result.children.map((go_node) => {
@@ -127,6 +123,18 @@ class AssociationsWithEvidenceRowView extends Component {
                                             )
                                         })
                                     }
+                                </div>
+                                <div
+                                    className="ontology-ribbon-assoc__evidence-reference">
+                                    {/*{go_node.evidence.with &&*/}
+                                    {/*go_node.evidence.with.map( (e,index) => {*/}
+                                        {/*return (*/}
+                                            {/*<div key={index}>*/}
+                                                {/*{this.generatedEvidenceWithLink(e)}*/}
+                                            {/*</div>*/}
+                                        {/*)*/}
+                                    {/*})*/}
+                                    {/*}*/}
                                 </div>
                             </div>
                         )
