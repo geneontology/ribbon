@@ -36,8 +36,17 @@ class AssociationsWithEvidenceRowView extends Component {
         )
     }
 
+    generatedReferenceWithLink(publicationReference) {
+        if(publicationReference.id.startsWith('RGD')){
+            return (
+                <a href={`https://google.com/?q=${publicationReference.id}`}>
+                    {publicationReference.id}
+                </a>
+            )
+        }
+    }
+
     generatedEvidenceWithLink(evidenceWith) {
-        // TODO: should go to AGR Evidence Code`
         if(evidenceWith.startsWith('RGD')){
             return (
                 <a href={`https://google.com/?q=${evidenceWith}`}>
@@ -63,13 +72,9 @@ class AssociationsWithEvidenceRowView extends Component {
     }
 
     render() {
-
-        // {this.props.taxon_node}
-
         let taxon_result = this.props.taxon_node.children[0];
-        // console.log('taxon_results')
+        // console.log('taxon result')
         // console.log(taxon_result)
-        // console.log(this.props.taxon_node)
         return (
             <div>
                 <div className='ontology-ribbon-assoc__row'>
@@ -93,8 +98,8 @@ class AssociationsWithEvidenceRowView extends Component {
                     taxon_result.children.map((go_node) => {
                         // console.log('children_node');
                         // console.log(this.props.taxon_node.children);
-                        console.log('go_node');
-                        console.log(go_node);
+                        // console.log('go_node');
+                        // console.log(go_node);
                         return (
                             <div className='ontology-ribbon-assoc__row' key={go_node.about.id}
                                  style={{backgroundColor: this.props.taxon_node.color}}>
@@ -126,15 +131,15 @@ class AssociationsWithEvidenceRowView extends Component {
                                 </div>
                                 <div
                                     className="ontology-ribbon-assoc__evidence-reference">
-                                    {/*{go_node.evidence.with &&*/}
-                                    {/*go_node.evidence.with.map( (e,index) => {*/}
-                                        {/*return (*/}
-                                            {/*<div key={index}>*/}
-                                                {/*{this.generatedEvidenceWithLink(e)}*/}
-                                            {/*</div>*/}
-                                        {/*)*/}
-                                    {/*})*/}
-                                    {/*}*/}
+                                    {go_node.publications &&
+                                    go_node.publications.map( (e,index) => {
+                                        return (
+                                            <div key={index}>
+                                                {this.generatedReferenceWithLink(e)}
+                                            </div>
+                                        )
+                                    })
+                                    }
                                 </div>
                             </div>
                         )
