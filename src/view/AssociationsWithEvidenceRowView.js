@@ -37,19 +37,39 @@ class AssociationsWithEvidenceRowView extends Component {
     }
 
     generatedReferenceWithLink(publicationReference) {
-        if(publicationReference.id.startsWith('RGD')){
+        if(publicationReference.startsWith('RGD')){
             return (
-                <a href={`https://google.com/?q=${publicationReference.id}`}>
-                    {publicationReference.id}
+                <a href={`https://google.com/?q=${publicationReference}`}>
+                    {publicationReference}
                 </a>
             )
         }
     }
 
     generatedEvidenceWithLink(evidenceWith) {
-        if(evidenceWith.startsWith('RGD')){
+
+        // if Gene types
+        if (evidenceWith.match(/^(RGD:|ZFIN:ZDB-GENE|WB:|MGI:|SGD:|GO:|HGNC:).*/)) {
             return (
-                <a href={`https://google.com/?q=${evidenceWith}`}>
+                <a href={`http://www.alliancegenome.org/gene/${evidenceWith}`}>
+                    {evidenceWith}
+                </a>
+            )
+        }
+
+
+        if (evidenceWith.match(/^(GO:).*/)) {
+            return (
+                <a href={`http://amigo.geneontology.org/amigo/term/GO:0035869${evidenceWith}`}>
+                    {evidenceWith}
+                </a>
+            )
+        }
+
+        // if other prefixes but not gene type
+        if(evidenceWith.startsWith('ZFIN:ZDB-MRPH')){
+            return (
+                <a href={`https://zfin.org/${evidenceWith}`}>
                     {evidenceWith}
                 </a>
             )
@@ -57,7 +77,7 @@ class AssociationsWithEvidenceRowView extends Component {
         // TODO: should go to UniProt
         if(evidenceWith.startsWith('UniProt')){
             return (
-                <a href={`https://google.com/?q=${evidenceWith}`}>
+                <a href={`https://www.uniprot.org/uniprot/${evidenceWith}`}>
                     {evidenceWith}
                 </a>
             )
@@ -131,8 +151,8 @@ class AssociationsWithEvidenceRowView extends Component {
                                 </div>
                                 <div
                                     className="ontology-ribbon-assoc__evidence-reference">
-                                    {go_node.publications &&
-                                    go_node.publications.map( (e,index) => {
+                                    {go_node.references&&
+                                    go_node.references.map( (e,index) => {
                                         return (
                                             <div key={index}>
                                                 {this.generatedReferenceWithLink(e)}
