@@ -60,14 +60,14 @@ class AssociationsWithEvidenceRowView extends Component {
 
         if (evidenceWith.match(/^(GO:).*/)) {
             return (
-                <a href={`http://amigo.geneontology.org/amigo/term/GO:0035869${evidenceWith}`}>
+                <a href={`http://amigo.geneontology.org/amigo/term/${evidenceWith}`}>
                     {evidenceWith}
                 </a>
             )
         }
 
         // if other prefixes but not gene type
-        if(evidenceWith.startsWith('ZFIN:ZDB-MRPH')){
+        if(evidenceWith.startsWith('ZFIN:')){
             return (
                 <a href={`https://zfin.org/${evidenceWith}`}>
                     {evidenceWith}
@@ -130,7 +130,7 @@ class AssociationsWithEvidenceRowView extends Component {
                                         rel="noopener noreferrer"
                                         target="_blank"
                                     >
-                                        {this.renderTerm(go_node)}
+                                        {/*{this.renderTerm(go_node)}*/}
                                     </a>
                                 </div>
 
