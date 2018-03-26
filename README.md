@@ -10,6 +10,11 @@ Short form matrix view of all GO annotations for a given gene
 - Once node.js is on your machine then dependent packages need to be brought in. Running `npm install` in the components's root directory will install everything you need for development.
  - Note that you may need to run 'npm install' as sudo.
 
+- To install locally, you need to run:
+ - npm run build
+ - npm pack
+ - point to the .tgz file locally (had many issues with npm link)
+
 ## Demo Ribbon Server
 
 - `npm start` will run a local server with the ribbon's demo app at [http://localhost:3000](http://localhost:3000) with hot module reloading.
