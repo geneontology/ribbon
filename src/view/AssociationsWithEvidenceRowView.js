@@ -118,8 +118,8 @@ class AssociationsWithEvidenceRowView extends Component {
                     taxon_result.children.map((go_node) => {
                         // console.log('children_node');
                         // console.log(this.props.taxon_node.children);
-                        // console.log('go_node');
-                        // console.log(go_node);
+                        console.log('go_node');
+                        console.log(go_node);
                         return (
                             <div className='ontology-ribbon-assoc__row' key={go_node.about.id}
                                  style={{backgroundColor: this.props.taxon_node.color}}>
@@ -130,7 +130,7 @@ class AssociationsWithEvidenceRowView extends Component {
                                         rel="noopener noreferrer"
                                         target="_blank"
                                     >
-                                        {/*{this.renderTerm(go_node)}*/}
+                                        {this.renderTerm(go_node)}
                                     </a>
                                 </div>
 
