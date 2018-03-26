@@ -1,6 +1,6 @@
 'use strict';
 
-import React, { Component }  from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import SpeciesLabel from './SpeciesLabel';
@@ -37,7 +37,7 @@ class AssociationsWithEvidenceRowView extends Component {
     }
 
     generatedReferenceWithLink(publicationReference) {
-        if(publicationReference.startsWith('RGD')){
+        if (publicationReference.startsWith('RGD')) {
             return (
                 <a href={`https://google.com/?q=${publicationReference}`}>
                     {publicationReference}
@@ -67,7 +67,7 @@ class AssociationsWithEvidenceRowView extends Component {
         }
 
         // if other prefixes but not gene type
-        if(evidenceWith.startsWith('ZFIN:')){
+        if (evidenceWith.startsWith('ZFIN:')) {
             return (
                 <a href={`https://zfin.org/${evidenceWith}`}>
                     {evidenceWith}
@@ -75,14 +75,14 @@ class AssociationsWithEvidenceRowView extends Component {
             )
         }
         // TODO: should go to UniProt
-        if(evidenceWith.startsWith('UniProt')){
+        if (evidenceWith.startsWith('UniProt')) {
             return (
                 <a href={`https://www.uniprot.org/uniprot/${evidenceWith}`}>
                     {evidenceWith}
                 </a>
             )
         }
-        else{
+        else {
             return (
                 <a href={`https://google.com/?q=${evidenceWith}`}>
                     {evidenceWith}
@@ -99,10 +99,19 @@ class AssociationsWithEvidenceRowView extends Component {
             <div>
                 <div className='ontology-ribbon-assoc__row'>
                     <div className="ontology-ribbon-assoc__species">
-                        <SpeciesLabel species={this.props.taxon_node.about.id}/>
-                        <a href={this.props.geneUrlFormatter(taxon_result.about.id)}>
-                        {taxon_result.about.label}
-                        </a>
+                        {/*TODO: use a proper div container */}
+                        <table>
+                            <tr>
+                                <td>
+                                    <a href={this.props.geneUrlFormatter(taxon_result.about.id)}>
+                                        <i>{taxon_result.about.label}</i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <SpeciesLabel species={this.props.taxon_node.about.id}/>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                     <div className="ontology-ribbon-assoc__evidence-type">
                         Evidence
@@ -140,19 +149,19 @@ class AssociationsWithEvidenceRowView extends Component {
                                 <div
                                     className="ontology-ribbon-assoc__evidence-with">
                                     {go_node.evidence.with &&
-                                        go_node.evidence.with.map( (e,index) => {
-                                            return (
-                                                <div key={index}>
+                                    go_node.evidence.with.map((e, index) => {
+                                        return (
+                                            <div key={index}>
                                                 {this.generatedEvidenceWithLink(e)}
-                                                </div>
-                                            )
-                                        })
+                                            </div>
+                                        )
+                                    })
                                     }
                                 </div>
                                 <div
                                     className="ontology-ribbon-assoc__evidence-reference">
-                                    {go_node.references&&
-                                    go_node.references.map( (e,index) => {
+                                    {go_node.references &&
+                                    go_node.references.map((e, index) => {
                                         return (
                                             <div key={index}>
                                                 {this.generatedReferenceWithLink(e)}
