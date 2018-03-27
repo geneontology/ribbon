@@ -98,28 +98,28 @@ class AssociationsWithEvidenceRowView extends Component {
         return (
             <div>
                 <div className='ontology-ribbon-assoc__row'>
-                    <div className="ontology-ribbon-assoc__species">
+                    <div className="ontology-ribbon-assoc__species  ontology-ribbon-evidence-header">
                         {/*TODO: use a proper div container */}
-                        <table>
-                            <tr>
-                                <td>
-                                    <a href={this.props.geneUrlFormatter(taxon_result.about.id)}>
-                                        <i>{taxon_result.about.label}</i>
-                                    </a>
-                                </td>
-                                <td>
-                                    <SpeciesLabel species={this.props.taxon_node.about.id}/>
-                                </td>
-                            </tr>
-                        </table>
+                        {/*<table>*/}
+                            {/*<tr>*/}
+                                {/*<td>*/}
+                                    {/*<a href={this.props.geneUrlFormatter(taxon_result.about.id)}>*/}
+                                        {/*<i>{taxon_result.about.label}</i>*/}
+                                    {/*</a>*/}
+                                {/*</td>*/}
+                                {/*<td>*/}
+                                    {/*<SpeciesLabel species={this.props.taxon_node.about.id}/>*/}
+                                {/*</td>*/}
+                            {/*</tr>*/}
+                        {/*</table>*/}
                     </div>
-                    <div className="ontology-ribbon-assoc__evidence-type">
+                    <div className="ontology-ribbon-assoc__evidence-type ontology-ribbon-evidence-header">
                         Evidence
                     </div>
-                    <div className="ontology-ribbon-assoc__evidence-with">
+                    <div className="ontology-ribbon-assoc__evidence-with ontology-ribbon-evidence-header">
                         With
                     </div>
-                    <div className="ontology-ribbon-assoc__evidence-reference">
+                    <div className="ontology-ribbon-assoc__evidence-reference ontology-ribbon-evidence-header">
                         Reference
                     </div>
                 </div>

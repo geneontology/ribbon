@@ -17,7 +17,7 @@ class AssociationsGeneView extends Component {
     super();
     this.state = {
       selected: undefined
-    }
+    };
     this.onExpandCollapse = this.onExpandCollapse.bind(this);
   }
 
