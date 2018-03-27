@@ -29,4 +29,4 @@ Strip.propTypes = {
     goid: PropTypes.any,
   })),
   onSlimSelect: PropTypes.func.isRequired
-}
+};

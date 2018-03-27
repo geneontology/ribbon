@@ -74,7 +74,6 @@ class AssociationsWithEvidenceRowView extends Component {
                 </a>
             )
         }
-        // TODO: should go to UniProt
         if (evidenceWith.startsWith('UniProt')) {
             return (
                 <a href={`https://www.uniprot.org/uniprot/${evidenceWith}`}>
@@ -82,6 +81,16 @@ class AssociationsWithEvidenceRowView extends Component {
                 </a>
             )
         }
+        // TODO: should go to UniProt
+        if (evidenceWith.startsWith('PANTHER')) {
+            return (
+                <a href={`http://pantherdb.org/treeViewer/treeViewer.jsp?book=${evidenceWith}&species=agr&seq=WormBase=WBGene00006818`}>
+                    {evidenceWith}
+                    {this.props.key}
+                </a>
+            )
+        }
+
         else {
             return (
                 <a href={`https://google.com/?q=${evidenceWith}`}>

@@ -56,7 +56,8 @@ class Demo extends Component {
                 <Ribbon
                   geneUrlFormatter={(geneId) => `http://stagebuild.alliancegenome.org/gene/${geneId}`}
                   slimlist={data}
-                  // subject={subject}
+                  title={title}
+                  subject={subject}
                 /> :
                 null
             }
