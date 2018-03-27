@@ -55,7 +55,9 @@ class Demo extends Component {
               dataReceived ?
                 <Ribbon
                   geneUrlFormatter={(geneId) => `http://stagebuild.alliancegenome.org/gene/${geneId}`}
-                  slimlist={data} /> :
+                  slimlist={data}
+                  // subject={subject}
+                /> :
                 null
             }
             {dataError ? dataError : null}

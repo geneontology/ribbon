@@ -12,7 +12,7 @@ class AssociationsWithEvidenceRowView extends Component {
         this.state = {
             expanded: false,
             duration: 500,
-        }
+        };
         this.renderTerm = this.renderTerm.bind(this);
     }
 
@@ -99,19 +99,10 @@ class AssociationsWithEvidenceRowView extends Component {
             <div>
                 <div className='ontology-ribbon-assoc__row'>
                     <div className="ontology-ribbon-assoc__species  ontology-ribbon-evidence-header">
-                        {/*TODO: use a proper div container */}
-                        {/*<table>*/}
-                            {/*<tr>*/}
-                                {/*<td>*/}
-                                    {/*<a href={this.props.geneUrlFormatter(taxon_result.about.id)}>*/}
-                                        {/*<i>{taxon_result.about.label}</i>*/}
-                                    {/*</a>*/}
-                                {/*</td>*/}
-                                {/*<td>*/}
-                                    {/*<SpeciesLabel species={this.props.taxon_node.about.id}/>*/}
-                                {/*</td>*/}
-                            {/*</tr>*/}
-                        {/*</table>*/}
+                        {/*<a href={this.props.geneUrlFormatter(taxon_result.about.id)}>*/}
+                        {/*<i>{taxon_result.about.label}</i>*/}
+                        {/*</a>*/}
+                        {/*<SpeciesLabel species={this.props.taxon_node.about.id}/>*/}
                     </div>
                     <div className="ontology-ribbon-assoc__evidence-type ontology-ribbon-evidence-header">
                         Evidence

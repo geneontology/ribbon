@@ -35,6 +35,9 @@ export default class Ribbon extends React.Component {
                     onSlimSelect={(termId) => this.handleSlimSelect(termId)}
                     slimlist={slimlist}
                 />
+                { this.props.subject &&
+                        <a href={`http://amigo.geneontology.org/amigo/gene_product/`+this.props.subject}>{this.props.subject}</a>
+                }
                 {this.props.title &&
                 <div className='ontology-ribbon__caption'>{this.props.title}</div>
                 }
@@ -54,4 +57,5 @@ Ribbon.propTypes = {
     title: PropTypes.string,
     slimlist: PropTypes.array.isRequired,
     initialTermId: PropTypes.string,
+    subject: PropTypes.string,
 };
