@@ -10,9 +10,11 @@ export function unpackSlimItems(results, subject, slimlist) {
     let queryResponse = [];
     let others = [];
     let allGOids = [];
-    console.log(results)
+    // console.log('results');
+    // console.log(results);
     results.forEach(function (result) {
-        console.log(result)
+        // console.log('result');
+        // console.log(result);
         if (result.data.length > 0) {
             // merge these assocs into the overall response to this query
             Array.prototype.push.apply(queryResponse, result.data);
@@ -26,11 +28,11 @@ export function unpackSlimItems(results, subject, slimlist) {
             others.push(slimitem);
         }
         let assocs = [];
-        console.log(queryResponse)
+        // console.log(queryResponse)
         queryResponse.forEach(function (response) {
             if (response.slim === slimitem.goid) {
                 // skip noninformative annotations like protein binding
-                console.log(response)
+                // console.log(response)
                 for (let i = response.assocs.length - 1; i >= 0; i--) {
                     let assoc = response.assocs[i];
                     if (assoc.object.id === 'GO:0005515' ||
@@ -79,7 +81,7 @@ export function unpackSlimItems(results, subject, slimlist) {
 
                 let label = assocItem.subject.id + ': ' +
                     assocItem.object.label + ' ' + assocItem.negated;
-                console.log('label is ' + label);
+                // console.log('label is ' + label);
                 if (!hits.includes(label)) {
                     hits.push(label);
                     return true;
@@ -227,7 +229,8 @@ export function buildAssocTree(assocs, subject) {
                     label: assoc.evidence_label,
                     with: assoc.evidence_with,
                 },
-                publications: assoc.publications
+                publications: assoc.publications,
+                reference: assoc.reference,
             };
 
             current_gene_node.children.push(go_node);
@@ -256,7 +259,8 @@ export function buildAssocTree(assocs, subject) {
                     label: assoc.evidence_label,
                     with: assoc.evidence_with,
                 },
-                publications: assoc.publications
+                publications: assoc.publications,
+                reference: assoc.reference,
             };
 
             current_gene_node.children.push(go_node);
@@ -273,7 +277,8 @@ export function buildAssocTree(assocs, subject) {
                     label: assoc.evidence_label,
                     with: assoc.evidence_with,
                 },
-                publications: assoc.publications
+                publications: assoc.publications,
+                reference: assoc.reference,
             };
 
             current_gene_node.children.push(go_node);

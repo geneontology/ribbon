@@ -37,13 +37,33 @@ class AssociationsWithEvidenceRowView extends Component {
     }
 
     generatedReferenceWithLink(publicationReference) {
-        if (publicationReference.startsWith('RGD')) {
+        if (publicationReference.startsWith('PMID')) {
             return (
-                <a href={`https://google.com/?q=${publicationReference}`}>
+                <a href={`https://www.ncbi.nlm.nih.gov/pubmed/${publicationReference.split(':')[1]}`}>
                     {publicationReference}
                 </a>
             )
         }
+        if (publicationReference.startsWith('WB_REF')) {
+            return (
+                <a href={`https://www.wormbase.org/resources/paper/${publicationReference.split(':')[1]}`}>
+                    {publicationReference}
+                </a>
+            )
+        }
+        if (publicationReference.startsWith('ZFIN')) {
+            return (
+                <a href={`https://zfin.org/${publicationReference}`}>
+                    {publicationReference}
+                </a>
+            )
+        }
+
+        return (
+            <div>
+                {publicationReference}
+            </div>
+        );
     }
 
     generatedEvidenceWithLink(evidenceWith) {
@@ -86,7 +106,7 @@ class AssociationsWithEvidenceRowView extends Component {
             return (
                 <a
                     // href={`http://pantherdb.org/treeViewer/treeViewer.jsp?book=${evidenceWith}&species=agr&seq=WormBase=WBGene00006818`}
-                    href={`http://pantree.org/node/annotationNode.jsp?id=${evidenceWith.split(':')[1]}`}
+                    href={`http://pantherdb.org/panther/lookupId.jsp?id=${evidenceWith.split(':')[1]}`}
                 >
                     {evidenceWith}
                     {this.props.key}
@@ -130,8 +150,8 @@ class AssociationsWithEvidenceRowView extends Component {
                     taxon_result.children.map((go_node) => {
                         // console.log('children_node');
                         // console.log(this.props.taxon_node.children);
-                        console.log('go_node');
-                        console.log(go_node);
+                        // console.log('go_node');
+                        // console.log(go_node);
                         return (
                             <div className='ontology-ribbon-assoc__row' key={go_node.about.id}
                                  style={{backgroundColor: this.props.taxon_node.color}}>
@@ -163,8 +183,9 @@ class AssociationsWithEvidenceRowView extends Component {
                                 </div>
                                 <div
                                     className="ontology-ribbon-assoc__evidence-reference">
-                                    {go_node.references &&
-                                    go_node.references.map((e, index) => {
+                                    {/*{go_node.reference}*/}
+                                    {go_node.reference &&
+                                    go_node.reference.map((e, index) => {
                                         return (
                                             <div key={index}>
                                                 {this.generatedReferenceWithLink(e)}

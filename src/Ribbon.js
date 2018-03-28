@@ -28,6 +28,8 @@ export default class Ribbon extends React.Component {
 
     render() {
         const slimlist = this.props.slimlist;
+        // console.log('slimlist');
+        // console.log(slimlist);
         return (
             <div className="ontology-ribbon">
                 <Strip
