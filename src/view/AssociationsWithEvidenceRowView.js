@@ -84,7 +84,10 @@ class AssociationsWithEvidenceRowView extends Component {
         // TODO: should go to UniProt
         if (evidenceWith.startsWith('PANTHER')) {
             return (
-                <a href={`http://pantherdb.org/treeViewer/treeViewer.jsp?book=${evidenceWith}&species=agr&seq=WormBase=WBGene00006818`}>
+                <a
+                    // href={`http://pantherdb.org/treeViewer/treeViewer.jsp?book=${evidenceWith}&species=agr&seq=WormBase=WBGene00006818`}
+                    href={`http://pantree.org/node/annotationNode.jsp?id=${evidenceWith.split(':')[1]}`}
+                >
                     {evidenceWith}
                     {this.props.key}
                 </a>
