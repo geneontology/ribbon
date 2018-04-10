@@ -157,7 +157,7 @@ class AssociationsWithEvidenceRowView extends Component {
         return (
             <div>
                 <div className='ontology-ribbon-assoc__row'>
-                    <div className="ontology-ribbon-assoc__species  ontology-ribbon-evidence-header">
+                    <div className="ontology-ribbon-assoc__gene2 ontology-ribbon-evidence-header">
                         {/*<a href={this.props.geneUrlFormatter(taxon_result.about.id)}>*/}
                         {/*<i>{taxon_result.about.label}</i>*/}
                         {/*</a>*/}
@@ -182,7 +182,7 @@ class AssociationsWithEvidenceRowView extends Component {
                         return (
                             <div className='ontology-ribbon-assoc__row' key={go_node.about.id}
                                  style={{backgroundColor: this.props.taxon_node.color}}>
-                                <div className='ontology-ribbon-assoc__species'>
+                                <div className='ontology-ribbon-assoc__gene2-content'>
                                     <a
                                         title={go_node.about.label}
                                         href={`http://amigo.geneontology.org/amigo/term/${go_node.about.id}`}

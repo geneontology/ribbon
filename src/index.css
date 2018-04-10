@@ -100,9 +100,15 @@
   border-bottom: none;
 }
 
-.ontology-ribbon-assoc__species {
-  flex: 0 1 30%;
-  min-width: 150px;
+/*.ontology-ribbon-assoc__species {*/
+  /*flex: 0 1 30%;*/
+  /*min-width: 150px;*/
+/*}*/
+
+.ontology-ribbon-assoc__gene2{
+    flex: 0 1 30%;
+    min-width: 150px;
+    margin-left: 10px;
 }
 
 .ontology-ribbon-assoc__species-content {
@@ -114,6 +120,22 @@
   /*align-items: left;*/
   margin: 0;
   padding: 1em;
+}
+
+.ontology-ribbon-assoc__gene2-content {
+  flex: 0 1 30%;
+  min-width: 140px;
+  /*flex: 0 1 20%;*/
+  /*min-width: 150px;*/
+  /*display: flex;*/
+  /*flex-direction: row;*/
+  /*flex-wrap: wrap;*/
+  /*align-items: left;*/
+  /*margin: 0;*/
+  /*padding: 1em;*/
+  /*min-width: 100px;*/
+  margin-left: 10px;
+  padding: 0.5em 0;
 }
 
 .ontology-ribbon-assoc__gene {
