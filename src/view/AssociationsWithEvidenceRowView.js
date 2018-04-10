@@ -37,30 +37,57 @@ class AssociationsWithEvidenceRowView extends Component {
     }
 
     generatedReferenceWithLink(publicationReference) {
-        if (publicationReference.startsWith('PMID')) {
+        if (publicationReference.startsWith('PMID:')) {
             return (
                 <a href={`https://www.ncbi.nlm.nih.gov/pubmed/${publicationReference.split(':')[1]}`}>
                     {publicationReference}
                 </a>
             )
         }
-        if (publicationReference.startsWith('WB_REF')) {
+        else
+        if (publicationReference.startsWith('WB_REF:')) {
             return (
                 <a href={`https://www.wormbase.org/resources/paper/${publicationReference.split(':')[1]}`}>
                     {publicationReference}
                 </a>
             )
         }
-        if (publicationReference.startsWith('ZFIN')) {
+        else
+        if (publicationReference.startsWith('ZFIN:')) {
             return (
                 <a href={`https://zfin.org/${publicationReference}`}>
                     {publicationReference}
                 </a>
             )
         }
+        else
+        if (publicationReference.startsWith('RGD:')) {
+            return (
+                <a href={`https://rgd.mcw.edu/rgdweb/report/reference/main.html?id=${publicationReference.split(':')[1]}`}>
+                    {publicationReference}
+                </a>
+            )
+        }
+        else
+        if (publicationReference.startsWith('FB:')) {
+            return (
+                <a href={`http://flybase.org/reports/${publicationReference.split(':')[1]}`}>
+                    {publicationReference}
+                </a>
+            )
+        }
+        else
+        if (publicationReference.startsWith('SGD_REF:')) {
+            return (
+                <a href={`https://www.yeastgenome.org/reference/${publicationReference.split(':')[1]}`}>
+                    {publicationReference}
+                </a>
+            )
+        }
 
+        console.log('not sure how to handle '+publicationReference);
         return (
-            <div>
+            <div style={{color:'red'}}>
                 {publicationReference}
             </div>
         );
