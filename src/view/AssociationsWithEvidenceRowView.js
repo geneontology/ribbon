@@ -158,10 +158,6 @@ class AssociationsWithEvidenceRowView extends Component {
             <div>
                 <div className='ontology-ribbon-assoc__row'>
                     <div className="ontology-ribbon-assoc__gene2 ontology-ribbon-evidence-header">
-                        {/*<a href={this.props.geneUrlFormatter(taxon_result.about.id)}>*/}
-                        {/*<i>{taxon_result.about.label}</i>*/}
-                        {/*</a>*/}
-                        {/*<SpeciesLabel species={this.props.taxon_node.about.id}/>*/}
                     </div>
                     <div className="ontology-ribbon-assoc__evidence-type ontology-ribbon-evidence-header">
                         Evidence
@@ -175,10 +171,6 @@ class AssociationsWithEvidenceRowView extends Component {
                 </div>
                 {
                     taxon_result.children.map((go_node) => {
-                        // console.log('children_node');
-                        // console.log(this.props.taxon_node.children);
-                        // console.log('go_node');
-                        // console.log(go_node);
                         return (
                             <div className='ontology-ribbon-assoc__row' key={go_node.about.id}
                                  style={{backgroundColor: this.props.taxon_node.color}}>

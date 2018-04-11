@@ -100,10 +100,10 @@
   border-bottom: none;
 }
 
-/*.ontology-ribbon-assoc__species {*/
-  /*flex: 0 1 30%;*/
-  /*min-width: 150px;*/
-/*}*/
+.ontology-ribbon-assoc__species {
+  flex: 0 1 30%;
+  min-width: 150px;
+}
 
 .ontology-ribbon-assoc__gene2{
     flex: 0 1 30%;
