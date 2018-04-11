@@ -87,7 +87,7 @@ class AssociationsWithEvidenceRowView extends Component {
 
         console.log('not sure how to handle '+publicationReference);
         return (
-            <div style={{color:'red'}}>
+            <div style={{color:'gray'}}>
                 {publicationReference}
             </div>
         );

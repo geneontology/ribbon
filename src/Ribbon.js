@@ -39,9 +39,13 @@ export default class Ribbon extends React.Component {
                 />
                 {this.props.subject && this.props.title &&
                 <div className='ontology-ribbon__caption'>
+                    {this.props.subject.startsWith('HGNC:') &&
+                        this.props.title}
+                    {!this.props.subject.startsWith('HGNC:') &&
                     <a href={`http://amigo.geneontology.org/amigo/gene_product/` + this.props.subject}>
                         {this.props.title}
                     </a>
+                    }
                 </div>
                 }
                 {/*{this.props.title &&*/}
