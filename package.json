@@ -19,6 +19,7 @@
     "umd"
   ],
   "dependencies": {
+    "amigo2-instance-data": "^2.5.7",
     "axios": "0.16.1",
     "prop-types": "^15.5.10"
   },
