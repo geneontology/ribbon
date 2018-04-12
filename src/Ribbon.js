@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import axios from 'axios';
@@ -26,6 +26,30 @@ export default class Ribbon extends React.Component {
             this.setState({
                 currentTermId: undefined
             })
+        }
+    }
+
+    getTermLabel = (termId) => {
+        return this.props.slimlist.reduce((termLabel, item) => {
+            return termLabel || (termId === item.goid ? item.golabel : null);
+        }, null);
+    }
+
+    renderMessage = () => {
+        if (this.state.currentTermId) {
+            const currentTermLabel = this.getTermLabel(this.state.currentTermId);
+            return (
+                <div>
+                    Showing associations for {<strong><em>{currentTermLabel}</em></strong>} only.
+                    <button
+                        type="button"
+                        className="btn ontology-ribbon-filtered-message__button"
+                        onClick={() => this.handleSlimSelect(null)}
+                    >
+                        Show all
+                    </button>
+                </div>
+            );
         }
     }
 
@@ -127,6 +151,7 @@ export default class Ribbon extends React.Component {
                     </div>
                 </div>
                 <div className='ontology-ribbon__assoc'>
+                    {this.renderMessage()}
                     <AssociationsView
                         currentTermId={this.state.currentTermId}
                         slimlist={slimlist}

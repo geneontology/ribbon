@@ -36,7 +36,7 @@
 
 .ontology-ribbon__strip {
     font-size: 0.8rem;
-    margin: 1em;
+    margin-right: 2em;
     flex: 0 1 auto;
 }
 
@@ -220,8 +220,17 @@
 
 }
 
+.ontology-ribbon-assoc__empty {
+  font-style: italic;
+  opacity: 0.7;
+}
+
 .ontology-ribbon-evidence-header{
    font-weight: bolder;
+}
+
+.ontology-ribbon-filtered-message__button {
+  margin-left: 1em;
 }
 
 /* start of species icon */
