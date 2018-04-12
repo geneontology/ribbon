@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import axios from 'axios';
 
-import Strip from './view/Strip';
+import RibbonBase from './RibbonBase';
 import AssociationsView from './view/AssociationsView';
 
 export default class Ribbon extends React.Component {
@@ -27,7 +27,26 @@ export default class Ribbon extends React.Component {
                 currentTermId: undefined
             })
         }
-    };
+    }
+
+    groupByDomain = (slimlist) => {
+      const dataByGroups = slimlist.reduce((results, item) => {
+        const group = item.domain;
+        if (results[group]) {
+          results[group].push(item);
+        } else {
+          results[group] = [item];
+        }
+        return results;
+      }, {});
+
+      return ['molecular function', 'biological process', 'cellular component'].map((groupName) => (
+        {
+          label: groupName.charAt(0).toUpperCase() + groupName.slice(1),
+          data: dataByGroups[groupName]
+        }
+      ));
+    }
 
 
     componentDidMount() {
@@ -78,11 +97,21 @@ export default class Ribbon extends React.Component {
     render() {
         const slimlist = this.props.slimlist;
         return (
-            <div className="ontology-ribbon">
-                <Strip
+            <div>
+                <RibbonBase
                     currentTermId={this.state.currentTermId}
                     onSlimSelect={(termId) => this.handleSlimSelect(termId)}
-                    slimlist={slimlist}
+                    groups={
+                      this.groupByDomain(slimlist).map((group) => ({
+                        ...group,
+                        data: group.data.map((item) => ({
+                          color: item.color,
+                          id: item.goid,
+                          label: item.golabel,
+                          count: (item.uniqueAssocs || []).length,
+                        }))
+                      }))
+                    }
                 />
                 <div className='ontology-ribbon__caption'>
                     {!this.state.fetching && this.state.subject && this.state.title &&
