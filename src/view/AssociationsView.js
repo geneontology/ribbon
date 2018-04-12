@@ -18,9 +18,22 @@ class AssociationsView extends Component {
     const {slimlist, currentTermId, geneUrlFormatter} = this.props;
     return (
       <div >
+          <div className='ontology-ribbon-assoc__row'>
+              <div className="ontology-ribbon-assoc__gene2 ontology-ribbon-evidence-header">
+              </div>
+              <div className="ontology-ribbon-assoc__evidence-type ontology-ribbon-evidence-header">
+                  Evidence
+              </div>
+              <div className="ontology-ribbon-assoc__evidence-with ontology-ribbon-evidence-header">
+                  With
+              </div>
+              <div className="ontology-ribbon-assoc__evidence-reference ontology-ribbon-evidence-header">
+                  Reference
+              </div>
+          </div>
         {
           slimlist.filter((slimitem) => {
-            return slimitem.goid === currentTermId;
+            return !currentTermId || slimitem.goid === currentTermId;
           }).map((slimitem) => {
             return (
               <AssociationsGeneView
