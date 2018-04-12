@@ -16,10 +16,10 @@ class Block extends React.Component {
       }`;
       return(
         <div className={blockTitleClass}>
-          <div className="ontology-ribbon__block-title" onClick={this.handleOnClick}>{slimitem.golabel}</div>
+          <div className="ontology-ribbon__block-title" onClick={this.props.onClick}>{slimitem.golabel}</div>
           <div className="ontology-ribbon__block-tile"
             title={tileHoverString}
-            onClick={this.handleOnClick}
+            onClick={this.props.onClick}
             style={{backgroundColor:slimitem.color}}>
             {
               this.props.isActive ? <span>&#10005;</span> :null
@@ -35,11 +35,6 @@ class Block extends React.Component {
       );
     }
   }
-
-  handleOnClick = (evt) => {
-    const {onSlimSelect, goid} = this.props;
-    onSlimSelect(goid);
-  }
 }
 
 Block.propTypes = {
@@ -48,7 +43,6 @@ Block.propTypes = {
   color: PropTypes.string,
   isActive: PropTypes.bool,
   uniqueAssocs: PropTypes.array.isRequired,
-  onSlimSelect: PropTypes.func.isRequired
 };
 
 export default Block;

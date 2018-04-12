@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types';
 
-import Strip from './view/Strip';
+import RibbonBase from './RibbonBase';
 import AssociationsView from './view/AssociationsView';
 
 export default class Ribbon extends React.Component {
@@ -24,18 +24,37 @@ export default class Ribbon extends React.Component {
                 currentTermId: undefined
             })
         }
-    };
+    }
+
+    groupByDomain = (slimlist) => {
+      const dataByGroups = slimlist.reduce((results, item) => {
+        const group = item.domain;
+        if (results[group]) {
+          results[group].push(item);
+        } else {
+          results[group] = [item];
+        }
+        return results;
+      }, {});
+
+      return ['molecular function', 'biological process', 'cellular component'].map((groupName) => (
+        {
+          label: groupName.charAt(0).toUpperCase() + groupName.slice(1),
+          data: dataByGroups[groupName]
+        }
+      ));
+    }
 
     render() {
         const slimlist = this.props.slimlist;
         // console.log('slimlist');
         // console.log(slimlist);
         return (
-            <div className="ontology-ribbon">
-                <Strip
+            <div>
+                <RibbonBase
                     currentTermId={this.state.currentTermId}
                     onSlimSelect={(termId) => this.handleSlimSelect(termId)}
-                    slimlist={slimlist}
+                    groups={this.groupByDomain(slimlist)}
                 />
                 {this.props.subject && this.props.title &&
                 <div className='ontology-ribbon__caption'>
