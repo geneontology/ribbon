@@ -1,4 +1,4 @@
-import React, { Component }  from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import AssociationsGeneView from './AssociationsGeneView';
@@ -9,13 +9,19 @@ class AssociationsView extends Component {
     currentTermId: PropTypes.string,
     slimlist: PropTypes.arrayOf(
       PropTypes.shape({
-        color: PropTypes.string
+        goid: PropTypes.string,
+        tree: PropTypes.array,
       })
     )
   };
 
   render() {
     const {slimlist, currentTermId, geneUrlFormatter} = this.props;
+    const filteredSlimlist = slimlist.filter((slimitem) => {
+        return (!currentTermId || slimitem.goid === currentTermId) &&
+            (slimitem.tree || []).length > 0 ;
+    });
+
     return (
       <div >
           <div className='ontology-ribbon-assoc__row'>
@@ -32,9 +38,7 @@ class AssociationsView extends Component {
               </div>
           </div>
         {
-          slimlist.filter((slimitem) => {
-            return !currentTermId || slimitem.goid === currentTermId;
-          }).map((slimitem) => {
+          filteredSlimlist.map((slimitem) => {
             return (
               <AssociationsGeneView
                 key={slimitem.goid}
@@ -43,6 +47,9 @@ class AssociationsView extends Component {
               />
             )
           })
+        }
+        {
+            filteredSlimlist.length === 0 ? <span className="ontology-ribbon-assoc__empty">No association found.</span> : null
         }
       </div>
     );

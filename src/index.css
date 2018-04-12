@@ -213,6 +213,11 @@
 
 }
 
+.ontology-ribbon-assoc__empty {
+  font-style: italic;
+  opacity: 0.7;
+}
+
 .ontology-ribbon-evidence-header{
    font-weight: bolder;
 }
