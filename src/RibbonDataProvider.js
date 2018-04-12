@@ -94,7 +94,7 @@ export default class RibbonDataProvider extends React.Component {
                     dataError: dataError
                 });
             });
-    }
+    };
 
     handleSlimSelect = (termId) => {
         this.setState({
