@@ -6,7 +6,6 @@ import Block from './Block';
 export default class Strip extends React.Component {
 
   render() {
-    console.log(this.props.slimlist)
     const blocks = this.props.slimlist.map((slimitem) => {
       return <Block
         {...slimitem}
