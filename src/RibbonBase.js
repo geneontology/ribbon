@@ -17,9 +17,9 @@ export default class RibbonBase extends React.Component {
                     return (
                       <Block
                         {...slimitem}
-                        key={slimitem.goid}
-                        onClick={() => this.props.onSlimSelect(slimitem.goid)}
-                        isActive={slimitem.goid === this.props.currentTermId}
+                        key={slimitem.id}
+                        onClick={() => this.props.onSlimSelect(slimitem.id)}
+                        isActive={slimitem.id === this.props.currentTermId}
                       />
                     );
                   })
@@ -42,7 +42,7 @@ RibbonBase.propTypes = {
   currentTermId: PropTypes.string,
   groups: PropTypes.arrayOf(PropTypes.shape({
     data: PropTypes.arrayOf(PropTypes.shape({
-      goid: PropTypes.any,
+      id: PropTypes.string.isRequired,
     })),
   })),
   onSlimSelect: PropTypes.func.isRequired

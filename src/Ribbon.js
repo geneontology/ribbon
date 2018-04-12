@@ -54,7 +54,17 @@ export default class Ribbon extends React.Component {
                 <RibbonBase
                     currentTermId={this.state.currentTermId}
                     onSlimSelect={(termId) => this.handleSlimSelect(termId)}
-                    groups={this.groupByDomain(slimlist)}
+                    groups={
+                      this.groupByDomain(slimlist).map((group) => ({
+                        ...group,
+                        data: group.data.map((item) => ({
+                          color: item.color,
+                          id: item.goid,
+                          label: item.golabel,
+                          count: (item.uniqueAssocs || []).length,
+                        }))
+                      }))
+                    }
                 />
                 {this.props.subject && this.props.title &&
                 <div className='ontology-ribbon__caption'>
