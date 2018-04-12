@@ -3,7 +3,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import SpeciesLabel from './SpeciesLabel';
+import amigo_gen from 'amigo2-instance-data'
 
 class AssociationsWithEvidenceRowView extends Component {
 
@@ -14,6 +14,7 @@ class AssociationsWithEvidenceRowView extends Component {
             duration: 500,
         };
         this.renderTerm = this.renderTerm.bind(this);
+        this.linker = (new amigo_gen()).linker;
     }
 
     renderTerm(go_node) {
@@ -37,66 +38,20 @@ class AssociationsWithEvidenceRowView extends Component {
     }
 
     generatedReferenceWithLink(publicationReference) {
-        if (publicationReference.startsWith('PMID:')) {
-            return (
-                <a href={`https://www.ncbi.nlm.nih.gov/pubmed/${publicationReference.split(':')[1]}`}>
-                    {publicationReference}
-                </a>
-            )
-        }
-        else
-        if (publicationReference.startsWith('WB_REF:')) {
-            return (
-                <a href={`https://www.wormbase.org/resources/paper/${publicationReference.split(':')[1]}`}>
-                    {publicationReference}
-                </a>
-            )
-        }
-        else
-        if (publicationReference.startsWith('ZFIN:')) {
-            return (
-                <a href={`https://zfin.org/${publicationReference}`}>
-                    {publicationReference}
-                </a>
-            )
-        }
-        else
-        if (publicationReference.startsWith('RGD:')) {
-            return (
-                <a href={`https://rgd.mcw.edu/rgdweb/report/reference/main.html?id=${publicationReference.split(':')[1]}`}>
-                    {publicationReference}
-                </a>
-            )
-        }
-        else
-        if (publicationReference.startsWith('FB:')) {
-            return (
-                <a href={`http://flybase.org/reports/${publicationReference.split(':')[1]}`}>
-                    {publicationReference}
-                </a>
-            )
-        }
-        else
-        if (publicationReference.startsWith('SGD_REF:')) {
-            return (
-                <a href={`https://www.yeastgenome.org/reference/${publicationReference.split(':')[1]}`}>
-                    {publicationReference}
-                </a>
-            )
-        }
 
-        console.log('not sure how to handle '+publicationReference);
+        let url = this.linker.url(publicationReference)
         return (
-            <div style={{color:'gray'}}>
+            <a href={url}>
                 {publicationReference}
-            </div>
+            </a>
         );
+
     }
 
     generatedEvidenceWithLink(evidenceWith) {
 
-        // if Gene types
-        if (evidenceWith.match(/^(RGD:|ZFIN:ZDB-GENE|WB:|MGI:|SGD:|GO:|HGNC:).*/)) {
+        // if internal Gene link types
+        if (evidenceWith.match(/^(RGD:|ZFIN:ZDB-GENE|WB:WBGene|MGI:|SGD:|GO:|HGNC:).*/)) {
             return (
                 <a href={`http://www.alliancegenome.org/gene/${evidenceWith}`}>
                     {evidenceWith}
@@ -104,56 +59,18 @@ class AssociationsWithEvidenceRowView extends Component {
             )
         }
 
+        let url = this.linker.url(evidenceWith)
+        return (
+            <a href={url}>
+                {evidenceWith}
+            </a>
+        );
 
-        if (evidenceWith.match(/^(GO:).*/)) {
-            return (
-                <a href={`http://amigo.geneontology.org/amigo/term/${evidenceWith}`}>
-                    {evidenceWith}
-                </a>
-            )
-        }
 
-        // if other prefixes but not gene type
-        if (evidenceWith.startsWith('ZFIN:')) {
-            return (
-                <a href={`https://zfin.org/${evidenceWith}`}>
-                    {evidenceWith}
-                </a>
-            )
-        }
-        if (evidenceWith.startsWith('UniProt')) {
-            return (
-                <a href={`https://www.uniprot.org/uniprot/${evidenceWith}`}>
-                    {evidenceWith}
-                </a>
-            )
-        }
-        // TODO: should go to UniProt
-        if (evidenceWith.startsWith('PANTHER')) {
-            return (
-                <a
-                    // href={`http://pantherdb.org/treeViewer/treeViewer.jsp?book=${evidenceWith}&species=agr&seq=WormBase=WBGene00006818`}
-                    href={`http://pantherdb.org/panther/lookupId.jsp?id=${evidenceWith.split(':')[1]}`}
-                >
-                    {evidenceWith}
-                    {this.props.key}
-                </a>
-            )
-        }
-
-        else {
-            return (
-                <a href={`https://google.com/?q=${evidenceWith}`}>
-                    {evidenceWith}
-                </a>
-            )
-        }
     }
 
     render() {
         let taxon_result = this.props.taxon_node.children[0];
-        // console.log('taxon result')
-        // console.log(taxon_result)
         return (
             <div>
                 {
