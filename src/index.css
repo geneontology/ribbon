@@ -8,6 +8,13 @@
   flex-wrap: wrap;
 }
 
+.ontology-ribbon__assoc {
+    font-family: Lato, Helvetica, sans-serif;
+    font-size: 1rem;
+    width: 100%;
+    line-height: 1;
+}
+
 .ontology-ribbon a {
   /*color: #37474f;*/
   color: #0275d8;

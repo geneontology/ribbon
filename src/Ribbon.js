@@ -30,22 +30,22 @@ export default class Ribbon extends React.Component {
     }
 
     groupByDomain = (slimlist) => {
-      const dataByGroups = slimlist.reduce((results, item) => {
-        const group = item.domain;
-        if (results[group]) {
-          results[group].push(item);
-        } else {
-          results[group] = [item];
-        }
-        return results;
-      }, {});
+        const dataByGroups = slimlist.reduce((results, item) => {
+            const group = item.domain;
+            if (results[group]) {
+                results[group].push(item);
+            } else {
+                results[group] = [item];
+            }
+            return results;
+        }, {});
 
-      return ['molecular function', 'biological process', 'cellular component'].map((groupName) => (
-        {
-          label: groupName.charAt(0).toUpperCase() + groupName.slice(1),
-          data: dataByGroups[groupName]
-        }
-      ));
+        return ['molecular function', 'biological process', 'cellular component'].map((groupName) => (
+            {
+                label: groupName.charAt(0).toUpperCase() + groupName.slice(1),
+                data: dataByGroups[groupName]
+            }
+        ));
     }
 
 
@@ -102,33 +102,37 @@ export default class Ribbon extends React.Component {
                     currentTermId={this.state.currentTermId}
                     onSlimSelect={(termId) => this.handleSlimSelect(termId)}
                     groups={
-                      this.groupByDomain(slimlist).map((group) => ({
-                        ...group,
-                        data: group.data.map((item) => ({
-                          color: item.color,
-                          id: item.goid,
-                          label: item.golabel,
-                          count: (item.uniqueAssocs || []).length,
+                        this.groupByDomain(slimlist).map((group) => ({
+                            ...group,
+                            data: group.data.map((item) => ({
+                                color: item.color,
+                                id: item.goid,
+                                label: item.golabel,
+                                count: (item.uniqueAssocs || []).length,
+                            }))
                         }))
-                      }))
                     }
                 />
-                <div className='ontology-ribbon__caption'>
-                    {!this.state.fetching && this.state.subject && this.state.title &&
-                    <a href={`http://amigo.geneontology.org/amigo/gene_product/` + this.state.subject}>
-                        {this.state.title}
-                    </a>
-                    }
-                    {!this.state.fetching && !this.state.subject && this.state.title &&
-                    // no subject, so just provide a linkless title
-                    <div>{this.state.title}</div>
-                    }
+                <div className='ontology-ribbon'>
+                    <div className='ontology-ribbon__caption'>
+                        {!this.state.fetching && this.state.subject && this.state.title &&
+                        <a href={`http://amigo.geneontology.org/amigo/gene_product/` + this.state.subject}>
+                            {this.state.title}
+                        </a>
+                        }
+                        {!this.state.fetching && !this.state.subject && this.state.title &&
+                        // no subject, so just provide a linkless title
+                        <div>{this.state.title}</div>
+                        }
+                    </div>
                 </div>
-                <AssociationsView
-                    currentTermId={this.state.currentTermId}
-                    slimlist={slimlist}
-                    geneUrlFormatter={this.props.geneUrlFormatter}
-                />
+                <div className='ontology-ribbon__assoc'>
+                    <AssociationsView
+                        currentTermId={this.state.currentTermId}
+                        slimlist={slimlist}
+                        geneUrlFormatter={this.props.geneUrlFormatter}
+                    />
+                </div>
             </div>
         );
     }
