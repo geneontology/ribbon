@@ -13,7 +13,7 @@ import POMBE_LIST from './data/pombe';
 
 const GOLINK = 'https://api.monarchinitiative.org/api/';
 
-export default class Ribbon extends React.Component {
+export default class RibbonDataProvider extends React.Component {
     static propTypes = {
         subject: PropTypes.string.isRequired,
         slim: PropTypes.string,
