@@ -217,6 +217,10 @@
    font-weight: bolder;
 }
 
+.ontology-ribbon-filtered-message__button {
+  margin-left: 1em;
+}
+
 /* start of species icon */
 .ontology-ribbon-species-icon_agr {
   background-image: url(./icon/speciesSprite.png);

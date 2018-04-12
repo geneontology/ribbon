@@ -26,6 +26,30 @@ export default class Ribbon extends React.Component {
         }
     }
 
+    getTermLabel = (termId) => {
+        return this.props.slimlist.reduce((termLabel, item) => {
+            return termLabel || (termId === item.goid ? item.golabel : null);
+        }, null);
+    }
+
+    renderMessage = () => {
+        if (this.state.currentTermId) {
+            const currentTermLabel = this.getTermLabel(this.state.currentTermId);
+            return (
+                <div>
+                    Showing associations for {<strong><em>{currentTermLabel}</em></strong>} only.
+                    <button
+                        type="button"
+                        className="btn ontology-ribbon-filtered-message__button"
+                        onClick={() => this.handleSlimSelect(null)}
+                    >
+                        Show all
+                    </button>
+                </div>
+            );
+        }
+    }
+
     groupByDomain = (slimlist) => {
       const dataByGroups = slimlist.reduce((results, item) => {
         const group = item.domain;
@@ -80,6 +104,7 @@ export default class Ribbon extends React.Component {
                 {/*{this.props.title &&*/}
                 {/*<div className='ontology-ribbon__caption'>{this.props.title}</div>*/}
                 {/*}*/}
+                {this.renderMessage()}
                 <AssociationsView
                     currentTermId={this.state.currentTermId}
                     slimlist={slimlist}
