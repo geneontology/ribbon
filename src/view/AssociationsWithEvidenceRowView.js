@@ -4,6 +4,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import amigo_gen from 'amigo2-instance-data'
+import SpeciesLabel from "./SpeciesLabel";
 
 class AssociationsWithEvidenceRowView extends Component {
 
@@ -37,24 +38,34 @@ class AssociationsWithEvidenceRowView extends Component {
         )
     }
 
-    generatedReferenceWithLink(publicationReference) {
+    generatedReferenceWithLink(publicationReference, subject) {
 
-        let url = this.linker.url(publicationReference)
+        let url = this.linker.url(publicationReference);
         return (
-            <a href={url}>
-                {publicationReference}
-            </a>
+            <div>
+                <a href={url}>
+                    {publicationReference}
+                    {
+                        subject.split(':')[0] === publicationReference.split(':')[0] &&
+                        <SpeciesLabel species={publicationReference} hideText={true}/>
+                    }
+                </a>
+            </div>
         );
 
     }
 
-    generatedEvidenceWithLink(evidenceWith) {
+    generatedEvidenceWithLink(evidenceWith, subject) {
 
         // if internal Gene link types
         if (evidenceWith.match(/^(RGD:|ZFIN:ZDB-GENE|WB:WBGene|MGI:|SGD:|GO:|HGNC:).*/)) {
             return (
                 <a href={`http://www.alliancegenome.org/gene/${evidenceWith}`}>
                     {evidenceWith}
+                    {
+                        subject.split(':')[0] === evidenceWith.split(':')[0] &&
+                        <SpeciesLabel species={evidenceWith} hideText={true}/>
+                    }
                 </a>
             )
         }
@@ -98,7 +109,7 @@ class AssociationsWithEvidenceRowView extends Component {
                                     go_node.evidence.with.map((e, index) => {
                                         return (
                                             <div key={index}>
-                                                {this.generatedEvidenceWithLink(e)}
+                                                {this.generatedEvidenceWithLink(e, go_node.about.id)}
                                             </div>
                                         )
                                     })
@@ -111,7 +122,7 @@ class AssociationsWithEvidenceRowView extends Component {
                                     go_node.reference.map((e, index) => {
                                         return (
                                             <div key={index}>
-                                                {this.generatedReferenceWithLink(e)}
+                                                {this.generatedReferenceWithLink(e,go_node.about.id)}
                                             </div>
                                         )
                                     })

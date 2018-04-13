@@ -12,7 +12,7 @@ const prefixToSpecies = {
     'FB': 'Drosophila melanogaster',  // fly
     'WB': 'Caenorhabditis elegans',  // worm
     'SGD': 'Saccharomyces cerevisiae',  // yeast
-}
+};
 
 const taxonomyToSpecies = {
     'NCBITaxon:9606': 'Homo sapiens',  // human
@@ -36,29 +36,39 @@ function getPrefixForId(inputId) {
 }
 
 const SpeciesLabel = (props) => {
-    const {species, ...iconProps} = props;
+    const {species,hideText, ...iconProps} = props;
     let speciesName = taxonomyToSpecies[species];
-    speciesName = speciesName ?  speciesName : getPrefixForId(species);
-    speciesName = speciesName ? speciesName :  species ;
+    speciesName = speciesName ? speciesName : getPrefixForId(species);
+    speciesName = speciesName ? speciesName : species;
 
-    return (
-        <div
-            style={{
-                display: 'flex',
-                alignItems: 'center',
-            }}
-        >
-            <SpeciesIcon
-                species={speciesName}
-                {...iconProps}
-            />
-            <i>{speciesName}</i>
-        </div>
-    );
+    let isValid = Object.values(taxonomyToSpecies).indexOf(speciesName) >= 0;
+
+    if (isValid) {
+        return (
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                }}
+            >
+                <SpeciesIcon
+                    species={speciesName}
+                    {...iconProps}
+                />
+                {!hideText &&
+                <i>{speciesName}</i>
+                }
+            </div>
+        );
+    }
+    else {
+        return <div></div>;
+    }
 };
 
 SpeciesLabel.propTypes = {
     species: PropTypes.string,
+    hideText: PropTypes.bool,
 };
 
 export default SpeciesLabel;
