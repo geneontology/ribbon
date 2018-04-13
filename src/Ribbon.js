@@ -5,6 +5,7 @@ import axios from 'axios';
 
 import RibbonBase from './RibbonBase';
 import AssociationsView from './view/AssociationsView';
+import SpeciesLabel from './view/SpeciesLabel';
 
 export default class Ribbon extends React.Component {
 
@@ -138,6 +139,7 @@ export default class Ribbon extends React.Component {
                     }
                 />
                 <div className='ontology-ribbon'>
+                    <SpeciesLabel species={'NCBITaxon:9606'} />
                     <div className='ontology-ribbon__caption'>
                         {!this.state.fetching && this.state.subject && this.state.title &&
                         <a href={`http://amigo.geneontology.org/amigo/gene_product/` + this.state.subject}>
