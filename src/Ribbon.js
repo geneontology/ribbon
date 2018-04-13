@@ -28,13 +28,13 @@ export default class Ribbon extends React.Component {
                 currentTermId: undefined
             })
         }
-    }
+    };
 
     getTermLabel = (termId) => {
         return this.props.slimlist.reduce((termLabel, item) => {
             return termLabel || (termId === item.goid ? item.golabel : null);
         }, null);
-    }
+    };
 
     renderMessage = () => {
         if (this.state.currentTermId) {
@@ -52,7 +52,7 @@ export default class Ribbon extends React.Component {
                 </div>
             );
         }
-    }
+    };
 
     groupByDomain = (slimlist) => {
         const dataByGroups = slimlist.reduce((results, item) => {
@@ -71,7 +71,7 @@ export default class Ribbon extends React.Component {
                 data: dataByGroups[groupName]
             }
         ));
-    }
+    };
 
 
     componentDidMount() {
@@ -139,7 +139,9 @@ export default class Ribbon extends React.Component {
                     }
                 />
                 <div className='ontology-ribbon'>
-                    <SpeciesLabel species={'NCBITaxon:9606'} />
+                    {this.state.subject &&
+                    <SpeciesLabel species={this.state.subject}/>
+                    }
                     <div className='ontology-ribbon__caption'>
                         {!this.state.fetching && this.state.subject && this.state.title &&
                         <a href={`http://amigo.geneontology.org/amigo/gene_product/` + this.state.subject}>
