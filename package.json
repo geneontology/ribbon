@@ -1,5 +1,5 @@
 {
-  "name": "gene-ontology-ribbon",
+  "name": "go-agr-ribbon",
   "version": "1.2.1",
   "scripts": {
     "build": "nwb build-react-component --copy-files",
