@@ -196,7 +196,10 @@ export function heatColor(associations_count, rgb, heatLevels) {
 }
 
 function containsPMID(references) {
-    return (!references || references.contains( (r) => { r.startsWith('PMID:') })  );
+    for(let r of references){
+        if(r.startsWith('PMID:')) return true ;
+    }
+    return false ;
 }
 
 /**
@@ -208,14 +211,17 @@ function filterDuplicationReferences(references) {
 
 
     // if references contains a PMID, remove the non-PMID ones
-
     if(!containsPMID(references)){
         return references ;
     }
     else{
-        return references.filter( (it) => {
-            it.startsWith('PMID:')
-        });
+        let returnArray =[];
+        for(let r of references){
+            if(r.startsWith('PMID:')){
+                returnArray.push(r);
+            }
+        }
+        return returnArray;
     }
 
 }
@@ -285,7 +291,7 @@ export function buildAssocTree(assocs, subject) {
                     with: assoc.evidence_with,
                 },
                 publications: assoc.publications,
-                reference: assoc.reference,
+                reference: filterDuplicationReferences(assoc.reference),
             };
 
             current_gene_node.children.push(go_node);
@@ -303,7 +309,7 @@ export function buildAssocTree(assocs, subject) {
                     with: assoc.evidence_with,
                 },
                 publications: assoc.publications,
-                reference: assoc.reference,
+                reference: filterDuplicationReferences(assoc.reference),
             };
 
             current_gene_node.children.push(go_node);
