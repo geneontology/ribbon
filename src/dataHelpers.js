@@ -195,6 +195,31 @@ export function heatColor(associations_count, rgb, heatLevels) {
     return 'rgb(' + blockColor[0] + ',' + blockColor[1] + ',' + blockColor[2] + ')';
 }
 
+function containsPMID(references) {
+    return (!references || references.contains( (r) => { r.startsWith('PMID:') })  );
+}
+
+/**
+ *
+ * @param references
+ * @returns {*}
+ */
+function filterDuplicationReferences(references) {
+
+
+    // if references contains a PMID, remove the non-PMID ones
+
+    if(!containsPMID(references)){
+        return references ;
+    }
+    else{
+        return references.filter( (it) => {
+            it.startsWith('PMID:')
+        });
+    }
+
+}
+
 export function buildAssocTree(assocs, subject) {
     let prev_species = '';
     let prev_gene = '';
@@ -230,7 +255,7 @@ export function buildAssocTree(assocs, subject) {
                     with: assoc.evidence_with,
                 },
                 publications: assoc.publications,
-                reference: assoc.reference,
+                reference: filterDuplicationReferences(assoc.reference),
             };
 
             current_gene_node.children.push(go_node);
