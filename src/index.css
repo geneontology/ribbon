@@ -143,9 +143,10 @@
   display: flex;
   flex-direction: row;
 
-  align-items: top;
+  /*align-items: top;*/
   margin: 0;
-  border-bottom: 1px solid #ccc;
+  /*border-bottom: 1px solid #ccc;*/
+  border-radius: 2px;
 }
 
 .ontology-ribbon-assoc__row:last-child {

@@ -85,10 +85,11 @@ class AssociationsWithEvidenceRowView extends Component {
         return (
             <div>
                 {
-                    taxon_result.children.map((go_node) => {
+                    taxon_result.children.map((go_node,index) => {
                         return (
-                            <div className='ontology-ribbon-assoc__row' key={go_node.about.id}
-                                 style={{backgroundColor: this.props.taxon_node.color}}>
+                            <div className="ontology-ribbon-assoc__row" key={go_node.about.id}
+                                 style={{backgroundColor: index%2 === 0 ? 'rgb(223,235,235)' : 'white'}}
+                            >
                                 <div className='ontology-ribbon-assoc__gene2-content'>
                                     <a
                                         title={go_node.about.label}
