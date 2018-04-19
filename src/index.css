@@ -42,6 +42,16 @@
     flex: 0 1 auto;
 }
 
+.ontology-ribbon__show-hide-assocs{
+  margin-left: 20px;
+  line-height: 2em;
+  color: #0275d8;
+}
+
+.ontology-ribbon__show-hide-assocs:hover{
+  cursor: pointer;
+}
+
 .ontology-ribbon__strip-label {
   line-height: 2em;
   font-style: italic;

@@ -6,6 +6,10 @@ import axios from 'axios';
 import RibbonBase from './RibbonBase';
 import AssociationsView from './view/AssociationsView';
 import SpeciesLabel from './view/SpeciesLabel';
+// import FaIconPack from 'react-icons/lib/fa'
+// import FaClose from 'react-icons/lib/fa/close'
+import * as FontAwesome from 'react-icons/lib/fa'
+
 
 export default class Ribbon extends React.Component {
 
@@ -14,13 +18,14 @@ export default class Ribbon extends React.Component {
         this.state = {
             currentTermId: undefined,
             currentDomain: undefined,
-            fetching: false
+            fetching: false,
+            showing: false,
         }
     }
 
 
     handleDomainSelect = (domain) => {
-        if (domain!== this.state.currentDomain) {
+        if (domain !== this.state.currentDomain) {
             this.setState({
                 currentDomain: domain,
                 currentTermId: undefined,
@@ -71,8 +76,7 @@ export default class Ribbon extends React.Component {
                 </div>
             );
         }
-        else
-        if (this.state.currentDomain) {
+        else if (this.state.currentDomain) {
             // const currentTermLabel = this.getTermLabel(this.state.currentDomain);
             return (
                 <div>
@@ -188,8 +192,29 @@ export default class Ribbon extends React.Component {
                         // no subject, so just provide a linkless title
                         <div>{this.state.title}</div>
                         }
+
+                        {this.state.showing &&
+                        <a onClick={() => this.setState({showing: false})}
+                           className='ontology-ribbon__show-hide-assocs'>
+                            Hide associations
+                            <div style={{paddingBottom:10,marginBottom:10,display:'inline'}}>
+                                <FontAwesome.FaClose size={20}/>
+                            </div>
+                        </a>
+                        }
+                        {!this.state.showing &&
+                        <a onClick={() => this.setState({showing: true})}
+                           className='ontology-ribbon__show-hide-assocs'>
+                            Show associations
+                            <div style={{paddingBottom:10,marginBottom:10,display:'inline'}}>
+                                <FontAwesome.FaAngleDoubleDown size={20}/>
+                            </div>
+                        </a>
+                        }
+
                     </div>
                 </div>
+                {this.state.showing &&
                 <div className='ontology-ribbon__assoc'>
                     {this.renderMessage()}
                     <AssociationsView
@@ -199,6 +224,7 @@ export default class Ribbon extends React.Component {
                         geneUrlFormatter={this.props.geneUrlFormatter}
                     />
                 </div>
+                }
             </div>
         );
     }

@@ -50,7 +50,6 @@ class AssociationsView extends Component {
                 </div>
                 {
                     filteredSlimlist.map((slimitem) => {
-                        console.log(slimitem)
                         return (
                             <AssociationsGeneView
                                 key={slimitem.goid}
