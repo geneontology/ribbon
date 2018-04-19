@@ -82,13 +82,14 @@ class AssociationsWithEvidenceRowView extends Component {
 
     render() {
         let taxon_result = this.props.taxon_node.children[0];
+        const { inputIndex } = this.props ;
         return (
             <div>
                 {
-                    taxon_result.children.map((go_node,index) => {
+                    taxon_result.children.map((go_node) => {
                         return (
                             <div className="ontology-ribbon-assoc__row" key={go_node.about.id}
-                                 style={{backgroundColor: index%2 === 0 ? 'rgb(223,235,235)' : 'white'}}
+                                 style={{backgroundColor: inputIndex%2 === 0 ? 'rgb(223,235,235)' : 'white'}}
                             >
                                 <div className='ontology-ribbon-assoc__gene2-content'>
                                     <a
@@ -144,6 +145,7 @@ AssociationsWithEvidenceRowView.propTypes = {
     taxon_node: PropTypes.object.isRequired,
     geneUrlFormatter: PropTypes.func,
     key: PropTypes.any,
+    inputIndex: PropTypes.any,
 };
 
 export default AssociationsWithEvidenceRowView;

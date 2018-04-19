@@ -48,12 +48,13 @@ class AssociationsView extends Component {
                     </div>
                 </div>
                 {
-                    filteredSlimlist.map((slimitem) => {
+                    filteredSlimlist.map((slimitem,index) => {
                         return (
                             <AssociationsGeneView
                                 key={slimitem.goid}
                                 slimitem={slimitem}
                                 geneUrlFormatter={geneUrlFormatter}
+                                inputIndex={index}
                             />
                         )
                     })
