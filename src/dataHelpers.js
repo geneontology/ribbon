@@ -10,8 +10,7 @@ export function unpackSlimItems(results, subject, slimlist) {
     let queryResponse = [];
     let others = [];
     let allGOids = [];
-    // console.log('results');
-    // console.log(results);
+    let globalGOids = [];
     results.forEach(function (result) {
         // console.log('result');
         // console.log(result);
@@ -43,7 +42,15 @@ export function unpackSlimItems(results, subject, slimlist) {
                     }
                 }
                 // these are all the assocs under this slim class
-                Array.prototype.push.apply(assocs, response.assocs);
+                Array.prototype.push.apply(assocs, response.assocs.filter( (f) => {
+                    if(globalGOids.indexOf(f.object.id)<0){
+                        globalGOids.push(f.object.id);
+                        return true
+                    }
+                    else{
+                        return false ;
+                    }
+                }));
                 /*
                 keep track of which associations are found for slim classes
                 so that (after this loop) these can be removed from "other"'s list
@@ -117,7 +124,7 @@ export function unpackSlimItems(results, subject, slimlist) {
                     block_color = queryRGB;
                     taxon_color = queryColor;
                 }
-            })
+            });
             otherItem.uniqueAssocs.sort(sortAssociations);
             otherItem.uniqueAssocs = subjectFirst(subject, otherItem.uniqueAssocs);
             otherItem.color = heatColor(otherItem.uniqueAssocs.length, block_color, 48);

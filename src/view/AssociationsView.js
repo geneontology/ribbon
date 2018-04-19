@@ -19,7 +19,6 @@ class AssociationsView extends Component {
     render() {
         const {slimlist, currentTermId, currentDomain, geneUrlFormatter} = this.props;
         const filteredSlimlist = slimlist.filter((slimitem) => {
-            console.log(currentDomain + ' vs ' + slimitem.domain)
             return (!currentTermId || slimitem.goid === currentTermId)
                 && (!currentDomain || slimitem.domain.toLowerCase() === currentDomain.toLowerCase() )
                 && (slimitem.tree || []).length > 0;
