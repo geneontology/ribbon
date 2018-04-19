@@ -42,11 +42,32 @@
     flex: 0 1 auto;
 }
 
+
+.fade-enter {
+  opacity: 0.01;
+}
+
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transition: opacity 500ms linear;
+}
+
+.fade-leave {
+  opacity: 1;
+}
+
+.fade-leave.fade-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms linear;
+}
+
 .ontology-ribbon__show-hide-assocs{
   margin-left: 20px;
   line-height: 2em;
   color: #0275d8;
 }
+
+
 
 .ontology-ribbon__show-hide-assocs:hover{
   cursor: pointer;

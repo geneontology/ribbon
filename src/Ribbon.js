@@ -9,6 +9,8 @@ import SpeciesLabel from './view/SpeciesLabel';
 // import FaIconPack from 'react-icons/lib/fa'
 // import FaClose from 'react-icons/lib/fa/close'
 import * as FontAwesome from 'react-icons/lib/fa'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
 
 
 export default class Ribbon extends React.Component {
@@ -19,7 +21,7 @@ export default class Ribbon extends React.Component {
             currentTermId: undefined,
             currentDomain: undefined,
             fetching: false,
-            showing: false,
+            showing: true,
         }
     }
 
@@ -214,6 +216,10 @@ export default class Ribbon extends React.Component {
 
                     </div>
                 </div>
+                <ReactCSSTransitionGroup transitionName='fade'
+                                         transitionEnterTimeout={500}
+                                         transitionLeaveTimeout={300}
+                >
                 {this.state.showing &&
                 <div className='ontology-ribbon__assoc'>
                     {this.renderMessage()}
@@ -225,6 +231,7 @@ export default class Ribbon extends React.Component {
                     />
                 </div>
                 }
+                </ReactCSSTransitionGroup>
             </div>
         );
     }
