@@ -13,19 +13,38 @@ export default class Ribbon extends React.Component {
         super(props);
         this.state = {
             currentTermId: undefined,
+            currentDomain: undefined,
             fetching: false
         }
     }
 
-    handleSlimSelect = (termId) => {
-        if (termId !== this.state.currentTermId) {
+
+    handleDomainSelect = (domain) => {
+        if (domain!== this.state.currentDomain) {
             this.setState({
-                currentTermId: termId
+                currentDomain: domain,
+                currentTermId: undefined,
             });
         }
         else {
             this.setState({
+                currentDomain: undefined,
                 currentTermId: undefined
+            })
+        }
+    };
+
+    handleSlimSelect = (termId) => {
+        if (termId !== this.state.currentTermId) {
+            this.setState({
+                currentTermId: termId,
+                currentDomain: undefined
+            });
+        }
+        else {
+            this.setState({
+                currentTermId: undefined,
+                currentDomain: undefined
             })
         }
     };
@@ -126,6 +145,7 @@ export default class Ribbon extends React.Component {
                 <RibbonBase
                     currentTermId={this.state.currentTermId}
                     onSlimSelect={(termId) => this.handleSlimSelect(termId)}
+                    onDomainSelect={(domain) => this.handleDomainSelect(domain)}
                     groups={
                         this.groupByDomain(slimlist).map((group) => ({
                             ...group,
@@ -158,6 +178,7 @@ export default class Ribbon extends React.Component {
                     {this.renderMessage()}
                     <AssociationsView
                         currentTermId={this.state.currentTermId}
+                        currentDomain={this.state.currentDomain}
                         slimlist={slimlist}
                         geneUrlFormatter={this.props.geneUrlFormatter}
                     />

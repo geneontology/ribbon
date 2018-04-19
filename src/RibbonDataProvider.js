@@ -37,7 +37,6 @@ export default class RibbonDataProvider extends React.Component {
     }
 
     fetchData = (slim, subject) => {
-        console.log('slim: ' + slim)
         let slimList = slim.toLowerCase() === 'tcag' ? TCAG_LIST :
             slim.toLowerCase() === 'fly' ? FLY_LIST :
                 slim.toLowerCase() === 'agr' ? AGR_LIST :

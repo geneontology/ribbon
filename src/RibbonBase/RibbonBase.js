@@ -24,7 +24,7 @@ export default class RibbonBase extends React.Component {
                     );
                   })
                 }
-                <span className='ontology-ribbon__strip-label'>{group.label}</span>
+                <span className='ontology-ribbon__strip-label' onClick={ () => this.props.onDomainSelect(group.label)}>{group.label}</span>
               </div>
             )
           })
@@ -45,5 +45,6 @@ RibbonBase.propTypes = {
       id: PropTypes.string.isRequired,
     })),
   })),
-  onSlimSelect: PropTypes.func.isRequired
+  onSlimSelect: PropTypes.func.isRequired,
+  omDomainSelect: PropTypes.func
 };

@@ -43,6 +43,11 @@
 .ontology-ribbon__strip-label {
   line-height: 2em;
   font-style: italic;
+  color: #0275d8;
+}
+
+.ontology-ribbon__strip-label:hover {
+  cursor: pointer;
 }
 
 .ontology-ribbon__block {
