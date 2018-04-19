@@ -58,7 +58,7 @@ class AssociationsWithEvidenceRowView extends Component {
     generatedEvidenceWithLink(evidenceWith, subject) {
 
         // if internal Gene link types
-        if (evidenceWith.match(/^(RGD:|ZFIN:ZDB-GENE|WB:WBGene|MGI:|SGD:|GO:|HGNC:).*/)) {
+        if (evidenceWith.match(/^(RGD:|ZFIN:ZDB-GENE|WB:WBGene|MGI:|SGD:|HGNC:).*/)) {
             return (
                 <a href={`http://www.alliancegenome.org/gene/${evidenceWith}`}>
                     {evidenceWith}
@@ -70,7 +70,7 @@ class AssociationsWithEvidenceRowView extends Component {
             )
         }
 
-        let url = this.linker.url(evidenceWith)
+        let url = this.linker.url(evidenceWith);
         return (
             <a href={url}>
                 {evidenceWith}
