@@ -71,6 +71,22 @@ export default class Ribbon extends React.Component {
                 </div>
             );
         }
+        else
+        if (this.state.currentDomain) {
+            // const currentTermLabel = this.getTermLabel(this.state.currentDomain);
+            return (
+                <div>
+                    Showing associations for {<strong><em>{this.state.currentDomain}</em></strong>} only.
+                    <button
+                        type="button"
+                        className="btn ontology-ribbon-filtered-message__button"
+                        onClick={() => this.handleDomainSelect(null)}
+                    >
+                        Show all
+                    </button>
+                </div>
+            );
+        }
     };
 
     groupByDomain = (slimlist) => {
