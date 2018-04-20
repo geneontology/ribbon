@@ -8,7 +8,7 @@ import AssociationsView from './view/AssociationsView';
 import SpeciesLabel from './view/SpeciesLabel';
 // import FaIconPack from 'react-icons/lib/fa'
 // import FaClose from 'react-icons/lib/fa/close'
-import * as FontAwesome from 'react-icons/lib/fa'
+import {FaClose,FaAngleDoubleDown} from 'react-icons/lib/fa';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 
@@ -229,7 +229,7 @@ export default class Ribbon extends React.Component {
                            className='ontology-ribbon__show-hide-assocs'>
                             Hide associations
                             <div style={{paddingBottom: 10, marginBottom: 10, display: 'inline'}}>
-                                <FontAwesome.FaClose size={20}/>
+                                <FaClose size={20}/>
                             </div>
                         </a>
                         }
@@ -238,7 +238,7 @@ export default class Ribbon extends React.Component {
                            className='ontology-ribbon__show-hide-assocs'>
                             Show associations
                             <div style={{paddingBottom: 10, marginBottom: 10, display: 'inline'}}>
-                                <FontAwesome.FaAngleDoubleDown size={20}/>
+                                <FaAngleDoubleDown size={20}/>
                             </div>
                         </a>
                         }
