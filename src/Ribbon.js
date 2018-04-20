@@ -12,7 +12,6 @@ import * as FontAwesome from 'react-icons/lib/fa'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 
-
 export default class Ribbon extends React.Component {
 
     constructor(props) {
@@ -26,16 +25,36 @@ export default class Ribbon extends React.Component {
     }
 
     handleDomainEnter = (domain) => {
-        console.log('hover domain: '+ domain)
+        console.log('hover domain: ' + domain)
+        // let finalClassName = 'ontology-ribbon-assoc-domain-' + domain.replace(' ','_').toLowerCase();
+        // console.log(finalClassName);
+        // let elements = document.getElementsByClassName('ontology-ribbon-assoc-domain-' + domain.replace(' ','_').toLowerCase());
+        // console.log(elements)
+        // for (let e in elements) {
+        //     let elem = elements[e];
+        //     console.log('a')
+        //     console.log(e)
+        //     console.log(elem)
+        //     console.log('b')
+        //     elem.addClass('ontology-ribbon-assoc__active')
+        //     if (elem && elem.style) {
+        //         console.log('c')
+        //         elem.style.backgroundColor = 'black';
+        //         elem.style.color = 'green';
+        //         console.log('d')
+        //         elem.style.border = '10px';
+        //         console.log('e')
+        //     }
+        // }
     };
     handleDomainLeave = (domain) => {
-        console.log('hover domain leave: '+domain)
+        console.log('hover domain leave: ' + domain)
     };
     handleSlimEnter = (termId) => {
-        console.log('hover termId: '+ termId)
+        console.log('hover termId: ' + termId)
     };
     handleSlimLeave = (termId) => {
-        console.log('hover termId leave: '+termId)
+        console.log('hover termId leave: ' + termId)
     };
 
     handleDomainSelect = (domain) => {
@@ -215,7 +234,7 @@ export default class Ribbon extends React.Component {
                         <a onClick={() => this.setState({showing: false})}
                            className='ontology-ribbon__show-hide-assocs'>
                             Hide associations
-                            <div style={{paddingBottom:10,marginBottom:10,display:'inline'}}>
+                            <div style={{paddingBottom: 10, marginBottom: 10, display: 'inline'}}>
                                 <FontAwesome.FaClose size={20}/>
                             </div>
                         </a>
@@ -224,7 +243,7 @@ export default class Ribbon extends React.Component {
                         <a onClick={() => this.setState({showing: true})}
                            className='ontology-ribbon__show-hide-assocs'>
                             Show associations
-                            <div style={{paddingBottom:10,marginBottom:10,display:'inline'}}>
+                            <div style={{paddingBottom: 10, marginBottom: 10, display: 'inline'}}>
                                 <FontAwesome.FaAngleDoubleDown size={20}/>
                             </div>
                         </a>
@@ -236,17 +255,17 @@ export default class Ribbon extends React.Component {
                                          transitionEnterTimeout={500}
                                          transitionLeaveTimeout={300}
                 >
-                {this.state.showing &&
-                <div className='ontology-ribbon__assoc'>
-                    {this.renderMessage()}
-                    <AssociationsView
-                        currentTermId={this.state.currentTermId}
-                        currentDomain={this.state.currentDomain}
-                        slimlist={slimlist}
-                        geneUrlFormatter={this.props.geneUrlFormatter}
-                    />
-                </div>
-                }
+                    {this.state.showing &&
+                    <div className='ontology-ribbon__assoc'>
+                        {this.renderMessage()}
+                        <AssociationsView
+                            currentTermId={this.state.currentTermId}
+                            currentDomain={this.state.currentDomain}
+                            slimlist={slimlist}
+                            geneUrlFormatter={this.props.geneUrlFormatter}
+                        />
+                    </div>
+                    }
                 </ReactCSSTransitionGroup>
             </div>
         );

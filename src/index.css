@@ -175,6 +175,11 @@
   padding: 1em;
 }
 
+.ontology-ribbon-assoc__active {
+    color: red;
+    border: solid 2px;
+}
+
 .ontology-ribbon-assoc__gene2-content {
   flex: 0 1 40%;
   min-width: 140px;

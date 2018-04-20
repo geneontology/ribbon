@@ -85,7 +85,7 @@ class AssociationsWithEvidenceRowView extends Component {
         const { inputIndex , slim } = this.props ;
         console.log(slim)
         let className = "ontology-ribbon-assoc-class-"+slim.goid  ;
-        className += " ontology-ribbon-assoc-domain-"+slim.domain ;
+        className += " ontology-ribbon-assoc-domain-"+slim.domain.replace(' ','_').toLowerCase() ;
         // console.log(taxon_result)
         return (
             <div className={className}>
