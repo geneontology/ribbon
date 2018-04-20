@@ -24,13 +24,6 @@ class AssociationsView extends Component {
             return (!currentTermId || slimitem.goid === currentTermId)
                 && (!currentDomain || slimitem.domain.toLowerCase() === currentDomain.toLowerCase() )
                 && (slimitem.tree || []).length > 0;
-        }).sort((a, b) => {
-
-            let compare1 = a.domain.localeCompare(b.domain);
-            if(compare1!==0) return compare1 ;
-
-            return a.golabel.toLowerCase().localeCompare(b.golabel.toLowerCase());
-
         });
 
 
