@@ -38,6 +38,7 @@ class AssociationsGeneView extends Component {
     render() {
         const {slimitem, inputIndex, geneUrlFormatter} = this.props;
         const tree = slimitem.tree || [];
+        console.log(slimitem)
 
         if (tree !== undefined) {
             return (
@@ -48,6 +49,7 @@ class AssociationsGeneView extends Component {
                             taxon_node={taxon_node}
                             key={index}
                             inputIndex={inputIndex}
+                            slim={slimitem}
                         />
                     )}
                 </div>

@@ -188,55 +188,55 @@
   /*padding: 1em;*/
   /*min-width: 100px;*/
   margin-left: 10px;
-  padding: 0.5em 0;
+  padding: 0.3em 0;
 }
 
 .ontology-ribbon-assoc__gene {
   flex: 0 1 20%;
   min-width: 100px;
   margin: 0;
-  padding: 0.5em 0;
+  padding: 0.3em 0;
 }
 
 .ontology-ribbon-assoc__evidence{
   flex: 0 1 20%;
   min-width: 100px;
   margin: 0;
-  padding: 0.5em 0;
+  padding: 0.3em 0;
 }
 
 .ontology-ribbon-assoc__evidence-type{
   flex: 0 1 10%;
   min-width: 100px;
   margin: 0;
-  padding: 0.5em 0;
+  padding: 0.3em 0;
 }
 
 .ontology-ribbon-assoc__evidence-with{
   flex: 0 1 20%;
   min-width: 100px;
   margin: 0;
-  padding: 0.5em 0;
+  padding: 0.3em 0;
 }
 
 .ontology-ribbon-assoc__evidence-reference{
   flex: 0 1 20%;
   min-width: 100px;
   margin: 0;
-  padding: 0.5em 0;
+  padding: 0.3em 0;
 }
 
 .ontology-ribbon-assoc__evidence-type{
   flex: 0 1 10%;
   min-width: 100px;
   margin: 0;
-  padding: 0.5em 0;
+  padding: 0.3em 0;
 }
 
 .ontology-ribbon-assoc__gene-content {
   flex: 0 0 80%;
   margin: 0;
-  padding: 0.5em 0;
+  padding: 0.3em 0;
 }
 
 .ontology-ribbon-assoc__gene:first-of-type {

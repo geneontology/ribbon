@@ -82,9 +82,13 @@ class AssociationsWithEvidenceRowView extends Component {
 
     render() {
         let taxon_result = this.props.taxon_node.children[0];
-        const { inputIndex } = this.props ;
+        const { inputIndex , slim } = this.props ;
+        console.log(slim)
+        let className = "ontology-ribbon-assoc-class-"+slim.goid  ;
+        className += " ontology-ribbon-assoc-domain-"+slim.domain ;
+        // console.log(taxon_result)
         return (
-            <div>
+            <div className={className}>
                 {
                     taxon_result.children.map((go_node) => {
                         return (
@@ -146,6 +150,7 @@ AssociationsWithEvidenceRowView.propTypes = {
     geneUrlFormatter: PropTypes.func,
     key: PropTypes.any,
     inputIndex: PropTypes.any,
+    slim:PropTypes.any,
 };
 
 export default AssociationsWithEvidenceRowView;
