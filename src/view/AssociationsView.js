@@ -8,6 +8,8 @@ class AssociationsView extends Component {
     static propTypes = {
         currentTermId: PropTypes.string,
         currentDomain: PropTypes.string,
+        hoveredTermId: PropTypes.string,
+        hoveredDomain: PropTypes.string,
         slimlist: PropTypes.arrayOf(
             PropTypes.shape({
                 goid: PropTypes.string,
@@ -17,7 +19,7 @@ class AssociationsView extends Component {
     };
 
     render() {
-        const {slimlist, currentTermId, currentDomain, geneUrlFormatter} = this.props;
+        const {slimlist, currentTermId, currentDomain, hoveredDomain, hoveredTermId,geneUrlFormatter} = this.props;
         const filteredSlimlist = slimlist.filter((slimitem) => {
             return (!currentTermId || slimitem.goid === currentTermId)
                 && (!currentDomain || slimitem.domain.toLowerCase() === currentDomain.toLowerCase() )
@@ -53,6 +55,8 @@ class AssociationsView extends Component {
                             <AssociationsGeneView
                                 key={slimitem.goid}
                                 slimitem={slimitem}
+                                hoveredDomain = {hoveredDomain}
+                                hoveredTermId = {hoveredTermId}
                                 geneUrlFormatter={geneUrlFormatter}
                                 inputIndex={index}
                             />

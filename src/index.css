@@ -9,10 +9,10 @@
 }
 
 .ontology-ribbon__assoc {
-    font-family: Lato, Helvetica, sans-serif;
-    font-size: 1rem;
-    width: 100%;
-    line-height: 1;
+  font-family: Lato, Helvetica, sans-serif;
+  font-size: 1rem;
+  width: 100%;
+  line-height: 1;
 }
 
 .ontology-ribbon a {
@@ -37,11 +37,10 @@
 }
 
 .ontology-ribbon__strip {
-    font-size: 0.8rem;
-    margin-right: 2em;
-    flex: 0 1 auto;
+  font-size: 0.8rem;
+  margin-right: 2em;
+  flex: 0 1 auto;
 }
-
 
 .fade-enter {
   opacity: 0.01;
@@ -61,15 +60,13 @@
   transition: opacity 300ms linear;
 }
 
-.ontology-ribbon__show-hide-assocs{
+.ontology-ribbon__show-hide-assocs {
   margin-left: 20px;
   line-height: 2em;
   color: #0275d8;
 }
 
-
-
-.ontology-ribbon__show-hide-assocs:hover{
+.ontology-ribbon__show-hide-assocs:hover {
   cursor: pointer;
 }
 
@@ -84,9 +81,9 @@
 }
 
 .ontology-ribbon__block {
-    height: 13em;
-    display: table-cell;
-    vertical-align: bottom;
+  height: 13em;
+  display: table-cell;
+  vertical-align: bottom;
 }
 
 .ontology-ribbon__block_match {
@@ -98,7 +95,7 @@
 }
 
 .ontology-ribbon__block:hover {
-    /*font-weight: bold;*/
+  /*font-weight: bold;*/
   color: #699;
 }
 
@@ -136,7 +133,7 @@
 }
 
 .ontology-ribbon-assoc__view {
-    margin-top: 2px;
+  margin-top: 2px;
 }
 
 .ontology-ribbon-assoc__row {
@@ -158,10 +155,10 @@
   min-width: 150px;
 }
 
-.ontology-ribbon-assoc__gene2{
-    flex: 0 1 40%;
-    min-width: 150px;
-    margin-left: 10px;
+.ontology-ribbon-assoc__gene2 {
+  flex: 0 1 40%;
+  min-width: 150px;
+  margin-left: 10px;
 }
 
 .ontology-ribbon-assoc__species-content {
@@ -176,8 +173,10 @@
 }
 
 .ontology-ribbon-assoc__active {
-    color: red;
-    border: solid 2px;
+  border: solid 1px darkgoldenrod;
+  background-color: yellow !important;
+  z-index: 1000;
+  color: red;
 }
 
 .ontology-ribbon-assoc__gene2-content {
@@ -203,35 +202,35 @@
   padding: 0.3em 0;
 }
 
-.ontology-ribbon-assoc__evidence{
+.ontology-ribbon-assoc__evidence {
   flex: 0 1 20%;
   min-width: 100px;
   margin: 0;
   padding: 0.3em 0;
 }
 
-.ontology-ribbon-assoc__evidence-type{
+.ontology-ribbon-assoc__evidence-type {
   flex: 0 1 10%;
   min-width: 100px;
   margin: 0;
   padding: 0.3em 0;
 }
 
-.ontology-ribbon-assoc__evidence-with{
+.ontology-ribbon-assoc__evidence-with {
   flex: 0 1 20%;
   min-width: 100px;
   margin: 0;
   padding: 0.3em 0;
 }
 
-.ontology-ribbon-assoc__evidence-reference{
+.ontology-ribbon-assoc__evidence-reference {
   flex: 0 1 20%;
   min-width: 100px;
   margin: 0;
   padding: 0.3em 0;
 }
 
-.ontology-ribbon-assoc__evidence-type{
+.ontology-ribbon-assoc__evidence-type {
   flex: 0 1 10%;
   min-width: 100px;
   margin: 0;
@@ -269,8 +268,8 @@
   opacity: 0.7;
 }
 
-.ontology-ribbon-evidence-header{
-   font-weight: bolder;
+.ontology-ribbon-evidence-header {
+  font-weight: bolder;
 }
 
 .ontology-ribbon-filtered-message__button {
@@ -328,4 +327,5 @@
 .ontology-ribbon-species-icon_agr.Danio-rerio { /* zebrafish */
   background-position: 100% 0;
 }
+
 /* end of species icon */

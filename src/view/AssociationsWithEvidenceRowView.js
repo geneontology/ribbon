@@ -82,18 +82,24 @@ class AssociationsWithEvidenceRowView extends Component {
 
     render() {
         let taxon_result = this.props.taxon_node.children[0];
-        const { inputIndex , slim } = this.props ;
-        console.log(slim)
-        let className = "ontology-ribbon-assoc-class-"+slim.goid  ;
-        className += " ontology-ribbon-assoc-domain-"+slim.domain.replace(' ','_').toLowerCase() ;
-        // console.log(taxon_result)
+        const {inputIndex, slim,hoveredDomain,hoveredTermId} = this.props;
+        // console.log(slim)
+        let classDomainName = "ontology-ribbon-assoc-class-" + slim.goid;
+        classDomainName += " ontology-ribbon-assoc-domain-" + slim.domain.replace(' ', '_').toLowerCase();
+        if(hoveredDomain && hoveredDomain.toLowerCase()===slim.domain){
+            classDomainName += ' ontology-ribbon-assoc__active'
+        }
         return (
-            <div className={className}>
+            <div className={classDomainName}>
                 {
                     taxon_result.children.map((go_node) => {
+                        let classTermIdName = 'ontology-ribbon-assoc__row';
+                        if(hoveredTermId && hoveredTermId===slim.goid){
+                            classTermIdName += ' ontology-ribbon-assoc__active'
+                        }
                         return (
-                            <div className="ontology-ribbon-assoc__row" key={go_node.about.id}
-                                 style={{backgroundColor: inputIndex%2 === 0 ? 'rgb(223,235,235)' : 'white'}}
+                            <div className={classTermIdName} key={go_node.about.id}
+                                 style={{backgroundColor: inputIndex % 2 === 0 ? 'rgb(223,235,235)' : 'white'}}
                             >
                                 <div className='ontology-ribbon-assoc__gene2-content'>
                                     <a
@@ -128,7 +134,7 @@ class AssociationsWithEvidenceRowView extends Component {
                                     go_node.reference.map((e, index) => {
                                         return (
                                             <div key={index}>
-                                                {this.generatedReferenceWithLink(e,go_node.about.id)}
+                                                {this.generatedReferenceWithLink(e, go_node.about.id)}
                                             </div>
                                         )
                                     })
@@ -150,7 +156,9 @@ AssociationsWithEvidenceRowView.propTypes = {
     geneUrlFormatter: PropTypes.func,
     key: PropTypes.any,
     inputIndex: PropTypes.any,
-    slim:PropTypes.any,
+    slim: PropTypes.any,
+    hoveredDomain: PropTypes.string,
+    hoveredTermId: PropTypes.string,
 };
 
 export default AssociationsWithEvidenceRowView;

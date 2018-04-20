@@ -8,6 +8,8 @@ import AssociationsWithEvidenceRowView from "./AssociationsWithEvidenceRowView";
 class AssociationsGeneView extends Component {
 
     static propTypes = {
+        hoveredDomain: PropTypes.string,
+        hoveredTermId: PropTypes.string,
         slimitem: PropTypes.shape({
             tree: PropTypes.array
         })
@@ -38,7 +40,7 @@ class AssociationsGeneView extends Component {
     render() {
         const {slimitem, inputIndex, geneUrlFormatter} = this.props;
         const tree = slimitem.tree || [];
-        console.log(slimitem)
+        // console.log(slimitem)
 
         if (tree !== undefined) {
             return (
@@ -50,6 +52,8 @@ class AssociationsGeneView extends Component {
                             key={index}
                             inputIndex={inputIndex}
                             slim={slimitem}
+                            hoveredDomain={this.props.hoveredDomain}
+                            hoveredTermId={this.props.hoveredTermId}
                         />
                     )}
                 </div>

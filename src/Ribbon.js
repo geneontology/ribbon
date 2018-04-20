@@ -21,40 +21,34 @@ export default class Ribbon extends React.Component {
             currentDomain: undefined,
             fetching: false,
             showing: true,
+            hoveredTermId: undefined,
+            hoveredDomain: undefined,
         }
     }
 
     handleDomainEnter = (domain) => {
-        console.log('hover domain: ' + domain)
-        // let finalClassName = 'ontology-ribbon-assoc-domain-' + domain.replace(' ','_').toLowerCase();
-        // console.log(finalClassName);
-        // let elements = document.getElementsByClassName('ontology-ribbon-assoc-domain-' + domain.replace(' ','_').toLowerCase());
-        // console.log(elements)
-        // for (let e in elements) {
-        //     let elem = elements[e];
-        //     console.log('a')
-        //     console.log(e)
-        //     console.log(elem)
-        //     console.log('b')
-        //     elem.addClass('ontology-ribbon-assoc__active')
-        //     if (elem && elem.style) {
-        //         console.log('c')
-        //         elem.style.backgroundColor = 'black';
-        //         elem.style.color = 'green';
-        //         console.log('d')
-        //         elem.style.border = '10px';
-        //         console.log('e')
-        //     }
-        // }
+        this.setState({
+            hoveredDomain: domain,
+            hoveredTermId: undefined,
+        })
     };
     handleDomainLeave = (domain) => {
-        console.log('hover domain leave: ' + domain)
+        this.setState({
+            hoveredDomain: undefined,
+            hoveredTermId: undefined,
+        })
     };
     handleSlimEnter = (termId) => {
-        console.log('hover termId: ' + termId)
+        this.setState({
+            hoveredDomain: undefined,
+            hoveredTermId: termId,
+        })
     };
     handleSlimLeave = (termId) => {
-        console.log('hover termId leave: ' + termId)
+        // this.setState({
+        //     hoveredDomain: undefined,
+        //     hoveredTermId: undefined,
+        // })
     };
 
     handleDomainSelect = (domain) => {
@@ -261,6 +255,8 @@ export default class Ribbon extends React.Component {
                         <AssociationsView
                             currentTermId={this.state.currentTermId}
                             currentDomain={this.state.currentDomain}
+                            hoveredTermId={this.state.hoveredTermId}
+                            hoveredDomain={this.state.hoveredDomain}
                             slimlist={slimlist}
                             geneUrlFormatter={this.props.geneUrlFormatter}
                         />
