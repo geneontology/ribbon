@@ -20,8 +20,8 @@ export default class RibbonBase extends React.Component {
                                                 {...slimitem}
                                                 key={slimitem.id}
                                                 onClick={() => this.props.onSlimSelect(slimitem.id)}
-                                                onMouseEnter={() => this.props.handleSlimEnter(slimitem.id)}
-                                                onMouseLeave={() => this.props.handleSlimLeave(slimitem.id)}
+                                                onMouseEnter={() => this.props.onSlimEnter(slimitem.id)}
+                                                onMouseLeave={() => this.props.onSlimLeave(slimitem.id)}
                                                 isActive={slimitem.id === this.props.currentTermId}
                                             />
                                         );
@@ -29,8 +29,8 @@ export default class RibbonBase extends React.Component {
                                 }
                                 <span className='ontology-ribbon__strip-label'
                                       onClick={() => this.props.onDomainSelect(group.label)}
-                                      onMouseEnter={() => this.props.handleDomainEnter(group.label)}
-                                      onMouseLeave={() => this.props.handleDomainLeave(group.label)}
+                                      onMouseEnter={() => this.props.onDomainEnter(group.label)}
+                                      onMouseLeave={() => this.props.onDomainLeave(group.label)}
                                 >{group.label}</span>
                             </div>
                         )
@@ -53,9 +53,9 @@ RibbonBase.propTypes = {
         })),
     })),
     onSlimSelect: PropTypes.func.isRequired,
-    handleSlimEnter: PropTypes.func,
-    handleSlimLeave: PropTypes.func,
-    handleDomainEnter: PropTypes.func,
-    handleDomainLeave: PropTypes.func,
+    onSlimEnter: PropTypes.func,
+    onSlimLeave: PropTypes.func,
+    onDomainEnter: PropTypes.func,
+    onDomainLeave: PropTypes.func,
     omDomainSelect: PropTypes.func,
 };

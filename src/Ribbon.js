@@ -193,10 +193,10 @@ export default class Ribbon extends React.Component {
                     currentTermId={this.state.currentTermId}
                     onSlimSelect={(termId) => this.handleSlimSelect(termId)}
                     onDomainSelect={(domain) => this.handleDomainSelect(domain)}
-                    handleSlimEnter={(termId) => this.handleSlimEnter(termId)}
-                    handleDomainEnter={(domain) => this.handleDomainEnter(domain)}
-                    handleSlimLeave={(termId) => this.handleSlimLeave(termId)}
-                    handleDomainLeave={(domain) => this.handleDomainLeave(domain)}
+                    onSlimEnter={(termId) => this.handleSlimEnter(termId)}
+                    onDomainEnter={(domain) => this.handleDomainEnter(domain)}
+                    onSlimLeave={(termId) => this.handleSlimLeave(termId)}
+                    onDomainLeave={(domain) => this.handleDomainLeave(domain)}
                     groups={
                         this.groupByDomain(slimlist).map((group) => ({
                             ...group,
