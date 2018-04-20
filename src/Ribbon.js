@@ -45,10 +45,10 @@ export default class Ribbon extends React.Component {
         })
     };
     handleSlimLeave = (termId) => {
-        // this.setState({
-        //     hoveredDomain: undefined,
-        //     hoveredTermId: undefined,
-        // })
+        this.setState({
+            hoveredDomain: undefined,
+            hoveredTermId: undefined,
+        })
     };
 
     handleDomainSelect = (domain) => {
