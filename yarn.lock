@@ -51,6 +51,13 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
+amigo2-instance-data@^2.5.7:
+  version "2.5.7"
+  resolved "https://registry.yarnpkg.com/amigo2-instance-data/-/amigo2-instance-data-2.5.7.tgz#c41c6d1be391cd79313f6e4b69d9ae0619eb92ee"
+  dependencies:
+    bbop-core "0.0.5"
+    underscore "1.8.3"
+
 ansi-escapes@^1.1.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-1.4.0.tgz#d3a8a83b319aa67793662b13e761c7911422306e"
@@ -1100,6 +1107,12 @@ base64-js@^1.0.2:
 base64id@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/base64id/-/base64id-0.1.0.tgz#02ce0fdeee0cef4f40080e1e73e834f0b1bfce3f"
+
+bbop-core@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/bbop-core/-/bbop-core-0.0.5.tgz#32e6aa2f352efcd7ffbd8b3537803daa0f0ef400"
+  dependencies:
+    underscore "1.8.3"
 
 bcrypt-pbkdf@^1.0.0:
   version "1.0.1"
@@ -5318,6 +5331,10 @@ uid-number@^0.0.6:
 ultron@1.0.x:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.0.2.tgz#ace116ab557cd197386a4e88f4685378c8b2e4fa"
+
+underscore@1.8.3:
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.8.3.tgz#4f3fb53b106e6097fcf9cb4109f2a5e9bdfa5022"
 
 uniq@^1.0.1:
   version "1.0.1"

@@ -9,4 +9,5 @@ import history from './history';
 configureUrlQuery({ history });
 
 //ReactDOM.render(<DemoContainer />, document.querySelector('#demo'))
-ReactDOM.render(<Demo />, document.getElementById('demo'));
+// http://localhost:3000/?subject=RGD:620433
+ReactDOM.render(<Demo/>, document.getElementById('demo'));
