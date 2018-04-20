@@ -173,10 +173,7 @@
 }
 
 .ontology-ribbon-assoc__active {
-  border: solid 1px darkgoldenrod;
-  background-color: yellow !important;
-  z-index: 1000;
-  color: red;
+  background-color: gold !important;
 }
 
 .ontology-ribbon-assoc__gene2-content {

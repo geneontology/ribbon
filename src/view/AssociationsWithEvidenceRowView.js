@@ -83,20 +83,19 @@ class AssociationsWithEvidenceRowView extends Component {
     render() {
         let taxon_result = this.props.taxon_node.children[0];
         const {inputIndex, slim,hoveredDomain,hoveredTermId} = this.props;
-        // console.log(slim)
-        let classDomainName = "ontology-ribbon-assoc-class-" + slim.goid;
-        classDomainName += " ontology-ribbon-assoc-domain-" + slim.domain.replace(' ', '_').toLowerCase();
+        let classDomainName = '';
         if(hoveredDomain && hoveredDomain.toLowerCase()===slim.domain){
             classDomainName += ' ontology-ribbon-assoc__active'
         }
         return (
-            <div className={classDomainName}>
+            <div>
                 {
                     taxon_result.children.map((go_node) => {
                         let classTermIdName = 'ontology-ribbon-assoc__row';
                         if(hoveredTermId && hoveredTermId===slim.goid){
-                            classTermIdName += ' ontology-ribbon-assoc__active'
+                            classTermIdName += ' ontology-ribbon-assoc__active';
                         }
+                        classTermIdName += classDomainName;
                         return (
                             <div className={classTermIdName} key={go_node.about.id}
                                  style={{backgroundColor: inputIndex % 2 === 0 ? 'rgb(223,235,235)' : 'white'}}
