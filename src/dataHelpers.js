@@ -75,7 +75,7 @@ export function unpackSlimItems(results, subject, slimlist) {
 
         var label = assocItem.subject.id + ': ' +
                     assocItem.object.label + ' ' + assocItem.negated;
-        console.log('label is '+ label);
+        // console.log('label is '+ label);
         if (!hits.includes(label)) {
           hits.push(label);
           return true;

@@ -55,7 +55,7 @@ export default class Ribbon extends React.Component {
     var orthoURL =  GOLINK + 'bioentity/gene/' +
                     subject +
                     '/homologs/?homology_type=LDO&fetch_objects=false';
-    console.log(orthoURL);
+    // console.log(orthoURL);
 
     var title = subject;
     var dataError = null;
@@ -76,7 +76,7 @@ export default class Ribbon extends React.Component {
         }
       });
       goQueries.push(goLink + '&subject=' + subject);
-      console.log('slim query: '+ goQueries[goQueries.length-1]);
+      // console.log('slim query: '+ goQueries[goQueries.length-1]);
 
       // Then run all the GO queries in a batch,
       // both the gene of interest and all the orthologs that were found        let orthologArray = goQueries.map(url => axios.get(url));
