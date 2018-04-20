@@ -58,7 +58,7 @@ class AssociationsWithEvidenceRowView extends Component {
     generatedEvidenceWithLink(evidenceWith, subject) {
 
         // if internal Gene link types
-        if (evidenceWith.match(/^(RGD:|ZFIN:ZDB-GENE|WB:WBGene|MGI:|SGD:|GO:|HGNC:).*/)) {
+        if (evidenceWith.match(/^(RGD:|ZFIN:ZDB-GENE|WB:WBGene|MGI:|SGD:|HGNC:).*/)) {
             return (
                 <a href={`http://www.alliancegenome.org/gene/${evidenceWith}`}>
                     {evidenceWith}
@@ -70,7 +70,7 @@ class AssociationsWithEvidenceRowView extends Component {
             )
         }
 
-        let url = this.linker.url(evidenceWith)
+        let url = this.linker.url(evidenceWith);
         return (
             <a href={url}>
                 {evidenceWith}
@@ -82,13 +82,24 @@ class AssociationsWithEvidenceRowView extends Component {
 
     render() {
         let taxon_result = this.props.taxon_node.children[0];
+        const {inputIndex, slim,hoveredDomain,hoveredTermId} = this.props;
+        let classDomainName = '';
+        if(hoveredDomain && hoveredDomain.toLowerCase()===slim.domain){
+            classDomainName += ' ontology-ribbon-assoc__active'
+        }
         return (
             <div>
                 {
                     taxon_result.children.map((go_node) => {
+                        let classTermIdName = 'ontology-ribbon-assoc__row';
+                        if(hoveredTermId && hoveredTermId===slim.goid){
+                            classTermIdName += ' ontology-ribbon-assoc__active';
+                        }
+                        classTermIdName += classDomainName;
                         return (
-                            <div className='ontology-ribbon-assoc__row' key={go_node.about.id}
-                                 style={{backgroundColor: this.props.taxon_node.color}}>
+                            <div className={classTermIdName} key={go_node.about.id}
+                                 style={{backgroundColor: inputIndex % 2 === 0 ? 'rgb(223,235,235)' : 'white'}}
+                            >
                                 <div className='ontology-ribbon-assoc__gene2-content'>
                                     <a
                                         title={go_node.about.label}
@@ -122,7 +133,7 @@ class AssociationsWithEvidenceRowView extends Component {
                                     go_node.reference.map((e, index) => {
                                         return (
                                             <div key={index}>
-                                                {this.generatedReferenceWithLink(e,go_node.about.id)}
+                                                {this.generatedReferenceWithLink(e, go_node.about.id)}
                                             </div>
                                         )
                                     })
@@ -143,6 +154,10 @@ AssociationsWithEvidenceRowView.propTypes = {
     taxon_node: PropTypes.object.isRequired,
     geneUrlFormatter: PropTypes.func,
     key: PropTypes.any,
+    inputIndex: PropTypes.any,
+    slim: PropTypes.any,
+    hoveredDomain: PropTypes.string,
+    hoveredTermId: PropTypes.string,
 };
 
 export default AssociationsWithEvidenceRowView;

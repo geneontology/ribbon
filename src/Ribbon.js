@@ -6,6 +6,11 @@ import axios from 'axios';
 import RibbonBase from './RibbonBase';
 import AssociationsView from './view/AssociationsView';
 import SpeciesLabel from './view/SpeciesLabel';
+// import FaIconPack from 'react-icons/lib/fa'
+// import FaClose from 'react-icons/lib/fa/close'
+import {FaClose,FaAngleDoubleDown} from 'react-icons/lib/fa';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+
 
 export default class Ribbon extends React.Component {
 
@@ -13,19 +18,65 @@ export default class Ribbon extends React.Component {
         super(props);
         this.state = {
             currentTermId: undefined,
-            fetching: false
+            currentDomain: undefined,
+            fetching: false,
+            showing: true,
+            hoveredTermId: undefined,
+            hoveredDomain: undefined,
         }
     }
 
-    handleSlimSelect = (termId) => {
-        if (termId !== this.state.currentTermId) {
+    handleDomainEnter = (domain) => {
+        this.setState({
+            hoveredDomain: domain,
+            hoveredTermId: undefined,
+        })
+    };
+    handleDomainLeave = (domain) => {
+        this.setState({
+            hoveredDomain: undefined,
+            hoveredTermId: undefined,
+        })
+    };
+    handleSlimEnter = (termId) => {
+        this.setState({
+            hoveredDomain: undefined,
+            hoveredTermId: termId,
+        })
+    };
+    handleSlimLeave = (termId) => {
+        this.setState({
+            hoveredDomain: undefined,
+            hoveredTermId: undefined,
+        })
+    };
+
+    handleDomainSelect = (domain) => {
+        if (domain !== this.state.currentDomain) {
             this.setState({
-                currentTermId: termId
+                currentDomain: domain,
+                currentTermId: undefined,
             });
         }
         else {
             this.setState({
+                currentDomain: undefined,
                 currentTermId: undefined
+            })
+        }
+    };
+
+    handleSlimSelect = (termId) => {
+        if (termId !== this.state.currentTermId) {
+            this.setState({
+                currentTermId: termId,
+                currentDomain: undefined
+            });
+        }
+        else {
+            this.setState({
+                currentTermId: undefined,
+                currentDomain: undefined
             })
         }
     };
@@ -46,6 +97,21 @@ export default class Ribbon extends React.Component {
                         type="button"
                         className="btn ontology-ribbon-filtered-message__button"
                         onClick={() => this.handleSlimSelect(null)}
+                    >
+                        Show all
+                    </button>
+                </div>
+            );
+        }
+        else if (this.state.currentDomain) {
+            // const currentTermLabel = this.getTermLabel(this.state.currentDomain);
+            return (
+                <div>
+                    Showing associations for {<strong><em>{this.state.currentDomain}</em></strong>} only.
+                    <button
+                        type="button"
+                        className="btn ontology-ribbon-filtered-message__button"
+                        onClick={() => this.handleDomainSelect(null)}
                     >
                         Show all
                     </button>
@@ -126,6 +192,11 @@ export default class Ribbon extends React.Component {
                 <RibbonBase
                     currentTermId={this.state.currentTermId}
                     onSlimSelect={(termId) => this.handleSlimSelect(termId)}
+                    onDomainSelect={(domain) => this.handleDomainSelect(domain)}
+                    handleSlimEnter={(termId) => this.handleSlimEnter(termId)}
+                    handleDomainEnter={(domain) => this.handleDomainEnter(domain)}
+                    handleSlimLeave={(termId) => this.handleSlimLeave(termId)}
+                    handleDomainLeave={(domain) => this.handleDomainLeave(domain)}
                     groups={
                         this.groupByDomain(slimlist).map((group) => ({
                             ...group,
@@ -152,16 +223,46 @@ export default class Ribbon extends React.Component {
                         // no subject, so just provide a linkless title
                         <div>{this.state.title}</div>
                         }
+
+                        {this.state.showing &&
+                        <a onClick={() => this.setState({showing: false})}
+                           className='ontology-ribbon__show-hide-assocs'>
+                            Hide associations
+                            <div style={{paddingBottom: 10, marginBottom: 10, display: 'inline'}}>
+                                <FaClose size={20}/>
+                            </div>
+                        </a>
+                        }
+                        {!this.state.showing &&
+                        <a onClick={() => this.setState({showing: true})}
+                           className='ontology-ribbon__show-hide-assocs'>
+                            Show associations
+                            <div style={{paddingBottom: 10, marginBottom: 10, display: 'inline'}}>
+                                <FaAngleDoubleDown size={20}/>
+                            </div>
+                        </a>
+                        }
+
                     </div>
                 </div>
-                <div className='ontology-ribbon__assoc'>
-                    {this.renderMessage()}
-                    <AssociationsView
-                        currentTermId={this.state.currentTermId}
-                        slimlist={slimlist}
-                        geneUrlFormatter={this.props.geneUrlFormatter}
-                    />
-                </div>
+                <ReactCSSTransitionGroup transitionName='fade'
+                                         transitionEnterTimeout={500}
+                                         transitionLeaveTimeout={300}
+                >
+                    {this.state.showing &&
+                    <div className='ontology-ribbon__assoc'>
+                        {this.renderMessage()}
+                        <AssociationsView
+                            currentTermId={this.state.currentTermId}
+                            currentDomain={this.state.currentDomain}
+                            hoveredTermId={this.state.hoveredTermId}
+                            hoveredDomain={this.state.hoveredDomain}
+                            slimlist={slimlist}
+                            geneUrlFormatter={this.props.geneUrlFormatter}
+                        />
+                    </div>
+                    }
+                </ReactCSSTransitionGroup>
             </div>
         );
     }
