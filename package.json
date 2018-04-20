@@ -1,6 +1,6 @@
 {
   "name": "gene-ontology-ribbon",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "scripts": {
     "build": "nwb build-react-component --copy-files",
     "clean": "nwb clean-module && npm clean-demo",
@@ -37,7 +37,7 @@
     "react-spinners": "0.0.30",
     "react-url-query": "1.2.0"
   },
-  "author": "Suzanna Lewis",
+  "author": "Suzanna Lewis, Sibyl Gao, Nathan Dunn",
   "homepage": "https://github.com/geneontology/ribbon#readme",
   "license": "BSD-3-Clause",
   "repository": {
