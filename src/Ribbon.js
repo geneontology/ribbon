@@ -25,6 +25,18 @@ export default class Ribbon extends React.Component {
         }
     }
 
+    handleDomainEnter = (domain) => {
+        console.log('hover domain: '+ domain)
+    };
+    handleDomainLeave = (domain) => {
+        console.log('hover domain leave: '+domain)
+    };
+    handleSlimEnter = (termId) => {
+        console.log('hover termId: '+ termId)
+    };
+    handleSlimLeave = (termId) => {
+        console.log('hover termId leave: '+termId)
+    };
 
     handleDomainSelect = (domain) => {
         if (domain !== this.state.currentDomain) {
@@ -168,6 +180,10 @@ export default class Ribbon extends React.Component {
                     currentTermId={this.state.currentTermId}
                     onSlimSelect={(termId) => this.handleSlimSelect(termId)}
                     onDomainSelect={(domain) => this.handleDomainSelect(domain)}
+                    handleSlimEnter={(termId) => this.handleSlimEnter(termId)}
+                    handleDomainEnter={(domain) => this.handleDomainEnter(domain)}
+                    handleSlimLeave={(termId) => this.handleSlimLeave(termId)}
+                    handleDomainLeave={(domain) => this.handleDomainLeave(domain)}
                     groups={
                         this.groupByDomain(slimlist).map((group) => ({
                             ...group,
