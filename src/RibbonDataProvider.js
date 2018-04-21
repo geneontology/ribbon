@@ -62,6 +62,7 @@ export default class RibbonDataProvider extends React.Component {
                     fetching: false,
                     title: title,
                     dataError: null,
+                    subject: subject,
                     data: data
                 });
             })
