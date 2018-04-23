@@ -150,7 +150,7 @@ export default class Ribbon extends React.Component {
     fetchSubject = (subject, title) => {
         let self = this;
         if (subject.startsWith('HGNC:')) {
-            axios.get('http://mygene.info/v3/query?q='+subject+'&fields=uniprot')
+            axios.get('https://mygene.info/v3/query?q='+subject+'&fields=uniprot')
                 .then(function (results) {
                     let result = results.data.hits[0].uniprot['Swiss-Prot'];
                     self.setState({
