@@ -1,6 +1,6 @@
 {
-  "name": "@nathandunn/gene-ontology-ribbon",
-  "version": "1.2.8",
+  "name": "@geneontology/gene-ontology-ribbon",
+  "version": "1.2.9",
   "scripts": {
     "build": "nwb build-react-component --copy-files",
     "clean": "nwb clean-module && npm clean-demo",
