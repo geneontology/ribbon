@@ -20,7 +20,7 @@ export default class Ribbon extends React.Component {
             currentTermId: undefined,
             currentDomain: undefined,
             fetching: false,
-            showing: true,
+            showing: false,
             hoveredTermId: undefined,
             hoveredDomain: undefined,
         }
@@ -55,6 +55,7 @@ export default class Ribbon extends React.Component {
         if (domain !== this.state.currentDomain) {
             this.setState({
                 currentDomain: domain,
+                showing: true,
                 currentTermId: undefined,
             });
         }
@@ -70,6 +71,7 @@ export default class Ribbon extends React.Component {
         if (termId !== this.state.currentTermId) {
             this.setState({
                 currentTermId: termId,
+                showing: true,
                 currentDomain: undefined
             });
         }
