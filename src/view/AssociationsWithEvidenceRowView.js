@@ -72,7 +72,7 @@ class AssociationsWithEvidenceRowView extends Component {
         // Allele
         if (evidenceWith.match(/^(WB:WBVar).*/)) {
             return (
-                <a href={`http://www.wormbase.org/get?name=${evidenceWith}&class=Variation`}>
+                <a href={`http://www.wormbase.org/get?name=${evidenceWith.split(':')[1]}&class=Variation`}>
                     {evidenceWith}
                     {
                         subject.split(':')[0] === evidenceWith.split(':')[0] &&
