@@ -325,4 +325,14 @@
   background-position: 100% 0;
 }
 
+.go-link:hover{
+  border-radius: 10px;
+  text-decoration: underline;
+  background-color: lightblue;
+  margin-top: 3px;
+}
+
+.go-link{
+}
+
 /* end of species icon */
