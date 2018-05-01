@@ -335,4 +335,22 @@
 .go-link{
 }
 
+.evidence-qualifier{
+   font-size: x-small;
+  padding: 3px;
+  margin-left: 5px;
+  text-decoration: none;
+  background-color: gold;
+  border-radius: 5px;
+}
+
+/*.evidence-qualifier:hover{*/
+  /*font-size: x-small;*/
+  /*padding: 3px;*/
+  /*margin-left: 5px;*/
+  /*text-decoration: underline;*/
+  /*background-color: goldenrod;*/
+  /*border-radius: 5px;*/
+/*}*/
+
 /* end of species icon */

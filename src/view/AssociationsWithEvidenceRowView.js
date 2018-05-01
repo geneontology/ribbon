@@ -103,6 +103,9 @@ class AssociationsWithEvidenceRowView extends Component {
             <div>
                 {
                     taxon_result.children.map((go_node) => {
+                        if(go_node.evidence.qualifier){
+                            console.log(go_node)
+                        }
                         let classTermIdName = 'ontology-ribbon-assoc__row';
                         if(hoveredTermId && hoveredTermId===slim.goid){
                             classTermIdName += ' ontology-ribbon-assoc__active';
@@ -121,6 +124,19 @@ class AssociationsWithEvidenceRowView extends Component {
                                     >
                                         {this.renderTerm(go_node)}
                                     </a>
+                                    {  go_node.evidence.qualifier && go_node.evidence.qualifier.map( (q) =>{
+                                        // we exclude the NOT qualifier as it is handled separately
+                                        if(q!=='not'){
+                                            return (
+                                                <a title={q}
+                                                   href={`http://geneontology.org/page/go-qualifiers`}
+                                                   rel="noopener noreferrer"
+                                                   target="_blank"
+                                                   className='evidence-qualifier'
+                                                >{q}</a>
+                                            )
+                                        }
+                                    })}
                                 </div>
 
                                 <div className="ontology-ribbon-assoc__evidence-type">

@@ -233,6 +233,22 @@ function filterDuplicationReferences(references) {
 
 }
 
+function generateNode(assoc){
+    return {
+        about: assoc.object,
+        negated: assoc.negated,
+        evidence: {
+            id: assoc.evidence,
+            type: assoc.evidence_type,
+            label: assoc.evidence_label,
+            with: assoc.evidence_with,
+            qualifier: assoc.qualifier,
+        },
+        publications: assoc.publications,
+        reference: filterDuplicationReferences(assoc.reference),
+    };
+}
+
 export function buildAssocTree(assocs, subject) {
     let prev_species = '';
     let prev_gene = '';
@@ -258,18 +274,7 @@ export function buildAssocTree(assocs, subject) {
             current_taxon_node.children.push(current_gene_node);
 
 
-            let go_node = {
-                about: assoc.object,
-                negated: assoc.negated,
-                evidence: {
-                    id: assoc.evidence,
-                    type: assoc.evidence_type,
-                    label: assoc.evidence_label,
-                    with: assoc.evidence_with,
-                },
-                publications: assoc.publications,
-                reference: filterDuplicationReferences(assoc.reference),
-            };
+            let go_node = generateNode(assoc);
 
             current_gene_node.children.push(go_node);
 
@@ -288,36 +293,14 @@ export function buildAssocTree(assocs, subject) {
             current_taxon_node.children.push(current_gene_node);
 
 
-            let go_node = {
-                about: assoc.object,
-                negated: assoc.negated,
-                evidence: {
-                    id: assoc.evidence,
-                    type: assoc.evidence_type,
-                    label: assoc.evidence_label,
-                    with: assoc.evidence_with,
-                },
-                publications: assoc.publications,
-                reference: filterDuplicationReferences(assoc.reference),
-            };
+            let go_node = generateNode(assoc);
 
             current_gene_node.children.push(go_node);
 
             prev_gene = assoc.subject.id;
 
         } else {
-            let go_node = {
-                about: assoc.object,
-                negated: assoc.negated,
-                evidence: {
-                    id: assoc.evidence,
-                    type: assoc.evidence_type,
-                    label: assoc.evidence_label,
-                    with: assoc.evidence_with,
-                },
-                publications: assoc.publications,
-                reference: filterDuplicationReferences(assoc.reference),
-            };
+            let go_node = generateNode(assoc);
 
             current_gene_node.children.push(go_node);
         }
