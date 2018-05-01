@@ -20,7 +20,7 @@ export default class Ribbon extends React.Component {
             currentTermId: undefined,
             currentDomain: undefined,
             fetching: false,
-            showing: false,
+            showing: true,
             hoveredTermId: undefined,
             hoveredDomain: undefined,
         }
@@ -187,6 +187,19 @@ export default class Ribbon extends React.Component {
         }
     };
 
+    /**
+     * https://github.com/geneontology/go-site/issues/91
+     * @param inputSubject
+     * @returns {*}
+     */
+    static patchSubject(inputSubject){
+        if(inputSubject.startsWith('MGI')){
+            return 'MGI:'+inputSubject;
+        }
+        return inputSubject;
+    }
+
+
     render() {
         const slimlist = this.props.slimlist;
         return (
@@ -217,7 +230,7 @@ export default class Ribbon extends React.Component {
                     }
                     <div className='ontology-ribbon__caption'>
                         {!this.state.fetching && this.state.subject && this.state.title &&
-                        <a href={`http://amigo.geneontology.org/amigo/gene_product/` + this.state.subject}>
+                        <a href={`http://amigo.geneontology.org/amigo/gene_product/` + Ribbon.patchSubject(this.state.subject)}>
                             {this.state.title}
                         </a>
                         }
