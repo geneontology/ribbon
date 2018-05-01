@@ -10,14 +10,15 @@ Object.defineProperty(Array.prototype, 'unique', {
     enumerable: false,
     configurable: false,
     writable: false,
-    value: function() {
-        var a = this.concat();
-        for(var i=0; i<a.length; ++i) {
-            for(var j=i+1; j<a.length; ++j) {
-                if(a[i] === a[j])
+    value: function () {
+        let a = this.concat();
+        for (let i = 0; i < a.length; ++i) {
+            for (let j = i + 1; j < a.length; ++j) {
+                if (a[i] === a[j] || a[j]===undefined)
                     a.splice(j--, 1);
             }
         }
+        a = a.filter(x => x != null);
 
         return a;
     }
@@ -60,55 +61,43 @@ export function unpackSlimItems(results, subject, slimlist) {
                         response.assocs.splice(i, 1);
                     }
                 }
-                for(let assoc of response.assocs){
-                    let tempAssoc = {
-                        evidence:{
-                            with: [],
-                            qualifier: [],
-                        }
-                    };
-                    if(!assocMap[assoc.object.id]){
-                        tempAssoc = assoc ;
+                for (let assoc of response.assocs) {
+                    let tempAssoc = { };
+                    if (!assocMap[assoc.object.id]) {
+                        tempAssoc = assoc;
+                        tempAssoc.evidence_type = [assoc.evidence_type];
+                        tempAssoc.evidence = [assoc.evidence];
                     }
-                    else{
+                    else {
                         tempAssoc = assocMap[assoc.object.id];
-                        console.log('a')
-                        console.log(tempAssoc.evidence)
-                        console.log('b')
-                        console.log(assoc.evidence)
-                        console.log('c')
-                        // tempAssoc.evidence.with = [...assoc.evidence.with,...tempAssoc.evidence.with].unique();
-                        // tempAssoc.evidence.qualifier = [...assoc.evidence.qualifier,...tempAssoc.evidence.qualifier].unique();
-                        tempAssoc.reference = [...assoc.reference,...tempAssoc.reference].unique();
-                        tempAssoc.publications = [...assoc.publications,...tempAssoc.publications].unique();
+                        if(assoc.object.id==='GO:0060122'){
+                            console.log('input');
+                            console.log(tempAssoc);
+                            console.log('outer');
+                            console.log(assoc);
+                        }
+                        tempAssoc.evidence_with = [...assoc.evidence_with, ...tempAssoc.evidence_with].unique();
+                        tempAssoc.evidence = [...assoc.evidence, ...tempAssoc.evidence].unique();
+                        tempAssoc.evidence_type = [...assoc.evidence_type, ...tempAssoc.evidence_type].unique();
+                        tempAssoc.reference = [...assoc.reference, ...tempAssoc.reference].unique();
+                        tempAssoc.publications = [...assoc.publications, ...tempAssoc.publications].unique();
+                        if(assoc.object.id==='GO:0060122') {
+                            console.log('merge');
+                            console.log(tempAssoc);
+                        }
                     }
                     assocMap[assoc.object.id] = tempAssoc;
                 }
 
                 // these are all the assocs under this slim class
                 // we don't want the association map, just those for this slim
-                Array.prototype.push.apply(assocs, response.assocs.filter( (f) => {
-                    if(globalGOids.indexOf(f.object.id)<0){
+                Array.prototype.push.apply(assocs, response.assocs.filter((f) => {
+                    if (globalGOids.indexOf(f.object.id) < 0) {
                         globalGOids.push(f.object.id);
                         return true
                     }
-                    else{
-                        // VERY slow . . .
-                        // let assoc = assocs.find( (a) => {
-                        //     return a.object.id === f.object.id ;
-                        // });
-                        // console.log('found assoc');
-                        // console.log(assoc)
-
-                        // if(assoc){
-                        //     assoc.evidence.with = [...assoc.evidence.with,...f.evidence.with].unique();
-                        //     assoc.evidence.qualifier = [...assoc.evidence.qualifier,...f.evidence.qualifier].unique();
-                        //     assoc.reference = [...assoc.reference,...f.reference].unique();
-                        //     assoc.publications = [...assoc.publications,...f.publications].unique();
-                        //     // assoc.evidence = [...assoc.evidence,...f.evidence]
-                        // }
-
-                        return false ;
+                    else {
+                        return false;
                     }
                 }));
                 /*
@@ -262,10 +251,10 @@ export function heatColor(associations_count, rgb, heatLevels) {
 }
 
 function containsPMID(references) {
-    for(let r of references){
-        if(r.startsWith('PMID:')) return true ;
+    for (let r of references) {
+        if (r.startsWith('PMID:')) return true;
     }
-    return false ;
+    return false;
 }
 
 /**
@@ -277,13 +266,13 @@ function filterDuplicationReferences(references) {
 
 
     // if references contains a PMID, remove the non-PMID ones
-    if(!containsPMID(references)){
-        return references ;
+    if (!containsPMID(references)) {
+        return references;
     }
-    else{
-        let returnArray =[];
-        for(let r of references){
-            if(r.startsWith('PMID:')){
+    else {
+        let returnArray = [];
+        for (let r of references) {
+            if (r.startsWith('PMID:')) {
                 returnArray.push(r);
             }
         }
@@ -292,7 +281,7 @@ function filterDuplicationReferences(references) {
 
 }
 
-function generateNode(assoc){
+function generateNode(assoc) {
     return {
         about: assoc.object,
         negated: assoc.negated,

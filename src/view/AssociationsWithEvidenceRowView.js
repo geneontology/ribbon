@@ -30,12 +30,12 @@ class AssociationsWithEvidenceRowView extends Component {
         }
     }
 
-    renderEvidenceTypeLink(evidence) {
+    renderEvidenceType(label,id,type) {
         return (
-            <a title={evidence.label} href={`http://www.evidenceontology.org/term/${evidence.id}`}>
-                {evidence.type}
+            <a title={label} href={`http://www.evidenceontology.org/term/${id}`} style={{marginRight:8}}>
+                {type}
             </a>
-        )
+        );
     }
 
     generatedReferenceWithLink(publicationReference, subject) {
@@ -70,8 +70,7 @@ class AssociationsWithEvidenceRowView extends Component {
                 </a>
             )
         }
-        else
-        if (evidenceWith.match(/^(RGD:|ZFIN:ZDB-GENE|WB:WBGene|MGI:|SGD:|HGNC:).*/)) {
+        else if (evidenceWith.match(/^(RGD:|ZFIN:ZDB-GENE|WB:WBGene|MGI:|SGD:|HGNC:).*/)) {
             return (
                 <a href={`http://www.alliancegenome.org/gene/${evidenceWith}`}>
                     {evidenceWith}
@@ -107,9 +106,9 @@ class AssociationsWithEvidenceRowView extends Component {
 
     render() {
         let taxon_result = this.props.taxon_node.children[0];
-        const {inputIndex, slim,hoveredDomain,hoveredTermId} = this.props;
+        const {inputIndex, slim, hoveredDomain, hoveredTermId} = this.props;
         let classDomainName = '';
-        if(hoveredDomain && hoveredDomain.toLowerCase()===slim.domain){
+        if (hoveredDomain && hoveredDomain.toLowerCase() === slim.domain) {
             classDomainName += ' ontology-ribbon-assoc__active'
         }
         return (
@@ -117,7 +116,7 @@ class AssociationsWithEvidenceRowView extends Component {
                 {
                     taxon_result.children.map((go_node) => {
                         let classTermIdName = 'ontology-ribbon-assoc__row';
-                        if(hoveredTermId && hoveredTermId===slim.goid){
+                        if (hoveredTermId && hoveredTermId === slim.goid) {
                             classTermIdName += ' ontology-ribbon-assoc__active';
                         }
                         classTermIdName += classDomainName;
@@ -134,9 +133,9 @@ class AssociationsWithEvidenceRowView extends Component {
                                     >
                                         {this.renderTerm(go_node)}
                                     </a>
-                                    {  go_node.evidence.qualifier && go_node.evidence.qualifier.map( (q) =>{
+                                    {go_node.evidence.qualifier && go_node.evidence.qualifier.map((q) => {
                                         // we exclude the NOT qualifier as it is handled separately
-                                        if(q!=='not'){
+                                        if (q !== 'not') {
                                             return (
                                                 <a title={q}
                                                    href={`http://geneontology.org/page/go-qualifiers`}
@@ -150,7 +149,9 @@ class AssociationsWithEvidenceRowView extends Component {
                                 </div>
 
                                 <div className="ontology-ribbon-assoc__evidence-type">
-                                    {this.renderEvidenceTypeLink(go_node.evidence)}
+                                    {go_node.evidence.id.map ( (e,index) => {
+                                        return this.renderEvidenceType(go_node.evidence.label,go_node.evidence.id[index],go_node.evidence.type[index])
+                                    })}
                                 </div>
                                 <div
                                     className="ontology-ribbon-assoc__evidence-with">
