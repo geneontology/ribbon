@@ -58,6 +58,19 @@ class AssociationsWithEvidenceRowView extends Component {
     generatedEvidenceWithLink(evidenceWith, subject) {
 
         // if internal Gene link types
+        // patching GO bug
+        if (evidenceWith.match(/^(MGI:MGI).*/)) {
+            return (
+                <a href={`http://www.alliancegenome.org/gene/${evidenceWith.substr(4)}`}>
+                    {evidenceWith.substr(4)}
+                    {
+                        subject.split(':')[0] === evidenceWith.split(':')[0] &&
+                        <SpeciesLabel species={evidenceWith} hideText={true}/>
+                    }
+                </a>
+            )
+        }
+        else
         if (evidenceWith.match(/^(RGD:|ZFIN:ZDB-GENE|WB:WBGene|MGI:|SGD:|HGNC:).*/)) {
             return (
                 <a href={`http://www.alliancegenome.org/gene/${evidenceWith}`}>
@@ -103,9 +116,6 @@ class AssociationsWithEvidenceRowView extends Component {
             <div>
                 {
                     taxon_result.children.map((go_node) => {
-                        if(go_node.evidence.qualifier){
-                            console.log(go_node)
-                        }
                         let classTermIdName = 'ontology-ribbon-assoc__row';
                         if(hoveredTermId && hoveredTermId===slim.goid){
                             classTermIdName += ' ontology-ribbon-assoc__active';
