@@ -67,10 +67,17 @@ export function unpackSlimItems(results, subject, slimlist) {
                         tempAssoc = assoc;
                         tempAssoc.evidence_type = [assoc.evidence_type];
                         tempAssoc.evidence = [assoc.evidence];
+                        tempAssoc.qualifier = [];
+                    }
+                    else
+                    if (assocMap[assoc.object.id].evidence.qualifier ) {
+                        tempAssoc = assoc;
+                        tempAssoc.evidence_type = [assoc.evidence_type];
+                        tempAssoc.evidence = [assoc.evidence];
                     }
                     else {
                         tempAssoc = assocMap[assoc.object.id];
-                        if(assoc.object.id==='GO:0060122'){
+                        if(assoc.object.id==='GO:0001055'){
                             console.log('input');
                             console.log(tempAssoc);
                             console.log('outer');
@@ -78,10 +85,11 @@ export function unpackSlimItems(results, subject, slimlist) {
                         }
                         tempAssoc.evidence_with = [...assoc.evidence_with, ...tempAssoc.evidence_with].unique();
                         tempAssoc.evidence = [...assoc.evidence, ...tempAssoc.evidence].unique();
+                        tempAssoc.qualifier = [...assoc.qualifier, ...tempAssoc.qualifier].unique();
                         tempAssoc.evidence_type = [...assoc.evidence_type, ...tempAssoc.evidence_type].unique();
                         tempAssoc.reference = [...assoc.reference, ...tempAssoc.reference].unique();
                         tempAssoc.publications = [...assoc.publications, ...tempAssoc.publications].unique();
-                        if(assoc.object.id==='GO:0060122') {
+                        if(assoc.object.id==='GO:0001055') {
                             console.log('merge');
                             console.log(tempAssoc);
                         }

@@ -133,11 +133,12 @@ class AssociationsWithEvidenceRowView extends Component {
                                     >
                                         {this.renderTerm(go_node)}
                                     </a>
-                                    {go_node.evidence.qualifier && go_node.evidence.qualifier.map((q) => {
+                                    {go_node.evidence.qualifier && go_node.evidence.qualifier.map((q,index) => {
                                         // we exclude the NOT qualifier as it is handled separately
                                         if (q !== 'not') {
                                             return (
-                                                <a title={q}
+                                                <a key={index}
+                                                   title={q}
                                                    href={`http://geneontology.org/page/go-qualifiers`}
                                                    rel="noopener noreferrer"
                                                    target="_blank"
