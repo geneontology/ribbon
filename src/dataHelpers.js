@@ -14,7 +14,7 @@ Object.defineProperty(Array.prototype, 'unique', {
         let a = this.concat();
         for (let i = 0; i < a.length; ++i) {
             for (let j = i + 1; j < a.length; ++j) {
-                if (a[i] === a[j] || a[j]===undefined)
+                if (a[i] === a[j] || a[j] === undefined)
                     a.splice(j--, 1);
             }
         }
@@ -23,6 +23,11 @@ Object.defineProperty(Array.prototype, 'unique', {
         return a;
     }
 });
+
+function isNegate(assoc) {
+    return (assoc.qualifier && assoc.qualifier.length===1 && assoc.qualifier[0]==='not');
+}
+
 
 export function unpackSlimItems(results, subject, slimlist) {
     let title = subject;
@@ -62,37 +67,38 @@ export function unpackSlimItems(results, subject, slimlist) {
                     }
                 }
                 for (let assoc of response.assocs) {
-                    let tempAssoc = { };
+                    let tempAssoc = {};
                     if (!assocMap[assoc.object.id]) {
                         tempAssoc = assoc;
                         tempAssoc.evidence_type = [assoc.evidence_type];
                         tempAssoc.evidence = [assoc.evidence];
                         tempAssoc.qualifier = [];
                     }
-                    // TODO: don't merge negate with others
-                    // else
-                    // if (assocMap[assoc.object.id].evidence.qualifier ) {
-                    //     tempAssoc = assoc;
-                    //     tempAssoc.evidence_type = [assoc.evidence_type];
-                    //     tempAssoc.evidence = [assoc.evidence];
-                    // }
                     else {
                         tempAssoc = assocMap[assoc.object.id];
-                        if(assoc.object.id==='GO:0001055'){
-                            console.log('input');
-                            console.log(tempAssoc);
-                            console.log('outer');
-                            console.log(assoc);
+                        if(false && isNegate(tempAssoc) !== isNegate(assoc)){
+                            tempAssoc = assoc;
+                            tempAssoc.evidence_type = [assoc.evidence_type];
+                            tempAssoc.evidence = [assoc.evidence];
+                            tempAssoc.qualifier = [];
                         }
-                        tempAssoc.evidence_with = [...assoc.evidence_with, ...tempAssoc.evidence_with].unique();
-                        tempAssoc.evidence = [...assoc.evidence, ...tempAssoc.evidence].unique();
-                        tempAssoc.qualifier = [...assoc.qualifier, ...tempAssoc.qualifier].unique();
-                        tempAssoc.evidence_type = [...assoc.evidence_type, ...tempAssoc.evidence_type].unique();
-                        tempAssoc.reference = [...assoc.reference, ...tempAssoc.reference].unique();
-                        tempAssoc.publications = [...assoc.publications, ...tempAssoc.publications].unique();
-                        if(assoc.object.id==='GO:0001055') {
-                            console.log('merge');
-                            console.log(tempAssoc);
+                        else{
+                            if (assoc.object.id === 'GO:0000224') {
+                                console.log('input');
+                                console.log(tempAssoc);
+                                console.log('outer');
+                                console.log(assoc);
+                            }
+                            tempAssoc.evidence_with = [...assoc.evidence_with, ...tempAssoc.evidence_with].unique();
+                            tempAssoc.evidence = [...assoc.evidence, ...tempAssoc.evidence].unique();
+                            tempAssoc.qualifier = [...assoc.qualifier, ...tempAssoc.qualifier].unique();
+                            tempAssoc.evidence_type = [...assoc.evidence_type, ...tempAssoc.evidence_type].unique();
+                            tempAssoc.reference = [...assoc.reference, ...tempAssoc.reference].unique();
+                            tempAssoc.publications = [...assoc.publications, ...tempAssoc.publications].unique();
+                            if (assoc.object.id === 'GO:0000224') {
+                                console.log('merge');
+                                console.log(tempAssoc);
+                            }
                         }
                     }
                     assocMap[assoc.object.id] = tempAssoc;
