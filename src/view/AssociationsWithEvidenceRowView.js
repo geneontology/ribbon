@@ -119,11 +119,15 @@ class AssociationsWithEvidenceRowView extends Component {
                         if (hoveredTermId && hoveredTermId === slim.goid) {
                             classTermIdName += ' ontology-ribbon-assoc__active';
                         }
+                        if(inputIndex%2===0){
+                            classTermIdName += ' ontology-ribbon-assoc__green';
+                        }
+                        else{
+                            classTermIdName += ' ontology-ribbon-assoc__white';
+                        }
                         classTermIdName += classDomainName;
                         return (
-                            <div className={classTermIdName} key={go_node.about.id}
-                                 style={{backgroundColor: inputIndex % 2 === 0 ? 'rgb(223,235,235)' : 'white'}}
-                            >
+                            <div className={classTermIdName} key={go_node.about.id} >
                                 <div className='ontology-ribbon-assoc__gene2-content'>
                                     <a
                                         title={go_node.about.label}
