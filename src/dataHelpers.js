@@ -69,12 +69,13 @@ export function unpackSlimItems(results, subject, slimlist) {
                         tempAssoc.evidence = [assoc.evidence];
                         tempAssoc.qualifier = [];
                     }
-                    else
-                    if (assocMap[assoc.object.id].evidence.qualifier ) {
-                        tempAssoc = assoc;
-                        tempAssoc.evidence_type = [assoc.evidence_type];
-                        tempAssoc.evidence = [assoc.evidence];
-                    }
+                    // TODO: don't merge negate with others
+                    // else
+                    // if (assocMap[assoc.object.id].evidence.qualifier ) {
+                    //     tempAssoc = assoc;
+                    //     tempAssoc.evidence_type = [assoc.evidence_type];
+                    //     tempAssoc.evidence = [assoc.evidence];
+                    // }
                     else {
                         tempAssoc = assocMap[assoc.object.id];
                         if(assoc.object.id==='GO:0001055'){
