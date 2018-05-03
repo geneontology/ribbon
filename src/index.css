@@ -351,7 +351,6 @@
 .go-link{
   border-radius: 10px;
   text-decoration: underline;
-  /*background-color: #ddffff;*/
   margin-top: 5px;
   padding-top: 3px;
 }
@@ -365,13 +364,3 @@
   border-radius: 5px;
 }
 
-/*.evidence-qualifier:hover{*/
-  /*font-size: x-small;*/
-  /*padding: 3px;*/
-  /*margin-left: 5px;*/
-  /*text-decoration: underline;*/
-  /*background-color: goldenrod;*/
-  /*border-radius: 5px;*/
-/*}*/
-
-/* end of species icon */
