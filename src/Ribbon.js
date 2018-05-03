@@ -8,12 +8,11 @@ import AssociationsView from './view/AssociationsView';
 import SpeciesLabel from './view/SpeciesLabel';
 import {FaClose,FaAngleDoubleDown} from 'react-icons/lib/fa';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import GoIcon from './icon/go.png';
 import FaExternalLink from 'react-icons/lib/fa/external-link';
 
 
 
-export default class Ribbon extends React.Component {
+export default class Ribbon extends Component {
 
     constructor(props) {
         super(props);
@@ -107,7 +106,6 @@ export default class Ribbon extends React.Component {
             );
         }
         else if (this.state.currentDomain) {
-            // const currentTermLabel = this.getTermLabel(this.state.currentDomain);
             return (
                 <div>
                     Showing associations for {<strong><em>{this.state.currentDomain}</em></strong>} only.
@@ -235,7 +233,6 @@ export default class Ribbon extends React.Component {
                             href={`http://amigo.geneontology.org/amigo/gene_product/` + Ribbon.patchSubject(this.state.subject)}
                             className='go-link'
                         >
-                            {/*<img width={14} src={GoIcon} style={{marginRight: 4,paddingTop:5}}/>*/}
                             See All {this.getLabel(this.state.title)} Annotations
                             <FaExternalLink style={{marginLeft:5}}/>
 
