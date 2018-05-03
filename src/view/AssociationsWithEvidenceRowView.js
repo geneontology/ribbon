@@ -15,6 +15,7 @@ class AssociationsWithEvidenceRowView extends Component {
             expanded: false,
             duration: 500,
             showReferences:[],
+            showEvidences:[],
         };
         this.renderTerm = this.renderTerm.bind(this);
         this.linker = (new amigo_gen()).linker;
@@ -59,6 +60,18 @@ class AssociationsWithEvidenceRowView extends Component {
         rows.push(rowKey);
         this.setState({
             showReferences : rows ,
+        })
+    };
+
+    showEvidenceForRow(rowKey) {
+        return this.state.showEvidences.indexOf(rowKey)>=0  ;
+    }
+
+    showEvidences = (rowKey) =>  {
+        let rows = this.state.showEvidences;
+        rows.push(rowKey);
+        this.setState({
+            showEvidences : rows ,
         })
     };
 
@@ -178,11 +191,24 @@ class AssociationsWithEvidenceRowView extends Component {
                                     className="ontology-ribbon-assoc__evidence-with">
                                     {go_node.evidence.with &&
                                     go_node.evidence.with.map((e, index) => {
-                                        return (
-                                            <div key={index}>
-                                                {this.generatedEvidenceWithLink(e, go_node.about.id)}
-                                            </div>
-                                        )
+                                        if (index < this.rollupAmount || this.showEvidenceForRow(rowKey)) {
+                                            return (
+                                                <div key={index}>
+                                                    {this.generatedEvidenceWithLink(e, go_node.about.id)}
+                                                </div>
+                                            )
+                                        }
+                                        if (index === this.rollupAmount && !this.showEvidenceForRow(rowKey)) {
+                                            return (
+                                                <a key={index} onClick={ () => { this.showEvidences(rowKey) }}
+                                                   className='link'
+                                                >
+                                                    Show {go_node.evidence.with.length-this.rollupAmount} more
+                                                    <FaCaretDown/>
+                                                </a>
+                                            )
+                                        }
+
                                     })
                                     }
                                 </div>
