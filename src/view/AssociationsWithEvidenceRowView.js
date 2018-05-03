@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import amigo_gen from 'amigo2-instance-data'
 import SpeciesLabel from "./SpeciesLabel";
+import FaCaretDown from 'react-icons/lib/fa/caret-down';
 
 class AssociationsWithEvidenceRowView extends Component {
 
@@ -13,9 +14,11 @@ class AssociationsWithEvidenceRowView extends Component {
         this.state = {
             expanded: false,
             duration: 500,
+            showReferences:[],
         };
         this.renderTerm = this.renderTerm.bind(this);
         this.linker = (new amigo_gen()).linker;
+        this.rollupAmount = 3 ;
     }
 
     renderTerm(go_node) {
@@ -46,6 +49,18 @@ class AssociationsWithEvidenceRowView extends Component {
         );
 
     }
+
+    showReferenceForRow(rowKey) {
+        return this.state.showReferences.indexOf(rowKey)>=0  ;
+    }
+
+    showReferences = (rowKey) =>  {
+        let rows = this.state.showReferences;
+        rows.push(rowKey);
+        this.setState({
+            showReferences : rows ,
+        })
+    };
 
     generatedEvidenceWithLink(evidenceWith, subject) {
 
@@ -112,16 +127,16 @@ class AssociationsWithEvidenceRowView extends Component {
                         if (hoveredTermId && hoveredTermId === slim.goid) {
                             classTermIdName += ' ontology-ribbon-assoc__active';
                         }
-                        if(inputIndex%2===0){
+                        if (inputIndex % 2 === 0) {
                             classTermIdName += ' ontology-ribbon-assoc__green';
                         }
-                        else{
+                        else {
                             classTermIdName += ' ontology-ribbon-assoc__white';
                         }
                         classTermIdName += classDomainName;
-                        let rowKey = go_node.about.id+go_node.negated;
+                        let rowKey = go_node.about.id + go_node.negated;
                         return (
-                            <div className={classTermIdName} key={rowKey} >
+                            <div className={classTermIdName} key={rowKey}>
                                 <div className='ontology-ribbon-assoc__gene2-content'>
                                     <a
                                         title={go_node.about.label}
@@ -131,7 +146,7 @@ class AssociationsWithEvidenceRowView extends Component {
                                     >
                                         {this.renderTerm(go_node)}
                                     </a>
-                                    {go_node.evidence.qualifier && go_node.evidence.qualifier.map((q,index) => {
+                                    {go_node.evidence.qualifier && go_node.evidence.qualifier.map((q, index) => {
                                         // we exclude the NOT qualifier as it is handled separately
                                         if (q !== 'not') {
                                             return (
@@ -148,13 +163,14 @@ class AssociationsWithEvidenceRowView extends Component {
                                 </div>
 
                                 <div className="ontology-ribbon-assoc__evidence-type">
-                                    {go_node.evidence.id.map ( (e,index) => {
+                                    {go_node.evidence.id.map((e, index) => {
                                         return (
-                                        <a key={rowKey+index}
-                                           title={go_node.evidence.label} href={`http://www.evidenceontology.org/term/${go_node.evidence.id[index]}`}
-                                           style={{marginRight:8}}>
-                                            {go_node.evidence.type[index]}
-                                        </a>
+                                            <a key={rowKey + index}
+                                               title={go_node.evidence.label}
+                                               href={`http://www.evidenceontology.org/term/${go_node.evidence.id[index]}`}
+                                               style={{marginRight: 8}}>
+                                                {go_node.evidence.type[index]}
+                                            </a>
                                         )
                                     })}
                                 </div>
@@ -172,14 +188,27 @@ class AssociationsWithEvidenceRowView extends Component {
                                 </div>
                                 <div
                                     className="ontology-ribbon-assoc__evidence-reference">
-                                    {/*{go_node.reference}*/}
+
                                     {go_node.reference &&
                                     go_node.reference.map((e, index) => {
-                                        return (
-                                            <div key={index}>
-                                                {this.generatedReferenceWithLink(e, go_node.about.id)}
-                                            </div>
-                                        )
+                                        if (index < this.rollupAmount || this.showReferenceForRow(rowKey)) {
+                                            return (
+                                                <div key={index}>
+                                                    {this.generatedReferenceWithLink(e, go_node.about.id)}
+                                                </div>
+                                            )
+                                        }
+                                        else
+                                        if (index === this.rollupAmount && !this.showReferenceForRow(rowKey)) {
+                                            return (
+                                            <a key={index} onClick={ () => { this.showReferences(rowKey) }}
+                                             className='link'
+                                            >
+                                                Show {go_node.reference.length-this.rollupAmount} more
+                                                <FaCaretDown/>
+                                            </a>
+                                            )
+                                        }
                                     })
                                     }
                                 </div>
@@ -191,6 +220,8 @@ class AssociationsWithEvidenceRowView extends Component {
         );
 
     }
+
+
 
 }
 

@@ -364,3 +364,13 @@
   border-radius: 5px;
 }
 
+.link{
+   color: blue ;
+}
+
+.link:hover{
+  color: darkblue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
