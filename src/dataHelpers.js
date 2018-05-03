@@ -43,8 +43,6 @@ export function unpackSlimItems(results, subject, slimlist) {
     let allGOids = [];
     let globalGOids = [];
     results.forEach(function (result) {
-        // console.log('result');
-        // console.log(result);
         if (result.data.length > 0) {
             // merge these assocs into the overall response to this query
             Array.prototype.push.apply(queryResponse, result.data);
@@ -76,10 +74,6 @@ export function unpackSlimItems(results, subject, slimlist) {
                 for (let assoc of response.assocs) {
                     let tempAssoc = {};
                     let key = getKeyForObject(assoc);
-                    if (assoc.object.id === 'GO:0000224') {
-                        console.log('key')
-                        console.log(key)
-                    }
                     if (!assocMap[key]) {
                         tempAssoc = assoc;
                         tempAssoc.evidence_type = [assoc.evidence_type];
@@ -88,36 +82,12 @@ export function unpackSlimItems(results, subject, slimlist) {
                     }
                     else {
                         tempAssoc = assocMap[key];
-                        // if(false && isNegate(tempAssoc) !== isNegate(assoc)){
-                        //     tempAssoc = assoc;
-                        //     tempAssoc.evidence_type = [assoc.evidence_type];
-                        //     tempAssoc.evidence = [assoc.evidence];
-                        //     tempAssoc.qualifier = [];
-                        // }
-                        // else{
-                        if (assoc.object.id === 'GO:0000224') {
-                            console.log('input');
-                            console.log(tempAssoc);
-                            console.log('outer');
-                            console.log(assoc);
-                        }
                         tempAssoc.evidence_with = [...assoc.evidence_with, ...tempAssoc.evidence_with].unique();
                         tempAssoc.evidence = [...assoc.evidence, ...tempAssoc.evidence].unique();
                         tempAssoc.qualifier = [...assoc.qualifier, ...tempAssoc.qualifier].unique();
                         tempAssoc.evidence_type = [...assoc.evidence_type, ...tempAssoc.evidence_type].unique();
                         tempAssoc.reference = [...assoc.reference, ...tempAssoc.reference].unique();
                         tempAssoc.publications = [...assoc.publications, ...tempAssoc.publications].unique();
-                        if (assoc.object.id === 'GO:0000224') {
-                            console.log('merge');
-                            console.log(tempAssoc);
-                        }
-                        // }
-                    }
-                    if (assoc.object.id === 'GO:0000224') {
-                        console.log('putting ');
-                        console.log(tempAssoc);
-                        console.log('into ');
-                        console.log(key);
                     }
                     assocMap[key] = tempAssoc;
                 }
@@ -125,43 +95,16 @@ export function unpackSlimItems(results, subject, slimlist) {
 
                 // these are all the assocs under this slim class
                 // we don't want the association map, just those for this slim
-                console.log('START set');
                 Array.prototype.push.apply(assocs, response.assocs.filter((f) => {
                     let key = getKeyForObject(f);
-                    console.log(key + ' FOR ASSOC -> ');
-                    console.log(f)
-                    if(key.indexOf('GO:0000224')>=0){
-                        console.log('key')
-                        console.log(key)
-                        console.log(f)
-                        console.log('found key: '+key);
-                        let regeneratedKey = getKeyForObject(f);
-                        console.log('regenerated key: '+regeneratedKey)
-                    }
                     if (globalGOids.indexOf(key) < 0) {
                         globalGOids.push(key);
-                        if(key.indexOf('GO:0000224')>=0) {
-                            console.log('no, pushing');
-                            console.log(assocs)
-                            console.log(globalGOids)
-                        }
                         return true
                     }
                     else {
-                        if(key.indexOf('GO:0000224')>=0) {
-                            console.log('yes, ignoring');
-                            console.log(assocs)
-                            console.log(globalGOids)
-                        }
                         return false;
                     }
                 }));
-                if(slimitem.goid==='GO:0003824') {
-                    console.log(response.assocs)
-                    console.log(' - VS - ');
-                    console.log(assocs)
-                    console.log('END set');
-                }
                 /*
                 keep track of which associations are found for slim classes
                 so that (after this loop) these can be removed from "other"'s list
@@ -174,14 +117,6 @@ export function unpackSlimItems(results, subject, slimlist) {
                 }
             }
         });
-
-        if(slimitem.goid==='GO:0003824' && assocs.length>0 && assocs.find( (f) => f.object.id.indexOf('GO:0000224')>=0)){
-            console.log('output map')
-            console.log(assocMap)
-
-            console.log('output array')
-            console.log(assocs)
-        }
 
         // set up uniques and color too
         let block_color = orthoRGB;
@@ -207,27 +142,13 @@ export function unpackSlimItems(results, subject, slimlist) {
                 }
 
                 let label = assocItem.subject.id + ': ' + assocItem.object.label + ' ' + assocItem.negated;
-                console.log('testing: '+assocItem.object.id)
                 if (!hits.includes(label)) {
                     hits.push(label);
-                    if (assocItem.object.id === 'GO:0000224') {
-                        console.log('hit not included, adding: ' + label)
-                        console.log(hits)
-                    }
                     return true;
                 } else {
-                    if (assocItem.object.id === 'GO:0000224') {
-                        console.log('hit exists, ignoring: ')
-                        console.log(hits)
-                    }
                     return false;
                 }
             });
-            if(slimitem.goid==='GO:0003824'){
-                console.log('returning slim item')
-                console.log(slimitem.uniqueAssocs)
-                console.log(slimitem.tree)
-            }
             slimitem.uniqueAssocs.sort(sortAssociations);
             slimitem.uniqueAssocs = subjectFirst(subject, slimitem.uniqueAssocs);
             slimitem.color = heatColor(slimitem.uniqueAssocs.length, block_color, 48);
@@ -235,10 +156,6 @@ export function unpackSlimItems(results, subject, slimlist) {
         } else {
             slimitem.color = "#fff";
             slimitem.tree = undefined;
-        }
-        if(slimitem.goid==='GO:0003824'){
-            console.log('returning slim item')
-            console.log(slimitem)
         }
         return slimitem;
     });
@@ -270,8 +187,6 @@ export function unpackSlimItems(results, subject, slimlist) {
             otherItem.tree = undefined;
         }
     });
-    console.log('OUTPUT BLOCKS');
-    console.log(blocks)
     return {
         title: title,
         data: blocks
@@ -300,7 +215,6 @@ function sortAssociations(assoc_a, assoc_b) {
     if (assoc_a.object.label > assoc_b.object.label) {
         return 1;
     }
-    console.log('non-unique list');
     // a must be equal to b
     return 0;
 }

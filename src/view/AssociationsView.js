@@ -26,9 +26,6 @@ class AssociationsView extends Component {
                 && (slimitem.tree || []).length > 0;
         });
 
-        console.log('filteredSlimlist')
-        console.log(filteredSlimlist)
-
         return (
             <div>
                 <div className='ontology-ribbon-assoc__row'>

@@ -115,9 +115,6 @@ class AssociationsWithEvidenceRowView extends Component {
             <div>
                 {
                     taxon_result.children.map((go_node) => {
-                        if(go_node.about.id==='GO:0000224'){
-                            console.log(go_node)
-                        }
 
                         let classTermIdName = 'ontology-ribbon-assoc__row';
                         if (hoveredTermId && hoveredTermId === slim.goid) {
