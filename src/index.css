@@ -176,6 +176,22 @@
   background-color: gold !important;
 }
 
+.ontology-ribbon-assoc__white{
+  background-color: white ;
+}
+
+.ontology-ribbon-assoc__green {
+  background-color: rgb(223,235,235) ;
+}
+
+.ontology-ribbon-assoc__white:hover {
+  background-color: lightgray;
+}
+
+.ontology-ribbon-assoc__green:hover {
+  background-color: lightskyblue;
+}
+
 .ontology-ribbon-assoc__gene2-content {
   flex: 0 1 40%;
   min-width: 140px;
@@ -325,4 +341,36 @@
   background-position: 100% 0;
 }
 
-/* end of species icon */
+.go-link:hover{
+  border-radius: 10px;
+  text-decoration: underline;
+  /*background-color: lightblue;*/
+  margin-top: 3px;
+}
+
+.go-link{
+  border-radius: 10px;
+  text-decoration: underline;
+  margin-top: 5px;
+  padding-top: 3px;
+}
+
+.evidence-qualifier{
+   font-size: x-small;
+  padding: 3px;
+  margin-left: 5px;
+  text-decoration: none;
+  background-color: gold;
+  border-radius: 5px;
+}
+
+.link{
+   color: blue ;
+}
+
+.link:hover{
+  color: darkblue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+

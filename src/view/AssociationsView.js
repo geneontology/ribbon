@@ -26,7 +26,6 @@ class AssociationsView extends Component {
                 && (slimitem.tree || []).length > 0;
         });
 
-
         return (
             <div>
                 <div className='ontology-ribbon-assoc__row'>

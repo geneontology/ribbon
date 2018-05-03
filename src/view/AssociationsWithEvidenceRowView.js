@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import amigo_gen from 'amigo2-instance-data'
 import SpeciesLabel from "./SpeciesLabel";
+import FaCaretDown from 'react-icons/lib/fa/caret-down';
 
 class AssociationsWithEvidenceRowView extends Component {
 
@@ -13,9 +14,12 @@ class AssociationsWithEvidenceRowView extends Component {
         this.state = {
             expanded: false,
             duration: 500,
+            showReferences:[],
+            showEvidences:[],
         };
         this.renderTerm = this.renderTerm.bind(this);
         this.linker = (new amigo_gen()).linker;
+        this.rollupAmount = 3 ;
     }
 
     renderTerm(go_node) {
@@ -28,14 +32,6 @@ class AssociationsWithEvidenceRowView extends Component {
         else {
             return go_node.about.label;
         }
-    }
-
-    renderEvidenceTypeLink(evidence) {
-        return (
-            <a title={evidence.label} href={`http://www.evidenceontology.org/term/${evidence.id}`}>
-                {evidence.type}
-            </a>
-        )
     }
 
     generatedReferenceWithLink(publicationReference, subject) {
@@ -55,10 +51,46 @@ class AssociationsWithEvidenceRowView extends Component {
 
     }
 
+    showReferenceForRow(rowKey) {
+        return this.state.showReferences.indexOf(rowKey)>=0  ;
+    }
+
+    showReferences = (rowKey) =>  {
+        let rows = this.state.showReferences;
+        rows.push(rowKey);
+        this.setState({
+            showReferences : rows ,
+        })
+    };
+
+    showEvidenceForRow(rowKey) {
+        return this.state.showEvidences.indexOf(rowKey)>=0  ;
+    }
+
+    showEvidences = (rowKey) =>  {
+        let rows = this.state.showEvidences;
+        rows.push(rowKey);
+        this.setState({
+            showEvidences : rows ,
+        })
+    };
+
     generatedEvidenceWithLink(evidenceWith, subject) {
 
         // if internal Gene link types
-        if (evidenceWith.match(/^(RGD:|ZFIN:ZDB-GENE|WB:WBGene|MGI:|SGD:|HGNC:).*/)) {
+        // patching GO bug
+        if (evidenceWith.match(/^(MGI:MGI).*/)) {
+            return (
+                <a href={`http://www.alliancegenome.org/gene/${evidenceWith.substr(4)}`}>
+                    {evidenceWith.substr(4)}
+                    {
+                        subject.split(':')[0] === evidenceWith.split(':')[0] &&
+                        <SpeciesLabel species={evidenceWith} hideText={true}/>
+                    }
+                </a>
+            )
+        }
+        else if (evidenceWith.match(/^(RGD:|ZFIN:ZDB-GENE|WB:WBGene|MGI:|SGD:|HGNC:).*/)) {
             return (
                 <a href={`http://www.alliancegenome.org/gene/${evidenceWith}`}>
                     {evidenceWith}
@@ -94,24 +126,30 @@ class AssociationsWithEvidenceRowView extends Component {
 
     render() {
         let taxon_result = this.props.taxon_node.children[0];
-        const {inputIndex, slim,hoveredDomain,hoveredTermId} = this.props;
+        const {inputIndex, slim, hoveredDomain, hoveredTermId} = this.props;
         let classDomainName = '';
-        if(hoveredDomain && hoveredDomain.toLowerCase()===slim.domain){
+        if (hoveredDomain && hoveredDomain.toLowerCase() === slim.domain) {
             classDomainName += ' ontology-ribbon-assoc__active'
         }
         return (
             <div>
                 {
                     taxon_result.children.map((go_node) => {
+
                         let classTermIdName = 'ontology-ribbon-assoc__row';
-                        if(hoveredTermId && hoveredTermId===slim.goid){
+                        if (hoveredTermId && hoveredTermId === slim.goid) {
                             classTermIdName += ' ontology-ribbon-assoc__active';
                         }
+                        if (inputIndex % 2 === 0) {
+                            classTermIdName += ' ontology-ribbon-assoc__green';
+                        }
+                        else {
+                            classTermIdName += ' ontology-ribbon-assoc__white';
+                        }
                         classTermIdName += classDomainName;
+                        let rowKey = go_node.about.id + go_node.negated;
                         return (
-                            <div className={classTermIdName} key={go_node.about.id}
-                                 style={{backgroundColor: inputIndex % 2 === 0 ? 'rgb(223,235,235)' : 'white'}}
-                            >
+                            <div className={classTermIdName} key={rowKey}>
                                 <div className='ontology-ribbon-assoc__gene2-content'>
                                     <a
                                         title={go_node.about.label}
@@ -121,33 +159,82 @@ class AssociationsWithEvidenceRowView extends Component {
                                     >
                                         {this.renderTerm(go_node)}
                                     </a>
+                                    {go_node.evidence.qualifier && go_node.evidence.qualifier.map((q, index) => {
+                                        // we exclude the NOT qualifier as it is handled separately
+                                        if (q !== 'not') {
+                                            return (
+                                                <a key={index}
+                                                   title={q}
+                                                   href={`http://geneontology.org/page/go-qualifiers`}
+                                                   rel="noopener noreferrer"
+                                                   target="_blank"
+                                                   className='evidence-qualifier'
+                                                >{q}</a>
+                                            )
+                                        }
+                                    })}
                                 </div>
 
                                 <div className="ontology-ribbon-assoc__evidence-type">
-                                    {this.renderEvidenceTypeLink(go_node.evidence)}
+                                    {go_node.evidence.id.map((e, index) => {
+                                        return (
+                                            <a key={rowKey + index}
+                                               title={go_node.evidence.label}
+                                               href={`http://www.evidenceontology.org/term/${go_node.evidence.id[index]}`}
+                                               style={{marginRight: 8}}>
+                                                {go_node.evidence.type[index]}
+                                            </a>
+                                        )
+                                    })}
                                 </div>
                                 <div
                                     className="ontology-ribbon-assoc__evidence-with">
                                     {go_node.evidence.with &&
                                     go_node.evidence.with.map((e, index) => {
-                                        return (
-                                            <div key={index}>
-                                                {this.generatedEvidenceWithLink(e, go_node.about.id)}
-                                            </div>
-                                        )
+                                        if (index < this.rollupAmount || this.showEvidenceForRow(rowKey)) {
+                                            return (
+                                                <div key={index}>
+                                                    {this.generatedEvidenceWithLink(e, go_node.about.id)}
+                                                </div>
+                                            )
+                                        }
+                                        if (index === this.rollupAmount && !this.showEvidenceForRow(rowKey)) {
+                                            return (
+                                                <a key={index} onClick={ () => { this.showEvidences(rowKey) }}
+                                                   className='link'
+                                                >
+                                                    Show {go_node.evidence.with.length-this.rollupAmount} more
+                                                    <FaCaretDown/>
+                                                </a>
+                                            )
+                                        }
+
                                     })
                                     }
                                 </div>
                                 <div
                                     className="ontology-ribbon-assoc__evidence-reference">
-                                    {/*{go_node.reference}*/}
+
                                     {go_node.reference &&
                                     go_node.reference.map((e, index) => {
-                                        return (
-                                            <div key={index}>
-                                                {this.generatedReferenceWithLink(e, go_node.about.id)}
-                                            </div>
-                                        )
+                                        if (index < this.rollupAmount || this.showReferenceForRow(rowKey)) {
+                                            return (
+                                                <div key={index}>
+                                                    {this.generatedReferenceWithLink(e, go_node.about.id)}
+                                                </div>
+                                            )
+                                        }
+                                        else
+                                        if (index === this.rollupAmount && !this.showReferenceForRow(rowKey)) {
+                                            return (
+                                            <a key={index} onClick={ () => { this.showReferences(rowKey) }}
+                                             className='link'
+                                            >
+                                                Show {go_node.reference.length-this.rollupAmount} more
+                                                <FaCaretDown/>
+                                            </a>
+                                            )
+                                        }
                                     })
                                     }
                                 </div>
@@ -160,12 +247,13 @@ class AssociationsWithEvidenceRowView extends Component {
 
     }
 
+
+
 }
 
 AssociationsWithEvidenceRowView.propTypes = {
     taxon_node: PropTypes.object.isRequired,
     geneUrlFormatter: PropTypes.func,
-    key: PropTypes.any,
     inputIndex: PropTypes.any,
     slim: PropTypes.any,
     hoveredDomain: PropTypes.string,

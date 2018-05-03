@@ -5,6 +5,34 @@ const orthoRGB = [86, 148, 27];
 const queryColor = "#dfebeb"; //"#c0d8d8";
 const orthoColor = "#f3f9f0"; //"#d8eecd";
 
+
+Object.defineProperty(Array.prototype, 'unique', {
+    enumerable: false,
+    configurable: false,
+    writable: false,
+    value: function () {
+        let a = this.concat();
+        for (let i = 0; i < a.length; ++i) {
+            for (let j = i + 1; j < a.length; ++j) {
+                if (a[i] === a[j] || a[j] === undefined)
+                    a.splice(j--, 1);
+            }
+        }
+        a = a.filter(x => x != null);
+
+        return a;
+    }
+});
+
+function isNegate(assoc) {
+    return (assoc.qualifier && assoc.qualifier.length === 1 && assoc.qualifier[0] === 'not');
+}
+
+function getKeyForObject(assoc) {
+    return isNegate(assoc) ? 'neg::' + assoc.object.id : assoc.object.id;
+}
+
+
 export function unpackSlimItems(results, subject, slimlist) {
     let title = subject;
     let queryResponse = [];
@@ -12,8 +40,6 @@ export function unpackSlimItems(results, subject, slimlist) {
     let allGOids = [];
     let globalGOids = [];
     results.forEach(function (result) {
-        // console.log('result');
-        // console.log(result);
         if (result.data.length > 0) {
             // merge these assocs into the overall response to this query
             Array.prototype.push.apply(queryResponse, result.data);
@@ -22,16 +48,17 @@ export function unpackSlimItems(results, subject, slimlist) {
     /*
     bulk of the annotations initialized first
     */
+    // each ID has to be mapped across slims in order to merge them
+    let assocMap = {};
+
     const blocks = slimlist.map(function (slimitem) {
         if (slimitem.golabel.includes('other')) {
             others.push(slimitem);
         }
         let assocs = [];
-        // console.log(queryResponse)
         queryResponse.forEach(function (response) {
             if (response.slim === slimitem.goid) {
                 // skip noninformative annotations like protein binding
-                // console.log(response)
                 for (let i = response.assocs.length - 1; i >= 0; i--) {
                     let assoc = response.assocs[i];
                     if (assoc.object.id === 'GO:0005515' ||
@@ -41,14 +68,37 @@ export function unpackSlimItems(results, subject, slimlist) {
                         response.assocs.splice(i, 1);
                     }
                 }
+                for (let assoc of response.assocs) {
+                    let tempAssoc = {};
+                    let key = getKeyForObject(assoc);
+                    if (!assocMap[key]) {
+                        tempAssoc = assoc;
+                        tempAssoc.evidence_type = [assoc.evidence_type];
+                        tempAssoc.evidence = [assoc.evidence];
+                    }
+                    else {
+                        tempAssoc = assocMap[key];
+                        tempAssoc.evidence_with = [...assoc.evidence_with, ...tempAssoc.evidence_with].unique();
+                        tempAssoc.evidence = [...assoc.evidence, ...tempAssoc.evidence].unique();
+                        tempAssoc.qualifier = [...assoc.qualifier, ...tempAssoc.qualifier].unique();
+                        tempAssoc.evidence_type = [...assoc.evidence_type, ...tempAssoc.evidence_type].unique();
+                        tempAssoc.reference = [...assoc.reference, ...tempAssoc.reference].unique();
+                        tempAssoc.publications = [...assoc.publications, ...tempAssoc.publications].unique();
+                    }
+                    assocMap[key] = tempAssoc;
+                }
+
+
                 // these are all the assocs under this slim class
-                Array.prototype.push.apply(assocs, response.assocs.filter( (f) => {
-                    if(globalGOids.indexOf(f.object.id)<0){
-                        globalGOids.push(f.object.id);
+                // we don't want the association map, just those for this slim
+                Array.prototype.push.apply(assocs, response.assocs.filter((f) => {
+                    let key = getKeyForObject(f);
+                    if (globalGOids.indexOf(key) < 0) {
+                        globalGOids.push(key);
                         return true
                     }
-                    else{
-                        return false ;
+                    else {
+                        return false;
                     }
                 }));
                 /*
@@ -57,19 +107,21 @@ export function unpackSlimItems(results, subject, slimlist) {
                 */
                 if (!slimitem.golabel.includes('other')) {
                     assocs.forEach(function (assoc) {
-                        allGOids.push(assoc.object.id);
+                        let key = getKeyForObject(assoc);
+                        allGOids.push(key);
                     })
                 }
             }
         });
+
         // set up uniques and color too
         let block_color = orthoRGB;
         slimitem.uniqueAssocs = [];
         if (assocs.length > 0) {
             let hits = [];
-            slimitem.uniqueAssocs = assocs.filter(function (assocItem, index) {
+            slimitem.uniqueAssocs = assocs.filter(function (assocItem) {
                 /*
-                  First a hack to accomodate swapping out HGNC ids for UniProtKB ids
+                  First a hack to accommodate swapping out HGNC ids for UniProtKB ids
                 */
                 if (subject.startsWith('HGNC') && assocItem.subject.taxon.id === 'NCBITaxon:9606') {
                     assocItem.subject.id = subject; // Clobber the UniProtKB id
@@ -81,14 +133,11 @@ export function unpackSlimItems(results, subject, slimlist) {
                 let subjectID = assocItem.subject.id.replace('FlyBase', 'FB');
                 assocItem.subject.id = subjectID;
                 if (subjectID === subject) {
-                    title = assocItem.subject.label + ' (' +
-                        assocItem.subject.id + ')';
+                    title = assocItem.subject.label + ' (' + assocItem.subject.id + ')';
                     block_color = queryRGB;
                 }
 
-                let label = assocItem.subject.id + ': ' +
-                    assocItem.object.label + ' ' + assocItem.negated;
-                // console.log('label is ' + label);
+                let label = assocItem.subject.id + ': ' + assocItem.object.label + ' ' + assocItem.negated;
                 if (!hits.includes(label)) {
                     hits.push(label);
                     return true;
@@ -162,7 +211,6 @@ function sortAssociations(assoc_a, assoc_b) {
     if (assoc_a.object.label > assoc_b.object.label) {
         return 1;
     }
-    console.log('non-unique list');
     // a must be equal to b
     return 0;
 }
@@ -203,10 +251,10 @@ export function heatColor(associations_count, rgb, heatLevels) {
 }
 
 function containsPMID(references) {
-    for(let r of references){
-        if(r.startsWith('PMID:')) return true ;
+    for (let r of references) {
+        if (r.startsWith('PMID:')) return true;
     }
-    return false ;
+    return false;
 }
 
 /**
@@ -218,19 +266,35 @@ function filterDuplicationReferences(references) {
 
 
     // if references contains a PMID, remove the non-PMID ones
-    if(!containsPMID(references)){
-        return references ;
+    if (!containsPMID(references)) {
+        return references;
     }
-    else{
-        let returnArray =[];
-        for(let r of references){
-            if(r.startsWith('PMID:')){
+    else {
+        let returnArray = [];
+        for (let r of references) {
+            if (r.startsWith('PMID:')) {
                 returnArray.push(r);
             }
         }
         return returnArray;
     }
 
+}
+
+function generateNode(assoc) {
+    return {
+        about: assoc.object,
+        negated: assoc.negated,
+        evidence: {
+            id: assoc.evidence,
+            type: assoc.evidence_type,
+            label: assoc.evidence_label,
+            with: assoc.evidence_with,
+            qualifier: assoc.qualifier,
+        },
+        publications: assoc.publications,
+        reference: filterDuplicationReferences(assoc.reference),
+    };
 }
 
 export function buildAssocTree(assocs, subject) {
@@ -258,18 +322,7 @@ export function buildAssocTree(assocs, subject) {
             current_taxon_node.children.push(current_gene_node);
 
 
-            let go_node = {
-                about: assoc.object,
-                negated: assoc.negated,
-                evidence: {
-                    id: assoc.evidence,
-                    type: assoc.evidence_type,
-                    label: assoc.evidence_label,
-                    with: assoc.evidence_with,
-                },
-                publications: assoc.publications,
-                reference: filterDuplicationReferences(assoc.reference),
-            };
+            let go_node = generateNode(assoc);
 
             current_gene_node.children.push(go_node);
 
@@ -288,36 +341,14 @@ export function buildAssocTree(assocs, subject) {
             current_taxon_node.children.push(current_gene_node);
 
 
-            let go_node = {
-                about: assoc.object,
-                negated: assoc.negated,
-                evidence: {
-                    id: assoc.evidence,
-                    type: assoc.evidence_type,
-                    label: assoc.evidence_label,
-                    with: assoc.evidence_with,
-                },
-                publications: assoc.publications,
-                reference: filterDuplicationReferences(assoc.reference),
-            };
+            let go_node = generateNode(assoc);
 
             current_gene_node.children.push(go_node);
 
             prev_gene = assoc.subject.id;
 
         } else {
-            let go_node = {
-                about: assoc.object,
-                negated: assoc.negated,
-                evidence: {
-                    id: assoc.evidence,
-                    type: assoc.evidence_type,
-                    label: assoc.evidence_label,
-                    with: assoc.evidence_with,
-                },
-                publications: assoc.publications,
-                reference: filterDuplicationReferences(assoc.reference),
-            };
+            let go_node = generateNode(assoc);
 
             current_gene_node.children.push(go_node);
         }

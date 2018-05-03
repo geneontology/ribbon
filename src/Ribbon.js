@@ -6,10 +6,11 @@ import axios from 'axios';
 import RibbonBase from './RibbonBase';
 import AssociationsView from './view/AssociationsView';
 import SpeciesLabel from './view/SpeciesLabel';
-// import FaIconPack from 'react-icons/lib/fa'
-// import FaClose from 'react-icons/lib/fa/close'
 import {FaClose,FaAngleDoubleDown} from 'react-icons/lib/fa';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import GoIcon from './icon/go.png';
+import FaExternalLink from 'react-icons/lib/fa/external-link';
+
 
 
 export default class Ribbon extends React.Component {
@@ -20,7 +21,7 @@ export default class Ribbon extends React.Component {
             currentTermId: undefined,
             currentDomain: undefined,
             fetching: false,
-            showing: false,
+            showing: this.props.showing,
             hoveredTermId: undefined,
             hoveredDomain: undefined,
         }
@@ -187,6 +188,19 @@ export default class Ribbon extends React.Component {
         }
     };
 
+    /**
+     * https://github.com/geneontology/go-site/issues/91
+     * @param inputSubject
+     * @returns {*}
+     */
+    static patchSubject(inputSubject){
+        if(inputSubject.startsWith('MGI')){
+            return 'MGI:'+inputSubject;
+        }
+        return inputSubject;
+    }
+
+
     render() {
         const slimlist = this.props.slimlist;
         return (
@@ -217,8 +231,14 @@ export default class Ribbon extends React.Component {
                     }
                     <div className='ontology-ribbon__caption'>
                         {!this.state.fetching && this.state.subject && this.state.title &&
-                        <a href={`http://amigo.geneontology.org/amigo/gene_product/` + this.state.subject}>
-                            {this.state.title}
+                        <a
+                            href={`http://amigo.geneontology.org/amigo/gene_product/` + Ribbon.patchSubject(this.state.subject)}
+                            className='go-link'
+                        >
+                            {/*<img width={14} src={GoIcon} style={{marginRight: 4,paddingTop:5}}/>*/}
+                            See All {this.getLabel(this.state.title)} Annotations
+                            <FaExternalLink style={{marginLeft:5}}/>
+
                         </a>
                         }
                         {!this.state.fetching && !this.state.subject && this.state.title &&
@@ -228,7 +248,7 @@ export default class Ribbon extends React.Component {
 
                         {this.state.showing &&
                         <a onClick={() => this.setState({showing: false})}
-                           className='ontology-ribbon__show-hide-assocs'>
+                           className='ontology-ribbon__show-hide-assocs link'>
                             Hide associations
                             <div style={{paddingBottom: 10, marginBottom: 10, display: 'inline'}}>
                                 <FaClose size={20}/>
@@ -268,6 +288,10 @@ export default class Ribbon extends React.Component {
             </div>
         );
     }
+
+    getLabel(title) {
+        return title.indexOf(' ')>=0 ? title.split(' ')[0] : title ;
+    }
 }
 
 
@@ -277,4 +301,5 @@ Ribbon.propTypes = {
     slimlist: PropTypes.array.isRequired,
     initialTermId: PropTypes.string,
     subject: PropTypes.string,
+    showing: PropTypes.bool.isRequired,
 };
