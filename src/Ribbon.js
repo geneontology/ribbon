@@ -21,7 +21,7 @@ export default class Ribbon extends React.Component {
             currentTermId: undefined,
             currentDomain: undefined,
             fetching: false,
-            showing: true,
+            showing: this.props.showing,
             hoveredTermId: undefined,
             hoveredDomain: undefined,
         }
@@ -297,4 +297,5 @@ Ribbon.propTypes = {
     slimlist: PropTypes.array.isRequired,
     initialTermId: PropTypes.string,
     subject: PropTypes.string,
+    showing: PropTypes.bool.isRequired,
 };

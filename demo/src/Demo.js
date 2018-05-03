@@ -58,6 +58,7 @@ class Demo extends Component {
                   slimlist={data}
                   title={title}
                   subject={subject}
+                  showing={true}
                 /> :
                 null
             }
