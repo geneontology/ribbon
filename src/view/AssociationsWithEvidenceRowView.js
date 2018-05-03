@@ -30,14 +30,6 @@ class AssociationsWithEvidenceRowView extends Component {
         }
     }
 
-    renderEvidenceType(label,id,type) {
-        return (
-            <a title={label} href={`http://www.evidenceontology.org/term/${id}`} style={{marginRight:8}}>
-                {type}
-            </a>
-        );
-    }
-
     generatedReferenceWithLink(publicationReference, subject) {
 
         let url = this.linker.url(publicationReference);
@@ -164,7 +156,6 @@ class AssociationsWithEvidenceRowView extends Component {
                                             {go_node.evidence.type[index]}
                                         </a>
                                         )
-                                        // return this.renderEvidenceType(go_node.evidence.label,go_node.evidence.id[index],go_node.evidence.type[index])
                                     })}
                                 </div>
                                 <div
