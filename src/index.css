@@ -349,6 +349,11 @@
 }
 
 .go-link{
+  border-radius: 10px;
+  text-decoration: underline;
+  /*background-color: #ddffff;*/
+  margin-top: 5px;
+  padding-top: 3px;
 }
 
 .evidence-qualifier{

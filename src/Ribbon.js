@@ -9,6 +9,8 @@ import SpeciesLabel from './view/SpeciesLabel';
 import {FaClose,FaAngleDoubleDown} from 'react-icons/lib/fa';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import GoIcon from './icon/go.png';
+import FaExternalLink from 'react-icons/lib/fa/external-link';
+
 
 
 export default class Ribbon extends React.Component {
@@ -234,7 +236,9 @@ export default class Ribbon extends React.Component {
                             className='go-link'
                         >
                             <img width={14} src={GoIcon} style={{marginRight: 4,paddingTop:5}}/>
-                            {this.state.title}
+                            Detailed {this.state.title} Annotations
+                            <FaExternalLink style={{marginLeft:5}}/>
+
                         </a>
                         }
                         {!this.state.fetching && !this.state.subject && this.state.title &&
