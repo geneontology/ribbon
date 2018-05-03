@@ -344,7 +344,7 @@
 .go-link:hover{
   border-radius: 10px;
   text-decoration: underline;
-  background-color: lightblue;
+  /*background-color: lightblue;*/
   margin-top: 3px;
 }
 

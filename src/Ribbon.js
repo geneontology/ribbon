@@ -235,8 +235,8 @@ export default class Ribbon extends React.Component {
                             href={`http://amigo.geneontology.org/amigo/gene_product/` + Ribbon.patchSubject(this.state.subject)}
                             className='go-link'
                         >
-                            <img width={14} src={GoIcon} style={{marginRight: 4,paddingTop:5}}/>
-                            Detailed {this.state.title} Annotations
+                            {/*<img width={14} src={GoIcon} style={{marginRight: 4,paddingTop:5}}/>*/}
+                            See All {this.getLabel(this.state.title)} Annotations
                             <FaExternalLink style={{marginLeft:5}}/>
 
                         </a>
@@ -248,7 +248,7 @@ export default class Ribbon extends React.Component {
 
                         {this.state.showing &&
                         <a onClick={() => this.setState({showing: false})}
-                           className='ontology-ribbon__show-hide-assocs'>
+                           className='ontology-ribbon__show-hide-assocs link'>
                             Hide associations
                             <div style={{paddingBottom: 10, marginBottom: 10, display: 'inline'}}>
                                 <FaClose size={20}/>
@@ -287,6 +287,10 @@ export default class Ribbon extends React.Component {
                 </ReactCSSTransitionGroup>
             </div>
         );
+    }
+
+    getLabel(title) {
+        return title.indexOf(' ')>=0 ? title.split(' ')[0] : title ;
     }
 }
 
