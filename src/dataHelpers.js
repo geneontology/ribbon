@@ -25,9 +25,6 @@ Object.defineProperty(Array.prototype, 'unique', {
 });
 
 function isNegate(assoc) {
-    if(assoc.qualifiers && assoc.qualifiers.length>0){
-        assoc.qualifier = assoc.qualifiers;
-    }
     return (assoc.qualifier && assoc.qualifier.length === 1 && assoc.qualifier[0] === 'not');
 }
 
@@ -78,7 +75,6 @@ export function unpackSlimItems(results, subject, slimlist) {
                         tempAssoc = assoc;
                         tempAssoc.evidence_type = [assoc.evidence_type];
                         tempAssoc.evidence = [assoc.evidence];
-                        tempAssoc.qualifier = [];
                     }
                     else {
                         tempAssoc = assocMap[key];
