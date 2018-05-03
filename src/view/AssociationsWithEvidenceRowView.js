@@ -130,8 +130,9 @@ class AssociationsWithEvidenceRowView extends Component {
                             classTermIdName += ' ontology-ribbon-assoc__white';
                         }
                         classTermIdName += classDomainName;
+                        let rowKey = go_node.about.id+go_node.negated;
                         return (
-                            <div className={classTermIdName} key={go_node.about.label+go_node.about.id+go_node.negated} >
+                            <div className={classTermIdName} key={rowKey} >
                                 <div className='ontology-ribbon-assoc__gene2-content'>
                                     <a
                                         title={go_node.about.label}
@@ -159,7 +160,14 @@ class AssociationsWithEvidenceRowView extends Component {
 
                                 <div className="ontology-ribbon-assoc__evidence-type">
                                     {go_node.evidence.id.map ( (e,index) => {
-                                        return this.renderEvidenceType(go_node.evidence.label,go_node.evidence.id[index],go_node.evidence.type[index])
+                                        return (
+                                        <a key={rowKey+index}
+                                           title={go_node.evidence.label} href={`http://www.evidenceontology.org/term/${go_node.evidence.id[index]}`}
+                                           style={{marginRight:8}}>
+                                            {go_node.evidence.type[index]}
+                                        </a>
+                                        )
+                                        // return this.renderEvidenceType(go_node.evidence.label,go_node.evidence.id[index],go_node.evidence.type[index])
                                     })}
                                 </div>
                                 <div
@@ -201,7 +209,6 @@ class AssociationsWithEvidenceRowView extends Component {
 AssociationsWithEvidenceRowView.propTypes = {
     taxon_node: PropTypes.object.isRequired,
     geneUrlFormatter: PropTypes.func,
-    key: PropTypes.any,
     inputIndex: PropTypes.any,
     slim: PropTypes.any,
     hoveredDomain: PropTypes.string,
