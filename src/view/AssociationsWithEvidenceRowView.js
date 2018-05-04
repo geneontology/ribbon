@@ -78,30 +78,20 @@ class AssociationsWithEvidenceRowView extends Component {
     generatedEvidenceWithLink(evidenceWith, subject) {
 
         // if internal Gene link types
-        // patching GO bug
-        if (evidenceWith.match(/^(MGI:MGI).*/)) {
-            return (
-                <a href={`http://www.alliancegenome.org/gene/${evidenceWith.substr(4)}`}>
-                    {evidenceWith.substr(4)}
-                    {
-                        subject.split(':')[0] === evidenceWith.split(':')[0] &&
-                        <SpeciesLabel species={evidenceWith} hideText={true}/>
-                    }
-                </a>
-            )
-        }
-        else if (evidenceWith.match(/^(RGD:|ZFIN:ZDB-GENE|WB:WBGene|MGI:|SGD:|HGNC:).*/)) {
-            return (
-                <a href={`http://www.alliancegenome.org/gene/${evidenceWith}`}>
-                    {evidenceWith}
-                    {
-                        subject.split(':')[0] === evidenceWith.split(':')[0] &&
-                        <SpeciesLabel species={evidenceWith} hideText={true}/>
-                    }
-                </a>
-            )
-        }
-        // Allele
+        // else if (evidenceWith.match(/^(RGD:|ZFIN:ZDB-GENE|WB:WBGene|MGI:|SGD:|HGNC:).*/)) {
+        //     return (
+        //         <a href={`http://www.alliancegenome.org/gene/${evidenceWith}`}>
+        //             {evidenceWith}
+        //             {
+        //                 subject.split(':')[0] === evidenceWith.split(':')[0] &&
+        //                 <SpeciesLabel species={evidenceWith} hideText={true}/>
+        //             }
+        //         </a>
+        //     )
+        // }
+        // // Allele
+
+
         if (evidenceWith.match(/^(WB:WBVar).*/)) {
             return (
                 <a href={`http://www.wormbase.org/get?name=${evidenceWith.split(':')[1]}&class=Variation`}>
@@ -114,10 +104,16 @@ class AssociationsWithEvidenceRowView extends Component {
             )
         }
 
+        let link = evidenceWith ;
+        // path for MGI from GO
+        if(link.startsWith('MGI:MGI:')){
+            link = link.substr(4);
+        }
+
         let url = this.linker.url(evidenceWith);
         return (
             <a href={url}>
-                {evidenceWith}
+                {link}
             </a>
         );
 
