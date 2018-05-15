@@ -147,14 +147,6 @@ class AssociationsWithEvidenceRowView extends Component {
                         return (
                             <div className={classTermIdName} key={rowKey}>
                                 <div className='ontology-ribbon-assoc__gene2-content'>
-                                    <a
-                                        title={go_node.about.label}
-                                        href={`http://amigo.geneontology.org/amigo/term/${go_node.about.id}`}
-                                        rel="noopener noreferrer"
-                                        target="_blank"
-                                    >
-                                        {this.renderTerm(go_node)}
-                                    </a>
                                     {go_node.evidence.qualifier && go_node.evidence.qualifier.map((q, index) => {
                                         // we exclude the NOT qualifier as it is handled separately
                                         if (q !== 'not') {
@@ -169,6 +161,14 @@ class AssociationsWithEvidenceRowView extends Component {
                                             )
                                         }
                                     })}
+                                    <a
+                                        title={go_node.about.label}
+                                        href={`http://amigo.geneontology.org/amigo/term/${go_node.about.id}`}
+                                        rel="noopener noreferrer"
+                                        target="_blank"
+                                    >
+                                        {this.renderTerm(go_node)}
+                                    </a>
                                 </div>
 
                                 <div className="ontology-ribbon-assoc__evidence-type">
