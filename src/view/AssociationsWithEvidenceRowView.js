@@ -119,9 +119,16 @@ class AssociationsWithEvidenceRowView extends Component {
 
 
     }
+    patchSubject(inputSubject){
+        if(inputSubject.startsWith('MGI')){
+            return 'MGI:'+inputSubject;
+        }
+        return inputSubject;
+    }
 
     render() {
         let taxon_result = this.props.taxon_node.children[0];
+        console.log(taxon_result)
         const {inputIndex, slim, hoveredDomain, hoveredTermId} = this.props;
         let classDomainName = '';
         if (hoveredDomain && hoveredDomain.toLowerCase() === slim.domain) {
@@ -163,7 +170,7 @@ class AssociationsWithEvidenceRowView extends Component {
                                     })}
                                     <a
                                         title={go_node.about.label}
-                                        href={`http://amigo.geneontology.org/amigo/term/${go_node.about.id}`}
+                                        href={`http://amigo.geneontology.org/amigo/gene_product/${this.patchSubject(taxon_result.about.id)}?term=${go_node.about.id}`}
                                         rel="noopener noreferrer"
                                         target="_blank"
                                     >
