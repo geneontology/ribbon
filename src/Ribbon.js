@@ -7,7 +7,7 @@ import RibbonBase from './RibbonBase';
 import AssociationsView from './view/AssociationsView';
 import SpeciesLabel from './view/SpeciesLabel';
 import {FaClose,FaAngleDoubleDown} from 'react-icons/lib/fa';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import FaExternalLink from 'react-icons/lib/fa/external-link';
 
 
@@ -264,24 +264,27 @@ export default class Ribbon extends Component {
 
                     </div>
                 </div>
-                <ReactCSSTransitionGroup transitionName='fade'
-                                         transitionEnterTimeout={500}
-                                         transitionLeaveTimeout={300}
-                >
-                    {this.state.showing &&
-                    <div className='ontology-ribbon__assoc'>
-                        {this.renderMessage()}
-                        <AssociationsView
-                            currentTermId={this.state.currentTermId}
-                            currentDomain={this.state.currentDomain}
-                            hoveredTermId={this.state.hoveredTermId}
-                            hoveredDomain={this.state.hoveredDomain}
-                            slimlist={slimlist}
-                            geneUrlFormatter={this.props.geneUrlFormatter}
-                        />
-                    </div>
+                <TransitionGroup>
+                    {this.state.showing ?
+                        <CSSTransition
+                            classNames="fade"
+                            timeout={{ enter: 500, exit: 300 }}
+                        >
+                            <div className='ontology-ribbon__assoc'>
+                                {this.renderMessage()}
+                                <AssociationsView
+                                    currentTermId={this.state.currentTermId}
+                                    currentDomain={this.state.currentDomain}
+                                    hoveredTermId={this.state.hoveredTermId}
+                                    hoveredDomain={this.state.hoveredDomain}
+                                    slimlist={slimlist}
+                                    geneUrlFormatter={this.props.geneUrlFormatter}
+                                />
+                            </div>
+                        </CSSTransition> :
+                        null
                     }
-                </ReactCSSTransitionGroup>
+                </TransitionGroup>
             </div>
         );
     }
