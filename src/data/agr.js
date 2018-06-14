@@ -1,222 +1,193 @@
 export default [
   {
-    "goid": "GO:0003824",
-    "golabel": "catalysis",
-    "domain": "molecular function"
+    "class_id": "separator1", // used as a key to a hashmap, so can't be blank
+    "class_label": "molecular function",
+    "separator": true
   },
   {
-    "goid": "GO:0004872",
-    "golabel": "receptor",
-    "domain": "molecular function"
+    "class_id": "GO:0003824",
+    "class_label": "catalysis",
   },
   {
-    "goid": "GO:0005102",
-    "golabel": "receptor binding",
-    "domain": "molecular function"
+    "class_id": "GO:0004872",
+    "class_label": "receptor",
   },
   {
-    "goid": "GO:0005215",
-    "golabel": "transporter",
-    "domain": "molecular function"
+    "class_id": "GO:0005102",
+    "class_label": "receptor binding",
   },
   {
-    "goid": "GO:0005198",
-    "golabel": "structural molecule",
-    "domain": "molecular function"
+    "class_id": "GO:0005215",
+    "class_label": "transporter",
   },
   {
-    "goid": "GO:0008092",
-    "golabel": "cytoskeleton binding",
-    "domain": "molecular function"
+    "class_id": "GO:0005198",
+    "class_label": "structural molecule",
   },
   {
-    "goid": "GO:0003677",
-    "golabel": "DNA binding",
-    "domain": "molecular function"
+    "class_id": "GO:0008092",
+    "class_label": "cytoskeleton binding",
   },
   {
-    "goid": "GO:0003723",
-    "golabel": "RNA binding",
-    "domain": "molecular function"
+    "class_id": "GO:0003677",
+    "class_label": "DNA binding",
   },
   {
-    "goid": "GO:0001071",
-    "golabel": "transcription factor",
-    "domain": "molecular function"
+    "class_id": "GO:0003723",
+    "class_label": "RNA binding",
   },
   {
-    "goid": "GO:0036094",
-    "golabel": "small molecule binding",
-    "domain": "molecular function"
+    "class_id": "GO:0001071",
+    "class_label": "transcription factor",
   },
   {
-    "goid": "GO:0046872",
-    "golabel": "metal ion binding",
-    "domain": "molecular function"
+    "class_id": "GO:0036094",
+    "class_label": "small molecule binding",
   },
   {
-    "goid": "GO:0030246",
-    "golabel": "carbohydrate binding",
-    "domain": "molecular function"
+    "class_id": "GO:0046872",
+    "class_label": "metal ion binding",
   },
   {
-    "goid": "GO:0003674",
-    "golabel": "other activities",
-    "domain": "molecular function"
+    "class_id": "GO:0030246",
+    "class_label": "carbohydrate binding",
   },
   {
-    "goid": "GO:0008283",
-    "golabel": "cell proliferation",
-    "domain": "biological process"
+    "class_id": "GO:0003674",
+    "class_label": "other activities",
   },
   {
-    "goid": "GO:0071840",
-    "golabel": "cellular organization/biogenesis",
-    "domain": "biological process"
+    "class_id": "separator2", // used as a key to a hashmap, so can't be blank
+    "class_label": "biological process",
+    "separator": true
   },
   {
-    "goid": "GO:0051179",
-    "golabel": "cellular transport/localization",
-    "domain": "biological process"
+    "class_id": "GO:0008283",
+    "class_label": "cell proliferation",
   },
   {
-    "goid": "GO:0032502",
-    "golabel": "development",
-    "domain": "biological process"
+    "class_id": "GO:0071840",
+    "class_label": "cellular organization/biogenesis",
   },
   {
-    "goid": "GO:0000003",
-    "golabel": "reproduction",
-    "domain": "biological process"
+    "class_id": "GO:0051179",
+    "class_label": "cellular transport/localization",
   },
   {
-    "goid": "GO:0002376",
-    "golabel": "immune system",
-    "domain": "biological process"
+    "class_id": "GO:0032502",
+    "class_label": "development",
   },
   {
-    "goid": "GO:0050877",
-    "golabel": "neurological",
-    "domain": "biological process"
+    "class_id": "GO:0000003",
+    "class_label": "reproduction",
   },
   {
-    "goid": "GO:0050896",
-    "golabel": "response to stimulus",
-    "domain": "biological process"
+    "class_id": "GO:0002376",
+    "class_label": "immune system",
   },
   {
-    "goid": "GO:0023052",
-    "golabel": "signaling",
-    "domain": "biological process"
+    "class_id": "GO:0050877",
+    "class_label": "neurological",
   },
   {
-    "goid": "GO:0010467",
-    "golabel": "gene expression",
-    "domain": "biological process"
+    "class_id": "GO:0050896",
+    "class_label": "response to stimulus",
   },
   {
-    "goid": "GO:0019538",
-    "golabel": "protein metabolism",
-    "domain": "biological process"
+    "class_id": "GO:0023052",
+    "class_label": "signaling",
   },
   {
-    "goid": "GO:0006259",
-    "golabel": "DNA metabolism",
-    "domain": "biological process"
+    "class_id": "GO:0010467",
+    "class_label": "gene expression",
   },
   {
-    "goid": "GO:0044281",
-    "golabel": "small molecule metabolism",
-    "domain": "biological process"
+    "class_id": "GO:0019538",
+    "class_label": "protein metabolism",
   },
   {
-    "goid": "GO:0050789",
-    "golabel": "regulation",
-    "domain": "biological process"
+    "class_id": "GO:0006259",
+    "class_label": "DNA metabolism",
   },
   {
-    "goid": "GO:0042592",
-    "golabel": "homeostasis",
-    "domain": "biological process"
+    "class_id": "GO:0044281",
+    "class_label": "small molecule metabolism",
   },
   {
-    "goid": "GO:0007610",
-    "golabel": "behavior",
-    "domain": "biological process"
+    "class_id": "GO:0050789",
+    "class_label": "regulation",
   },
   {
-    "goid": "GO:0008150",
-    "golabel": "other processes",
-    "domain": "biological process"
+    "class_id": "GO:0042592",
+    "class_label": "homeostasis",
   },
   {
-    "goid": "GO:0005576",
-    "golabel": "extracellular",
-    "domain": "cellular component"
+    "class_id": "GO:0007610",
+    "class_label": "behavior",
   },
   {
-    "goid": "GO:0005737",
-    "golabel": "cytoplasm",
-    "domain": "cellular component"
+    "class_id": "GO:0008150",
+    "class_label": "other processes",
   },
   {
-    "goid": "GO:0005856",
-    "golabel": "cytoskeleton",
-    "domain": "cellular component"
+    "class_id": "separator3", // used as a key to a hashmap, so can't be blank
+    "class_label": "cellular component",
+    "separator": true
   },
   {
-    "goid": "GO:0005739",
-    "golabel": "mitochondrion",
-    "domain": "cellular component"
+    "class_id": "GO:0005576",
+    "class_label": "extracellular",
   },
   {
-    "goid": "GO:0005634",
-    "golabel": "nucleus",
-    "domain": "cellular component"
+    "class_id": "GO:0005737",
+    "class_label": "cytoplasm",
   },
   {
-    "goid": "GO:0005694",
-    "golabel": "chromosome",
-    "domain": "cellular component"
+    "class_id": "GO:0005856",
+    "class_label": "cytoskeleton",
   },
   {
-    "goid": "GO:0016020",
-    "golabel": "membrane",
-    "domain": "cellular component"
+    "class_id": "GO:0005739",
+    "class_label": "mitochondrion",
   },
   {
-    "goid": "GO:0031982",
-    "golabel": "vesicle",
-    "domain": "cellular component"
+    "class_id": "GO:0005634",
+    "class_label": "nucleus",
   },
   {
-    "goid": "GO:0071944",
-    "golabel": "cell periphery",
-    "domain": "cellular component"
+    "class_id": "GO:0005694",
+    "class_label": "chromosome",
   },
   {
-    "goid": "GO:0030054",
-    "golabel": "cell junction",
-    "domain": "cellular component"
+    "class_id": "GO:0016020",
+    "class_label": "membrane",
   },
   {
-    "goid": "GO:0042995",
-    "golabel": "cell projection",
-    "domain": "cellular component"
+    "class_id": "GO:0031982",
+    "class_label": "vesicle",
   },
   {
-    "goid": "GO:0032991",
-    "golabel": "macromolecular complex",
-    "domain": "cellular component"
+    "class_id": "GO:0071944",
+    "class_label": "cell periphery",
   },
   {
-    "goid": "GO:0045202",
-    "golabel":  "synapse",
-    "domain": "cellular component"
+    "class_id": "GO:0030054",
+    "class_label": "cell junction",
   },
   {
-    "goid": "GO:0005575",
-    "golabel": "other locations",
-    "domain": "cellular component"
+    "class_id": "GO:0042995",
+    "class_label": "cell projection",
+  },
+  {
+    "class_id": "GO:0032991",
+    "class_label": "macromolecular complex",
+  },
+  {
+    "class_id": "GO:0045202",
+    "class_label":  "synapse",
+  },
+  {
+    "class_id": "GO:0005575",
+    "class_label": "other locations",
   },
 ];

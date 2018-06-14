@@ -5,6 +5,7 @@ import axios from 'axios';
 
 import {unpackSlimItems} from './dataHelpers';
 
+import PHENO_LIST from './data/pheno';
 import AGR_LIST from './data/agr';
 import TCAG_LIST from './data/tcag';
 import FLY_LIST from './data/fly';
@@ -37,33 +38,35 @@ export default class RibbonDataProvider extends React.Component {
     }
 
     fetchData = (slim, subject) => {
-        let slimList = slim.toLowerCase() === 'tcag' ? TCAG_LIST :
-            slim.toLowerCase() === 'fly' ? FLY_LIST :
-                slim.toLowerCase() === 'agr' ? AGR_LIST :
-                    slim.toLowerCase() === 'jax' ? JAX_LIST :
-                        slim.toLowerCase() === 'pombe' ? POMBE_LIST :
-                            AGR_LIST;
-        let goLink = GOLINK + 'bioentityset/slimmer/function?';
-        slimList.forEach(function (slimitem) {
-            if (slimitem.separator === undefined) {
-                goLink = goLink + '&slim=' + slimitem.goid;
-            }
-        });
-
+        let slimlist = slim.toLowerCase() === 'pheno' ?
+            PHENO_LIST :
+            AGR_LIST;
+        let goLink = slim.toLowerCase() === 'pheno' ?
+            GOLINK + 'bioentityset/slimmer/phenotype?' :
+            GOLINK + 'bioentityset/slimmer/function?';
         let title = subject;
         let dataError = null;
         let self = this;
 
+        /*
+          Build up the query string by adding all the GO ids
+        */
+        slimlist.forEach(function (slimitem) {
+            if (slimitem.separator === undefined) {
+                goLink = goLink + '&slim=' + slimitem.class_id;
+            }
+          });
+
+        console.log('Query is ' + goLink + '&subject=' + subject);
         axios.get(goLink + '&subject=' + subject)
             .then(function (results) {
-                const {title, data} = unpackSlimItems([results], subject, slimList);
-
+                const {title, blocks} = unpackSlimItems([results], subject, slimlist);
                 self.setState({
                     fetching: false,
                     title: title,
-                    dataError: null,
+                    blocks: blocks,
                     subject: subject,
-                    data: data
+                    dataError: null,
                 });
             })
             .catch(function (error) {
@@ -96,17 +99,12 @@ export default class RibbonDataProvider extends React.Component {
             });
     };
 
-    handleSlimSelect = (termId) => {
-        this.setState({
-            currentTermId: termId
-        });
-    };
-
     render() {
-        const {title, data, dataError, fetching} = this.state;
+        const {title, blocks, dataError, fetching} = this.state;
+        let self = this;
         return this.props.children({
             title,
-            data,
+            blocks,
             dataError,
             dataReceived: !fetching && !dataError,
         });

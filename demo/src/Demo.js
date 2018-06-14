@@ -49,13 +49,13 @@ class Demo extends Component {
       <div id='demo'>
         <RibbonDataProvider subject={subject} slim={slim}>
         {
-          ({title, data, dataError, dataReceived}) => (
+          ({title, blocks, dataError, dataReceived}) => (
             <div>
             {
               dataReceived ?
                 <Ribbon
                   geneUrlFormatter={(geneId) => `http://stagebuild.alliancegenome.org/gene/${geneId}`}
-                  slimlist={data}
+                  blocks={blocks}
                   title={title}
                   subject={subject}
                   showing={true}

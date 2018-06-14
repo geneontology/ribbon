@@ -1,10 +1,6 @@
 import taxa from './data/taxa';
 
-const queryRGB = [0, 96, 96];
-const orthoRGB = [86, 148, 27];
-const queryColor = "#dfebeb"; //"#c0d8d8";
-const orthoColor = "#f3f9f0"; //"#d8eecd";
-
+const queryRGB = [44, 62, 80];
 
 Object.defineProperty(Array.prototype, 'unique', {
     enumerable: false,
@@ -25,168 +21,188 @@ Object.defineProperty(Array.prototype, 'unique', {
 });
 
 function isNegate(assoc) {
-    return (assoc.qualifier && assoc.qualifier.length === 1 && assoc.qualifier[0] === 'not');
+  return (assoc.qualifier && assoc.qualifier.length === 1 && assoc.qualifier[0] === 'not');
 }
 
+/*
+  Have to deal with GO and Monarch differences in the JSON to display either function or phenotypes
+  GO uses evidence_type (3 letter code) and Monarch evidence_label.
+*/
 function getKeyForObject(assoc) {
-    return isNegate(assoc) ? 'neg::' + assoc.object.id : assoc.object.id;
+  return isNegate(assoc) ? 'neg::' + assoc.subject.id + '-' + assoc.object.id : assoc.subject.id + '-' + assoc.object.id;
 }
 
+function addEvidence(prev_assoc, assocItem) {
+  var evidence_group;
+  let evidence_id = assocItem.evidence;
+  /* hack until issue ##182 is resolved in ontobio */
+  if (assocItem.reference !== undefined) {
+    let withs = assocItem.evidence_with !== undefined ? assocItem.evidence_with : [];
+    evidence_group = {
+      evidence_id: evidence_id, // just for convenience
+      evidence_type: assocItem.evidence_type,
+      evidence_label: assocItem.evidence_label,
+      evidence_with: withs,
+      evidence_refs: filterDuplicateReferences(assocItem.reference), // this is an array
+    }
+  } else {
+    evidence_group = {
+      evidence_id: evidence_id, // just for convenience
+      evidence_type: assocItem.evidence_label[0],
+      evidence_label: assocItem.evidence_label[0],
+      evidence_with: [],
+      evidence_refs: filterDuplicatePublications(assocItem.publications),
+    }
+  }
+  var e_map = prev_assoc.evidence_map;
+  if (e_map === undefined) {
+    e_map = new Map();
+    prev_assoc.evidence_map = e_map;
+  }
+  var e_groups = e_map.get(evidence_id);
+  if (e_groups === undefined) {
+    e_map.set(evidence_id, [evidence_group]);
+  } else {
+    e_groups.push(evidence_group);
+  }
+}
 
 export function unpackSlimItems(results, subject, slimlist) {
-    let title = subject;
-    let queryResponse = [];
-    let others = [];
-    let allGOids = [];
-    let globalGOids = [];
-    results.forEach(function (result) {
-        if (result.data.length > 0) {
-            // merge these assocs into the overall response to this query
-            Array.prototype.push.apply(queryResponse, result.data);
-        }
-    });
-    /*
-    bulk of the annotations initialized first
-    */
-    // each ID has to be mapped across slims in order to merge them
-    let assocMap = {};
+  let title = subject;
+  let queryResponse = [];
+  let others = [];
+  let globalclass_ids = [];
+  let seen_before_in_slim = new Map;
 
-    const blocks = slimlist.map(function (slimitem) {
-        if (slimitem.golabel.includes('other')) {
-            others.push(slimitem);
-        }
-        let assocs = [];
-        queryResponse.forEach(function (response) {
-            if (response.slim === slimitem.goid) {
-                // skip noninformative annotations like protein binding
-                for (let i = response.assocs.length - 1; i >= 0; i--) {
-                    let assoc = response.assocs[i];
-                    if (assoc.object.id === 'GO:0005515' ||
-                        assoc.object.id === 'GO:0003674' ||
-                        assoc.object.id === 'GO:0008150' ||
-                        assoc.object.id === 'GO:0005575') {
-                        response.assocs.splice(i, 1);
-                    }
-                }
-                for (let assoc of response.assocs) {
-                    let tempAssoc = {};
-                    let key = getKeyForObject(assoc);
-                    if (!assocMap[key]) {
-                        tempAssoc = assoc;
-                        tempAssoc.evidence_type = [assoc.evidence_type];
-                        tempAssoc.evidence = [assoc.evidence];
-                    }
-                    else {
-                        tempAssoc = assocMap[key];
-                        tempAssoc.evidence_with = [...assoc.evidence_with, ...tempAssoc.evidence_with].unique();
-                        tempAssoc.evidence = [...assoc.evidence, ...tempAssoc.evidence].unique();
-                        tempAssoc.qualifier = [...assoc.qualifier, ...tempAssoc.qualifier].unique();
-                        tempAssoc.evidence_type = [...assoc.evidence_type, ...tempAssoc.evidence_type].unique();
-                        tempAssoc.reference = [...assoc.reference, ...tempAssoc.reference].unique();
-                        tempAssoc.publications = [...assoc.publications, ...tempAssoc.publications].unique();
-                    }
-                    assocMap[key] = tempAssoc;
-                }
+  let all_block = {
+      "class_id": "All annotations",
+      "class_label": "All annotations",
+      "uniqueAssocs": [],
+      "color": "#EB7F00"
+  };
 
+  results.forEach(function (result) {
+    if (result.data.length > 0) {
+      // merge these assocs into the overall response to this query
+      Array.prototype.push.apply(queryResponse, result.data);
+    }
+  });
+  /*
+  bulk of the annotations initialized first
+  */
+  const blocks = slimlist.map(function (slimitem) {
+    // set up uniques and color too
+    let slimUnique_ids = [];
+    slimitem.uniqueAssocs = [];
+    slimitem.color = "#fff";
 
-                // these are all the assocs under this slim class
-                // we don't want the association map, just those for this slim
-                Array.prototype.push.apply(assocs, response.assocs.filter((f) => {
-                    let key = getKeyForObject(f);
-                    if (globalGOids.indexOf(key) < 0) {
-                        globalGOids.push(key);
-                        return true
-                    }
-                    else {
-                        return false;
-                    }
-                }));
-                /*
-                keep track of which associations are found for slim classes
-                so that (after this loop) these can be removed from "other"'s list
-                */
-                if (!slimitem.golabel.includes('other')) {
-                    assocs.forEach(function (assoc) {
-                        let key = getKeyForObject(assoc);
-                        allGOids.push(key);
-                    })
-                }
+    if (slimitem.class_label.includes('other')) {
+      others.push(slimitem);
+    }
+
+    queryResponse.forEach(function (response) {
+      if (response.assocs.length > 0) {
+        // these are all the assocs under this slim class
+        // we don't want the association map, just those for this slim
+        if (response.slim === slimitem.class_id) {
+          slimitem.uniqueAssocs = response.assocs.filter(function (assocItem) {
+            // skip noninformative annotations like protein binding
+            for (let i = response.assocs.length - 1; i >= 0; i--) {
+              let assoc = response.assocs[i];
+              if (assoc.object.id === 'GO:0005515') {
+                return false;
+              }
             }
-        });
+            /*
+              First a hack to accommodate swapping out HGNC ids for UniProtKB ids
+            */
+            if (subject.startsWith('HGNC') && assocItem.subject.taxon.id === 'NCBITaxon:9606') {
+              assocItem.subject.id = subject; // Clobber the UniProtKB id
+            }
+            /*
+              Then another interim hack because of differences in resource naming
+              e.g. FlyBase === FB
+            */
+            let subjectID = assocItem.subject.id.replace('FlyBase', 'FB');
+            assocItem.subject.id = subjectID;
+            if (subjectID === subject) {
+              title = assocItem.subject.label + ' (' + assocItem.subject.id + ')';
+            }
 
-        // set up uniques and color too
-        let block_color = orthoRGB;
-        slimitem.uniqueAssocs = [];
-        if (assocs.length > 0) {
-            let hits = [];
-            slimitem.uniqueAssocs = assocs.filter(function (assocItem) {
-                /*
-                  First a hack to accommodate swapping out HGNC ids for UniProtKB ids
-                */
-                if (subject.startsWith('HGNC') && assocItem.subject.taxon.id === 'NCBITaxon:9606') {
-                    assocItem.subject.id = subject; // Clobber the UniProtKB id
-                }
-                /*
-                  Then another interim hack because of differences in resource naming
-                  e.g. FlyBase === FB
-                */
-                let subjectID = assocItem.subject.id.replace('FlyBase', 'FB');
-                assocItem.subject.id = subjectID;
-                if (subjectID === subject) {
-                    title = assocItem.subject.label + ' (' + assocItem.subject.id + ')';
-                    block_color = queryRGB;
-                }
+            /* any given association may appear under >1 slim,
+              but we only want to record the evidence for that assoc once
+              so keep track of whether it's already been seen in another slim here
+            */
+            var need2add_evidence;
+            let key = getKeyForObject(assocItem);
+            let earlier_slim = seen_before_in_slim.get(key);
+            if (earlier_slim === undefined) {
+              seen_before_in_slim.set(key, slimitem);
+              need2add_evidence = true;
+            } else {
+              need2add_evidence = (earlier_slim === slimitem);
+            }
 
-                let label = assocItem.subject.id + ': ' + assocItem.object.label + ' ' + assocItem.negated;
-                if (!hits.includes(label)) {
-                    hits.push(label);
-                    return true;
-                } else {
-                    return false;
-                }
-            });
+            if (!slimUnique_ids.includes(key)) {
+              slimUnique_ids.push(key);
+              if (!globalclass_ids.includes(key)) {
+                globalclass_ids.push(key);
+                all_block.uniqueAssocs.push(assocItem);
+              }
+              if (need2add_evidence) {
+                assocItem.evidence_map = new Map();
+                addEvidence(assocItem, assocItem);
+              } else {
+                let prev_assoc = all_block.uniqueAssocs[globalclass_ids.indexOf(key)];
+                assocItem.evidence_map = prev_assoc.evidence_map;
+              }
+              return true;
+            } else {
+              if (need2add_evidence) {
+                let prev_assoc = all_block.uniqueAssocs[globalclass_ids.indexOf(key)];
+                addEvidence(prev_assoc, assocItem);
+              }
+              return false;
+            }
+          });
+          if (slimitem.uniqueAssocs.length > 0) {
             slimitem.uniqueAssocs.sort(sortAssociations);
             slimitem.uniqueAssocs = subjectFirst(subject, slimitem.uniqueAssocs);
-            slimitem.color = heatColor(slimitem.uniqueAssocs.length, block_color, 48);
-            slimitem.tree = buildAssocTree(slimitem.uniqueAssocs, subject);
-        } else {
-            slimitem.color = "#fff";
-            slimitem.tree = undefined;
+            slimitem.color = heatColor(slimitem.uniqueAssocs.length, queryRGB, 48);
+          }
         }
-        return slimitem;
+      }
     });
-    others.forEach(function (otherItem) {
-        for (let i = otherItem.uniqueAssocs.length - 1; i >= 0; i--) {
-            let checkAssoc = otherItem.uniqueAssocs[i];
-            if (allGOids.indexOf(checkAssoc.object.id) >= 0) {
-                otherItem.uniqueAssocs.splice(i, 1);
-            }
-        }
-        /*
-          Need to update the color
-        */
-        if (otherItem.uniqueAssocs.length > 0) {
-            let block_color = orthoRGB;
-            let taxon_color = orthoColor;
-            otherItem.uniqueAssocs.forEach(function (otherAssoc) {
-                if (otherAssoc.subject.id === subject) {
-                    block_color = queryRGB;
-                    taxon_color = queryColor;
-                }
-            });
-            otherItem.uniqueAssocs.sort(sortAssociations);
-            otherItem.uniqueAssocs = subjectFirst(subject, otherItem.uniqueAssocs);
-            otherItem.color = heatColor(otherItem.uniqueAssocs.length, block_color, 48);
-            otherItem.tree = buildAssocTree(otherItem.uniqueAssocs, subject);
-        } else {
-            otherItem.color = "#fff";
-            otherItem.tree = undefined;
-        }
-    });
-    return {
-        title: title,
-        data: blocks
-    };
+    return slimitem;
+  });
+  others.forEach(function (otherItem) {
+    for (let i = otherItem.uniqueAssocs.length - 1; i >= 0; i--) {
+      let checkAssoc = otherItem.uniqueAssocs[i];
+      if (globalclass_ids.indexOf(getKeyForObject(checkAssoc)) >= 0) {
+        otherItem.uniqueAssocs.splice(i, 1);
+      }
+    }
+    /*
+      Need to update the color
+    */
+    if (otherItem.uniqueAssocs.length > 0) {
+      otherItem.uniqueAssocs.sort(sortAssociations);
+      otherItem.uniqueAssocs = subjectFirst(subject, otherItem.uniqueAssocs);
+      otherItem.color = heatColor(otherItem.uniqueAssocs.length, queryRGB, 48);
+    } else {
+      otherItem.color = "#fff";
+    }
+  });
+  // insert a block with all annotations at the very first position
+  if (all_block.uniqueAssocs.length > 0) {
+    all_block.class_label = 'All ' + all_block.uniqueAssocs.length + ' annotations';
+    all_block.uniqueAssocs.sort(sortAssociations);
+  }
+  blocks.splice(0, 0, all_block);
+  return {
+      title: title,
+      blocks: blocks,
+  };
 }
 
 function sortAssociations(assoc_a, assoc_b) {
@@ -262,96 +278,42 @@ function containsPMID(references) {
  * @param references
  * @returns {*}
  */
-function filterDuplicationReferences(references) {
-
-
+function filterDuplicateReferences(reference) {
     // if references contains a PMID, remove the non-PMID ones
-    if (!containsPMID(references)) {
-        return references;
-    }
-    else {
-        let returnArray = [];
-        for (let r of references) {
-            if (r.startsWith('PMID:')) {
-                returnArray.push(r);
-            }
-        }
-        return returnArray;
-    }
-
-}
-
-function generateNode(assoc) {
-    return {
-        about: assoc.object,
-        negated: assoc.negated,
-        evidence: {
-            id: assoc.evidence,
-            type: assoc.evidence_type,
-            label: assoc.evidence_label,
-            with: assoc.evidence_with,
-            qualifier: assoc.qualifier,
-        },
-        publications: assoc.publications,
-        reference: filterDuplicationReferences(assoc.reference),
-    };
-}
-
-export function buildAssocTree(assocs, subject) {
-    let prev_species = '';
-    let prev_gene = '';
-    let current_taxon_node;
-    let current_gene_node;
-    let assocTree = [];
-
-    assocs.forEach(function (assoc) {
-        let taxon_color = assoc.subject.id === subject ?
-            queryColor : orthoColor;
-        if (assoc.subject.taxon.id !== prev_species) {
-            current_taxon_node = {
-                color: taxon_color,
-                about: assoc.subject.taxon,
-                children: []
-            };
-            assocTree.push(current_taxon_node);
-
-            current_gene_node = {
-                about: assoc.subject,
-                children: []
-            };
-            current_taxon_node.children.push(current_gene_node);
-
-
-            let go_node = generateNode(assoc);
-
-            current_gene_node.children.push(go_node);
-
-            prev_species = assoc.subject.taxon.id;
-            prev_gene = assoc.subject.id;
-
-        } else if (assoc.subject.id !== prev_gene) {
-
-            // TODO: should we remove this because we are no longer handling orthology?
-
-
-            current_gene_node = {
-                about: assoc.subject,
-                children: []
-            };
-            current_taxon_node.children.push(current_gene_node);
-
-
-            let go_node = generateNode(assoc);
-
-            current_gene_node.children.push(go_node);
-
-            prev_gene = assoc.subject.id;
-
+    let returnArray = reference.filter(function (r) {
+        if (r.startsWith('PMID:')) {
+            return true;
         } else {
-            let go_node = generateNode(assoc);
-
-            current_gene_node.children.push(go_node);
+            return false;
         }
     });
-    return assocTree;
+    if (returnArray.length === 0) {
+        returnArray.push(reference[0]);
+    }
+    return returnArray;
+}
+
+/**
+ *
+ * @param references
+ * @returns {*}
+ */
+function filterDuplicatePublications(publications) {
+
+    // if references contains a PMID, remove the non-PMID ones
+    let returnArray = [];
+    if (publications !== null && publications !== undefined) {
+        publications.filter(function (pub) {
+            if (pub.id.startsWith('PMID:') && !returnArray.includes(pub.id)) {
+                returnArray.push(pub.id);
+                return true;
+            } else {
+                return false;
+            }
+        });
+        if (returnArray.length === 0) {
+            returnArray.push(publications[0].id);
+        }
+    }
+    return returnArray;
 }

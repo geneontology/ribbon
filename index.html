@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial;
+}
+
+.header {
+    text-align: center;
+    padding: 32px;
+}
+
+.row {
+    display: flex;
+    padding: 0 4px;
+}
+
+/* Create four equal columns that sits next to each other */
+.column {
+    display: flex;
+    flex: 25%;
+    flex-direction: column;
+    max-width: 25%;
+    padding: 0 4px;
+}
+
+.column innards {
+    margin-top: 8px;
+    vertical-align: middle;
+}
+
+</style>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>test grid</h1>
+</div>
+
+<!-- Photo Grid -->
+<div class="row"> 
+  <div class="column">
+    <innards style="width:100%">1one</innards>
+  </div>
+  <div class="column">
+    <innards style="width:100%">
+    	<a title="mutant phenotype"
+           href="http://www.evidenceontology.org/term/ECO:12345"
+        >
+	    IMP        
+        </a>
+    </innards>
+    <innards style="width:100%">2two</innards>
+    <innards style="width:100%">2three</innards>
+  </div>  
+  <div class="column">
+    <innards style="width:100%">3one</innards>
+    <innards style="width:100%">3two</innards>
+  </div>
+  <div class="column">
+    <innards style="width:100%">4one</innards>
+    <innards style="width:100%">4two</innards>
+    <innards style="width:100%">4three</innards>
+    <innards style="width:100%">4four</innards>
+  </div>
+</div>
+
+</body>
+</html>
+

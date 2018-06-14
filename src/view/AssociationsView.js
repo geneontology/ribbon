@@ -1,67 +1,68 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import AssociationsGeneView from './AssociationsGeneView';
+import AssociationTerm from './AssociationTerm';
+import AssociationEvidence from './AssociationEvidence';
 
-class AssociationsView extends Component {
+export default class AssociationsView extends React.Component {
 
     static propTypes = {
         currentTermId: PropTypes.string,
-        currentDomain: PropTypes.string,
         hoveredTermId: PropTypes.string,
-        hoveredDomain: PropTypes.string,
-        slimlist: PropTypes.arrayOf(
+        blocks: PropTypes.arrayOf(
             PropTypes.shape({
-                goid: PropTypes.string,
-                tree: PropTypes.array,
+                class_id: PropTypes.string,
             })
-        )
+        ),
     };
 
     render() {
-        const {slimlist, currentTermId, currentDomain, hoveredDomain, hoveredTermId,geneUrlFormatter} = this.props;
-        const filteredSlimlist = slimlist.filter((slimitem) => {
-            return (!currentTermId || slimitem.goid === currentTermId)
-                && (!currentDomain || slimitem.domain.toLowerCase() === currentDomain.toLowerCase() )
-                && (slimitem.tree || []).length > 0;
-        });
+      const {blocks, currentTermId, hoveredTermId, geneUrlFormatter} = this.props;
+      let self = this;
+      let assoc_list = [];
+      blocks.forEach(function(slimitem) {
+        if (slimitem.class_id === currentTermId) {
+          assoc_list = slimitem.uniqueAssocs;
+        }
+      });
 
-        return (
-            <div>
-                <div className='ontology-ribbon-assoc__row'>
-                    <div className="ontology-ribbon-assoc__gene2 ontology-ribbon-evidence-header">
+      let assocTableClassName = (hoveredTermId && hoveredTermId === currentTermId) ?
+          'ontology-ribbon__assoc ontology-ribbon-assoc__active' :
+          'ontology-ribbon__assoc';
+
+      return (
+        <div className={assocTableClassName}>
+          <div className='ontology-ribbon__header'>
+              <div style={{fontWeight: 'bold', width: '50%'}}>
+                  Term
+              </div>
+              <div style={{fontWeight: 'bold', width: '10%'}}>
+                  Evidence
+              </div>
+              <div style={{fontWeight: 'bold', width: '20%'}}>
+                  Based on
+              </div>
+              <div style={{fontWeight: 'bold', width: '20%'}}>
+                  Reference
+              </div>
+          </div>
+          {
+            assoc_list.map((assoc, index) => {
+              var bgcolor = (index % 2 === 0) ? '#D7DADB' : '#ffffff';
+
+              return (
+                <div className='ontology-ribbon__assoc-row' style={{backgroundColor: bgcolor}} key={index}>
+                    <div className='ontology-ribbon__term-column'>
+                      <AssociationTerm assoc={assoc} row={index}/>
                     </div>
-                    <div className="ontology-ribbon-assoc__evidence-type ontology-ribbon-evidence-header">
-                        Evidence
-                    </div>
-                    <div className="ontology-ribbon-assoc__evidence-with ontology-ribbon-evidence-header">
-                        With
-                    </div>
-                    <div className="ontology-ribbon-assoc__evidence-reference ontology-ribbon-evidence-header">
-                        Reference
+                    <div className='ontology-ribbon__evidence-column'>
+                      <AssociationEvidence assoc={assoc} row={index}/>
                     </div>
                 </div>
-                {
-                    filteredSlimlist.map((slimitem,index) => {
-                        return (
-                            <AssociationsGeneView
-                                key={slimitem.goid}
-                                slimitem={slimitem}
-                                hoveredDomain = {hoveredDomain}
-                                hoveredTermId = {hoveredTermId}
-                                geneUrlFormatter={geneUrlFormatter}
-                                inputIndex={index}
-                            />
-                        )
-                    })
-                }
-                {
-                    filteredSlimlist.length === 0 ?
-                        <span className="ontology-ribbon-assoc__empty">No association found.</span> : null
-                }
-            </div>
-        );
+              );
+            })
+          }
+        </div>
+      )
     }
 }
-
-export default AssociationsView;
