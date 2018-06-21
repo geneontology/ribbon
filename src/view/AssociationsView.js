@@ -49,7 +49,9 @@ export default class AssociationsView extends React.Component {
           </div>
           {
             assoc_list.map((assoc, index) => {
-              var bgcolor = (index % 2 === 0) ? '#ffffff' : '#FFFAE4';
+              //var bgcolor = (index % 2 === 0) ? '#ffffff' : '#FFFAE4';
+              var bgcolor = (index % 2 === 0) ? '#ffffff' : '#e0e8d8';
+
               let assocRowClassName = (focalblock !== undefined && focalblock.uniqueIDs.includes(this.getKeyForObject(assoc))) ?
                   'ontology-ribbon__assoc-row ontology-ribbon-focalterm' :
                   'ontology-ribbon__assoc-row';
