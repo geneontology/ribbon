@@ -5,6 +5,8 @@ class Block extends React.Component {
 
   render() {
     const {slimitem} = this.props;
+    console.log(slimitem.class_label+' is active:'+this.props.isActive);
+
     if (slimitem.separator === undefined) {
       let count = slimitem.uniqueAssocs.length;
       const tileHoverString = (count > 0) ?
@@ -31,10 +33,16 @@ class Block extends React.Component {
         </div>
       );
     } else {
+      let aspect_style = this.props.isActive ?
+                          'ontology-ribbon__strip-label ontology-ribbon__strip-picked' :
+                          'ontology-ribbon__strip-label';
       return (
         <div className="ontology-ribbon__block">
           <div className="ontology-ribbon__tile-separator">
-             <div className='ontology-ribbon__strip-label'>
+             <div className={aspect_style}
+                  onClick={this.props.onClick}
+                  onMouseEnter={this.props.onMouseEnter}
+                  onMouseLeave={this.props.onMouseLeave}>
                 {slimitem.class_label}
              </div>
            </div>

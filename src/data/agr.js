@@ -1,6 +1,6 @@
 export default [
   {
-    "class_id": "separator1", // used as a key to a hashmap, so can't be blank
+    "class_id": "aspect1", // used as a key to a hashmap, so can't be blank
     "class_label": "molecular function",
     "separator": true
   },
@@ -57,7 +57,7 @@ export default [
     "class_label": "other activities",
   },
   {
-    "class_id": "separator2", // used as a key to a hashmap, so can't be blank
+    "class_id": "aspect2", // used as a key to a hashmap, so can't be blank
     "class_label": "biological process",
     "separator": true
   },
@@ -130,7 +130,7 @@ export default [
     "class_label": "other processes",
   },
   {
-    "class_id": "separator3", // used as a key to a hashmap, so can't be blank
+    "class_id": "aspect3", // used as a key to a hashmap, so can't be blank
     "class_label": "cellular component",
     "separator": true
   },

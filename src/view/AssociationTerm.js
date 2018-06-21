@@ -61,7 +61,8 @@ class AssociationTerm extends Component {
                 title={assoc.object.id}
                 href={`http://amigo.geneontology.org/amigo/term/${self.patchSubject(assoc.object.id)}`}
                 rel="noopener noreferrer"
-                target="_blank">
+                target="_blank"
+                className='link'>
                   {self.renderTerm(assoc)}
               </a>
             </div>

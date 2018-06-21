@@ -41,11 +41,13 @@ function getPrefixForId(inputId) {
 export default class GeneAbout extends React.Component {
 
   render () {
-    const {subject, hideText, fetching, title, ...iconProps} = this.props;
+    const {subject, hideText, fetching, title, currentblock, ...iconProps} = this.props;
     let speciesName = taxonomyToSpecies[subject];
     speciesName = speciesName ? speciesName : getPrefixForId(subject);
 
     speciesName = speciesName ? speciesName : subject;
+
+    let active_term = currentblock ? ' to '+currentblock.class_label : null;
 
     let isValid = Object.values(taxonomyToSpecies).indexOf(speciesName) >= 0;
     if (isValid) {
@@ -54,39 +56,24 @@ export default class GeneAbout extends React.Component {
             {subject &&
               <SpeciesIcon species={speciesName} hideText={hideText} {...iconProps}/>
             }
-            <div  className='ontology-ribbon__about' style={{
-                  margin: '2px',
-                  padding: '5px',
-                  textAlign: 'center',
-                }}>
+            <div  className='ontology-ribbon__about'>
               {!hideText && <i>{speciesName}</i>}
             </div>
 
             {!fetching && subject && title &&
-              <div  className='ontology-ribbon__about'
-                    style={{
-                      margin: '2px',
-                      padding: '5px',
-                      textAlign: 'center',
-                      marginBottom: '10px',
-                      textDecoration: 'none',
-                    }}
-              >
+              <div  className='ontology-ribbon__about'>
                 <a href={`http://amigo.geneontology.org/amigo/gene_product/` +
                           this.patchSubject(subject)}
                     className='go-link'>
                   {this.getLabel(title)}
                   <FaExternalLink style={{marginLeft: 5, textDecoration: 'none'}}/>
                 </a>
+                <span style={{marginLeft: 8, marginTop: 9}}>{active_term}</span>
               </div>
             }
             {!fetching && !subject && title &&
               // no subject, so just provide a linkless title
-              <div  className='ontology-ribbon__about' style={{
-                    margin: '2px',
-                    padding: '5px',
-                    textAlign: 'center',
-                  }}>
+              <div  className='ontology-ribbon__about'>
                 {title}
               </div>
             }

@@ -1,6 +1,6 @@
 import taxa from './data/taxa';
 
-const queryRGB = [44, 62, 80];
+const assocColor = [63, 81, 181];
 
 Object.defineProperty(Array.prototype, 'unique', {
     enumerable: false,
@@ -70,7 +70,7 @@ function addEvidence(prev_assoc, assocItem) {
 export function unpackSlimItems(results, subject, slimlist) {
   let title = subject;
   let queryResponse = [];
-  let others = [];
+  let other = false;
   let globalclass_ids = [];
   let seen_before_in_slim = new Map;
 
@@ -78,7 +78,8 @@ export function unpackSlimItems(results, subject, slimlist) {
       "class_id": "All annotations",
       "class_label": "All annotations",
       "uniqueAssocs": [],
-      "color": "#EB7F00"
+  //    "color": "#D0A825",
+      "color": "#8BC34A",
   };
 
   results.forEach(function (result) {
@@ -87,17 +88,24 @@ export function unpackSlimItems(results, subject, slimlist) {
       Array.prototype.push.apply(queryResponse, result.data);
     }
   });
+
+  var aspect;
+  var aspect_ids;
+
   /*
   bulk of the annotations initialized first
   */
   const blocks = slimlist.map(function (slimitem) {
     // set up uniques and color too
-    let slimUnique_ids = [];
+    slimitem.uniqueIDs = [];
     slimitem.uniqueAssocs = [];
     slimitem.color = "#fff";
 
-    if (slimitem.class_label.includes('other')) {
-      others.push(slimitem);
+    other = slimitem.class_label.includes('other');
+
+    if (slimitem.class_id.startsWith('aspect')) {
+      aspect = slimitem;
+      aspect_ids = [];
     }
 
     queryResponse.forEach(function (response) {
@@ -143,11 +151,23 @@ export function unpackSlimItems(results, subject, slimlist) {
               need2add_evidence = (earlier_slim === slimitem);
             }
 
-            if (!slimUnique_ids.includes(key)) {
-              slimUnique_ids.push(key);
+            if (!slimitem.uniqueIDs.includes(key)) {
+              /*
+                The test below is assuming that the 'other' block is always at
+                the end of the strip for a particular aspect
+              */
+              if (!other || (other && !aspect_ids.includes(key))) {
+                slimitem.uniqueIDs.push(key);
+              } else {
+                return false;
+              }
               if (!globalclass_ids.includes(key)) {
                 globalclass_ids.push(key);
                 all_block.uniqueAssocs.push(assocItem);
+              }
+              if (aspect && !aspect_ids.includes(key)) {
+                aspect_ids.push(key);
+                aspect.uniqueAssocs.push(assocItem);
               }
               if (need2add_evidence) {
                 assocItem.evidence_map = new Map();
@@ -168,31 +188,14 @@ export function unpackSlimItems(results, subject, slimlist) {
           if (slimitem.uniqueAssocs.length > 0) {
             slimitem.uniqueAssocs.sort(sortAssociations);
             slimitem.uniqueAssocs = subjectFirst(subject, slimitem.uniqueAssocs);
-            slimitem.color = heatColor(slimitem.uniqueAssocs.length, queryRGB, 48);
+            slimitem.color = heatColor(slimitem.uniqueAssocs.length, assocColor, 48);
           }
         }
       }
     });
     return slimitem;
   });
-  others.forEach(function (otherItem) {
-    for (let i = otherItem.uniqueAssocs.length - 1; i >= 0; i--) {
-      let checkAssoc = otherItem.uniqueAssocs[i];
-      if (globalclass_ids.indexOf(getKeyForObject(checkAssoc)) >= 0) {
-        otherItem.uniqueAssocs.splice(i, 1);
-      }
-    }
-    /*
-      Need to update the color
-    */
-    if (otherItem.uniqueAssocs.length > 0) {
-      otherItem.uniqueAssocs.sort(sortAssociations);
-      otherItem.uniqueAssocs = subjectFirst(subject, otherItem.uniqueAssocs);
-      otherItem.color = heatColor(otherItem.uniqueAssocs.length, queryRGB, 48);
-    } else {
-      otherItem.color = "#fff";
-    }
-  });
+
   // insert a block with all annotations at the very first position
   if (all_block.uniqueAssocs.length > 0) {
     all_block.class_label = 'All ' + all_block.uniqueAssocs.length + ' annotations';

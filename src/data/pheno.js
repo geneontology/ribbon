@@ -1,6 +1,6 @@
 export default [
   {
-    "class_id": "separator1", // used as a key to a hashmap, so can't be blank
+    "class_id": "aspect1", // used as a key to a hashmap, so can't be blank
     "class_label": "Cellular abnormalities",
     "separator": true
   },
@@ -41,7 +41,7 @@ export default [
     "class_label": "Other cellular phenotypes",
   },
   {
-    "class_id": "separator2", // used as a key to a hashmap, so can't be blank
+    "class_id": "aspect2", // used as a key to a hashmap, so can't be blank
     "class_label": "Blood",
     "separator": true
   },
@@ -66,7 +66,7 @@ export default [
     "class_label": "hematological neoplasm",
   },
   {
-    "class_id": "separator3", // used as a key to a hashmap, so can't be blank
+    "class_id": "aspect3", // used as a key to a hashmap, so can't be blank
     "class_label": "Tissues and anatomical",
     "separator": true
   },

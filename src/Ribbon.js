@@ -13,42 +13,34 @@ export default class Ribbon extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentTermId: undefined,
+            currentblock: undefined,
             fetching: false,
-            hoveredTermId: undefined,
+            focalblock: undefined,
         }
     }
 
-    handleSlimEnter = (termId) => {
+    handleSlimEnter = (block) => {
         this.setState({
-            hoveredTermId: termId,
+            focalblock: block,
         })
     };
-    handleSlimLeave = (termId) => {
+    handleSlimLeave = (block) => {
         this.setState({
-            hoveredTermId: undefined,
+            focalblock: undefined,
         })
     };
 
-    handleSlimSelect = (termId) => {
-        if (termId !== this.state.currentTermId) {
+    handleSlimSelect = (block) => {
+        if (block !== this.state.currentblock) {
             this.setState({
-                currentTermId: termId,
+                currentblock: block,
             });
         }
         else {
             this.setState({
-                currentTermId: undefined,
+                currentblock: undefined,
             })
         }
-    };
-
-    handle
-
-    getTermLabel = (termId) => {
-        return this.props.blocks.reduce((termLabel, item) => {
-            return termLabel || (termId === item.class_id ? item.class_label : null);
-        }, null);
     };
 
     componentDidMount() {
@@ -101,10 +93,10 @@ export default class Ribbon extends Component {
             <div>
                 <RibbonBase
                     blocks={blocks}
-                    currentTermId={this.state.currentTermId}
-                    onSlimSelect={(termId) => this.handleSlimSelect(termId)}
-                    onSlimEnter={(termId) => this.handleSlimEnter(termId)}
-                    onSlimLeave={(termId) => this.handleSlimLeave(termId)}
+                    currentblock={this.state.currentblock}
+                    onSlimSelect={(block) => this.handleSlimSelect(block)}
+                    onSlimEnter={(block) => this.handleSlimEnter(block)}
+                    onSlimLeave={(block) => this.handleSlimLeave(block)}
                 />
 
                 {this.state.subject &&
@@ -112,6 +104,7 @@ export default class Ribbon extends Component {
                       subject={this.state.subject}
                       fetching={this.state.fetching}
                       title={this.state.title}
+                      currentblock={this.state.currentblock}
                   />
                 }
 
@@ -119,10 +112,10 @@ export default class Ribbon extends Component {
                                          transitionEnterTimeout={500}
                                          transitionLeaveTimeout={300}
                 >
-                  {(this.state.showing || this.state.currentTermId !== undefined) &&
+                  {(this.state.showing || this.state.currentblock !== undefined) &&
                       <AssociationsView
-                          currentTermId={this.state.currentTermId}
-                          hoveredTermId={this.state.hoveredTermId}
+                          currentblock={this.state.currentblock}
+                          focalblock={this.state.focalblock}
                           blocks={blocks}
                           geneUrlFormatter={this.props.geneUrlFormatter}
                       />
@@ -138,7 +131,7 @@ Ribbon.propTypes = {
     geneUrlFormatter: PropTypes.func.isRequired,
     title: PropTypes.string,
     blocks: PropTypes.array.isRequired,
-    initialTermId: PropTypes.string,
+    initialblock: PropTypes.string,
     subject: PropTypes.string,
     showing: PropTypes.bool.isRequired,
 };
