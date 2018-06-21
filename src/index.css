@@ -64,6 +64,7 @@
 .ontology-ribbon__strip-label:hover {
   cursor: pointer;
   font-weight: bold;
+  color: #173090;
 }
 
 .ontology-ribbon__block {
