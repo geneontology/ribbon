@@ -63,6 +63,7 @@
 
 .ontology-ribbon__strip-label:hover {
   cursor: pointer;
+  font-weight: bold;
 }
 
 .ontology-ribbon__block {
