@@ -64,7 +64,7 @@ export default class GeneAbout extends React.Component {
               <div  className='ontology-ribbon__about'>
                 <a href={`http://amigo.geneontology.org/amigo/gene_product/` +
                           this.patchSubject(subject)}
-                    className='go-link'>
+                    className='go-link' target='_blank'>
                   {this.getLabel(title)}
                   <FaExternalLink style={{marginLeft: 5, textDecoration: 'none'}}/>
                 </a>
