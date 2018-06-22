@@ -14,8 +14,8 @@ const SpeciesIcon = ({species, hideText, theme, size}) => {
   const scale = sizeToScale[size];
 
   return (
-      <div
-        className={`ontology-ribbon__about ontology-ribbon-species-icon_${theme} ${speciesClass}`}
+      <span
+        className={`ontology-ribbon-species-icon_${theme} ${speciesClass}`}
         style={{
           height: 90 * scale,
           width: 80 * scale,

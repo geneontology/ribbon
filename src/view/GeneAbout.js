@@ -56,28 +56,30 @@ export default class GeneAbout extends React.Component {
             {subject &&
               <SpeciesIcon species={speciesName} hideText={hideText} {...iconProps}/>
             }
-            <div  className='ontology-ribbon__about'>
-              {!hideText && <i>{speciesName}</i>}
-            </div>
+            <span  className='ontology-ribbon__about-text'>
+              <span style={{fontStyle: 'italic'}}>
+                {!hideText && speciesName}
+              </span>
+              {!fetching && subject && title &&
+                <span>
+                  <a href={`http://amigo.geneontology.org/amigo/gene_product/` +
+                            this.patchSubject(subject)}
+                      className='go-link' style={{ marginRight: '2rem' }}>
+                    {this.getLabel(title)}
+                    <FaExternalLink style={{marginLeft: 5, textDecoration: 'none'}}/>
+                  </a>
 
-            {!fetching && subject && title &&
-              <div  className='ontology-ribbon__about'>
-                <a href={`http://amigo.geneontology.org/amigo/gene_product/` +
-                          this.patchSubject(subject)}
-                    className='go-link'>
-                  {this.getLabel(title)}
-                  <FaExternalLink style={{marginLeft: 5, textDecoration: 'none'}}/>
-                </a>
-                <span style={{marginLeft: 8, marginTop: 9}}>{active_term}</span>
-              </div>
-            }
+                  {active_term}
+                </span>
+              }
+            </span>
             {!fetching && !subject && title &&
               // no subject, so just provide a linkless title
-              <div  className='ontology-ribbon__about'>
+              <span  className='ontology-ribbon__about'>
                 {title}
-              </div>
+              </span>
             }
-            </div>
+          </div>
         );
     }
     else {

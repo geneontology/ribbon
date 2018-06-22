@@ -8,17 +8,37 @@
   height: 2rem;
 }
 
+transition: all 0.3s
+
 .ontology-ribbon__about {
-  display: flex;
-  height: 3rem;
   align-items: center;
   padding: .5em;
-  font-size: 1rem;
-  margin-right: 2em;
-  margin: '2px';
-  margin-bottom: '10px';
-  padding: '5px';
   text-align: 'center';
+  width: 100%;
+  position: relative;
+}
+
+.ontology-ribbon__about-text {
+  vertical-align: middle;
+  height: 60px;
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+
+/* start of species icon */
+.ontology-ribbon-species-icon_agr {
+  background-image: url(./icon/speciesSprite.png);
+  width: 78px;
+  height: 90px;
+  background-size: 700% 100%;
+  display: inline-block;
+  margin-right: 1rem !important;
+}
+
+.ontology-ribbon-species-icon_agr.small {
+  width: 26px;
+  height: 30px;
 }
 
 .fade-enter {
@@ -229,20 +249,6 @@
   padding: 0.3em 0;
 }
 
-/* start of species icon */
-.ontology-ribbon-species-icon_agr {
-  background-image: url(./icon/speciesSprite.png);
-  width: 78px;
-  height: 90px;
-  background-size: 700% 100%;
-  display: inline-block;
-}
-
-.ontology-ribbon-species-icon_agr.small {
-  width: 26px;
-  height: 30px;
-}
-
 @media (min--moz-device-pixel-ratio: 1.5), (-o-min-device-pixel-ratio: 3/2), (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5), (min-resolution: 1.5dppx) {
   .ontology-ribbon-species-icon_agr {
     background-image: url(./icon/speciesSprite-2x.png);
@@ -291,10 +297,7 @@
 }
 
 .go-link{
-  display: inline-block;
   transition: all (0.5s);
-  margin-top: 5px;
-  padding-top: 3px;
   text-decoration: none;
   color: #1A237D;
 }
