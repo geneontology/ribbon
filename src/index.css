@@ -146,9 +146,9 @@
 }
 
 .ontology-ribbon-focalterm {
-  color: #607D8B !important;
-  border-style: dashed;
-  border-width: thin;
+  border-left-style: solid;
+  border-left-width: thick;
+  border-left-color: #8BC34A;
   font-style: italic;
 }
 

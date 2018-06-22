@@ -78,6 +78,7 @@ export function unpackSlimItems(results, subject, slimlist) {
       "class_id": "All annotations",
       "class_label": "All annotations",
       "uniqueAssocs": [],
+      "uniqueIDs": [],
   //    "color": "#D0A825",
       "color": "#8BC34A",
   };
