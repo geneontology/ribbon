@@ -56,19 +56,18 @@ export default class GeneAbout extends React.Component {
             {subject &&
               <SpeciesIcon species={speciesName} hideText={hideText} {...iconProps}/>
             }
-            <span  className='ontology-ribbon__about-text'>
-              <span style={{fontStyle: 'italic'}}>
+            <span>
+              <span className='ontology-ribbon__about-text' style={{fontStyle: 'italic'}}>
                 {!hideText && speciesName}
               </span>
               {!fetching && subject && title &&
-                <span>
+                <span className='ontology-ribbon__about-text'>
                   <a href={`http://amigo.geneontology.org/amigo/gene_product/` +
                             this.patchSubject(subject)}
-                      className='go-link' style={{ marginRight: '2rem' }}>
+                      className='go-link' style={{ marginRight: '.5rem' }}>
                     {this.getLabel(title)}
-                    <FaExternalLink style={{marginLeft: 5, textDecoration: 'none'}}/>
+                    <FaExternalLink style={{paddingLeft: 10, textDecoration: 'none'}}/>
                   </a>
-
                   {active_term}
                 </span>
               }

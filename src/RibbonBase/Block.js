@@ -5,7 +5,6 @@ class Block extends React.Component {
 
   render() {
     const {slimitem} = this.props;
-    console.log(slimitem.class_label+' is active:'+this.props.isActive);
 
     if (slimitem.separator === undefined) {
       let count = slimitem.uniqueAssocs.length;

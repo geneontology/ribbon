@@ -1,4 +1,5 @@
 import taxa from './data/taxa';
+import getKey from './assocKey';
 
 const assocColor = [63, 81, 181];
 
@@ -20,28 +21,18 @@ Object.defineProperty(Array.prototype, 'unique', {
     }
 });
 
-function isNegate(assoc) {
-  return (assoc.qualifier && assoc.qualifier.length === 1 && assoc.qualifier[0] === 'not');
-}
-
-/*
-  Have to deal with GO and Monarch differences in the JSON to display either function or phenotypes
-  GO uses evidence_type (3 letter code) and Monarch evidence_label.
-*/
-function getKeyForObject(assoc) {
-  return isNegate(assoc) ? 'neg::' + assoc.subject.id + '-' + assoc.object.id : assoc.subject.id + '-' + assoc.object.id;
-}
-
 function addEvidence(prev_assoc, assocItem) {
   var evidence_group;
   let evidence_id = assocItem.evidence;
   /* hack until issue ##182 is resolved in ontobio */
   if (assocItem.reference !== undefined) {
     let withs = assocItem.evidence_with !== undefined ? assocItem.evidence_with : [];
+    let quals = assocItem.qualifier !== undefined ? assocItem.qualifier : [];
     evidence_group = {
       evidence_id: evidence_id, // just for convenience
       evidence_type: assocItem.evidence_type,
       evidence_label: assocItem.evidence_label,
+      evidence_qualifier: quals,
       evidence_with: withs,
       evidence_refs: filterDuplicateReferences(assocItem.reference), // this is an array
     }
@@ -50,6 +41,7 @@ function addEvidence(prev_assoc, assocItem) {
       evidence_id: evidence_id, // just for convenience
       evidence_type: assocItem.evidence_label[0],
       evidence_label: assocItem.evidence_label[0],
+      evidence_qualifier: [],
       evidence_with: [],
       evidence_refs: filterDuplicatePublications(assocItem.publications),
     }
@@ -79,7 +71,6 @@ export function unpackSlimItems(results, subject, slimlist) {
       "class_label": "All annotations",
       "uniqueAssocs": [],
       "uniqueIDs": [],
-  //    "color": "#D0A825",
       "color": "#8BC34A",
   };
 
@@ -143,7 +134,7 @@ export function unpackSlimItems(results, subject, slimlist) {
               so keep track of whether it's already been seen in another slim here
             */
             var need2add_evidence;
-            let key = getKeyForObject(assocItem);
+            let key = getKey(assocItem);
             let earlier_slim = seen_before_in_slim.get(key);
             if (earlier_slim === undefined) {
               seen_before_in_slim.set(key, slimitem);

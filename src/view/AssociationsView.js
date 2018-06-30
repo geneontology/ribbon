@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import AssociationTerm from './AssociationTerm';
 import AssociationEvidence from './AssociationEvidence';
+import getKey from '../assocKey';
 
 export default class AssociationsView extends React.Component {
 
@@ -15,11 +16,6 @@ export default class AssociationsView extends React.Component {
             })
         ),
     };
-
-    getKeyForObject(assoc) {
-      let not_in = (assoc.qualifier && assoc.qualifier.length > 0 && assoc.qualifier.includes('not'));
-      return not_in ? 'neg::' + assoc.subject.id + '-' + assoc.object.id : assoc.subject.id + '-' + assoc.object.id;
-    }
 
     render() {
       const {blocks, currentblock, focalblock, geneUrlFormatter} = this.props;
@@ -52,7 +48,7 @@ export default class AssociationsView extends React.Component {
               //var bgcolor = (index % 2 === 0) ? '#ffffff' : '#FFFAE4';
               var bgcolor = (index % 2 === 0) ? '#ffffff' : '#e0e8d8';
 
-              let assocRowClassName = (focalblock !== undefined && focalblock.uniqueIDs.includes(this.getKeyForObject(assoc))) ?
+              let assocRowClassName = (focalblock !== undefined && focalblock.uniqueIDs.includes(getKey(assoc))) ?
                   'ontology-ribbon__assoc-row ontology-ribbon-focalterm' :
                   'ontology-ribbon__assoc-row';
               //var bgcolor = (index % 2 === 0) ? '#EAF0EF' : '#FFFAE4';

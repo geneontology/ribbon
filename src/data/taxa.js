@@ -16,5 +16,4 @@ export default new Map([
   'https://pbs.twimg.com/profile_images/1752488737/twitter_logo_3_400x400.gif'],
   ['NCBITaxon:559292', // also yeast
   'https://pbs.twimg.com/profile_images/1752488737/twitter_logo_3_400x400.gif'],
-
 ]);

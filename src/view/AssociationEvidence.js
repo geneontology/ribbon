@@ -25,14 +25,28 @@ class AssociationEvidence extends Component {
       if (eco_group.evidence_with.length === 0) {
         with_set.push(<div className="ontology-ribbon__content" key={base_key+'.nowiths'}/>)
       } else {
+        let with_max = eco_group.evidence_with.length - 1;
         eco_group.evidence_with.forEach((with_id, w_index) => {
+          let suffix = (w_index < with_max) ? ' • ' : '';
           if (with_id.match(/^(WB:WBVar).*/)) {
-            with_set.push(<div className="ontology-ribbon__content" key={base_key+'.'+w_index+'.with'}><a href={`http://www.wormbase.org/get?name=${with_id.split(':')[1]}&class=Variation`}>{with_id}</a></div>);
+            with_set.push(<div className="ontology-ribbon__content"
+                               key={base_key+'.'+w_index+'.with'}>
+                            <a className='link' href={`http://www.wormbase.org/get?name=${with_id.split(':')[1]}&class=Variation`}>
+                              {with_id}
+                            </a>
+                            {suffix}
+                          </div>);
           }
           else {
             link = with_id.startsWith('MGI:MGI:') ? with_id.substr(4) : with_id;
             let url = this.linker.url(with_id);
-            with_set.push(<div className="ontology-ribbon__content" key={base_key+'.'+w_index+'.with'}><a className='link' href={url}>{link}</a></div>);
+            with_set.push(<div className="ontology-ribbon__content"
+                               key={base_key+'.'+w_index+'.with'}>
+                            <a className='link' href={url}>
+                              {link}
+                            </a>
+                            {suffix}
+                          </div>);
           }
         })
       }
@@ -41,10 +55,19 @@ class AssociationEvidence extends Component {
 
   renderReferences(eco_group, base_key) {
     let ref_set = [];
+    let ref_max = eco_group.evidence_refs.length - 1;
+
     eco_group.evidence_refs.forEach((ref, r_index) => {
       let url = this.linker.url(ref);
-      ref_set.push(<div className="ontology-ribbon__content" key={base_key+'.'+r_index+'.ref'}><a className='link' href={url}>{ref}</a></div>);
-    })
+      let suffix = (r_index < ref_max) ? ' • ' : '';
+      ref_set.push( <div className="ontology-ribbon__content"
+                        key={base_key+'.'+r_index+'.ref'}>
+                      <a className='link' href={url}>
+                        {ref}
+                      </a>
+                      {suffix}
+                    </div>);
+      })
     return ref_set;
   }
 
@@ -60,12 +83,48 @@ class AssociationEvidence extends Component {
 
   renderECOgroups (eco_groups, row, eco_index) {
     let evi_row = [];
-    eco_groups.forEach((e_group, group_index) => {
-      evi_row.push(this.renderECOgroup(e_group, row, eco_index, group_index));
+    eco_groups.forEach((eco_group, group_index) => {
+      evi_row.push(this.renderECOgroup(eco_group, row, eco_index, group_index));
     })
     return evi_row;
   }
 
+  renderQualifier (e_group, row, eco_index, group_index) {
+    let quals = [];
+    let q_set = e_group.evidence_qualifier;
+    if (q_set !== undefined) {
+      let qual_max = q_set.length - 1;
+      q_set.forEach((q, index) => {
+      // we exclude the NOT qualifier as it is handled separately
+      let suffix = (index < qual_max) ? ', ' : '';
+      if (q !== 'not') {
+          quals.push(
+            <a
+              key={'q'+row+eco_index+group_index+index}
+              title={q}
+              href={`http://geneontology.org/page/go-qualifiers`}
+              rel="noopener noreferrer"
+              target="_blank"
+              className='evidence-qualifier'>
+              {q}{suffix}
+            </a>
+          );
+        }
+      })
+    }
+    return quals;
+  }
+
+  renderQualifiers(eco_groups, row, eco_index) {
+    let quals = [];
+    let base_key = row+'.'+eco_index+'.';
+    eco_groups.forEach((e_group, group_index) => {
+      quals.push( <div key={base_key+group_index}>
+                    {this.renderQualifier(e_group, row, eco_index, group_index)}
+                  </div>);
+    })
+    return quals;
+  }
   /*
     Key is one particular ECO code and there may be more than one set of
     evidence for that particular ECO code
@@ -74,10 +133,20 @@ class AssociationEvidence extends Component {
     let eco = eco_groups[0].evidence_type;
     let eco_id = eco_groups[0].evidence_id;
     let eco_label = eco_groups[0].evidence_label;
+
     return (
       <div className='ontology-ribbon__evidence-row' key={row+'.'+eco_index}>
         <div className='ontology-ribbon__eco'>
-          <a key={row+'.'+eco_index+'.'+eco_id} title={eco_label} className='link' href={`http://www.evidenceontology.org/term/${eco_id}`}>{eco}</a>
+          <div>
+            <a
+              key={row+'.'+eco_index+'.'+eco_id}
+              title={eco_label} className='link'
+              href={`http://www.evidenceontology.org/term/${eco_id}`}>{eco}
+            </a>
+          </div>
+        {
+          this.renderQualifiers(eco_groups, row, eco_index)
+        }
         </div>
         <div className='ontology-ribbon__eco-group-column' key={row+'.'+eco_index+'.groups'}>{this.renderECOgroups(eco_groups, row, eco_index)}</div>
       </div>

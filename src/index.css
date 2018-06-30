@@ -22,7 +22,7 @@ transition: all 0.3s
   vertical-align: middle;
   height: 60px;
   display: inline-block;
-  margin-right: 1rem;
+  padding-left: 1rem;
 }
 
 
@@ -288,18 +288,21 @@ transition: all 0.3s
 }
 
 .evidence-qualifier{
-  font-size: x-small;
-  padding: 3px;
-  margin-right: 5px;
   text-decoration: none;
-  background-color: gold;
-  border-radius: 5px;
+  color: #2C3339;
+  font-style: italic;
+  font-size: .8rem;
+}
+
+.evidence-qualifier:hover{
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .go-link{
-  transition: all (0.5s);
   text-decoration: none;
   color: #1A237D;
+  transition: all (0.5s);
 }
 
 .go-link:hover{
@@ -318,7 +321,7 @@ transition: all 0.3s
 .link:hover{
   cursor: pointer;
   font-weight: bold;
-  transform: translateX(.5rem);
+  transform: translateX(-0.5rem);
 }
 
 .ontology-ribbon__header {
@@ -339,7 +342,6 @@ transition: all 0.3s
     display: flex;
     flex: 50%;
     flex-direction: column;
-    color: black;
     max-width: 50%;
 }
 
@@ -347,14 +349,12 @@ transition: all 0.3s
     display: flex;
     flex: 50%;
     flex-direction: column;
-    color: black;
     max-width: 50%;
 }
 
 .ontology-ribbon__evidence-row {
     display: flex;
     font-size: .9rem;
-
 }
 
 .ontology-ribbon__eco {
@@ -370,21 +370,25 @@ transition: all 0.3s
   display: flex;
   flex: 80%;
   flex-direction: column;
-  color: black;
   max-width: 80%;
 }
 
 .ontology-ribbon__eco-group-row {
     display: flex;
     font-size: .9rem;
-    padding-bottom: .5rem;
+    padding: .25rem;
+}
+
+.ontology-ribbon__eco-group-row:hover {
+    background-color: #f0f8e8;
+    opacity: 10%;
+    border-radius: .5rem;
 }
 
 .ontology-ribbon__with-column {
     display: flex;
     flex: 50%;
     flex-direction: column;
-    color: black;
     max-width: 50%;
 }
 
@@ -392,12 +396,10 @@ transition: all 0.3s
     display: flex;
     flex: 50%;
     flex-direction: column;
-    color: black;
     max-width: 50%;
     padding-bottom: .0rem;
 }
 
 .ontology-ribbon__content {
     vertical-align: middle;
-    color: #2C3E50;
 }

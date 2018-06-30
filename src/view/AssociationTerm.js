@@ -42,27 +42,12 @@ class AssociationTerm extends Component {
 
         return (
             <div className='ontology-ribbon__content'>
-              {assoc.evidence.qualifier && assoc.evidence.qualifier.map((q, index) => {
-                // we exclude the NOT qualifier as it is handled separately
-                if (q !== 'not') {
-                  return (
-                    <a key={row+'Q'+index}
-                         title={q}
-                         href={`http://geneontology.org/page/go-qualifiers`}
-                         rel="noopener noreferrer"
-                         target="_blank"
-                         className='evidence-qualifier'>
-                       {q}
-                    </a>
-                  )
-                }
-              })}
               <a
                 title={assoc.object.id}
                 href={`http://amigo.geneontology.org/amigo/term/${self.patchSubject(assoc.object.id)}`}
                 rel="noopener noreferrer"
                 target="_blank"
-                className='link'>
+                className='go-link'>
                   {self.renderTerm(assoc)}
               </a>
             </div>

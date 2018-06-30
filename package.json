@@ -36,11 +36,11 @@
     "babel-preset-react": "^6.24.1",
     "eslint": "^4.19.1",
     "history": "4.6.1",
-    "nwb": "^0.22.0",
+    "nwb": "^0.21.5",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-spinners": "0.0.30",
-    "react-url-query": "1.2.0"
+    "react-url-query": "^1.2.0"
   },
   "author": "Suzanna Lewis, Sibyl Gao, Nathan Dunn",
   "homepage": "https://github.com/geneontology/ribbon#readme",
