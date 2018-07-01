@@ -10,9 +10,10 @@ import FaCaretDown from 'react-icons/lib/fa/caret-down';
 class AssociationTerm extends Component {
 
     constructor() {
-        super();
-        this.linker = (new amigo_gen()).linker;
-        this.renderTerm = this.renderTerm.bind(this);
+      super();
+
+      this.linker = (new amigo_gen()).linker;
+      this.renderTerm = this.renderTerm.bind(this);
     }
 
 
@@ -28,23 +29,21 @@ class AssociationTerm extends Component {
       }
     }
 
-    patchSubject(inputSubject){
-        if(inputSubject.startsWith('MGI')){
-            return 'MGI:'+inputSubject;
-        }
-        return inputSubject;
+    composeQuery(inputSubject, inputClass){
+        let prefix = (inputSubject.startsWith('MGI')) ? 'MGI:' : '';
+        return prefix+inputSubject+'?term='+inputClass;
     }
 
     render() {
         const {assoc, row, hoveredTermId} = this.props;
         let rowDivClass = 'ontology-ribbon-assoc__row';
         let self = this;
-
+        let query = self.composeQuery(assoc.subject.id, assoc.object.id);
         return (
             <div className='ontology-ribbon__content'>
               <a
                 title={assoc.object.id}
-                href={`http://amigo.geneontology.org/amigo/term/${self.patchSubject(assoc.object.id)}`}
+                href={`http://amigo.geneontology.org/amigo/gene_product/${query}`}
                 rel="noopener noreferrer"
                 target="_blank"
                 className='go-link'>

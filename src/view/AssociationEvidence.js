@@ -5,18 +5,40 @@ import PropTypes from 'prop-types';
 
 import amigo_gen from 'amigo2-instance-data'
 import FaCaretDown from 'react-icons/lib/fa/caret-down';
+import FaCaretRight from 'react-icons/lib/fa/caret-right';
 
 class AssociationEvidence extends Component {
 
     constructor() {
-        super();
+      super();
 
-        this.linker = (new amigo_gen()).linker;
-        this.renderECOgroup = this.renderECOgroup.bind(this);
-        this.renderECOgroups = this.renderECOgroups.bind(this);
-        this.renderEvidenceRow = this.renderEvidenceRow.bind(this);
+      this.state = {
+        expanded_withs: []
+      };
+      this.linker = (new amigo_gen()).linker;
+      this.renderECOgroup = this.renderECOgroup.bind(this);
+      this.renderECOgroups = this.renderECOgroups.bind(this);
+      this.renderEvidenceRow = this.renderEvidenceRow.bind(this);
+      this.onExpandCollapse = this.onExpandCollapse.bind(this);
 
-        this.rollupAmount = 3 ;
+      this.rollupIndex = 3 ;
+    }
+
+    onExpandCollapse(with_list) {
+        let expanded_withs = this.state.expanded_withs;
+        let index = expanded_withs.indexOf(with_list);
+        if (index >= 0) {
+          expanded_withs.splice(index, 1);
+        } else {
+          expanded_withs.push(with_list);
+        }
+        this.setState({
+          expanded_withs: expanded_withs
+        });
+    }
+
+    isExpanded(with_list) {
+      return (this.state.expanded_withs.indexOf(with_list) >= 0);
     }
 
     renderWiths(eco_group, base_key) {
@@ -26,26 +48,54 @@ class AssociationEvidence extends Component {
         with_set.push(<div className="ontology-ribbon__content" key={base_key+'.nowiths'}/>)
       } else {
         let with_max = eco_group.evidence_with.length - 1;
+        let collapsible = with_max > this.rollupIndex && this.isExpanded(eco_group.evidence_with)
         eco_group.evidence_with.forEach((with_id, w_index) => {
           let suffix = (w_index < with_max) ? ' • ' : '';
+          let link = with_id.startsWith('MGI:MGI:') ? with_id.substr(4) : with_id;
+          var url;
           if (with_id.match(/^(WB:WBVar).*/)) {
+            url = `http://www.wormbase.org/get?name=${with_id.split(':')[1]}&class=Variation`;
+          } else {
+            url = this.linker.url(with_id);
+          }
+
+          if (with_max <= this.rollupIndex ||
+              w_index < this.rollupIndex ||
+              (this.isExpanded(eco_group.evidence_with) && w_index < with_max)) {
             with_set.push(<div className="ontology-ribbon__content"
                                key={base_key+'.'+w_index+'.with'}>
-                            <a className='link' href={`http://www.wormbase.org/get?name=${with_id.split(':')[1]}&class=Variation`}>
-                              {with_id}
-                            </a>
+                            <a className='link' href={url}>{link}</a>
                             {suffix}
                           </div>);
-          }
-          else {
-            link = with_id.startsWith('MGI:MGI:') ? with_id.substr(4) : with_id;
-            let url = this.linker.url(with_id);
+
+          } else if (w_index === with_max &&
+                    this.isExpanded(eco_group.evidence_with)) {
+              with_set.push(<div className="ontology-ribbon__content"
+                                 key={base_key+'.'+w_index+'.with'}>
+                              <a className='link'
+                                onClick={ () => { this.onExpandCollapse(eco_group.evidence_with) }}
+                                href={url}>
+                                {link}
+                              </a>
+                              {suffix}
+                              <FaCaretDown
+                                className='bright'
+                                onClick={() => {this.onExpandCollapse(eco_group.evidence_with)}}
+                              />
+                            </div>);
+          } else if (w_index === this.rollupIndex && !this.isExpanded(eco_group.evidence_with)) {
+            suffix = ' ••• ';
             with_set.push(<div className="ontology-ribbon__content"
-                               key={base_key+'.'+w_index+'.with'}>
-                            <a className='link' href={url}>
+                              key={base_key+'.'+w_index+'.with'}>
+                            <a className='link'
+                              href={url}>
                               {link}
                             </a>
                             {suffix}
+                            <FaCaretRight
+                              className='bright'
+                              onClick={() => {this.onExpandCollapse(eco_group.evidence_with)}}
+                            />
                           </div>);
           }
         })

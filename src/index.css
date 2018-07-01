@@ -324,6 +324,14 @@ transition: all 0.3s
   transform: translateX(-0.5rem);
 }
 
+.bright {
+  color: #FF1998;
+}
+
+.bright:hover{
+  font-weight: bold;
+}
+
 .ontology-ribbon__header {
     display: flex;
     padding: 4px 4px;
