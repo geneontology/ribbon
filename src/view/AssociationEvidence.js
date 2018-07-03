@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import amigo_gen from 'amigo2-instance-data'
-import FaCaretDown from 'react-icons/lib/fa/caret-down';
+import FaCaretUp from 'react-icons/lib/fa/caret-up';
 import FaCaretRight from 'react-icons/lib/fa/caret-right';
 
 class AssociationEvidence extends Component {
@@ -70,6 +70,7 @@ class AssociationEvidence extends Component {
 
           } else if (w_index === with_max &&
                     this.isExpanded(eco_group.evidence_with)) {
+              suffix = ' ';
               with_set.push(<div className="ontology-ribbon__content"
                                  key={base_key+'.'+w_index+'.with'}>
                               <a className='link'
@@ -78,7 +79,7 @@ class AssociationEvidence extends Component {
                                 {link}
                               </a>
                               {suffix}
-                              <FaCaretDown
+                              <FaCaretUp
                                 className='bright'
                                 onClick={() => {this.onExpandCollapse(eco_group.evidence_with)}}
                               />
