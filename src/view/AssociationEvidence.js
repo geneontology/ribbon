@@ -153,7 +153,6 @@ class AssociationEvidence extends Component {
               title={q}
               href={`http://geneontology.org/page/go-qualifiers`}
               rel="noopener noreferrer"
-              target="_blank"
               className='evidence-qualifier'>
               {q}{suffix}
             </a>

@@ -35,8 +35,7 @@ class AssociationTerm extends Component {
     }
 
     render() {
-        const {assoc, row, hoveredTermId} = this.props;
-        let rowDivClass = 'ontology-ribbon-assoc__row';
+        const {assoc} = this.props;
         let self = this;
         let query = self.composeQuery(assoc.subject.id, assoc.object.id);
         return (
@@ -45,7 +44,6 @@ class AssociationTerm extends Component {
                 title={assoc.object.id}
                 href={`http://amigo.geneontology.org/amigo/gene_product/${query}`}
                 rel="noopener noreferrer"
-                target="_blank"
                 className='go-link'>
                   {self.renderTerm(assoc)}
               </a>
