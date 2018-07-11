@@ -43,12 +43,10 @@ class AssociationEvidence extends Component {
 
     renderWiths(eco_group, base_key) {
       let with_set = [];
-      var link;
       if (eco_group.evidence_with.length === 0) {
         with_set.push(<div className="ontology-ribbon__content" key={base_key+'.nowiths'}/>)
       } else {
         let with_max = eco_group.evidence_with.length - 1;
-        let collapsible = with_max > this.rollupIndex && this.isExpanded(eco_group.evidence_with)
         eco_group.evidence_with.forEach((with_id, w_index) => {
           let suffix = (w_index < with_max) ? ' • ' : '';
           let link = with_id.startsWith('MGI:MGI:') ? with_id.substr(4) : with_id;
