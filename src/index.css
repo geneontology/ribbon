@@ -8,12 +8,11 @@
   height: 2rem;
 }
 
-transition: all 0.3s
 
 .ontology-ribbon__about {
   align-items: center;
   padding: .5em;
-  text-align: 'center';
+  text-align: left;
   width: 100%;
   position: relative;
 }
@@ -302,7 +301,7 @@ transition: all 0.3s
 .go-link{
   text-decoration: none;
   color: #1A237D;
-  transition: all (0.5s);
+  transition: all 0.5s ease;
 }
 
 .go-link:hover{
@@ -315,7 +314,7 @@ transition: all 0.3s
    text-decoration: none;
    color: #1A237D;
    display: inline-block;
-   transition: all (0.5s);
+   transition: all 0.5s ease;
 }
 
 .link:hover{
