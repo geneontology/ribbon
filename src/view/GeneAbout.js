@@ -32,7 +32,7 @@ function getPrefixForId(inputId) {
     let idSplit = inputId.split(':');
 
     if (idSplit.length === 0)
-      return null;
+        return null;
 
     return prefixToSpecies[idSplit[0]];
 
@@ -40,69 +40,71 @@ function getPrefixForId(inputId) {
 
 export default class GeneAbout extends React.Component {
 
-  render () {
-    const {subject, hideText, fetching, title, currentblock, ...iconProps} = this.props;
-    let speciesName = taxonomyToSpecies[subject];
-    speciesName = speciesName ? speciesName : getPrefixForId(subject);
+    render() {
+        const {subject, hideText, fetching, title, currentblock, ...iconProps} = this.props;
+        let speciesName = taxonomyToSpecies[subject];
+        speciesName = speciesName ? speciesName : getPrefixForId(subject);
 
-    speciesName = speciesName ? speciesName : subject;
+        speciesName = speciesName ? speciesName : subject;
 
-    let active_term = currentblock ? ' to '+currentblock.class_label : null;
+        let active_term = currentblock ? ' to ' + currentblock.class_label : null;
 
-    let isValid = Object.values(taxonomyToSpecies).indexOf(speciesName) >= 0;
-    if (isValid) {
-        return (
-          <div className='ontology-ribbon__about'>
-            {subject &&
-              <SpeciesIcon species={speciesName} hideText={hideText} {...iconProps}/>
-            }
-            <span>
+        let isValid = Object.values(taxonomyToSpecies).indexOf(speciesName) >= 0;
+        if (isValid) {
+            return (
+                <div className='ontology-ribbon__about'>
+                    {subject &&
+                    <SpeciesIcon species={speciesName} hideText={hideText} {...iconProps}/>
+                    }
+                    <span>
               <span className='ontology-ribbon__about-text' style={{fontStyle: 'italic'}}>
                 {!hideText && speciesName}
               </span>
-              {!fetching && subject && title &&
-                <span className='ontology-ribbon__about-text'>
+                        {!fetching && subject && title &&
+                        <span className='ontology-ribbon__about-text'>
                   <a href={`http://amigo.geneontology.org/amigo/gene_product/` +
-                            this.patchSubject(subject)}
-                      className='go-link' style={{ marginRight: '.5rem' }}>
+                  this.patchSubject(subject)}
+                     className='go-link' style={{marginRight: '.5rem'}}
+                     target='_blank'
+                  >
                     {this.getLabel(title)}
-                    <FaExternalLink style={{paddingLeft: 10, textDecoration: 'none'}}/>
+                      <FaExternalLink size={18} style={{paddingLeft: 10, textDecoration: 'none'}}/>
+                      {active_term}
                   </a>
-                  {active_term}
                 </span>
-              }
+                        }
             </span>
-            {!fetching && !subject && title &&
-              // no subject, so just provide a linkless title
-              <span  className='ontology-ribbon__about'>
+                    {!fetching && !subject && title &&
+                    // no subject, so just provide a linkless title
+                    <span className='ontology-ribbon__about'>
                 {title}
               </span>
-            }
-          </div>
-        );
+                    }
+                </div>
+            );
+        }
+        else {
+            return <div></div>;
+        }
     }
-    else {
-        return <div></div>;
+
+    /**
+     * https://github.com/geneontology/go-site/issues/91
+     * @param inputSubject
+     * @returns {*}
+     */
+    patchSubject(inputSubject) {
+        if (inputSubject.startsWith('MGI') && !inputSubject.startsWith('MGI:MGI:')) {
+            return 'MGI:' + inputSubject;
+        }
+        return inputSubject;
     }
-  }
 
-  /**
-   * https://github.com/geneontology/go-site/issues/91
-   * @param inputSubject
-   * @returns {*}
-   */
-  patchSubject(inputSubject){
-      if(inputSubject.startsWith('MGI') && !inputSubject.startsWith('MGI:MGI:')){
-          return 'MGI:'+inputSubject;
-      }
-      return inputSubject;
-  }
-
-  getLabel(title) {
-      return (
-        (title.indexOf(' ')>=0 ? title.split(' ')[0] : title)
-        + ' annotations at GO');
-  }
+    getLabel(title) {
+        return (
+            (title.indexOf(' ') >= 0 ? title.split(' ')[0] : title)
+            + ' annotations at GO');
+    }
 }
 
 GeneAbout.propTypes = {
