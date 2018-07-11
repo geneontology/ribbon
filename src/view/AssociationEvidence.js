@@ -80,7 +80,7 @@ class AssociationEvidence extends Component {
                               </a>
                               {suffix}
                               <FaCaretUp
-                                className='bright'
+                                className='bright link'
                                 onClick={() => {this.onExpandCollapse(eco_group.evidence_with)}}
                               />
                             </div>);
@@ -94,7 +94,7 @@ class AssociationEvidence extends Component {
                             </a>
                             {suffix}
                             <FaCaretRight
-                              className='bright'
+                              className='bright link'
                               onClick={() => {this.onExpandCollapse(eco_group.evidence_with)}}
                             />
                           </div>);
