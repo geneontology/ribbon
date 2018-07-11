@@ -160,6 +160,7 @@ export function unpackSlimItems(results, subject, slimlist) {
               if (aspect && !aspect_ids.includes(key)) {
                 aspect_ids.push(key);
                 aspect.uniqueAssocs.push(assocItem);
+                aspect.uniqueIDs.push(key)
               }
               if (need2add_evidence) {
                 assocItem.evidence_map = new Map();
