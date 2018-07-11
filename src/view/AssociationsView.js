@@ -18,8 +18,7 @@ export default class AssociationsView extends React.Component {
     };
 
     render() {
-      const {blocks, currentblock, focalblock, geneUrlFormatter} = this.props;
-      let self = this;
+      const {blocks, currentblock, focalblock} = this.props;
       let assoc_list = [];
       blocks.forEach(function(slimitem) {
         if (slimitem.class_id === currentblock.class_id) {

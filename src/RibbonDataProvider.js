@@ -7,10 +7,6 @@ import {unpackSlimItems} from './dataHelpers';
 
 import PHENO_LIST from './data/pheno';
 import AGR_LIST from './data/agr';
-import TCAG_LIST from './data/tcag';
-import FLY_LIST from './data/fly';
-import JAX_LIST from './data/jax';
-import POMBE_LIST from './data/pombe';
 
 const GOLINK = 'https://api.monarchinitiative.org/api/';
 
