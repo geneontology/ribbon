@@ -1,24 +1,42 @@
 # ribbon
 Short form matrix view of all GO annotations for a given gene
 
-## Acknowledgments
-- Thanks to Sibyl Gao (@sibyl229) for knowing what to do and how to do it for AGR usage, Josh Goodman for making his code available as a start point, Seth Carbon (@kltm) for bearing with my naive questions, and Chris Mungall (@cmungall) for all the usual fantastic things he does
-
 ## Installation
-- Make sure node.js is installed - see https://nodejs.org/en/download/
-
 - Once node.js is on your machine then dependent packages need to be brought in. Running `npm install` in the components's root directory will install everything you need for development.
  - Note that you may need to run 'npm install' as sudo.
 
-- To install locally, you need to run:
- - npm run build
- - npm pack
- - point to the .tgz file locally (had many issues with npm link)
-
+### Deployment
+```
+    npm install
+    npm run build 
+```
+   
 ## Demo Ribbon Server
 
 - `npm start` will run a local server with the ribbon's demo app at [http://localhost:3000](http://localhost:3000) with hot module reloading.
 - To actually see a populated 'ribbon' you will need to provide the resource name and the resource's gene identifier in the URL. That is:  [http://localhost:3000/?subject=MGI:MGI:97490](http://localhost:3000/?subject=MGI:MGI:97490) or [http://localhost:3000/?subject=ZFIN:ZDB-GENE-990415-173](http://localhost:3000/?subject=ZFIN:ZDB-GENE-990415-173)
+
+## Integration
+
+
+Integration is demonstrated in the [demo package](https://github.com/geneontology/ribbon/blob/master/demo/src/index.js).
+
+
+
+    import React from 'react';
+    import ReactDOM from 'react-dom';
+    ... 
+    ReactDOM.render(<Demo/>, document.getElementById('demo'));
+
+
+With the [Demo Component](https://github.com/geneontology/ribbon/blob/master/demo/src/Demo.js) instantiating all of the lower components. 
+
+If not running react directly (or not wanting to load it via npm), you can import the libraries directly :
+
+    <script src="https://unpkg.com/react@15.6.1/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@15.6.1/dist/react-dom.js"></script>
+
+Which will allow you to do as above. 
 
 ## Examples
 - fly
