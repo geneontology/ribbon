@@ -48,7 +48,7 @@ class AssociationEvidence extends Component {
       } else {
         let with_max = eco_group.evidence_with.length - 1;
         eco_group.evidence_with.forEach((with_id, w_index) => {
-          let suffix = (w_index < with_max) ? ' • ' : '';
+          let suffix = (w_index < with_max) ? ', ' : '';
           let link = with_id.startsWith('MGI:MGI:') ? with_id.substr(4) : with_id;
           var url;
           if (with_id.match(/^(WB:WBVar).*/)) {
@@ -83,7 +83,7 @@ class AssociationEvidence extends Component {
                               />
                             </div>);
           } else if (w_index === this.rollupIndex && !this.isExpanded(eco_group.evidence_with)) {
-            suffix = ' ••• ';
+            suffix = ' ... ';
             with_set.push(<div className="ontology-ribbon__content"
                               key={base_key+'.'+w_index+'.with'}>
                             <a className='link'
@@ -108,7 +108,7 @@ class AssociationEvidence extends Component {
 
     eco_group.evidence_refs.forEach((ref, r_index) => {
       let url = this.linker.url(ref);
-      let suffix = (r_index < ref_max) ? ' • ' : '';
+      let suffix = (r_index < ref_max) ? ', ' : '';
       ref_set.push( <div className="ontology-ribbon__content"
                         key={base_key+'.'+r_index+'.ref'}>
                       <a className='link' href={url}>
