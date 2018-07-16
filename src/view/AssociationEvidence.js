@@ -90,11 +90,12 @@ class AssociationEvidence extends Component {
                               href={url}>
                               {link}
                             </a>
-                            {suffix}
-                            <FaCaretRight
-                              className='bright link'
-                              onClick={() => {this.onExpandCollapse(eco_group.evidence_with)}}
-                            />
+                            <a className='link' onClick={() => {this.onExpandCollapse(eco_group.evidence_with)}}>
+                                {suffix}
+                                <FaCaretRight
+                                    className='bright link'
+                                />
+                            </a>
                           </div>);
           }
         })
