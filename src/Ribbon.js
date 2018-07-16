@@ -6,7 +6,7 @@ import axios from 'axios';
 import RibbonBase from './RibbonBase';
 import AssociationsView from './view/AssociationsView';
 import GeneAbout from './view/GeneAbout';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
 
 export default class Ribbon extends Component {
 
@@ -50,7 +50,7 @@ export default class Ribbon extends Component {
     fetchSubject = (subject, title) => {
         let self = this;
         if (subject.startsWith('HGNC:')) {
-            axios.get('https://mygene.info/v3/query?q='+subject+'&fields=uniprot')
+            axios.get('https://mygene.info/v3/query?q=' + subject + '&fields=uniprot')
                 .then(function (results) {
                     let result = results.data.hits[0].uniprot['Swiss-Prot'];
                     self.setState({
@@ -100,27 +100,31 @@ export default class Ribbon extends Component {
                 />
 
                 {this.state.subject &&
-                  <GeneAbout
-                      subject={this.state.subject}
-                      fetching={this.state.fetching}
-                      title={this.state.title}
-                      currentblock={this.state.currentblock}
-                  />
+                <GeneAbout
+                    subject={this.state.subject}
+                    fetching={this.state.fetching}
+                    title={this.state.title}
+                    currentblock={this.state.currentblock}
+                />
                 }
 
-                <ReactCSSTransitionGroup transitionName='fade'
-                                         transitionEnterTimeout={500}
-                                         transitionLeaveTimeout={300}
-                >
-                  {(this.state.showing || this.state.currentblock !== undefined) &&
-                      <AssociationsView
-                          currentblock={this.state.currentblock}
-                          focalblock={this.state.focalblock}
-                          blocks={blocks}
-                          geneUrlFormatter={this.props.geneUrlFormatter}
-                      />
-                  }
-                </ReactCSSTransitionGroup>
+                <TransitionGroup>
+                    {(this.state.showing || this.state.currentblock !== undefined) ?
+                        <CSSTransition
+                            classNames="fade"
+                            timeout={{enter: 500, exit: 300}}
+                        >
+                            <AssociationsView
+                                currentblock={this.state.currentblock}
+                                focalblock={this.state.focalblock}
+                                blocks={blocks}
+                                geneUrlFormatter={this.props.geneUrlFormatter}
+                            />
+                        </CSSTransition> :
+                        null
+                    }
+                </TransitionGroup>
+
             </div>
         );
     }
