@@ -302,34 +302,32 @@
 .go-link{
   text-decoration: none;
   color: #1A237D;
-  transition: all 0.5s ease;
 }
 
 .go-link:hover{
   cursor: pointer;
-  font-weight: bold;
-  transform: translateX(.5rem);
+  text-decoration: underline;
 }
 
 .link{
    text-decoration: none;
    color: #1A237D;
    display: inline-block;
-   transition: all 0.5s ease;
 }
 
 .link:hover{
   cursor: pointer;
-  font-weight: bold;
-  transform: translateX(-0.5rem);
+  text-decoration: underline;
 }
 
 .bright {
   color: #FF1998;
+  transition: all 0.2s ease
 }
 
 .bright:hover{
   font-weight: bold;
+  transform: scale(2)
 }
 
 .ontology-ribbon__header {
