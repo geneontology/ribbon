@@ -46,7 +46,7 @@ class Demo extends Component {
     const {subject, slim} = this.props;
     return (
       <div id='demo'>
-        <RibbonDataProvider subject={subject} slim={slim} heatColorArray={[82,12,38]} heatLevels={12}>
+        <RibbonDataProvider subject={subject} slim={slim} heatColorArray={[6,100,100]} heatLevels={48}>
         {
           ({title, blocks, dataError, dataReceived}) => (
             <div>
