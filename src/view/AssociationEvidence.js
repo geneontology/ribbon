@@ -62,8 +62,7 @@ class AssociationEvidence extends Component {
               (this.isExpanded(eco_group.evidence_with) && w_index < with_max)) {
             with_set.push(<div className="ontology-ribbon__content"
                                key={base_key+'.'+w_index+'.with'}>
-                            <a className='link' href={url}>{link}</a>
-                            {suffix}
+                            <a className='link' href={url}>{link}{suffix}</a>
                           </div>);
 
           } else if (w_index === with_max &&
@@ -75,8 +74,7 @@ class AssociationEvidence extends Component {
                                 onClick={ () => { this.onExpandCollapse(eco_group.evidence_with) }}
                                 href={url}>
                                 {link}
-                              </a>
-                              {suffix}
+                              </a>{suffix}
                               <FaCaretUp
                                 className='bright link'
                                 onClick={() => {this.onExpandCollapse(eco_group.evidence_with)}}
@@ -92,8 +90,7 @@ class AssociationEvidence extends Component {
                             </a>
                 &nbsp;
                             <a className='link' onClick={() => {this.onExpandCollapse(eco_group.evidence_with)}}>
-                                {suffix}
-                                <FaCaretRight
+                                {suffix}<FaCaretRight
                                     className='bright link'
                                 />
                             </a>
@@ -114,11 +111,10 @@ class AssociationEvidence extends Component {
       ref_set.push( <div className="ontology-ribbon__content"
                         key={base_key+'.'+r_index+'.ref'}>
                       <a className='link' href={url}>
-                        {ref}
+                        {ref}{suffix}
                       </a>
-                      {suffix}
                     </div>);
-      })
+      });
     return ref_set;
   }
 
