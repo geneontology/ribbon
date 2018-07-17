@@ -10,14 +10,20 @@ import AGR_LIST from './data/agr';
 
 const GOLINK = 'https://api.monarchinitiative.org/api/';
 
+const defaultHeatColorArray = [63, 81, 181];
+const defaultHeatLevels = 48;
+
 export default class RibbonDataProvider extends React.Component {
     static propTypes = {
         subject: PropTypes.string.isRequired,
         slim: PropTypes.string,
+        heatColorArray: PropTypes.array,
+        heatLevels: PropTypes.number,
     };
 
     constructor(props) {
         super(props);
+
         this.state = {
             fetching: true,
         };
@@ -43,6 +49,9 @@ export default class RibbonDataProvider extends React.Component {
         let title = subject;
         let dataError = null;
         let self = this;
+        let {heatColorArray, heatLevels} = this.props;
+        heatColorArray = heatColorArray ? heatColorArray : defaultHeatColorArray;
+        heatLevels = heatLevels ? heatLevels : defaultHeatLevels;
 
         /*
           Build up the query string by adding all the GO ids
@@ -51,12 +60,13 @@ export default class RibbonDataProvider extends React.Component {
             if (slimitem.separator === undefined) {
                 goLink = goLink + '&slim=' + slimitem.class_id;
             }
-          });
+        });
+
 
         // console.log('Query is ' + goLink + '&subject=' + subject);
         axios.get(goLink + '&subject=' + subject)
             .then(function (results) {
-                const {title, blocks} = unpackSlimItems([results], subject, slimlist);
+                const {title, blocks} = unpackSlimItems([results], subject, slimlist, heatColorArray, heatLevels);
                 self.setState({
                     fetching: false,
                     title: title,

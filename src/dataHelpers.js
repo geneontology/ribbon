@@ -1,7 +1,6 @@
 import taxa from './data/taxa';
 import getKey from './assocKey';
 
-const assocColor = [63, 81, 181];
 
 Object.defineProperty(Array.prototype, 'unique', {
     enumerable: false,
@@ -59,7 +58,7 @@ function addEvidence(prev_assoc, assocItem) {
   }
 }
 
-export function unpackSlimItems(results, subject, slimlist) {
+export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLevels) {
   let title = subject;
   let queryResponse = [];
   let other = false;
@@ -181,7 +180,7 @@ export function unpackSlimItems(results, subject, slimlist) {
           if (slimitem.uniqueAssocs.length > 0) {
             slimitem.uniqueAssocs.sort(sortAssociations);
             slimitem.uniqueAssocs = subjectFirst(subject, slimitem.uniqueAssocs);
-            slimitem.color = heatColor(slimitem.uniqueAssocs.length, assocColor, 48);
+            slimitem.color = heatColor(slimitem.uniqueAssocs.length, heatColorArray, heatLevels);
           }
         }
       }

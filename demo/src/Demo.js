@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { addUrlProps, UrlQueryParamTypes } from 'react-url-query';
 import { GridLoader } from 'react-spinners';
-//import 'react-virtualized/styles.css';
 
 import '../../src/index.css';
 import Ribbon, { RibbonDataProvider } from '../../src/index';
@@ -47,7 +46,7 @@ class Demo extends Component {
     const {subject, slim} = this.props;
     return (
       <div id='demo'>
-        <RibbonDataProvider subject={subject} slim={slim}>
+        <RibbonDataProvider subject={subject} slim={slim} heatColorArray={[82,12,38]} heatLevels={12}>
         {
           ({title, blocks, dataError, dataReceived}) => (
             <div>
