@@ -312,7 +312,8 @@
 .link{
    text-decoration: none;
    color: #1A237D;
-   display: inline-block;
+   /*display: inline-block;*/
+   overflow-wrap: break-word;
 }
 
 .link:hover{
@@ -408,4 +409,6 @@
 
 .ontology-ribbon__content {
     vertical-align: middle;
+    word-break: break-word;
+    margin-right: 3px;
 }
