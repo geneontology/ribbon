@@ -27,6 +27,9 @@ const taxonomyToSpecies = {
     'NCBITaxon:559292': 'Saccharomyces cerevisiae S288C',  // also yeast
 };
 
+const geneProductLink = 'http://amigo.geneontology.org/amigo/gene_product/';
+const geneSearchLink = 'http://amigo.geneontology.org/amigo/search/annotation?q=*:*';
+
 function getPrefixForId(inputId) {
 
     let idSplit = inputId.split(':');
@@ -39,6 +42,41 @@ function getPrefixForId(inputId) {
 }
 
 export default class GeneAbout extends React.Component {
+
+    getLinkTarget(subject,block){
+        console.log('link target',block);
+        let link = geneProductLink + this.patchSubject(subject);
+        if(!block || block.class_id.indexOf('All')===0){
+            return link ;
+        }
+        else
+        if(block.class_label==='biological process'){
+            link = geneSearchLink + '&fq=bioentity:"'+this.patchSubject(subject)+'"';
+            link += '&fq=regulates_closure:"GO:0008150"';
+            link += '&sfq=document_category:"annotation"';
+            return link ;
+        }
+        else{
+            let closureId = block.class_id ;
+            if(block.class_label==='biological process'){
+                closureId = 'GO:0008150';
+            }
+            else
+            if(block.class_label==='molecular function'){
+                closureId = 'GO:0003674';
+            }
+            else
+            if(block.class_label==='cellular component'){
+                closureId = 'GO:0005575';
+            }
+
+            // http://amigo.geneontology.org/amigo/search/annotation?q=*:*&fq=bioentity:%22RGD:620433%22&fq=regulates_closure_label:%22DNA%20binding%22&sfq=document_category:%22annotation%22
+            link = geneSearchLink + '&fq=bioentity:"'+this.patchSubject(subject)+'"';
+            link += '&fq=regulates_closure:"'+closureId+'"';
+            link += '&sfq=document_category:"annotation"';
+            return link ;
+        }
+    }
 
     render() {
         const {subject, hideText, fetching, title, currentblock, ...iconProps} = this.props;
@@ -62,8 +100,7 @@ export default class GeneAbout extends React.Component {
               </span>
                         {!fetching && subject && title &&
                         <span className='ontology-ribbon__about-text'>
-                  <a href={`http://amigo.geneontology.org/amigo/gene_product/` +
-                  this.patchSubject(subject)}
+                  <a href={this.getLinkTarget(subject,currentblock)}
                      className='go-link' style={{marginRight: '.5rem'}}
                      target='_blank'
                   >
