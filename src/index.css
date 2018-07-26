@@ -312,7 +312,7 @@
 .link{
    text-decoration: none;
    color: #1A237D;
-   /*display: inline-block;*/
+   display: inline;
    overflow-wrap: break-word;
 }
 
