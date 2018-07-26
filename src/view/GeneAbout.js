@@ -44,7 +44,6 @@ function getPrefixForId(inputId) {
 export default class GeneAbout extends React.Component {
 
     getLinkTarget(subject,block){
-        console.log('link target',block);
         let link = geneProductLink + this.patchSubject(subject);
         if(!block || block.class_id.indexOf('All')===0){
             return link ;
