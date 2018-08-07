@@ -190,7 +190,7 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
 
   // insert a block with all annotations at the very first position
   if (all_block.uniqueAssocs.length > 0) {
-    all_block.class_label = 'All ' + all_block.uniqueAssocs.length + ' GO classes';
+    all_block.class_label = 'All ' + all_block.uniqueAssocs.length + ' GO terms';
     all_block.uniqueAssocs.sort(sortAssociations);
   }
   blocks.splice(0, 0, all_block);

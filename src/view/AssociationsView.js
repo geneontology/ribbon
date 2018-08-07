@@ -26,6 +26,17 @@ export default class AssociationsView extends React.Component {
         }
       });
 
+      let assocCount = 0 ;
+
+      for(let assoc of assoc_list){
+          for(let ev of assoc.evidence_map){
+              for(let code of ev){
+                  if(code instanceof Array){
+                      assocCount += code.length;
+                  }
+              }
+          }
+      }
       return (
         <div className={'ontology-ribbon__assoc'}>
           <div className='ontology-ribbon__header'>
@@ -44,13 +55,10 @@ export default class AssociationsView extends React.Component {
           </div>
           {
             assoc_list.map((assoc, index) => {
-              //var bgcolor = (index % 2 === 0) ? '#ffffff' : '#FFFAE4';
-              var bgcolor = (index % 2 === 0) ? '#ffffff' : '#e0e8d8';
-
+              let bgcolor = (index % 2 === 0) ? '#ffffff' : '#e0e8d8';
               let assocRowClassName = (focalblock !== undefined && focalblock.uniqueIDs.includes(getKey(assoc))) ?
                   'ontology-ribbon__assoc-row ontology-ribbon-focalterm' :
                   'ontology-ribbon__assoc-row';
-              //var bgcolor = (index % 2 === 0) ? '#EAF0EF' : '#FFFAE4';
 
               return (
                 <div className={assocRowClassName} style={{backgroundColor: bgcolor}} key={index}>

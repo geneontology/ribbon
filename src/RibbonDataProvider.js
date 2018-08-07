@@ -58,12 +58,13 @@ export default class RibbonDataProvider extends React.Component {
         */
         slimlist.forEach(function (slimitem) {
             if (slimitem.separator === undefined) {
-                goLink = goLink + '&slim=' + slimitem.class_id;
+                goLink += '&slim=' + slimitem.class_id;
             }
         });
 
+        // extend the range query past default
+        goLink += '&rows=20000' ;
 
-        // console.log('Query is ' + goLink + '&subject=' + subject);
         axios.get(goLink + '&subject=' + subject)
             .then(function (results) {
                 const {title, blocks} = unpackSlimItems([results], subject, slimlist, heatColorArray, heatLevels);
