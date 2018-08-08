@@ -117,6 +117,7 @@ export default [
     "class_id": "GO:0050789",
     "class_label": "regulation",
   },
+
   {
     "class_id": "GO:0042592",
     "class_label": "homeostasis",

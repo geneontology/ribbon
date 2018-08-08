@@ -23,7 +23,6 @@ export default class RibbonDataProvider extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             fetching: true,
         };
@@ -63,7 +62,7 @@ export default class RibbonDataProvider extends React.Component {
         });
 
 
-        // console.log('Query is ' + goLink + '&subject=' + subject);
+        console.log('Query is ' + goLink + '&subject=' + subject);
         axios.get(goLink + '&subject=' + subject)
             .then(function (results) {
                 const {title, blocks} = unpackSlimItems([results], subject, slimlist, heatColorArray, heatLevels);

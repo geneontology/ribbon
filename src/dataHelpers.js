@@ -97,6 +97,7 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
     if (slimitem.class_id.startsWith('aspect')) {
       aspect = slimitem;
       aspect_ids = [];
+      slimitem.no_data = false;
     }
 
     queryResponse.forEach(function (response) {
@@ -141,8 +142,15 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
             } else {
               need2add_evidence = (earlier_slim === slimitem);
             }
-
             if (!slimitem.uniqueIDs.includes(key)) {
+              if (assocItem.evidence_type === 'ND') {
+                slimitem.no_data = true;
+                slimitem.class_label = slimitem.class_label.replace(/Other/i, 'No known');
+                if (!other) {
+                   console.log('No Data for child term '+assocItem.object.label+'?');
+                }
+                return false;
+              }
               /*
                 The test below is assuming that the 'other' block is always at
                 the end of the strip for a particular aspect
@@ -152,11 +160,11 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
               } else {
                 return false;
               }
-              if (!globalclass_ids.includes(key)) {
+              if (!globalclass_ids.includes(key) && !slimitem.no_data) {
                 globalclass_ids.push(key);
                 all_block.uniqueAssocs.push(assocItem);
               }
-              if (aspect && !aspect_ids.includes(key)) {
+              if (aspect && !aspect_ids.includes(key) && !slimitem.no_data) {
                 aspect_ids.push(key);
                 aspect.uniqueAssocs.push(assocItem);
                 aspect.uniqueIDs.push(key)
