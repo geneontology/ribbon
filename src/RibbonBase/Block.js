@@ -37,7 +37,9 @@ class Block extends React.Component {
       let aspect_style = this.props.isActive ?
         'ontology-ribbon__strip-label ontology-ribbon__strip-picked' :
         'ontology-ribbon__strip-label';
-      let no_data = slimitem.no_data ? 'no known ' : '';
+      let no_data =
+        slimitem.no_data ? 'no known ' :
+          slimitem.uniqueAssocs.length === 0 ? 'nothing found for ' : '';
       return (
         <div className="ontology-ribbon__block">
           <div className="ontology-ribbon__tile-separator">
