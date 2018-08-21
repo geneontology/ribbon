@@ -9,7 +9,7 @@ class Block extends React.Component {
     if (slimitem.separator === undefined) {
       let count = slimitem.uniqueAssocs.length;
       const tileHoverString = (count > 0) ?
-        count + ' associations ' :
+        count == 1 ? count + ' association ' : count + ' associations ' :
         'No associations to ' + slimitem.class_label;
       const blockTitleClass = `ontology-ribbon__block ${
         count > 0 ? 'ontology-ribbon__block_match' : ''
