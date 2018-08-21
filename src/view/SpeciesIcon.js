@@ -9,21 +9,21 @@ const sizeToScale = {
   large: 1,
 };
 
-const SpeciesIcon = ({species, hideText, theme, size}) => {
+const SpeciesIcon = ({species, theme, size}) => {
   const speciesClass = species.replace(' ', '-');
   const scale = sizeToScale[size];
 
   return (
-      <span
-        className={`ontology-ribbon-species-icon_${theme} ${speciesClass}`}
-        style={{
-          height: 90 * scale,
-          width: 80 * scale,
-          margin: '2px',
-          padding: 5,
-        }}
-        title={species}
-      />
+    <span
+      className={`ontology-ribbon-species-icon_${theme} ${speciesClass}`}
+      style={{
+        height: 90 * scale,
+        width: 80 * scale,
+        margin: '2px',
+        padding: 5,
+      }}
+      title={species}
+    />
   );
 };
 

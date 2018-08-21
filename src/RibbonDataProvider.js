@@ -56,7 +56,7 @@ export default class RibbonDataProvider extends React.Component {
           Build up the query string by adding all the GO ids
         */
         slimlist.forEach(function (slimitem) {
-            if (slimitem.separator === undefined) {
+            if (slimitem.separator === undefined && slimitem.class_id.length > 0) {
                 goLink = goLink + '&slim=' + slimitem.class_id;
             }
         });

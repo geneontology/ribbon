@@ -1,24 +1,24 @@
 import taxa from './data/taxa';
 import getKey from './assocKey';
 
-
-Object.defineProperty(Array.prototype, 'unique', {
-    enumerable: false,
-    configurable: false,
-    writable: false,
-    value: function () {
-        let a = this.concat();
-        for (let i = 0; i < a.length; ++i) {
-            for (let j = i + 1; j < a.length; ++j) {
-                if (a[i] === a[j] || a[j] === undefined)
-                    a.splice(j--, 1);
-            }
-        }
-        a = a.filter(x => x != null);
-
-        return a;
+/* Object.defineProperty(Array.prototype, 'unique', {
+  enumerable: false,
+  configurable: false,
+  writable: false,
+  value: function () {
+    let a = this.concat();
+    for (let i = 0; i < a.length; ++i) {
+      for (let j = i + 1; j < a.length; ++j) {
+        if (a[i] === a[j] || a[j] === undefined)
+          a.splice(j--, 1);
+      }
     }
+    a = a.filter(x => x != null);
+
+    return a;
+  }
 });
+*/
 
 function addEvidence(prev_assoc, assocItem) {
   var evidence_group;
@@ -34,7 +34,7 @@ function addEvidence(prev_assoc, assocItem) {
       evidence_qualifier: quals,
       evidence_with: withs,
       evidence_refs: filterDuplicateReferences(assocItem.reference), // this is an array
-    }
+    };
   } else {
     evidence_group = {
       evidence_id: evidence_id, // just for convenience
@@ -43,7 +43,7 @@ function addEvidence(prev_assoc, assocItem) {
       evidence_qualifier: [],
       evidence_with: [],
       evidence_refs: filterDuplicatePublications(assocItem.publications),
-    }
+    };
   }
   var e_map = prev_assoc.evidence_map;
   if (e_map === undefined) {
@@ -66,11 +66,11 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
   let seen_before_in_slim = new Map;
 
   let all_block = {
-      "class_id": "All annotations",
-      "class_label": "All annotations",
-      "uniqueAssocs": [],
-      "uniqueIDs": [],
-      "color": "#8BC34A",
+    'class_id': 'All annotations',
+    'class_label': 'All annotations',
+    'uniqueAssocs': [],
+    'uniqueIDs': [],
+    'color': '#8BC34A',
   };
 
   results.forEach(function (result) {
@@ -90,7 +90,7 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
     // set up uniques and color too
     slimitem.uniqueIDs = [];
     slimitem.uniqueAssocs = [];
-    slimitem.color = "#fff";
+    slimitem.color = '#fff';
 
     other = slimitem.class_label.includes('other');
 
@@ -144,11 +144,7 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
             }
             if (!slimitem.uniqueIDs.includes(key)) {
               if (assocItem.evidence_type === 'ND') {
-                slimitem.no_data = true;
-                slimitem.class_label = slimitem.class_label.replace(/Other/i, 'No known');
-                if (!other) {
-                   console.log('No Data for child term '+assocItem.object.label+'?');
-                }
+                aspect.no_data = true;
                 return false;
               }
               /*
@@ -160,14 +156,14 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
               } else {
                 return false;
               }
-              if (!globalclass_ids.includes(key) && !slimitem.no_data) {
+              if (!globalclass_ids.includes(key) && !aspect.no_data) {
                 globalclass_ids.push(key);
                 all_block.uniqueAssocs.push(assocItem);
               }
-              if (aspect && !aspect_ids.includes(key) && !slimitem.no_data) {
+              if (aspect && !aspect_ids.includes(key) && !aspect.no_data) {
                 aspect_ids.push(key);
                 aspect.uniqueAssocs.push(assocItem);
-                aspect.uniqueIDs.push(key)
+                aspect.uniqueIDs.push(key);
               }
               if (need2add_evidence) {
                 assocItem.evidence_map = new Map();
@@ -203,78 +199,72 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
   }
   blocks.splice(0, 0, all_block);
   return {
-      title: title,
-      blocks: blocks,
+    title: title,
+    blocks: blocks,
   };
 }
 
 function sortAssociations(assoc_a, assoc_b) {
-    let taxa_ids = Array.from(taxa.keys());
-    let index_a = taxa_ids.indexOf(assoc_a.subject.taxon.id);
-    let index_b = taxa_ids.indexOf(assoc_b.subject.taxon.id);
-    if (index_a < index_b) {
-        return -1;
-    }
-    if (index_a > index_b) {
-        return 1;
-    }
-    if (assoc_a.subject.id < assoc_b.subject.id) {
-        return -1;
-    }
-    if (assoc_a.subject.id > assoc_b.subject.id) {
-        return 1;
-    }
-    if (assoc_a.object.label < assoc_b.object.label) {
-        return -1;
-    }
-    if (assoc_a.object.label > assoc_b.object.label) {
-        return 1;
-    }
-    // a must be equal to b
-    return 0;
+  let taxa_ids = Array.from(taxa.keys());
+  let index_a = taxa_ids.indexOf(assoc_a.subject.taxon.id);
+  let index_b = taxa_ids.indexOf(assoc_b.subject.taxon.id);
+  if (index_a < index_b) {
+    return -1;
+  }
+  if (index_a > index_b) {
+    return 1;
+  }
+  if (assoc_a.subject.id < assoc_b.subject.id) {
+    return -1;
+  }
+  if (assoc_a.subject.id > assoc_b.subject.id) {
+    return 1;
+  }
+  if (assoc_a.object.label < assoc_b.object.label) {
+    return -1;
+  }
+  if (assoc_a.object.label > assoc_b.object.label) {
+    return 1;
+  }
+  // a must be equal to b
+  return 0;
 }
 
 function subjectFirst(subject, uniqueAssocs) {
-    let subjectAssocs = [];
-    for (let i = uniqueAssocs.length - 1; i >= 0; i--) {
-        let assoc = uniqueAssocs[i];
-        if (assoc.subject.id === subject) {
-            // remove this from current list
-            uniqueAssocs.splice(i, 1);
-            // add it to the top of the revised list
-            subjectAssocs.splice(0, 0, assoc);
-        }
+  let subjectAssocs = [];
+  for (let i = uniqueAssocs.length - 1; i >= 0; i--) {
+    let assoc = uniqueAssocs[i];
+    if (assoc.subject.id === subject) {
+      // remove this from current list
+      uniqueAssocs.splice(i, 1);
+      // add it to the top of the revised list
+      subjectAssocs.splice(0, 0, assoc);
     }
-    // now collect the remaining associations to orthologs
-    return subjectAssocs.concat(uniqueAssocs);
+  }
+  // now collect the remaining associations to orthologs
+  return subjectAssocs.concat(uniqueAssocs);
 }
 
 export function heatColor(associations_count, rgb, heatLevels) {
-    if (associations_count === 0)
-        return "#fff";
-    let blockColor = [];     // [r,g,b]
-    for (let i = 0; i < 3; i++) {
-        // logarithmic heatmap (with cutoff)
-        if (associations_count < heatLevels) {
-            // instead of just (256-rgb[i])/(Math.pow(2,associations_count)),
-            // which divides space from 'white' (255) down to target color level in halves,
-            // this starts at 3/4
-            const heatCoef = 3 * (256 - rgb[i]) / (Math.pow(2, associations_count + 1));
-            blockColor[i] = Math.round(rgb[i] + heatCoef);
-        }
-        else {
-            blockColor[i] = rgb[i];
-        }
+  if (associations_count === 0)
+    return '#fff';
+  let blockColor = [];     // [r,g,b]
+  for (let i = 0; i < 3; i++) {
+    // logarithmic heatmap (with cutoff)
+    if (associations_count < heatLevels) {
+      // instead of just (256-rgb[i])/(Math.pow(2,associations_count)),
+      // which divides space from 'white' (255) down to target color level in halves,
+      // this starts at 3/4
+      const heatCoef = 3 * (256 - rgb[i]) / (Math.pow(2, associations_count + 1));
+      blockColor[i] = Math.round(rgb[i] + heatCoef);
     }
-    return 'rgb(' + blockColor[0] + ',' + blockColor[1] + ',' + blockColor[2] + ')';
+    else {
+      blockColor[i] = rgb[i];
+    }
+  }
+  return 'rgb(' + blockColor[0] + ',' + blockColor[1] + ',' + blockColor[2] + ')';
 }
 
-function containsPMID(references) {
-    for (let r of references) {
-        if (r.startsWith('PMID:')) return true;
-    }
-    return false;
-}
 
 /**
  *
@@ -282,18 +272,18 @@ function containsPMID(references) {
  * @returns {*}
  */
 function filterDuplicateReferences(reference) {
-    // if references contains a PMID, remove the non-PMID ones
-    let returnArray = reference.filter(function (r) {
-        if (r.startsWith('PMID:')) {
-            return true;
-        } else {
-            return false;
-        }
-    });
-    if (returnArray.length === 0) {
-        returnArray.push(reference[0]);
+  // if references contains a PMID, remove the non-PMID ones
+  let returnArray = reference.filter(function (r) {
+    if (r.startsWith('PMID:')) {
+      return true;
+    } else {
+      return false;
     }
-    return returnArray;
+  });
+  if (returnArray.length === 0) {
+    returnArray.push(reference[0]);
+  }
+  return returnArray;
 }
 
 /**
@@ -303,20 +293,20 @@ function filterDuplicateReferences(reference) {
  */
 function filterDuplicatePublications(publications) {
 
-    // if references contains a PMID, remove the non-PMID ones
-    let returnArray = [];
-    if (publications !== null && publications !== undefined) {
-        publications.filter(function (pub) {
-            if (pub.id.startsWith('PMID:') && !returnArray.includes(pub.id)) {
-                returnArray.push(pub.id);
-                return true;
-            } else {
-                return false;
-            }
-        });
-        if (returnArray.length === 0) {
-            returnArray.push(publications[0].id);
-        }
+  // if references contains a PMID, remove the non-PMID ones
+  let returnArray = [];
+  if (publications !== null && publications !== undefined) {
+    publications.filter(function (pub) {
+      if (pub.id.startsWith('PMID:') && !returnArray.includes(pub.id)) {
+        returnArray.push(pub.id);
+        return true;
+      } else {
+        return false;
+      }
+    });
+    if (returnArray.length === 0) {
+      returnArray.push(publications[0].id);
     }
-    return returnArray;
+  }
+  return returnArray;
 }
