@@ -335,7 +335,6 @@
     display: flex;
     padding: 4px 4px;
     font-size: .8rem;
-    background-color: #3f51b5;
     color: #FFFAE4;
 }
 
@@ -387,7 +386,8 @@
 }
 
 .ontology-ribbon__eco-group-row:hover {
-    background-color: #f0f8e8;
+    border: solid;
+    border-color: #8BC34A;
     opacity: 10%;
     border-radius: .5rem;
 }

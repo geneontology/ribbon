@@ -2,9 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import SpeciesIcon from './SpeciesIcon';
-
 import FaExternalLink from 'react-icons/lib/fa/external-link';
 
 const prefixToSpecies = {
@@ -17,9 +15,6 @@ const prefixToSpecies = {
   'WB': 'Caenorhabditis elegans',  // worm
   'SGD': 'Saccharomyces cerevisiae',  // yeast
 };
-
-const geneProductLink = 'http://amigo.geneontology.org/amigo/gene_product/';
-const geneSearchLink = 'http://amigo.geneontology.org/amigo/search/annotation?q=*:*';
 
 function getPrefixForId(inputId) {
 
@@ -34,52 +29,6 @@ function getPrefixForId(inputId) {
 
 export default class GeneAbout extends React.Component {
 
-  getLinkTarget(subject,block){
-    let link = geneProductLink + this.patchSubject(subject);
-    if(!block || block.class_id.indexOf('All')===0){
-      return link ;
-    }
-    else
-    if(block.class_label==='biological process'){
-      link = geneSearchLink + '&fq=bioentity:"'+this.patchSubject(subject)+'"';
-      link += '&fq=regulates_closure:"GO:0008150"';
-      link += '&sfq=document_category:"annotation"';
-      return link ;
-    }
-    else{
-      let closureId = block.class_id ;
-      if(block.class_label==='biological process'){
-        closureId = 'GO:0008150';
-      }
-      else
-      if(block.class_label==='molecular function'){
-        closureId = 'GO:0003674';
-      }
-      else
-      if(block.class_label==='cellular component'){
-        closureId = 'GO:0005575';
-      }
-
-      // http://amigo.geneontology.org/amigo/search/annotation?q=*:*&fq=bioentity:%22RGD:620433%22&fq=regulates_closure_label:%22DNA%20binding%22&sfq=document_category:%22annotation%22
-      link = geneSearchLink + '&fq=bioentity:"'+this.patchSubject(subject)+'"';
-      link += '&fq=regulates_closure:"'+closureId+'"';
-      link += '&sfq=document_category:"annotation"';
-      return link ;
-    }
-  }
-
-  /**
-   * https://github.com/geneontology/go-site/issues/91
-   * @param inputSubject
-   * @returns {*}
-   */
-  patchSubject(inputSubject) {
-    if (inputSubject.startsWith('MGI') && !inputSubject.startsWith('MGI:MGI:')) {
-      return 'MGI:' + inputSubject;
-    }
-    return inputSubject;
-  }
-
   getLabel(title) {
     return (
       (title.indexOf(' ') >= 0 ? title.split(' ')[0] : title)
@@ -87,13 +36,17 @@ export default class GeneAbout extends React.Component {
   }
 
   render() {
-    const {subject, hideText, fetching, title, currentblock, ...iconProps} = this.props;
+    const {subject, protein_id, annot_url, hideText, fetching, title, currentblock, ...iconProps} = this.props;
 
     let speciesName = getPrefixForId(subject);
+    // prepend MGI for the doublet form for linking out to AmiGO
+    let subject_id = (subject.startsWith('MGI') && !subject.startsWith('MGI:MGI:')) ?
+      'MGI:' + subject :
+      subject;
 
     speciesName = speciesName ? speciesName : subject;
 
-    let active_term = currentblock ? ' annotations to ' + currentblock.class_label + ' in GO' : null;
+    let active_term = currentblock ? ' annotations to ' + currentblock.class_label : null;
 
     let isValid = Object.values(prefixToSpecies).indexOf(speciesName) >= 0;
     if (isValid) {
@@ -110,7 +63,7 @@ export default class GeneAbout extends React.Component {
               <span className='ontology-ribbon__about-text'>
                 <a
                   className='go-link'
-                  href={this.getLinkTarget(subject,currentblock)}
+                  href={annot_url(subject_id, protein_id, currentblock)}
                   rel='noopener noreferrer'
                   style={{marginRight: '.5rem'}}
                   target='_blank'
@@ -138,9 +91,11 @@ export default class GeneAbout extends React.Component {
 }
 
 GeneAbout.propTypes = {
+  annot_url: PropTypes.func,
   currentblock: PropTypes.object,
   fetching: PropTypes.bool,
   hideText: PropTypes.bool,
+  protein_id: PropTypes.string,
   subject: PropTypes.string,
   title: PropTypes.string,
 };

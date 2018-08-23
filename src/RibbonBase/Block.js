@@ -9,8 +9,8 @@ class Block extends React.Component {
     if (slimitem.separator === undefined) {
       let count = slimitem.uniqueAssocs.length;
       const tileHoverString = (count > 0) ?
-        count == 1 ? count + ' association ' : count + ' associations ' :
-        'No associations to ' + slimitem.class_label;
+        count == 1 ? count + ' class ' : count + ' classes ' :
+        'No annotations to ' + slimitem.class_label;
       const blockTitleClass = `ontology-ribbon__block ${
         count > 0 ? 'ontology-ribbon__block_match' : ''
       } ${
@@ -37,9 +37,10 @@ class Block extends React.Component {
       let aspect_style = this.props.isActive ?
         'ontology-ribbon__strip-label ontology-ribbon__strip-picked' :
         'ontology-ribbon__strip-label';
-      let no_data =
-        slimitem.no_data ? 'no known ' :
-          slimitem.uniqueAssocs.length === 0 ? 'nothing found for ' : '';
+      let prefix =
+        slimitem.no_data ? 'No known ' :
+          slimitem.uniqueAssocs.length === 0 ? 'No annotations:' :
+            slimitem.uniqueAssocs.length + ' classes:';
       return (
         <div className="ontology-ribbon__block">
           <div className="ontology-ribbon__tile-separator">
@@ -49,7 +50,7 @@ class Block extends React.Component {
               onMouseEnter={this.props.onMouseEnter}
               onMouseLeave={this.props.onMouseLeave}
             >
-              {no_data} {slimitem.class_label}
+              {prefix} {slimitem.class_label}
             </div>
           </div>
         </div>
@@ -65,7 +66,6 @@ Block.propTypes = {
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,
   slimitem: PropTypes.object.isRequired,
-
 };
 
 export default Block;

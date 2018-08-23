@@ -25,6 +25,7 @@ class AssociationEvidence extends Component {
   }
 
   onExpandCollapse(with_list) {
+    let self = this;
     let expanded_withs = this.state.expanded_withs;
     let index = expanded_withs.indexOf(with_list);
     if (index >= 0) {
@@ -32,7 +33,7 @@ class AssociationEvidence extends Component {
     } else {
       expanded_withs.push(with_list);
     }
-    this.setState({
+    self.setState({
       expanded_withs: expanded_withs
     });
   }

@@ -1,8 +1,8 @@
 export default [
   {
-    'class_id': 'aspect1', // used as a key to a hashmap, so can't be blank
+    'class_id': 'GO:0003674 aspect', // used as a key to a hashmap, so can't be blank
     'class_label': 'molecular function',
-    'separator': true
+    'separator': true,
   },
   {
     'class_id': 'GO:0003824',
@@ -57,9 +57,9 @@ export default [
     'class_label': 'other activities',
   },
   {
-    'class_id': 'aspect2', // used as a key to a hashmap, so can't be blank
+    'class_id': 'GO:0008150 aspect', // used as a key to a hashmap, so can't be blank
     'class_label': 'biological process',
-    'separator': true
+    'separator': true,
   },
   {
     'class_id': 'GO:0008283',
@@ -131,9 +131,9 @@ export default [
     'class_label': 'other processes',
   },
   {
-    'class_id': 'aspect3', // used as a key to a hashmap, so can't be blank
+    'class_id': 'GO:0005575 aspect', // used as a key to a hashmap, so can't be blank
     'class_label': 'cellular component',
-    'separator': true
+    'separator': true,
   },
   {
     'class_id': 'GO:0005576',

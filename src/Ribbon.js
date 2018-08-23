@@ -22,35 +22,38 @@ export default class Ribbon extends Component {
   }
 
   componentDidMount() {
-    this.fetchSubject(this.props.subject, this.props.title);
+    this.patchHGNC(this.props.subject, this.props.title);
   }
 
   handleSlimEnter (block) {
-    this.setState({
+    let self = this;
+    self.setState({
       focalblock: block,
     });
   }
 
   handleSlimLeave () {
-    this.setState({
+    let self = this;
+    self.setState({
       focalblock: undefined,
     });
   }
 
   handleSlimSelect (block) {
+    let self = this;
     if (block !== this.state.currentblock) {
-      this.setState({
+      self.setState({
         currentblock: block,
       });
     }
     else {
-      this.setState({
+      self.setState({
         currentblock: undefined,
       });
     }
   }
 
-  fetchSubject (subject, title) {
+  patchHGNC (subject, title) {
     let self = this;
     if (subject.startsWith('HGNC:')) {
       axios.get('https://mygene.info/v3/query?q=' + subject + '&fields=uniprot')
@@ -59,7 +62,8 @@ export default class Ribbon extends Component {
           self.setState({
             fetching: false,
             title: title,
-            subject: 'UniProtKB:' + result,
+            protein_id: 'UniProtKB:' + result,
+            subject: subject,
           });
         }).catch(function (error) {
           if (error.response) {
@@ -82,9 +86,10 @@ export default class Ribbon extends Component {
         });
     }
     else {
-      this.setState({
+      self.setState({
         fetching: false,
         title: title,
+        protein_id: undefined,
         subject: subject,
       });
     }
@@ -92,6 +97,7 @@ export default class Ribbon extends Component {
 
   render() {
     const blocks = this.props.blocks;
+    const config = this.props.config;
     return (
       <div>
         <RibbonBase
@@ -102,13 +108,16 @@ export default class Ribbon extends Component {
           onSlimSelect={(block) => this.handleSlimSelect(block)}
         />
 
-        {this.state.subject &&
-        <GeneAbout
-          currentblock={this.state.currentblock}
-          fetching={this.state.fetching}
-          subject={this.state.subject}
-          title={this.state.title}
-        />
+        {
+          this.state.subject &&
+          <GeneAbout
+            annot_url={this.props.config.annot_url}
+            currentblock={this.state.currentblock}
+            fetching={this.state.fetching}
+            protein_id={this.state.protein_id}
+            subject={this.state.subject}
+            title={this.state.title}
+          />
         }
 
         <TransitionGroup>
@@ -119,9 +128,9 @@ export default class Ribbon extends Component {
             >
               <AssociationsView
                 blocks={blocks}
+                config={config}
                 currentblock={this.state.currentblock}
                 focalblock={this.state.focalblock}
-                geneUrlFormatter={this.props.geneUrlFormatter}
               />
             </CSSTransition> :
             null
@@ -135,8 +144,7 @@ export default class Ribbon extends Component {
 
 Ribbon.propTypes = {
   blocks: PropTypes.array.isRequired,
-  geneUrlFormatter: PropTypes.func.isRequired,
-  initialblock: PropTypes.string,
+  config: PropTypes.object.isRequired,
   showing: PropTypes.bool.isRequired,
   subject: PropTypes.string,
   title: PropTypes.string,

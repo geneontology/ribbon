@@ -1,25 +1,6 @@
 import taxa from './data/taxa';
 import getKey from './assocKey';
 
-/* Object.defineProperty(Array.prototype, 'unique', {
-  enumerable: false,
-  configurable: false,
-  writable: false,
-  value: function () {
-    let a = this.concat();
-    for (let i = 0; i < a.length; ++i) {
-      for (let j = i + 1; j < a.length; ++j) {
-        if (a[i] === a[j] || a[j] === undefined)
-          a.splice(j--, 1);
-      }
-    }
-    a = a.filter(x => x != null);
-
-    return a;
-  }
-});
-*/
-
 function addEvidence(prev_assoc, assocItem) {
   var evidence_group;
   let evidence_id = assocItem.evidence;
@@ -58,12 +39,13 @@ function addEvidence(prev_assoc, assocItem) {
   }
 }
 
-export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLevels) {
+export function unpackSlimItems(results, subject, config) {
   let title = subject;
   let queryResponse = [];
   let other = false;
   let globalclass_ids = [];
   let seen_before_in_slim = new Map;
+  let slimlist = config.slimlist;
 
   let all_block = {
     'class_id': 'All annotations',
@@ -92,9 +74,12 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
     slimitem.uniqueAssocs = [];
     slimitem.color = '#fff';
 
-    other = slimitem.class_label.includes('other');
+    other = slimitem.class_label.toLowerCase().includes('other');
 
-    if (slimitem.class_id.startsWith('aspect')) {
+    if (slimitem.class_id.toLowerCase().indexOf('aspect') >= 0) {
+      if (aspect !== undefined) {
+        aspect.uniqueAssocs.sort(sortAssociations);
+      }
       aspect = slimitem;
       aspect_ids = [];
       slimitem.no_data = false;
@@ -117,7 +102,7 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
               First a hack to accommodate swapping out HGNC ids for UniProtKB ids
             */
             if (subject.startsWith('HGNC') && assocItem.subject.taxon.id === 'NCBITaxon:9606') {
-              assocItem.subject.id = subject; // Clobber the UniProtKB id
+              assocItem.subject.id = subject; // Clobber the UniProtKB id bioLink returns
             }
             /*
               Then another interim hack because of differences in resource naming
@@ -183,8 +168,8 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
           });
           if (slimitem.uniqueAssocs.length > 0) {
             slimitem.uniqueAssocs.sort(sortAssociations);
-            slimitem.uniqueAssocs = subjectFirst(subject, slimitem.uniqueAssocs);
-            slimitem.color = heatColor(slimitem.uniqueAssocs.length, heatColorArray, heatLevels);
+            //          slimitem.uniqueAssocs = subjectFirst(subject, slimitem.uniqueAssocs);
+            slimitem.color = heatColor(slimitem.uniqueAssocs.length, config.heatColorArray, config.heatLevels);
           }
         }
       }
@@ -192,12 +177,16 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
     return slimitem;
   });
 
+  if (aspect !== undefined) {
+    aspect.uniqueAssocs.sort(sortAssociations);
+  }
   // insert a block with all annotations at the very first position
   if (all_block.uniqueAssocs.length > 0) {
-    all_block.class_label = 'Annotated to ' + all_block.uniqueAssocs.length + ' GO classes';
+    all_block.class_label = 'Annotated to ' + all_block.uniqueAssocs.length + ' classes';
     all_block.uniqueAssocs.sort(sortAssociations);
   }
   blocks.splice(0, 0, all_block);
+
   return {
     title: title,
     blocks: blocks,
@@ -220,10 +209,10 @@ function sortAssociations(assoc_a, assoc_b) {
   if (assoc_a.subject.id > assoc_b.subject.id) {
     return 1;
   }
-  if (assoc_a.object.label < assoc_b.object.label) {
+  if (assoc_a.object.label.toLowerCase() < assoc_b.object.label.toLowerCase()) {
     return -1;
   }
-  if (assoc_a.object.label > assoc_b.object.label) {
+  if (assoc_a.object.label.toLowerCase() > assoc_b.object.label.toLowerCase()) {
     return 1;
   }
   // a must be equal to b
@@ -245,9 +234,15 @@ function subjectFirst(subject, uniqueAssocs) {
   return subjectAssocs.concat(uniqueAssocs);
 }
 
-export function heatColor(associations_count, rgb, heatLevels) {
+export function heatColor(associations_count, hexColor, heatLevels) {
   if (associations_count === 0)
     return '#fff';
+
+
+  let rgb = hexColor.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) => '#' + r + r + g + g + b + b)
+    .substring(1).match(/.{2}/g)
+    .map(x => parseInt(x, 16));
+
   let blockColor = [];     // [r,g,b]
   for (let i = 0; i < 3; i++) {
     // logarithmic heatmap (with cutoff)
