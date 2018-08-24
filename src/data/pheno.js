@@ -1,6 +1,6 @@
 export default [
   {
-    'class_id': 'HP_0025354 aspect', // used as a key to a hashmap, so can't be blank
+    'class_id': 'HP:0025354 aspect', // used as a key to a hashmap, so can't be blank
     'class_label': 'Cellular',
     'separator': true,
   },
@@ -29,15 +29,15 @@ export default [
     'class_label': 'bone marrow cell morphology',
   },
   {
-    'class_id': 'HP_0031377',
+    'class_id': 'HP:0031377',
     'class_label': 'cell proliferation',
   },
   {
-    'class_id': 'HP_0025463',
+    'class_id': 'HP:0025463',
     'class_label': 'redox activity',
   },
   {
-    'class_id': 'HP_0025354',
+    'class_id': 'HP:0025354',
     'class_label': 'Other cellular phenotypes',
   },
   {
