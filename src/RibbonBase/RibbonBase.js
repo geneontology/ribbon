@@ -17,6 +17,7 @@ export default class RibbonBase extends React.Component {
                         slimitem.class_id === currentblock.class_id);
           return (
             <Block
+              config={this.props.config}
               isActive={active}
               key={slimitem.class_id}
               onClick={() => this.props.onSlimSelect(slimitem)}
@@ -33,6 +34,7 @@ export default class RibbonBase extends React.Component {
 
 RibbonBase.propTypes = {
   blocks: PropTypes.array.isRequired,
+  config: PropTypes.object,
   currentblock: PropTypes.object,
   onSlimEnter: PropTypes.func,
   onSlimLeave: PropTypes.func,

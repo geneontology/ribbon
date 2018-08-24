@@ -1,8 +1,11 @@
 import taxa from './data/taxa';
 import getKey from './assocKey';
 
-function addEvidence(prev_assoc, assocItem) {
+function addEvidence(prev_assoc, assocItem, ecoList) {
   var evidence_group;
+  if (!ecoList.has(assocItem.evidence_type)) {
+    ecoList.set(assocItem.evidence_type, true);
+  }
   let evidence_id = assocItem.evidence;
   /* hack until issue ##182 is resolved in ontobio */
   if (assocItem.reference !== undefined) {
@@ -41,6 +44,7 @@ function addEvidence(prev_assoc, assocItem) {
 
 export function unpackSlimItems(results, subject, config) {
   let title = subject;
+  let ecoList = {};
   let queryResponse = [];
   let other = false;
   let globalclass_ids = [];
@@ -52,7 +56,7 @@ export function unpackSlimItems(results, subject, config) {
     'class_label': 'All annotations',
     'uniqueAssocs': [],
     'uniqueIDs': [],
-    'color': '#8BC34A',
+    'color': config.highlightColor,
   };
 
   results.forEach(function (result) {
@@ -152,7 +156,7 @@ export function unpackSlimItems(results, subject, config) {
               }
               if (need2add_evidence) {
                 assocItem.evidence_map = new Map();
-                addEvidence(assocItem, assocItem);
+                addEvidence(assocItem, assocItem, ecoList);
               } else {
                 let prev_assoc = all_block.uniqueAssocs[globalclass_ids.indexOf(key)];
                 assocItem.evidence_map = prev_assoc.evidence_map;
@@ -161,7 +165,7 @@ export function unpackSlimItems(results, subject, config) {
             } else {
               if (need2add_evidence) {
                 let prev_assoc = all_block.uniqueAssocs[globalclass_ids.indexOf(key)];
-                addEvidence(prev_assoc, assocItem);
+                addEvidence(prev_assoc, assocItem, ecoList);
               }
               return false;
             }
@@ -169,7 +173,7 @@ export function unpackSlimItems(results, subject, config) {
           if (slimitem.uniqueAssocs.length > 0) {
             slimitem.uniqueAssocs.sort(sortAssociations);
             //          slimitem.uniqueAssocs = subjectFirst(subject, slimitem.uniqueAssocs);
-            slimitem.color = heatColor(slimitem.uniqueAssocs.length, config.heatColorArray, config.heatLevels);
+            slimitem.color = heatColor(slimitem.uniqueAssocs.length, config.annot_color, config.heatLevels);
           }
         }
       }
@@ -219,25 +223,9 @@ function sortAssociations(assoc_a, assoc_b) {
   return 0;
 }
 
-function subjectFirst(subject, uniqueAssocs) {
-  let subjectAssocs = [];
-  for (let i = uniqueAssocs.length - 1; i >= 0; i--) {
-    let assoc = uniqueAssocs[i];
-    if (assoc.subject.id === subject) {
-      // remove this from current list
-      uniqueAssocs.splice(i, 1);
-      // add it to the top of the revised list
-      subjectAssocs.splice(0, 0, assoc);
-    }
-  }
-  // now collect the remaining associations to orthologs
-  return subjectAssocs.concat(uniqueAssocs);
-}
-
 export function heatColor(associations_count, hexColor, heatLevels) {
   if (associations_count === 0)
     return '#fff';
-
 
   let rgb = hexColor.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) => '#' + r + r + g + g + b + b)
     .substring(1).match(/.{2}/g)

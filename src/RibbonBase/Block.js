@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 class Block extends React.Component {
 
   render() {
-    const {slimitem} = this.props;
+    const {slimitem, config} = this.props;
 
     if (slimitem.separator === undefined) {
       let count = slimitem.uniqueAssocs.length;
@@ -34,21 +34,22 @@ class Block extends React.Component {
         </div>
       );
     } else {
-      let aspect_style = this.props.isActive ?
-        'ontology-ribbon__strip-label ontology-ribbon__strip-picked' :
-        'ontology-ribbon__strip-label';
+      let text_color = this.props.isActive ? config.highlightColor : null;
       let prefix =
-        slimitem.no_data ? 'No known ' :
-          slimitem.uniqueAssocs.length === 0 ? 'No annotations:' :
-            slimitem.uniqueAssocs.length + ' classes:';
+        slimitem.no_data ? 'no known ' :
+          slimitem.uniqueAssocs.length === 0 ? 'no annotations:' :
+            slimitem.uniqueAssocs.length === 1 ?
+              slimitem.uniqueAssocs.length + ' class:' :
+              slimitem.uniqueAssocs.length + ' classes:';
       return (
         <div className="ontology-ribbon__block">
           <div className="ontology-ribbon__tile-separator">
             <div
-              className={aspect_style}
+              className={'ontology-ribbon__strip-label'}
               onClick={this.props.onClick}
               onMouseEnter={this.props.onMouseEnter}
               onMouseLeave={this.props.onMouseLeave}
+              style={{color: text_color}}
             >
               {prefix} {slimitem.class_label}
             </div>
@@ -61,6 +62,7 @@ class Block extends React.Component {
 }
 
 Block.propTypes = {
+  config: PropTypes.object,
   isActive: PropTypes.bool,
   onClick: PropTypes.func,
   onMouseEnter: PropTypes.func,

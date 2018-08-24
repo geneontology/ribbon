@@ -102,6 +102,7 @@ export default class Ribbon extends Component {
       <div>
         <RibbonBase
           blocks={blocks}
+          config={config}
           currentblock={this.state.currentblock}
           onSlimEnter={(block) => this.handleSlimEnter(block)}
           onSlimLeave={() => this.handleSlimLeave()}

@@ -74,11 +74,6 @@
   color: black;
 }
 
-.ontology-ribbon__strip-picked {
-  color: #8BC34A;
-  text-decoration: underline;
-}
-
 .ontology-ribbon__strip-label:hover {
   cursor: pointer;
   font-weight: bold;
@@ -138,6 +133,7 @@
   margin-right: -1px;
   position: relative;
   vertical-align: middle;
+  font-size: .9rem;
 }
 
 .ontology-ribbon-assoc__row {
@@ -161,13 +157,6 @@
   line-height: 1em;
   color: #26393D;
   text-decoration: none;
-}
-
-.ontology-ribbon-focalterm {
-  border-left-style: solid;
-  border-left-width: thick;
-  border-left-color: #8BC34A;
-  font-style: italic;
 }
 
 .ontology-ribbon-assoc__white:hover {
@@ -386,9 +375,8 @@
 }
 
 .ontology-ribbon__eco-group-row:hover {
-  border: none;
   background-color: #8BC34A;
-  opacity: 10%;
+  border: none;
   border-radius: .5rem;
 }
 

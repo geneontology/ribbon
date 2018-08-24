@@ -20,7 +20,7 @@ export default class AssociationsView extends React.Component {
 
     return (
       <div className={'ontology-ribbon__assoc'}>
-        <div className='ontology-ribbon__header' style={{backgroundColor: config.heatColorArray}} >
+        <div className='ontology-ribbon__header' style={{backgroundColor: config.annot_color}} >
           <div style={{fontWeight: 'bold', width: '50%'}}>
               Term
           </div>
@@ -38,12 +38,23 @@ export default class AssociationsView extends React.Component {
           assoc_list.map((assoc, index) => {
             var bgcolor = (index % 2 === 0) ? config.evenRowColor : config.oddRowColor;
 
-            let assocRowClassName = (focalblock !== undefined && focalblock.uniqueIDs.includes(getKey(assoc))) ?
-              'ontology-ribbon__assoc-row ontology-ribbon-focalterm' :
-              'ontology-ribbon__assoc-row';
+            var row_style;
+            if (focalblock !== undefined && focalblock.uniqueIDs.includes(getKey(assoc))) {
+              row_style = {
+                backgroundColor: bgcolor,
+                borderLeftStyle: 'solid',
+                borderLeftWidth: 'thick',
+                borderLeftColor: config.highlightColor,
+                fontStyle: 'italic'
+              };
+            } else {
+              row_style = {
+                backgroundColor: bgcolor
+              };
+            }
 
             return (
-              <div className={assocRowClassName} key={index} style={{backgroundColor: bgcolor}} >
+              <div className={'ontology-ribbon__assoc-row'} key={index} style={row_style} >
                 <div className='ontology-ribbon__term-column' key={'term'+index}>
                   <AssociationTerm assoc={assoc} config={config} row={index} />
                 </div>

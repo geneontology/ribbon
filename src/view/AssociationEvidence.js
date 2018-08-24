@@ -111,8 +111,9 @@ class AssociationEvidence extends Component {
 
   renderECOgroup (eco_group, row, eco_index, group_index) {
     let base_key = row+'.'+eco_index+'.'+group_index;
+
     return (
-      <div className='ontology-ribbon__eco-group-row' key={base_key+'.grouprow'}>
+      <div className='ontology-ribbon__eco-group-row' key={base_key+'.grouprow'} >
         <div className='ontology-ribbon__with-column' key={base_key+'.withs'}>{this.renderWiths(eco_group, base_key)}</div>
         <div className='ontology-ribbon__ref-column' key={base_key+'refs'}>{this.renderReferences(eco_group, base_key)}</div>
       </div>

@@ -1,6 +1,7 @@
 'use strict';
 
 import PHENO_LIST from './data/pheno';
+import EXPRESSION_LIST from './data/expression';
 import AGR_LIST from './data/agr';
 import getGOLinkTarget from './customized/GOurl';
 import getPhenoLinkTarget from './customized/HPOurl';
@@ -13,25 +14,40 @@ export function getConfig(mode) {
   var config;
   if (usemode.toLowerCase() === 'pheno') {
     config = {
-      'slimlist': PHENO_LIST,
-      'bio_link': BIOLINK + 'bioentityset/slimmer/phenotype?',
+      'annot_color': '#3f51b5',
       'annot_url': getPhenoLinkTarget,
-      'heatColorArray': '#3f51b5',
-      'heatLevels': 48,
-      'oddRowColor': '#FFFAE4',
+      'bio_link': BIOLINK + 'bioentityset/slimmer/phenotype?',
       'evenRowColor': '#EAF0EF',
+      'oddRowColor': '#FFFAE4',
+      'heatLevels': 48,
+      'highlightColor': '#8BC34A',
+      'slimlist': PHENO_LIST,
+      'termUrlFormatter': 'http://compbio.charite.de/hpoweb/showterm?id=',
+    };
+  }
+  else if (usemode.toLowerCase() === 'expression') {
+    config = {
+      'annot_color': '#3f51b5',
+      'annot_url': getPhenoLinkTarget,
+      'bio_link': BIOLINK + 'bioentityset/slimmer/anatomy?',
+      'evenRowColor': '#F5E5DE',
+      'oddRowColor': '#ffffff',
+      'heatLevels': 48,
+      'highlightColor': '#8BC34A',
+      'slimlist': EXPRESSION_LIST,
       'termUrlFormatter': 'http://compbio.charite.de/hpoweb/showterm?id=',
     };
   }
   else {
     config = {
-      'slimlist': AGR_LIST,
-      'bio_link': BIOLINK + 'bioentityset/slimmer/function?',
+      'annot_color': '#066464',
       'annot_url': getGOLinkTarget,
-      'heatColorArray': '#066464',
-      'heatLevels': 48,
-      'oddRowColor': '#ffffff',
+      'bio_link': BIOLINK + 'bioentityset/slimmer/function?',
       'evenRowColor': '#e0e8d8',
+      'oddRowColor': '#ffffff',
+      'heatLevels': 48,
+      'highlightColor': '#8BC34A',
+      'slimlist': AGR_LIST,
       'termUrlFormatter': 'http://amigo.geneontology.org/amigo/term/',
     };
   }
