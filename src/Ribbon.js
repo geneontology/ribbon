@@ -53,6 +53,10 @@ export default class Ribbon extends Component {
     }
   }
 
+  handleECOFilter(eco_type, filter) {
+
+  }
+
   patchHGNC (subject, title) {
     let self = this;
     if (subject.startsWith('HGNC:')) {
@@ -98,6 +102,7 @@ export default class Ribbon extends Component {
   render() {
     const blocks = this.props.blocks;
     const config = this.props.config;
+    const eco_list = this.props.config;
     return (
       <div>
         <RibbonBase
@@ -131,6 +136,7 @@ export default class Ribbon extends Component {
                 blocks={blocks}
                 config={config}
                 currentblock={this.state.currentblock}
+                eco_list={eco_list}
                 focalblock={this.state.focalblock}
               />
             </CSSTransition> :
@@ -146,6 +152,7 @@ export default class Ribbon extends Component {
 Ribbon.propTypes = {
   blocks: PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
+  eco_list: PropTypes.object,
   showing: PropTypes.bool.isRequired,
   subject: PropTypes.string,
   title: PropTypes.string,

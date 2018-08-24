@@ -46,11 +46,12 @@ export default class RibbonDataProvider extends Component {
     console.log('Query is ' + query);
     axios.get(query)
       .then(function (results) {
-        const {title, blocks} = unpackSlimItems([results], subject, config);
+        const {eco_list, title, blocks} = unpackSlimItems([results], subject, config);
         self.setState({
           blocks: blocks,
           config: config,
           dataError: null,
+          eco_list: eco_list,
           fetching: false,
           title: title,
         });
@@ -81,13 +82,14 @@ export default class RibbonDataProvider extends Component {
   }
 
   render() {
-    const {blocks, config, dataError, fetching, title} = this.state;
+    const {blocks, config, dataError, eco_list, fetching, title} = this.state;
     let self = this;
     return self.props.children({
       blocks,
       config,
       dataError,
       dataReceived: !fetching && !dataError,
+      eco_list,
       title,
     });
   }

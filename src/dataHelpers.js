@@ -1,10 +1,10 @@
 import taxa from './data/taxa';
 import getKey from './assocKey';
 
-function addEvidence(prev_assoc, assocItem, ecoList) {
+function addEvidence(prev_assoc, assocItem, eco_list) {
   var evidence_group;
-  if (!ecoList.has(assocItem.evidence_type)) {
-    ecoList.set(assocItem.evidence_type, true);
+  if (!eco_list.has(assocItem.evidence_type)) {
+    eco_list.set(assocItem.evidence_type, true);
   }
   let evidence_id = assocItem.evidence;
   /* hack until issue ##182 is resolved in ontobio */
@@ -44,7 +44,7 @@ function addEvidence(prev_assoc, assocItem, ecoList) {
 
 export function unpackSlimItems(results, subject, config) {
   let title = subject;
-  let ecoList = {};
+  let eco_list = new Map();
   let queryResponse = [];
   let other = false;
   let globalclass_ids = [];
@@ -156,7 +156,7 @@ export function unpackSlimItems(results, subject, config) {
               }
               if (need2add_evidence) {
                 assocItem.evidence_map = new Map();
-                addEvidence(assocItem, assocItem, ecoList);
+                addEvidence(assocItem, assocItem, eco_list);
               } else {
                 let prev_assoc = all_block.uniqueAssocs[globalclass_ids.indexOf(key)];
                 assocItem.evidence_map = prev_assoc.evidence_map;
@@ -165,7 +165,7 @@ export function unpackSlimItems(results, subject, config) {
             } else {
               if (need2add_evidence) {
                 let prev_assoc = all_block.uniqueAssocs[globalclass_ids.indexOf(key)];
-                addEvidence(prev_assoc, assocItem, ecoList);
+                addEvidence(prev_assoc, assocItem, eco_list);
               }
               return false;
             }
@@ -192,6 +192,7 @@ export function unpackSlimItems(results, subject, config) {
   blocks.splice(0, 0, all_block);
 
   return {
+    eco_list: eco_list,
     title: title,
     blocks: blocks,
   };
