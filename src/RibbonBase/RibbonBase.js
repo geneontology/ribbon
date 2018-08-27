@@ -21,6 +21,7 @@ export default class RibbonBase extends React.Component {
                 onClick={() => this.props.onSlimSelect(slimitem)}
                 onMouseEnter={() => this.props.onSlimEnter(slimitem)}
                 onMouseLeave={() => this.props.onSlimLeave(slimitem)}
+                showTitle={this.props.showBlockTitles}
                 isActive={active}
               />
             );
@@ -37,4 +38,9 @@ RibbonBase.propTypes = {
     onSlimSelect: PropTypes.func.isRequired,
     onSlimEnter: PropTypes.func,
     onSlimLeave: PropTypes.func,
+    showBlockTitles: PropTypes.bool,
+};
+
+RibbonBase.defaultProps = {
+    showBlockTitles: true
 };

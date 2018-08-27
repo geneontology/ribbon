@@ -32,9 +32,11 @@ class Block extends React.Component {
           }`;
       return (
         <div className={blockTitleClass} ref={ref => this.blockRef = ref}>
-          <div className="ontology-ribbon__block-title" onClick={this.props.onClick} ref={ref => this.titleRef = ref}>
-            {slimitem.class_label}
-          </div>
+          { this.props.showTitle &&
+            <div className="ontology-ribbon__block-title" onClick={this.props.onClick} ref={ref => this.titleRef = ref}>
+              {slimitem.class_label}
+            </div>
+          }
           <div className="ontology-ribbon__block-tile"
              title={tileHoverString}
              style={{backgroundColor: slimitem.color}}
@@ -73,6 +75,11 @@ Block.propTypes = {
     isActive: PropTypes.bool,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
+    showTitle: PropTypes.bool,
+};
+
+Block.defaultProps = {
+    showTitle: true,
 };
 
 export default Block;
