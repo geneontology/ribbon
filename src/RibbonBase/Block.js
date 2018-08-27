@@ -13,7 +13,7 @@ class Block extends React.Component {
   updateHeight() {
     if (this.titleRef && this.blockRef) {
       const titleRect = this.titleRef.getBoundingClientRect();
-      this.blockRef.style.height = `${titleRect.width + 18}px`;
+      this.blockRef.style.height = `${titleRect.height + 18}px`;
     }
   }
 
