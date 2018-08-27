@@ -80,17 +80,17 @@ class Block extends React.Component {
 }
 
 Block.propTypes = {
-    config: PropTypes.object,
-    isActive: PropTypes.bool,
-    onClick: PropTypes.func,
-    onMouseEnter: PropTypes.func,
-    onMouseLeave: PropTypes.func,
-    showTitle: PropTypes.bool,
-    slimitem: PropTypes.object.isRequired,
+  config: PropTypes.object,
+  isActive: PropTypes.bool,
+  onClick: PropTypes.func,
+  onMouseEnter: PropTypes.func,
+  onMouseLeave: PropTypes.func,
+  showTitle: PropTypes.bool,
+  slimitem: PropTypes.object.isRequired,
 };
 
 Block.defaultProps = {
-    showTitle: true,
+  showTitle: true,
 };
 
 export default Block;

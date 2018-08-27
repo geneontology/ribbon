@@ -34,15 +34,15 @@ export default class RibbonBase extends React.Component {
 }
 
 RibbonBase.propTypes = {
-    blocks: PropTypes.array.isRequired,
-    config: PropTypes.object,
-    currentblock: PropTypes.object,
-    onSlimEnter: PropTypes.func,
-    onSlimLeave: PropTypes.func,
-    onSlimSelect: PropTypes.func.isRequired,
-    showBlockTitles: PropTypes.bool,
+  blocks: PropTypes.array.isRequired,
+  config: PropTypes.object,
+  currentblock: PropTypes.object,
+  onSlimEnter: PropTypes.func,
+  onSlimLeave: PropTypes.func,
+  onSlimSelect: PropTypes.func.isRequired,
+  showBlockTitles: PropTypes.bool,
 };
 
 RibbonBase.defaultProps = {
-    showBlockTitles: true
+  showBlockTitles: true
 };
