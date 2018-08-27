@@ -10,16 +10,14 @@
 
 
 .ontology-ribbon__about {
+  display: flex;
   align-items: center;
-  padding: .5em;
+  padding: 2em .5em;
   text-align: left;
-  width: 100%;
-  position: relative;
 }
 
 .ontology-ribbon__about-text {
   vertical-align: middle;
-  height: 60px;
   display: inline-block;
   padding-left: 1rem;
 }
@@ -58,13 +56,6 @@
   transition: opacity 300ms linear;
 }
 
-.ontology-ribbon__strip {
-  font-size: 0.8rem;
-  margin-right: 2em;
-  flex: 0 1 auto;
-  margin-top: 33px;
-}
-
 .ontology-ribbon__strip-label {
   font-style: italic;
   position: relative;
@@ -88,11 +79,9 @@
 }
 
 .ontology-ribbon__block {
-  height: 13em;
   font-size: 0.8rem;
   display: table-cell;
   vertical-align: bottom;
-  padding-bottom: 2rem;
 }
 
 .ontology-ribbon__block_match {
@@ -106,10 +95,10 @@
 .ontology-ribbon__block-title {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   transform: rotate(-45deg);
-  text-indent: 10px;
-  width: 16px;
+  transform-origin: -14px -8px;
   white-space: nowrap;
   cursor: pointer;
+  position: absolute;
 }
 
 .ontology-ribbon__block-tile {
