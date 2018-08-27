@@ -1,3 +1,5 @@
+'use strict';
+
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
@@ -10,132 +12,148 @@ import {CSSTransition, TransitionGroup} from 'react-transition-group';
 
 export default class Ribbon extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            currentblock: undefined,
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentblock: undefined,
+      fetching: false,
+      focalblock: undefined,
+    };
+  }
+
+  componentDidMount() {
+    this.patchHGNC(this.props.subject, this.props.title);
+  }
+
+  handleSlimEnter (block) {
+    let self = this;
+    self.setState({
+      focalblock: block,
+    });
+  }
+
+  handleSlimLeave () {
+    let self = this;
+    self.setState({
+      focalblock: undefined,
+    });
+  }
+
+  handleSlimSelect (block) {
+    let self = this;
+    if (block !== this.state.currentblock) {
+      self.setState({
+        currentblock: block,
+      });
+    }
+    else {
+      self.setState({
+        currentblock: undefined,
+      });
+    }
+  }
+
+  handleECOFilter(eco_type, filter) {
+
+  }
+
+  patchHGNC (subject, title) {
+    let self = this;
+    if (subject.startsWith('HGNC:')) {
+      axios.get('https://mygene.info/v3/query?q=' + subject + '&fields=uniprot')
+        .then(function (results) {
+          let result = results.data.hits[0].uniprot['Swiss-Prot'];
+          self.setState({
             fetching: false,
-            focalblock: undefined,
-        }
+            title: title,
+            protein_id: 'UniProtKB:' + result,
+            subject: subject,
+          });
+        }).catch(function (error) {
+          if (error.response) {
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+            console.log('Unable to get data for ' + subject + ' because ' + error.status);
+          } else if (error.request) {
+            console.log(error.request);
+            console.log('Unable to get data for ' + subject + ' because ' + error.request);
+          } else {
+            console.log(error.message);
+            console.log('Unable to get data for ' + subject + ' because ' + error.message);
+          }
+          self.setState({
+            fetching: false,
+            title: title,
+            subject: undefined
+          });
+        });
     }
-
-    handleSlimEnter = (block) => {
-        this.setState({
-            focalblock: block,
-        })
-    };
-    handleSlimLeave = (block) => {
-        this.setState({
-            focalblock: undefined,
-        })
-    };
-
-    handleSlimSelect = (block) => {
-        if (block !== this.state.currentblock) {
-            this.setState({
-                currentblock: block,
-            });
-        }
-        else {
-            this.setState({
-                currentblock: undefined,
-            })
-        }
-    };
-
-    componentDidMount() {
-        this.fetchSubject(this.props.subject, this.props.title)
+    else {
+      self.setState({
+        fetching: false,
+        title: title,
+        protein_id: undefined,
+        subject: subject,
+      });
     }
+  }
 
-    fetchSubject = (subject, title) => {
-        let self = this;
-        if (subject.startsWith('HGNC:')) {
-            axios.get('https://mygene.info/v3/query?q=' + subject + '&fields=uniprot')
-                .then(function (results) {
-                    let result = results.data.hits[0].uniprot['Swiss-Prot'];
-                    self.setState({
-                        fetching: false,
-                        title: title,
-                        subject: 'UniProtKB:' + result,
-                    })
-                }).catch(function (error) {
-                if (error.response) {
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
-                    console.log('Unable to get data for ' + subject + ' because ' + error.status);
-                } else if (error.request) {
-                    console.log(error.request);
-                    console.log('Unable to get data for ' + subject + ' because ' + error.request);
-                } else {
-                    console.log(error.message);
-                    console.log('Unable to get data for ' + subject + ' because ' + error.message);
-                }
-                self.setState({
-                    fetching: false,
-                    title: title,
-                    subject: undefined
-                });
-            })
+  render() {
+    const blocks = this.props.blocks;
+    const config = this.props.config;
+    const eco_list = this.props.config;
+    return (
+      <div>
+        <RibbonBase
+          blocks={blocks}
+          config={config}
+          currentblock={this.state.currentblock}
+          onSlimEnter={(block) => this.handleSlimEnter(block)}
+          onSlimLeave={() => this.handleSlimLeave()}
+          onSlimSelect={(block) => this.handleSlimSelect(block)}
+        />
+
+        {
+          this.state.subject &&
+          <GeneAbout
+            annot_url={this.props.config.annot_url}
+            currentblock={this.state.currentblock}
+            fetching={this.state.fetching}
+            protein_id={this.state.protein_id}
+            subject={this.state.subject}
+            title={this.state.title}
+          />
         }
-        else {
-            this.setState({
-                fetching: false,
-                title: title,
-                subject: subject,
-            })
-        }
-    };
 
-    render() {
-        const blocks = this.props.blocks;
-        return (
-            <div>
-                <RibbonBase
-                    blocks={blocks}
-                    currentblock={this.state.currentblock}
-                    onSlimSelect={(block) => this.handleSlimSelect(block)}
-                    onSlimEnter={(block) => this.handleSlimEnter(block)}
-                    onSlimLeave={(block) => this.handleSlimLeave(block)}
-                />
+        <TransitionGroup>
+          {(this.state.showing || this.state.currentblock !== undefined) ?
+            <CSSTransition
+              classNames="fade"
+              timeout={{enter: 500, exit: 300}}
+            >
+              <AssociationsView
+                blocks={blocks}
+                config={config}
+                currentblock={this.state.currentblock}
+                eco_list={eco_list}
+                focalblock={this.state.focalblock}
+              />
+            </CSSTransition> :
+            null
+          }
+        </TransitionGroup>
 
-                {this.state.subject &&
-                <GeneAbout
-                    subject={this.state.subject}
-                    fetching={this.state.fetching}
-                    title={this.state.title}
-                    currentblock={this.state.currentblock}
-                />
-                }
-
-                <TransitionGroup>
-                    {(this.state.showing || this.state.currentblock !== undefined) ?
-                        <CSSTransition
-                            classNames="fade"
-                            timeout={{enter: 500, exit: 300}}
-                        >
-                            <AssociationsView
-                                currentblock={this.state.currentblock}
-                                focalblock={this.state.focalblock}
-                                blocks={blocks}
-                                geneUrlFormatter={this.props.geneUrlFormatter}
-                            />
-                        </CSSTransition> :
-                        null
-                    }
-                </TransitionGroup>
-
-            </div>
-        );
-    }
+      </div>
+    );
+  }
 }
 
-
 Ribbon.propTypes = {
-    geneUrlFormatter: PropTypes.func.isRequired,
-    title: PropTypes.string,
-    blocks: PropTypes.array.isRequired,
-    initialblock: PropTypes.string,
-    subject: PropTypes.string,
-    showing: PropTypes.bool.isRequired,
+  blocks: PropTypes.array.isRequired,
+  config: PropTypes.object.isRequired,
+  eco_list: PropTypes.object,
+  showing: PropTypes.bool.isRequired,
+  subject: PropTypes.string,
+  title: PropTypes.string,
 };

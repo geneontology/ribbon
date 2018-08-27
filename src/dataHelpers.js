@@ -1,27 +1,11 @@
 import taxa from './data/taxa';
 import getKey from './assocKey';
 
-
-Object.defineProperty(Array.prototype, 'unique', {
-    enumerable: false,
-    configurable: false,
-    writable: false,
-    value: function () {
-        let a = this.concat();
-        for (let i = 0; i < a.length; ++i) {
-            for (let j = i + 1; j < a.length; ++j) {
-                if (a[i] === a[j] || a[j] === undefined)
-                    a.splice(j--, 1);
-            }
-        }
-        a = a.filter(x => x != null);
-
-        return a;
-    }
-});
-
-function addEvidence(prev_assoc, assocItem) {
+function addEvidence(prev_assoc, assocItem, eco_list) {
   var evidence_group;
+  if (!eco_list.has(assocItem.evidence_type)) {
+    eco_list.set(assocItem.evidence_type, true);
+  }
   let evidence_id = assocItem.evidence;
   /* hack until issue ##182 is resolved in ontobio */
   if (assocItem.reference !== undefined) {
@@ -34,7 +18,7 @@ function addEvidence(prev_assoc, assocItem) {
       evidence_qualifier: quals,
       evidence_with: withs,
       evidence_refs: filterDuplicateReferences(assocItem.reference), // this is an array
-    }
+    };
   } else {
     evidence_group = {
       evidence_id: evidence_id, // just for convenience
@@ -43,7 +27,7 @@ function addEvidence(prev_assoc, assocItem) {
       evidence_qualifier: [],
       evidence_with: [],
       evidence_refs: filterDuplicatePublications(assocItem.publications),
-    }
+    };
   }
   var e_map = prev_assoc.evidence_map;
   if (e_map === undefined) {
@@ -58,19 +42,21 @@ function addEvidence(prev_assoc, assocItem) {
   }
 }
 
-export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLevels) {
+export function unpackSlimItems(results, subject, config) {
   let title = subject;
+  let eco_list = new Map();
   let queryResponse = [];
   let other = false;
   let globalclass_ids = [];
   let seen_before_in_slim = new Map;
+  let slimlist = config.slimlist;
 
   let all_block = {
-      "class_id": "All annotations",
-      "class_label": "All annotations",
-      "uniqueAssocs": [],
-      "uniqueIDs": [],
-      "color": "#8BC34A",
+    'class_id': 'All annotations',
+    'class_label': 'All annotations',
+    'uniqueAssocs': [],
+    'uniqueIDs': [],
+    'color': config.highlightColor,
   };
 
   results.forEach(function (result) {
@@ -90,13 +76,17 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
     // set up uniques and color too
     slimitem.uniqueIDs = [];
     slimitem.uniqueAssocs = [];
-    slimitem.color = "#fff";
+    slimitem.color = '#fff';
 
-    other = slimitem.class_label.includes('other');
+    other = slimitem.class_label.toLowerCase().includes('other');
 
-    if (slimitem.class_id.startsWith('aspect')) {
+    if (slimitem.class_id.toLowerCase().indexOf('aspect') >= 0) {
+      if (aspect !== undefined) {
+        aspect.uniqueAssocs.sort(sortAssociations);
+      }
       aspect = slimitem;
       aspect_ids = [];
+      slimitem.no_data = false;
     }
 
     queryResponse.forEach(function (response) {
@@ -116,7 +106,7 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
               First a hack to accommodate swapping out HGNC ids for UniProtKB ids
             */
             if (subject.startsWith('HGNC') && assocItem.subject.taxon.id === 'NCBITaxon:9606') {
-              assocItem.subject.id = subject; // Clobber the UniProtKB id
+              assocItem.subject.id = subject; // Clobber the UniProtKB id bioLink returns
             }
             /*
               Then another interim hack because of differences in resource naming
@@ -141,8 +131,11 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
             } else {
               need2add_evidence = (earlier_slim === slimitem);
             }
-
             if (!slimitem.uniqueIDs.includes(key)) {
+              if (assocItem.evidence_type === 'ND') {
+                aspect.no_data = true;
+                return false;
+              }
               /*
                 The test below is assuming that the 'other' block is always at
                 the end of the strip for a particular aspect
@@ -152,18 +145,18 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
               } else {
                 return false;
               }
-              if (!globalclass_ids.includes(key)) {
+              if (!globalclass_ids.includes(key) && !aspect.no_data) {
                 globalclass_ids.push(key);
                 all_block.uniqueAssocs.push(assocItem);
               }
-              if (aspect && !aspect_ids.includes(key)) {
+              if (aspect && !aspect_ids.includes(key) && !aspect.no_data) {
                 aspect_ids.push(key);
                 aspect.uniqueAssocs.push(assocItem);
-                aspect.uniqueIDs.push(key)
+                aspect.uniqueIDs.push(key);
               }
               if (need2add_evidence) {
                 assocItem.evidence_map = new Map();
-                addEvidence(assocItem, assocItem);
+                addEvidence(assocItem, assocItem, eco_list);
               } else {
                 let prev_assoc = all_block.uniqueAssocs[globalclass_ids.indexOf(key)];
                 assocItem.evidence_map = prev_assoc.evidence_map;
@@ -172,15 +165,15 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
             } else {
               if (need2add_evidence) {
                 let prev_assoc = all_block.uniqueAssocs[globalclass_ids.indexOf(key)];
-                addEvidence(prev_assoc, assocItem);
+                addEvidence(prev_assoc, assocItem, eco_list);
               }
               return false;
             }
           });
           if (slimitem.uniqueAssocs.length > 0) {
             slimitem.uniqueAssocs.sort(sortAssociations);
-            slimitem.uniqueAssocs = subjectFirst(subject, slimitem.uniqueAssocs);
-            slimitem.color = heatColor(slimitem.uniqueAssocs.length, heatColorArray, heatLevels);
+            //          slimitem.uniqueAssocs = subjectFirst(subject, slimitem.uniqueAssocs);
+            slimitem.color = heatColor(slimitem.uniqueAssocs.length, config.annot_color, config.heatLevels);
           }
         }
       }
@@ -188,85 +181,74 @@ export function unpackSlimItems(results, subject, slimlist,heatColorArray,heatLe
     return slimitem;
   });
 
+  if (aspect !== undefined) {
+    aspect.uniqueAssocs.sort(sortAssociations);
+  }
   // insert a block with all annotations at the very first position
   if (all_block.uniqueAssocs.length > 0) {
-    all_block.class_label = 'All ' + all_block.uniqueAssocs.length + ' GO classes';
+    all_block.class_label = 'Annotated to ' + all_block.uniqueAssocs.length + ' classes';
     all_block.uniqueAssocs.sort(sortAssociations);
   }
   blocks.splice(0, 0, all_block);
+
   return {
-      title: title,
-      blocks: blocks,
+    eco_list: eco_list,
+    title: title,
+    blocks: blocks,
   };
 }
 
 function sortAssociations(assoc_a, assoc_b) {
-    let taxa_ids = Array.from(taxa.keys());
-    let index_a = taxa_ids.indexOf(assoc_a.subject.taxon.id);
-    let index_b = taxa_ids.indexOf(assoc_b.subject.taxon.id);
-    if (index_a < index_b) {
-        return -1;
-    }
-    if (index_a > index_b) {
-        return 1;
-    }
-    if (assoc_a.subject.id < assoc_b.subject.id) {
-        return -1;
-    }
-    if (assoc_a.subject.id > assoc_b.subject.id) {
-        return 1;
-    }
-    if (assoc_a.object.label < assoc_b.object.label) {
-        return -1;
-    }
-    if (assoc_a.object.label > assoc_b.object.label) {
-        return 1;
-    }
-    // a must be equal to b
-    return 0;
+  let taxa_ids = Array.from(taxa.keys());
+  let index_a = taxa_ids.indexOf(assoc_a.subject.taxon.id);
+  let index_b = taxa_ids.indexOf(assoc_b.subject.taxon.id);
+  if (index_a < index_b) {
+    return -1;
+  }
+  if (index_a > index_b) {
+    return 1;
+  }
+  if (assoc_a.subject.id < assoc_b.subject.id) {
+    return -1;
+  }
+  if (assoc_a.subject.id > assoc_b.subject.id) {
+    return 1;
+  }
+  if (assoc_a.object.label.toLowerCase() < assoc_b.object.label.toLowerCase()) {
+    return -1;
+  }
+  if (assoc_a.object.label.toLowerCase() > assoc_b.object.label.toLowerCase()) {
+    return 1;
+  }
+  // a must be equal to b
+  return 0;
 }
 
-function subjectFirst(subject, uniqueAssocs) {
-    let subjectAssocs = [];
-    for (let i = uniqueAssocs.length - 1; i >= 0; i--) {
-        let assoc = uniqueAssocs[i];
-        if (assoc.subject.id === subject) {
-            // remove this from current list
-            uniqueAssocs.splice(i, 1);
-            // add it to the top of the revised list
-            subjectAssocs.splice(0, 0, assoc);
-        }
+export function heatColor(associations_count, hexColor, heatLevels) {
+  if (associations_count === 0)
+    return '#fff';
+
+  let rgb = hexColor.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) => '#' + r + r + g + g + b + b)
+    .substring(1).match(/.{2}/g)
+    .map(x => parseInt(x, 16));
+
+  let blockColor = [];     // [r,g,b]
+  for (let i = 0; i < 3; i++) {
+    // logarithmic heatmap (with cutoff)
+    if (associations_count < heatLevels) {
+      // instead of just (256-rgb[i])/(Math.pow(2,associations_count)),
+      // which divides space from 'white' (255) down to target color level in halves,
+      // this starts at 3/4
+      const heatCoef = 3 * (256 - rgb[i]) / (Math.pow(2, associations_count + 1));
+      blockColor[i] = Math.round(rgb[i] + heatCoef);
     }
-    // now collect the remaining associations to orthologs
-    return subjectAssocs.concat(uniqueAssocs);
+    else {
+      blockColor[i] = rgb[i];
+    }
+  }
+  return 'rgb(' + blockColor[0] + ',' + blockColor[1] + ',' + blockColor[2] + ')';
 }
 
-export function heatColor(associations_count, rgb, heatLevels) {
-    if (associations_count === 0)
-        return "#fff";
-    let blockColor = [];     // [r,g,b]
-    for (let i = 0; i < 3; i++) {
-        // logarithmic heatmap (with cutoff)
-        if (associations_count < heatLevels) {
-            // instead of just (256-rgb[i])/(Math.pow(2,associations_count)),
-            // which divides space from 'white' (255) down to target color level in halves,
-            // this starts at 3/4
-            const heatCoef = 3 * (256 - rgb[i]) / (Math.pow(2, associations_count + 1));
-            blockColor[i] = Math.round(rgb[i] + heatCoef);
-        }
-        else {
-            blockColor[i] = rgb[i];
-        }
-    }
-    return 'rgb(' + blockColor[0] + ',' + blockColor[1] + ',' + blockColor[2] + ')';
-}
-
-function containsPMID(references) {
-    for (let r of references) {
-        if (r.startsWith('PMID:')) return true;
-    }
-    return false;
-}
 
 /**
  *
@@ -274,18 +256,18 @@ function containsPMID(references) {
  * @returns {*}
  */
 function filterDuplicateReferences(reference) {
-    // if references contains a PMID, remove the non-PMID ones
-    let returnArray = reference.filter(function (r) {
-        if (r.startsWith('PMID:')) {
-            return true;
-        } else {
-            return false;
-        }
-    });
-    if (returnArray.length === 0) {
-        returnArray.push(reference[0]);
+  // if references contains a PMID, remove the non-PMID ones
+  let returnArray = reference.filter(function (r) {
+    if (r.startsWith('PMID:')) {
+      return true;
+    } else {
+      return false;
     }
-    return returnArray;
+  });
+  if (returnArray.length === 0) {
+    returnArray.push(reference[0]);
+  }
+  return returnArray;
 }
 
 /**
@@ -295,20 +277,20 @@ function filterDuplicateReferences(reference) {
  */
 function filterDuplicatePublications(publications) {
 
-    // if references contains a PMID, remove the non-PMID ones
-    let returnArray = [];
-    if (publications !== null && publications !== undefined) {
-        publications.filter(function (pub) {
-            if (pub.id.startsWith('PMID:') && !returnArray.includes(pub.id)) {
-                returnArray.push(pub.id);
-                return true;
-            } else {
-                return false;
-            }
-        });
-        if (returnArray.length === 0) {
-            returnArray.push(publications[0].id);
-        }
+  // if references contains a PMID, remove the non-PMID ones
+  let returnArray = [];
+  if (publications !== null && publications !== undefined) {
+    publications.filter(function (pub) {
+      if (pub.id.startsWith('PMID:') && !returnArray.includes(pub.id)) {
+        returnArray.push(pub.id);
+        return true;
+      } else {
+        return false;
+      }
+    });
+    if (returnArray.length === 0) {
+      returnArray.push(publications[0].id);
     }
-    return returnArray;
+  }
+  return returnArray;
 }

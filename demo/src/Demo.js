@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 import { addUrlProps, UrlQueryParamTypes } from 'react-url-query';
 import { GridLoader } from 'react-spinners';
 
@@ -16,22 +17,22 @@ import history from './history';
  */
 
 const urlPropsQueryConfig = {
- subject: { type: UrlQueryParamTypes.string },
- slim: { type: UrlQueryParamTypes.string },
+  subject: { type: UrlQueryParamTypes.string },
+  mode: { type: UrlQueryParamTypes.string },
 };
 
 /**
  * Map from url query params to props. The values in `url` will still be encoded
  * as strings since we did not pass a `urlPropsQueryConfig` to addUrlProps.
  */
-function mapUrlToProps(url, props) {
+function mapUrlToProps(url) {
   return {
     subject: url.subject,
-    slim: url.slim,
+    mode: url.mode,
   };
 }
 
-class Demo extends Component {
+class Demo extends React.Component {
 
   constructor(props) {
     super(props);
@@ -43,44 +44,51 @@ class Demo extends Component {
   }
 
   render() {
-    const {subject, slim} = this.props;
+    const {subject, mode} = this.props;
+
     return (
       <div id='demo'>
-        <RibbonDataProvider subject={subject} slim={slim} heatColorArray={[6,100,100]} heatLevels={48}>
-        {
-          ({title, blocks, dataError, dataReceived}) => (
-            <div>
-            {
-              dataReceived ?
-                <Ribbon
-                  blocks={blocks}
-                  geneUrlFormatter={(geneId) => `http://stagebuild.alliancegenome.org/gene/${geneId}`}
-                  showing={true}
-                  subject={subject}
-                  title={title}
-                /> :
-                null
-            }
-            {dataError ? dataError : null}
-            {
-              (!dataReceived && !dataError) ?
-                <GridLoader className='spinner'
-                  align='middle'
-                  color='#699'
-                  size={8}
-                  margin={2}
-                  loading={true}
-                /> :
-                null
-            }
-            </div>
-          )
-        }
+        <RibbonDataProvider mode={mode} subject={subject} >
+          {
+            ({blocks, config, dataError, dataReceived, title}) => (
+              <div>
+                {
+                  dataReceived ?
+                    <Ribbon
+                      blocks={blocks}
+                      config={config}
+                      showing={true}
+                      subject={subject}
+                      title={title}
+                    /> :
+                    null
+                }
+                {dataError ? dataError : null}
+                {
+                  (!dataReceived && !dataError) ?
+                    <GridLoader
+                      align='middle'
+                      className='spinner'
+                      color='#699'
+                      loading={true}
+                      margin={2}
+                      size={8}
+                    /> :
+                    null
+                }
+              </div>
+            )
+          }
         </RibbonDataProvider>
       </div>
-    )
+    );
   }
 }
+
+Demo.propTypes = {
+  mode: PropTypes.string,
+  subject: PropTypes.string,
+};
 
 /*
  * We use the addUrlProps higher-order component to map URL query parameters
