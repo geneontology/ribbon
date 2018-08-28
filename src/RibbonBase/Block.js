@@ -2,6 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 class Block extends React.Component {
+  componentDidMount() {
+    this.updateHeight();
+  }
+
+  componentDidUpdate() {
+    this.updateHeight();
+  }
+
+  updateHeight() {
+    if (this.titleRef && this.blockRef) {
+      const titleRect = this.titleRef.getBoundingClientRect();
+      this.blockRef.style.height = `${titleRect.height + 18}px`;
+    }
+  }
 
   render() {
     const {slimitem, config} = this.props;
@@ -17,8 +31,12 @@ class Block extends React.Component {
         this.props.isActive ? 'ontology-ribbon__block_active' : ''
       }`;
       return (
-        <div className={blockTitleClass}>
-          <div className="ontology-ribbon__block-title" onClick={this.props.onClick}>{slimitem.class_label}</div>
+        <div className={blockTitleClass} ref={ref => this.blockRef = ref}>
+          { this.props.showTitle &&
+            <div className="ontology-ribbon__block-title" onClick={this.props.onClick} ref={ref => this.titleRef = ref}>
+              {slimitem.class_label}
+            </div>
+          }
           <div
             className="ontology-ribbon__block-tile"
             onClick={this.props.onClick}
@@ -67,7 +85,12 @@ Block.propTypes = {
   onClick: PropTypes.func,
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,
+  showTitle: PropTypes.bool,
   slimitem: PropTypes.object.isRequired,
+};
+
+Block.defaultProps = {
+  showTitle: true,
 };
 
 export default Block;
