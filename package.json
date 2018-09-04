@@ -21,6 +21,7 @@
   "dependencies": {
     "amigo2-instance-data": "^2.5.12",
     "axios": "0.16.1",
+    "eslint-plugin-react": "^7.11.1",
     "prop-types": "^15.5.10",
     "react-icons": "^2.2.7",
     "react-transition-group": "^2.3.1"
@@ -35,7 +36,7 @@
     "babel-preset-react": "^6.24.1",
     "eslint": "^4.19.1",
     "history": "4.6.1",
-    "nwb": "^0.22.0",
+    "nwb": "^0.23.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-spinners": "0.0.30",

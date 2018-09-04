@@ -1,14 +1,16 @@
+'use strict';
+
 import taxa from './data/taxa';
 import getKey from './assocKey';
 
 function addEvidence(prev_assoc, assocItem, eco_list) {
   var evidence_group;
-  if (!eco_list.has(assocItem.evidence_type)) {
-    eco_list.set(assocItem.evidence_type, true);
-  }
   let evidence_id = assocItem.evidence;
   /* hack until issue ##182 is resolved in ontobio */
   if (assocItem.reference !== undefined) {
+    if (!eco_list.has(assocItem.evidence_type)) {
+      eco_list.set(assocItem.evidence_type, true);
+    }
     let withs = assocItem.evidence_with !== undefined ? assocItem.evidence_with : [];
     let quals = assocItem.qualifier !== undefined ? assocItem.qualifier : [];
     evidence_group = {
@@ -20,6 +22,9 @@ function addEvidence(prev_assoc, assocItem, eco_list) {
       evidence_refs: filterDuplicateReferences(assocItem.reference), // this is an array
     };
   } else {
+    if (!eco_list.has(assocItem.evidence_label[0])) {
+      eco_list.set(assocItem.evidence_label[0], true);
+    }
     evidence_group = {
       evidence_id: evidence_id, // just for convenience
       evidence_type: assocItem.evidence_label[0],
@@ -192,9 +197,9 @@ export function unpackSlimItems(results, subject, config) {
   blocks.splice(0, 0, all_block);
 
   return {
-    eco_list: eco_list,
-    title: title,
     blocks: blocks,
+    eco_list: eco_list,
+    title: title
   };
 }
 

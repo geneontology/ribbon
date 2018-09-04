@@ -53,10 +53,6 @@ export default class Ribbon extends Component {
     }
   }
 
-  handleECOFilter(eco_type, filter) {
-
-  }
-
   patchHGNC (subject, title) {
     let self = this;
     if (subject.startsWith('HGNC:')) {
@@ -102,7 +98,7 @@ export default class Ribbon extends Component {
   render() {
     const blocks = this.props.blocks;
     const config = this.props.config;
-    const eco_list = this.props.config;
+    const eco_list = this.props.eco_list;
     return (
       <div>
         <RibbonBase
