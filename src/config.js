@@ -18,7 +18,8 @@ export function getConfig(mode) {
       'annot_url': getPhenoLinkTarget,
       'bio_link': BIOLINK + 'bioentityset/slimmer/phenotype?',
       'evenRowColor': '#EAF0EF',
-      'oddRowColor': '#FFFAE4',
+      //'oddRowColor': '#FFFAE4',
+      'oddRowColor': '#ffffff',
       'heatLevels': 48,
       'highlightColor': '#8BC34A',
       'slimlist': PHENO_LIST,
@@ -29,7 +30,7 @@ export function getConfig(mode) {
     config = {
       'annot_color': '#3f51b5',
       'annot_url': getPhenoLinkTarget,
-      'bio_link': BIOLINK + 'bioentityset/slimmer/anatomy?',
+      'bio_link': BIOLINK + 'bioentityset/slimmer/expression?',
       'evenRowColor': '#F5E5DE',
       'oddRowColor': '#ffffff',
       'heatLevels': 48,

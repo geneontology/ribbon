@@ -50,13 +50,14 @@ class Demo extends React.Component {
       <div id='demo'>
         <RibbonDataProvider mode={mode} subject={subject} >
           {
-            ({blocks, config, dataError, dataReceived, title}) => (
+            ({blocks, config, dataError, dataReceived, eco_list, title}) => (
               <div>
                 {
                   dataReceived ?
                     <Ribbon
                       blocks={blocks}
                       config={config}
+                      eco_list={eco_list}
                       showing={true}
                       subject={subject}
                       title={title}
