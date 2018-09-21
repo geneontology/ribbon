@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FaFilter from 'react-icons/lib/fa/filter'
+import FaClose from 'react-icons/lib/fa/close'
 import FilterItem from './FilterItem';
 
 class FilterDropdown extends Component {
@@ -52,7 +53,7 @@ class FilterDropdown extends Component {
       null;
 
     const arrow = this.state.isOpen ?
-      (<FaFilter className='bright link' onClick={() => { this.handleMouseDown(); }} />) :
+      (<FaClose className='closeable link' onClick={() => { this.handleMouseDown(); }} />) :
       (<FaFilter className='bright link' onClick={() => { this.handleMouseDown(); }} />);
 
     return (

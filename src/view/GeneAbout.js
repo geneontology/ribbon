@@ -46,7 +46,7 @@ export default class GeneAbout extends React.Component {
 
     speciesName = speciesName ? speciesName : subject;
 
-    let active_term = currentblock ? ' annotations to ' + currentblock.class_label : null;
+      let active_term = currentblock ? ' ' + currentblock.class_label : null;
 
     let isValid = Object.values(prefixToSpecies).indexOf(speciesName) >= 0;
     if (isValid) {
@@ -69,7 +69,7 @@ export default class GeneAbout extends React.Component {
                   target='_blank'
                 >
                   {this.getLabel(title)}
-                  {active_term}
+                  {active_term.toLowerCase()}
                   <FaExternalLink size={18} style={{paddingLeft: 10, textDecoration: 'none'}} />
                 </a>
               </span>

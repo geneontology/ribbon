@@ -134,7 +134,7 @@
   background-color: rgb(6, 100, 100);
   border: 1px solid white;
   border-radius: 5px;
-  box-shadow: -2px 2px 9px black;  
+  box-shadow: -2px 2px 9px black;
   margin-top: .2rem;
   padding: 5px 15px;
 }
@@ -348,6 +348,17 @@
 .link:hover {
   cursor: pointer;
   text-decoration: underline;
+}
+
+.closeable{
+  color: lightgray;
+  transform: scale(1.2);
+  transition: all 0.2s ease
+}
+
+.closeable:hover{
+  font-weight: bold;
+  transform: scale(1.4)
 }
 
 .bright {
