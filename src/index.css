@@ -350,6 +350,17 @@
   text-decoration: underline;
 }
 
+.closeable{
+  color: lightgray;
+  transform: scale(1.2);
+  transition: all 0.2s ease
+}
+
+.closeable:hover{
+  font-weight: bold;
+  transform: scale(1.4)
+}
+
 .bright {
   color: #FF1998;
   transform: scale(1.2);
