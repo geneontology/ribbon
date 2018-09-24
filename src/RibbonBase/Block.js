@@ -18,7 +18,7 @@ class Block extends React.Component {
   }
 
   render() {
-    const {slimitem, config} = this.props;
+    const {slimitem, config, showSeparatorLabel, showSeparatorLabelPrefix} = this.props;
 
     if (slimitem.separator === undefined) {
       let count = slimitem.uniqueAssocs.length;
@@ -62,15 +62,17 @@ class Block extends React.Component {
       return (
         <div className="ontology-ribbon__block">
           <div className="ontology-ribbon__tile-separator">
-            <div
-              className={'ontology-ribbon__strip-label'}
-              onClick={this.props.onClick}
-              onMouseEnter={this.props.onMouseEnter}
-              onMouseLeave={this.props.onMouseLeave}
-              style={{color: text_color}}
-            >
-              {prefix} {slimitem.class_label}
-            </div>
+            {showSeparatorLabel &&
+              <div
+                className={'ontology-ribbon__strip-label'}
+                onClick={this.props.onClick}
+                onMouseEnter={this.props.onMouseEnter}
+                onMouseLeave={this.props.onMouseLeave}
+                style={{color: text_color}}
+              >
+                {showSeparatorLabelPrefix && prefix} {slimitem.class_label}
+              </div>
+            }
           </div>
         </div>
 
@@ -86,11 +88,15 @@ Block.propTypes = {
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,
   showTitle: PropTypes.bool,
+  showSeparatorLabel: PropTypes.bool,
+  showSeparatorLabelPrefix: PropTypes.bool,
   slimitem: PropTypes.object.isRequired,
 };
 
 Block.defaultProps = {
   showTitle: true,
+  showSeparatorLabel: true,
+  showSeparatorLabelPrefix: true,
 };
 
 export default Block;

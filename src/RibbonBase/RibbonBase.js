@@ -23,6 +23,8 @@ export default class RibbonBase extends React.Component {
               onClick={() => this.props.onSlimSelect(slimitem)}
               onMouseEnter={() => this.props.onSlimEnter(slimitem)}
               onMouseLeave={() => this.props.onSlimLeave(slimitem)}
+              showSeparatorLabel={this.props.showSeparatorLabels}
+              showSeparatorLabelPrefix={this.props.showSeparatorLabelPrefixes}
               showTitle={this.props.showBlockTitles}
               slimitem={slimitem}
             />
@@ -41,8 +43,12 @@ RibbonBase.propTypes = {
   onSlimLeave: PropTypes.func,
   onSlimSelect: PropTypes.func.isRequired,
   showBlockTitles: PropTypes.bool,
+  showSeparatorLabelPrefixes: PropTypes.bool,
+  showSeparatorLabels: PropTypes.bool,
 };
 
 RibbonBase.defaultProps = {
-  showBlockTitles: true
+  showBlockTitles: true,
+  showSeparatorLabelPrefixes: true,
+  showSeparatorLabels: true,
 };
