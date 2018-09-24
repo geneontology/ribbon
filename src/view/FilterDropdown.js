@@ -6,6 +6,8 @@ import FaFilter from 'react-icons/lib/fa/filter'
 import FaClose from 'react-icons/lib/fa/close'
 import FilterItem from './FilterItem';
 
+import { Manager, Reference, Popper } from 'react-popper';
+
 class FilterDropdown extends Component {
   constructor(props) {
     super(props);
@@ -35,9 +37,9 @@ class FilterDropdown extends Component {
       menu.push(
         <FilterItem key={count++} filters={filters} filter={filter} selected={selected} filterHandler={this.props.filterHandler} />
       );
-    })
-    return (
-      <div>
+    });
+    return ({ref, style, placement}) => (
+      <div className='ontology-ribbon__filter_list' ref={ref} style={style} data-placement={placement}>
         <span className="checkbox" onClick={() => this.props.filterHandler("all", true)}>All</span>
         <span className="checkbox" style={{margin: ".5rem 0px"}} onClick={() => this.props.filterHandler("all", false)}>Clear</span>
         {menu}
@@ -46,21 +48,32 @@ class FilterDropdown extends Component {
   }
 
   render() {
-    const menu = this.state.isOpen ?
-      (<div className='ontology-ribbon__filter_list'>
-        {this.buildMenu()}
-      </div>) :
-      null;
+    const menu = this.buildMenu();
 
-    const arrow = this.state.isOpen ?
-      (<FaClose className='closeable link' onClick={() => { this.handleMouseDown(); }} />) :
-      (<FaFilter className='bright link' onClick={() => { this.handleMouseDown(); }} />);
+    const arrow = ({ref}) => (
+      <span ref={ref}>
+        {
+          this.state.isOpen ?
+            (<FaClose className='closeable link' onClick={() => { this.handleMouseDown(); }} />) :
+            (<FaFilter className='bright link' onClick={() => { this.handleMouseDown(); }} />)
+        }
+      </span>
+    );
+
+    const modifiers = {
+      hide: { enabled: false },
+      preventOverflow: { enabled: false },
+      flip: { enabled: false }
+    };
+
+    const pop = <Popper modifiers={modifiers} placement='bottom' positionFixed={true}>{menu}</Popper>;
 
     return (
       <div style={{ fontWeight: 'bold', width: '10%' }} >
-        Evidence &nbsp;
-        {arrow}
-        {menu}
+        <Manager>
+          Evidence &nbsp; <Reference>{arrow}</Reference>
+          {this.state.isOpen && pop}
+        </Manager>
       </div>
     );
   }
