@@ -70,7 +70,7 @@ export default class GeneAbout extends React.Component {
                 >
                   {this.getLabel(title)}
                   {active_term ? active_term.toLowerCase() : ''}
-                  <FaExternalLink size={18} style={{paddingLeft: 10, textDecoration: 'none'}} />
+                  <FaExternalLink size={18} style={{paddingLeft: 10, textDecoration: 'none', boxSizing: 'content-box'}} />
                 </a>
               </span>
             }
