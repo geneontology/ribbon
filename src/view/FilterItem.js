@@ -32,7 +32,6 @@ class FilterItem extends Component {
 }
 
 FilterItem.propTypes = {
-  filters: PropTypes.object.isRequired,
   filter: PropTypes.string.isRequired,
   selected: PropTypes.bool.isRequired,
 };

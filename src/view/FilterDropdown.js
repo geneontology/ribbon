@@ -10,7 +10,7 @@ class FilterDropdown extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false
+      isOpen: props.isOpen ? props.isOpen : false
     };
   }
 

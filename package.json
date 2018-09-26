@@ -5,9 +5,7 @@
     "build": "nwb build-react-component --copy-files",
     "clean": "nwb clean-module && npm clean-demo",
     "start": "nwb serve-react-demo",
-    "test": "nwb test-react",
-    "test:coverage": "nwb test-react --coverage",
-    "test:watch": "nwb test-react --server"
+    "test": "react-scripts test --env=jsdom"
   },
   "description": "A react component for generating heatmap type displays for ontology slims.",
   "main": "lib/index.js",
@@ -34,13 +32,18 @@
     "babel-core": "latest",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "enzyme": "^3.6.0",
+    "enzyme-adapter-react-16": "^1.5.0",
     "eslint": "^4.19.1",
     "history": "4.6.1",
+    "jest": "^23.6.0",
     "nwb": "^0.23.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-spinners": "0.0.30",
-    "react-url-query": "^1.4.0"
+    "react-test-renderer": "^16.5.2",
+    "react-url-query": "^1.4.0",
+    "sinon": "^6.3.4"
   },
   "author": "Suzanna Lewis, Sibyl Gao, Nathan Dunn",
   "homepage": "https://github.com/geneontology/ribbon#readme",

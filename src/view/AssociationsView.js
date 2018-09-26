@@ -15,6 +15,9 @@ export default class AssociationsView extends React.Component {
     filters: this.props.eco_list
   }
 
+  /**
+   * function passed to the FilterDropdown component to handle clicks on FilterItem components
+   */
   filterHandler = (filter, selected) => {
     if (filter == "all") {
       var temp = new Map(this.state.filters);
