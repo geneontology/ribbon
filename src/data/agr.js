@@ -87,7 +87,11 @@ export default
         "class_id": "GO:0005215",
         "class_label": "transporter activity"
     },
-
+    {
+      'class_id': 'GO:0003674',
+      'class_label': 'other activities',
+    },
+  
 
 
     {
@@ -187,7 +191,11 @@ export default
         "class_id": "GO:0023052",
         "class_label": "signaling"
     },
-
+    {
+      'class_id': 'GO:0008150',
+      'class_label': 'other processes',
+    },
+  
 
     {
         "class_id": "GO:0005575 aspect", // used as a key to a hashmap, so can't be blank
@@ -257,6 +265,10 @@ export default
     {
         "class_id": "GO:0005773",
         "class_label": "vacuole"
+    },
+    {
+      'class_id': 'GO:0005575',
+      'class_label': 'other locations',
     }
-
+  
 ];
