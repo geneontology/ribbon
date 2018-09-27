@@ -48,7 +48,7 @@ class Demo extends React.Component {
 
     return (
       <div id='demo'>
-        <div style={{width: '100%', height: '100%', position: 'relative', overflowX: 'auto', overflowY: 'hidden'}}>
+        <div style={{border: '1px solid black', width: '600px', height: '100%', position: 'relative', overflowX: 'auto', overflowY: 'hidden'}}>
           <div style={{minWidth: '800px'}}>
             <RibbonDataProvider mode={mode} subject={subject} >
               {
