@@ -139,48 +139,68 @@ export default [
     'separator': true,
   },
   {
-    'class_id': 'GO:0005576',
-    'class_label': 'extracellular',
+    "class_id": "GO:0030054",
+    "class_label": "cell junction"
   },
   {
-    'class_id': 'GO:0005737',
-    'class_label': 'cytoplasm',
+    "class_id": "GO:0042995",
+    "class_label": "cell projection"
   },
   {
-    'class_id': 'GO:0005856',
-    'class_label': 'cytoskeleton',
+    "class_id": "GO:0005694",
+    "class_label": "chromosome"
   },
   {
-    'class_id': 'GO:0005634',
-    'class_label': 'nucleus',
+    "class_id": "GO:0031410",
+    "class_label": "cytoplasmic vesicle"
   },
   {
-    'class_id': 'GO:0005694',
-    'class_label': 'chromosome',
+    "class_id": "GO:0005856",
+    "class_label": "cytoskeleton"
   },
   {
-    'class_id': 'GO:0016020',
-    'class_label': 'membrane',
+    "class_id": "GO:0005829",
+    "class_label": "cytosol"
   },
   {
-    'class_id': 'GO:0031982',
-    'class_label': 'vesicle',
+    "class_id": "GO:0005783",
+    "class_label": "endoplasmic reticulum"
   },
   {
-    'class_id': 'GO:0071944',
-    'class_label': 'cell periphery',
+    "class_id": "GO:0005768",
+    "class_label": "endosome"
   },
   {
-    'class_id': 'GO:0030054',
-    'class_label': 'cell junction',
+    "class_id": "GO:0005576",
+    "class_label": "extracellular region"
   },
   {
-    'class_id': 'GO:0042995',
-    'class_label': 'cell projection',
+    "class_id": "GO:0005794",
+    "class_label": "golgi apparatus"
   },
   {
-    'class_id': 'CHEBI:33839',
-    'class_label': 'macromolecule',
+    "class_id": "GO:0005739",
+    "class_label": "mitochondrion"
+  },
+  {
+    "class_id": "GO:0005634",
+    "class_label": "nucleus"
+  },
+  {
+    "class_id": "GO:0005886",
+    "class_label": "plasma membrane"
+  },
+  {
+    "class_id": "GO:0032991",
+    "class_label": "protein-containing complex"
+  },
+  {
+    "class_id": "GO:0045202",
+    "class_label": "synapse"
+  },
+  {
+    "class_id": "GO:0005773",
+    "class_label": "vacuole"
   },
   {
     'class_id': 'GO:0005623',
