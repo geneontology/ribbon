@@ -48,44 +48,39 @@ class Demo extends React.Component {
 
     return (
       <div id='demo'>
-        <div style={{border: '1px solid black', width: '600px', height: '100%', position: 'relative', overflowX: 'auto', overflowY: 'hidden'}}>
-          <div style={{minWidth: '800px'}}>
-            <RibbonDataProvider mode={mode} subject={subject} >
-              {
-                ({blocks, config, dataError, dataReceived, eco_list, title}) => (
-                  <div>
-                    {
-                      dataReceived ?
-                        <Ribbon
-                          blocks={blocks}
-                          config={config}
-                          eco_list={eco_list}
-                          showing={true}
-                          subject={subject}
-                          title={title}
-                        /> :
-                        null
-                    }
-                    {dataError ? dataError : null}
-                    {
-                      (!dataReceived && !dataError) ?
-                        <GridLoader
-                          align='middle'
-                          className='spinner'
-                          color='#699'
-                          loading={true}
-                          margin={2}
-                          size={8}
-                        /> :
-                        null
-                    }
-                  </div>
-                )
-              }
-            </RibbonDataProvider>
-          </div>
-        </div>
-
+        <RibbonDataProvider mode={mode} subject={subject} >
+          {
+            ({blocks, config, dataError, dataReceived, eco_list, title}) => (
+              <div>
+                {
+                  dataReceived ?
+                    <Ribbon
+                      blocks={blocks}
+                      config={config}
+                      eco_list={eco_list}
+                      showing={true}
+                      subject={subject}
+                      title={title}
+                    /> :
+                    null
+                }
+                {dataError ? dataError : null}
+                {
+                  (!dataReceived && !dataError) ?
+                    <GridLoader
+                      align='middle'
+                      className='spinner'
+                      color='#699'
+                      loading={true}
+                      margin={2}
+                      size={8}
+                    /> :
+                    null
+                }
+              </div>
+            )
+          }
+        </RibbonDataProvider>
       </div>
     );
   }
