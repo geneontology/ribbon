@@ -29,6 +29,7 @@
   background-size: 700% 100%;
   display: inline-block;
   margin-right: 1rem !important;
+  box-sizing: content-box;
 }
 
 .ontology-ribbon-species-icon_agr.small {
@@ -107,6 +108,7 @@
   vertical-align: middle;
   text-shadow: -1px 0 silver, 0 1px silver, 1px 0 silver, 0 -1px silver;
   cursor: pointer;
+  box-sizing: content-box;
 }
 
 .ontology-ribbon__block:hover {
@@ -157,6 +159,7 @@
   padding-right: 15px;
   margin-right: 15px;
   border-radius: 5px;
+  box-sizing: content-box;
 }
 .ontology-ribbon__radio:hover {
   cursor: pointer;
@@ -466,6 +469,7 @@
   background-color:grey;
   display: inline-block;
   transition: all 0.2s;
+  box-sizing: content-box;
 }
 .checkbox:hover {
   box-shadow: 1px 1px 6px black;
