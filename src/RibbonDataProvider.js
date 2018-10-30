@@ -42,7 +42,10 @@ export default class RibbonDataProvider extends Component {
       }
     });
 
-    let query = bio_link + '&subject=' + subject;
+    /*
+      Todo: this will have to be fixed on the biolink-api /slimmer side, but meanwhile, we ensure that ALL annotations are loaded
+    */
+    let query = bio_link + '&subject=' + subject + "&rows=-1";
     console.log('Query is ' + query);
     axios.get(query)
       .then(function (results) {
