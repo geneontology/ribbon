@@ -234,7 +234,7 @@ function sortAssociations(assoc_a, assoc_b) {
 
 export function heatColor(associations_count, hexColor, heatLevels) {
 //  console.log("heatColor: ", hexToRGB(variables.ribbon_strip_slim_saturation_color, 1));
-  // hexColor = variables.ribbon_strip_slim_saturation_color;
+  hexColor = variables.ribbon_strip_slim_saturation_color;
 
   if (associations_count === 0)
     return '#fff';

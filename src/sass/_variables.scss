@@ -1,3 +1,11 @@
+
+// Primary color will automatically drive the general appearance of the Ribbon
+// $ribbon-primary-color: rgb(7, 101, 101);
+$ribbon-primary-color: rgb(24, 73, 180);
+$ribbon-secondary-color: lighten($ribbon-primary-color, 10%);
+
+
+
 // Ribbon Strip
 $ribbon-strip-font-default: Lato, Helvetica, sans-serif;
 $ribbon-strip-font-size-default: 0.8rem;
@@ -15,7 +23,7 @@ $ribbon-strip-slim-selected-weight: 700;
 $ribbon-strip-slim-selected-decoration: underline;
 
 // Ribbon Strip Density Color
-$ribbon-strip-slim-saturation-color: rgb(7, 101, 101);
+$ribbon-strip-slim-saturation-color: $ribbon-primary-color;
 
 // Ribon Strip Group Label
 $ribbon-strip-group-label-color: #247bbd;
@@ -23,19 +31,26 @@ $ribbon-strip-group-label-hover-color: #18517d;
 
 
 
-
 // Ribbon Table Header
 $ribbon-table-header-font-size: $ribbon-strip-font-size-default;
 $ribbon-table-header-color: #FFFAE4;
-$ribbon-table-header-bgcolor: rgb(6, 100, 100);
+$ribbon-table-header-bgcolor: $ribbon-primary-color;
 
 // Ribbon Table Row
 $ribbon-table-row-font-size: $ribbon-strip-font-size-default;
 $ribbon-table-row-odd-color: #ffffff;
-$ribbon-table-row-even-color: #EAF0EF;
+$ribbon-table-row-even-color: rgba($ribbon-secondary-color, 0.1);
 
 // Table Based On Section
-$ribbon-table-evidence-hover-color: rgba(139, 195, 74, 0.5);
+$ribbon-table-evidence-hover-color: rgba($ribbon-secondary-color, 0.25);
+
+
+
+// Species icon width & height
+$ribbon-species-icon-width: 32px;
+$ribbon-species-icon-height: 36px;
+
+
 
 
 // Default Link Colors
@@ -48,13 +63,9 @@ $ribbon-radio-button-unselected-bgcolor: grey;
 
 
 
-// Species icon width & height
-$ribbon-species-icon-width: 32px;
-$ribbon-species-icon-height: 36px;
 
 
-
-
+// variables that can be used in JS code
 :export {
     ribbon_strip_slim_saturation_color: $ribbon-strip-slim-saturation-color;
 }
