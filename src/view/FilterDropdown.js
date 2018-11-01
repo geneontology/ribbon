@@ -39,7 +39,7 @@ class FilterDropdown extends Component {
       );
     });
     return ({ref, style, placement}) => (
-      <div className='ontology-ribbon__filter_list' ref={ref} style={style} data-placement={placement}>
+      <div className='ontology-ribbon__filter__list' ref={ref} style={style} data-placement={placement}>
         <span className="checkbox" onClick={() => this.props.filterHandler("all", true)}>All</span>
         <span className="checkbox" style={{margin: ".5rem 0px"}} onClick={() => this.props.filterHandler("all", false)}>Clear</span>
         {menu}

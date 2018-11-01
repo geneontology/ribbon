@@ -1,0 +1,25 @@
+@import "component-ribbon";
+
+.checkbox {
+    width: 35px;
+    height: 15px;
+    padding: 2px 5px;
+    text-align: center;
+    margin: 0px 2px;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: grey;
+    display: inline-block;
+    transition: all 0.2s;
+    box-sizing: content-box;
+
+    &:hover {
+        box-shadow: 1px 1px 6px black;
+        cursor: pointer;
+    }
+
+    &:active {
+        background-color: #00ff00;
+        color: black;
+    }
+}

@@ -1,0 +1,60 @@
+// Ribbon Strip
+$ribbon-strip-font-default: Lato, Helvetica, sans-serif;
+$ribbon-strip-font-size-default: 0.8rem;
+
+// Ribbon Strip Tile
+$ribbon-strip-tile-border-color: silver;
+$ribbon-strip-tile-border-color-hover: #247bbd;
+$ribbon-strip-tile-tile-width: 16px;
+$ribbon-strip-tile-separator-width: 16px;
+$ribbon-strip-tile-border-radius: 5px; // make the slim box rounder
+
+// Ribbon Strip Sliem
+$ribbon-strip-slim-selected-color: #247bbd;
+$ribbon-strip-slim-selected-weight: 700;
+$ribbon-strip-slim-selected-decoration: underline;
+
+// Ribbon Strip Density Color
+$ribbon-strip-slim-saturation-color: rgb(7, 101, 101);
+
+// Ribon Strip Group Label
+$ribbon-strip-group-label-color: #247bbd;
+$ribbon-strip-group-label-hover-color: #18517d;
+
+
+
+
+// Ribbon Table Header
+$ribbon-table-header-font-size: $ribbon-strip-font-size-default;
+$ribbon-table-header-color: #FFFAE4;
+$ribbon-table-header-bgcolor: rgb(6, 100, 100);
+
+// Ribbon Table Row
+$ribbon-table-row-font-size: $ribbon-strip-font-size-default;
+$ribbon-table-row-odd-color: #ffffff;
+$ribbon-table-row-even-color: #EAF0EF;
+
+// Table Based On Section
+$ribbon-table-evidence-hover-color: rgba(139, 195, 74, 0.5);
+
+
+// Default Link Colors
+$ribbon-link-color: #247bbd;
+$ribbon-link-hover-color: #18517d;
+
+// Default Radio Button Colors
+$ribbon-radio-button-selected-bgcolor: #00ff00;
+$ribbon-radio-button-unselected-bgcolor: grey;
+
+
+
+// Species icon width & height
+$ribbon-species-icon-width: 32px;
+$ribbon-species-icon-height: 36px;
+
+
+
+
+:export {
+    ribbon_strip_slim_saturation_color: $ribbon-strip-slim-saturation-color;
+}

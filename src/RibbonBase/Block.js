@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import variables from '../sass/_variables.scss';
+
 class Block extends React.Component {
   componentDidMount() {
     this.updateHeight();
@@ -17,6 +19,18 @@ class Block extends React.Component {
     }
   }
 
+  hexToRGB(hex, alpha) {
+    var r = parseInt(hex.slice(1, 3), 16),
+        g = parseInt(hex.slice(3, 5), 16),
+        b = parseInt(hex.slice(5, 7), 16);
+
+    if (alpha) {
+        return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+    } else {
+        return "rgb(" + r + ", " + g + ", " + b + ")";
+    }
+  }
+
   render() {
     const {slimitem, config, showSeparatorLabel, showSeparatorLabelPrefix} = this.props;
 
@@ -26,19 +40,19 @@ class Block extends React.Component {
         count == 1 ? count + ' class ' : count + ' classes ' :
         'No annotations to ' + slimitem.class_label;
       const blockTitleClass = `ontology-ribbon__block ${
-        count > 0 ? 'ontology-ribbon__block_match' : ''
+        count > 0 ? 'ontology-ribbon__block--match' : ''
       } ${
-        this.props.isActive ? 'ontology-ribbon__block_active' : ''
+        this.props.isActive ? 'ontology-ribbon__block--selected' : ''
       }`;
       return (
         <div className={blockTitleClass} ref={ref => this.blockRef = ref}>
           { this.props.showTitle &&
-            <div className="ontology-ribbon__block-title" onClick={this.props.onClick} ref={ref => this.titleRef = ref}>
+            <div className={"ontology-ribbon__block__title " + (this.props.isActive ? 'ontology-ribbon__block__title--selected' : '')} onClick={this.props.onClick} ref={ref => this.titleRef = ref}>
               {slimitem.class_label}
             </div>
           }
           <div
-            className="ontology-ribbon__block-tile"
+            className={"ontology-ribbon__block__tile " + (this.props.isActive ? "ontology-ribbon__block__tile--selected" : "") }
             onClick={this.props.onClick}
             onMouseEnter={this.props.onMouseEnter}
             onMouseLeave={this.props.onMouseLeave}
@@ -52,7 +66,6 @@ class Block extends React.Component {
         </div>
       );
     } else {
-      let text_color = this.props.isActive ? config.highlightColor : null;
       let prefix =
         slimitem.no_data ? 'no known ' :
           slimitem.uniqueAssocs.length === 0 ? 'no annotations:' :
@@ -64,11 +77,11 @@ class Block extends React.Component {
           <div className="ontology-ribbon__tile-separator">
             {showSeparatorLabel &&
               <div
-                className={'ontology-ribbon__strip-label'}
+                className={'ontology-ribbon__strip-label ' + (this.props.isActive ? 'ontology-ribbon__strip-label--selected' : '') }
                 onClick={this.props.onClick}
                 onMouseEnter={this.props.onMouseEnter}
                 onMouseLeave={this.props.onMouseLeave}
-                style={{color: text_color}}
+                
               >
                 {showSeparatorLabelPrefix && prefix} {slimitem.class_label}
               </div>

@@ -62,7 +62,7 @@ export default class GeneAbout extends React.Component {
             {!fetching && subject && title &&
               <span className='ontology-ribbon__about-text'>
                 <a
-                  className='go-link'
+                  className='ribbon-link'
                   href={annot_url(subject_id, protein_id, currentblock)}
                   rel='noopener noreferrer'
                   style={{marginRight: '.5rem'}}

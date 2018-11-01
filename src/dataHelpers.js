@@ -2,6 +2,8 @@
 
 import taxa from './data/taxa';
 import getKey from './assocKey';
+import variables from './sass/_variables.scss';
+
 
 function addEvidence(prev_assoc, assocItem, eco_list) {
   var evidence_group;
@@ -193,6 +195,7 @@ export function unpackSlimItems(results, subject, config) {
   if (all_block.uniqueAssocs.length > 0) {
     all_block.class_label = 'Annotated to ' + all_block.uniqueAssocs.length + ' classes';
     all_block.uniqueAssocs.sort(sortAssociations);
+    all_block.color = variables.ribbon_strip_slim_saturation_color;
   }
   blocks.splice(0, 0, all_block);
 
@@ -230,6 +233,9 @@ function sortAssociations(assoc_a, assoc_b) {
 }
 
 export function heatColor(associations_count, hexColor, heatLevels) {
+//  console.log("heatColor: ", hexToRGB(variables.ribbon_strip_slim_saturation_color, 1));
+  // hexColor = variables.ribbon_strip_slim_saturation_color;
+
   if (associations_count === 0)
     return '#fff';
 

@@ -15,13 +15,7 @@ const SpeciesIcon = ({species, theme, size}) => {
 
   return (
     <span
-      className={`ontology-ribbon-species-icon_${theme} ${speciesClass}`}
-      style={{
-        height: 90 * scale,
-        width: 80 * scale,
-        margin: '2px',
-        padding: 5,
-      }}
+      className={`ontology-ribbon__species-icon--${theme} ${speciesClass}`}
       title={species}
     />
   );
