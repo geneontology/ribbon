@@ -1,68 +1,68 @@
 
 // Primary color will automatically drive the general appearance of the Ribbon
 // $ribbon-primary-color: rgb(7, 101, 101);
-$ribbon-primary-color: rgb(24, 73, 180);
-$ribbon-secondary-color: lighten($ribbon-primary-color, 10%);
-$ribbon-tertiary-color: lighten($ribbon-secondary-color, 40%);
-$ribbon-quaternary-color: rgb(199, 197, 197);
+$ribbon-primary-color: rgb(24, 73, 180) !default;
+$ribbon-secondary-color: lighten($ribbon-primary-color, 10%) !default;
+$ribbon-tertiary-color: lighten($ribbon-secondary-color, 40%) !default;
+$ribbon-quaternary-color: rgb(199, 197, 197) !default;
 
 
 // Ribbon Strip
-$ribbon-strip-font-default: Lato, Helvetica, sans-serif;
-$ribbon-strip-font-size-default: 0.8rem;
+$ribbon-strip-font-default: Lato, Helvetica, sans-serif !default;
+$ribbon-strip-font-size-default: 0.8rem !default;
 
 // Ribbon Strip Tile
-$ribbon-strip-tile-border-color: silver;
-$ribbon-strip-tile-border-color-hover: #247bbd;
-$ribbon-strip-tile-tile-width: 16px;
-$ribbon-strip-tile-separator-width: 16px;
-$ribbon-strip-tile-border-radius: 5px; // make the slim box rounder
+$ribbon-strip-tile-border-color: silver !default;
+$ribbon-strip-tile-border-color-hover: #247bbd !default;
+$ribbon-strip-tile-tile-width: 16px !default;
+$ribbon-strip-tile-separator-width: 16px !default;
+$ribbon-strip-tile-border-radius: 5px !default; // make the slim box rounder
 
 // Ribbon Strip Sliem
-$ribbon-strip-slim-selected-color: #247bbd;
-$ribbon-strip-slim-selected-weight: 700;
-$ribbon-strip-slim-selected-decoration: underline;
+$ribbon-strip-slim-selected-color: #247bbd !default;
+$ribbon-strip-slim-selected-weight: 700 !default;
+$ribbon-strip-slim-selected-decoration: underline !default;
 
 // Ribbon Strip Density Color
-$ribbon-strip-slim-saturation-color: $ribbon-primary-color;
+$ribbon-strip-slim-saturation-color: $ribbon-primary-color !default;
 
 // Ribon Strip Group Label
-$ribbon-strip-group-label-color: #247bbd;
-$ribbon-strip-group-label-hover-color: #18517d;
+$ribbon-strip-group-label-color: #247bbd !default;
+$ribbon-strip-group-label-hover-color: #18517d !default;
 
 
 
 // Ribbon Table Header
-$ribbon-table-header-font-size: $ribbon-strip-font-size-default;
-$ribbon-table-header-color: #FFFAE4;
-$ribbon-table-header-bgcolor: $ribbon-primary-color;
-$ribbon-table-filter-bgcolor: $ribbon-tertiary-color;
+$ribbon-table-header-font-size: $ribbon-strip-font-size-default !default;
+$ribbon-table-header-color: #FFFAE4 !default;
+$ribbon-table-header-bgcolor: $ribbon-primary-color !default;
+$ribbon-table-filter-bgcolor: $ribbon-tertiary-color !default;
 
 // Ribbon Table Row
-$ribbon-table-row-font-size: $ribbon-strip-font-size-default;
-$ribbon-table-row-odd-color: #ffffff;
-$ribbon-table-row-even-color: rgba($ribbon-secondary-color, 0.1);
-$ribbon-table-row-focus-color: $ribbon-secondary-color;
+$ribbon-table-row-font-size: $ribbon-strip-font-size-default !default;
+$ribbon-table-row-odd-color: #ffffff !default;
+$ribbon-table-row-even-color: rgba($ribbon-secondary-color, 0.1) !default;
+$ribbon-table-row-focus-color: $ribbon-secondary-color !default;
 
 // Table Based On Section
-$ribbon-table-evidence-hover-color: rgba($ribbon-secondary-color, 0.25);
+$ribbon-table-evidence-hover-color: rgba($ribbon-secondary-color, 0.25) !default;
 
 
 
 // Species icon width & height
-$ribbon-species-icon-width: 32px;
-$ribbon-species-icon-height: 36px;
+$ribbon-species-icon-width: 32px !default;
+$ribbon-species-icon-height: 36px !default;
 
 
 
 
 // Default Link Colors
-$ribbon-link-color: #247bbd;
-$ribbon-link-hover-color: #18517d;
+$ribbon-link-color: #247bbd !default;
+$ribbon-link-hover-color: #18517d !default;
 
 // Default Radio Button Colors
-$ribbon-radio-button-selected-bgcolor: $ribbon-secondary-color;
-$ribbon-radio-button-unselected-bgcolor: $ribbon-quaternary-color;
+$ribbon-radio-button-selected-bgcolor: $ribbon-secondary-color !default;
+$ribbon-radio-button-unselected-bgcolor: $ribbon-quaternary-color !default;
 
 
 
