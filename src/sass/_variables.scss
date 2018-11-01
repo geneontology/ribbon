@@ -3,7 +3,8 @@
 // $ribbon-primary-color: rgb(7, 101, 101);
 $ribbon-primary-color: rgb(24, 73, 180);
 $ribbon-secondary-color: lighten($ribbon-primary-color, 10%);
-
+$ribbon-tertiary-color: lighten($ribbon-secondary-color, 40%);
+$ribbon-quaternary-color: rgb(199, 197, 197);
 
 
 // Ribbon Strip
@@ -35,6 +36,7 @@ $ribbon-strip-group-label-hover-color: #18517d;
 $ribbon-table-header-font-size: $ribbon-strip-font-size-default;
 $ribbon-table-header-color: #FFFAE4;
 $ribbon-table-header-bgcolor: $ribbon-primary-color;
+$ribbon-table-filter-bgcolor: $ribbon-tertiary-color;
 
 // Ribbon Table Row
 $ribbon-table-row-font-size: $ribbon-strip-font-size-default;
@@ -59,8 +61,8 @@ $ribbon-link-color: #247bbd;
 $ribbon-link-hover-color: #18517d;
 
 // Default Radio Button Colors
-$ribbon-radio-button-selected-bgcolor: #00ff00;
-$ribbon-radio-button-unselected-bgcolor: grey;
+$ribbon-radio-button-selected-bgcolor: $ribbon-secondary-color;
+$ribbon-radio-button-unselected-bgcolor: $ribbon-quaternary-color;
 
 
 

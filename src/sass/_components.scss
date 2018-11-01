@@ -19,7 +19,7 @@
     }
 
     &:active {
-        background-color: #00ff00;
-        color: black;
+        background-color: $ribbon-radio-button-selected-bgcolor;
+        color: white;
     }
 }
