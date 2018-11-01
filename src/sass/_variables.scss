@@ -40,6 +40,7 @@ $ribbon-table-header-bgcolor: $ribbon-primary-color;
 $ribbon-table-row-font-size: $ribbon-strip-font-size-default;
 $ribbon-table-row-odd-color: #ffffff;
 $ribbon-table-row-even-color: rgba($ribbon-secondary-color, 0.1);
+$ribbon-table-row-focus-color: $ribbon-secondary-color;
 
 // Table Based On Section
 $ribbon-table-evidence-hover-color: rgba($ribbon-secondary-color, 0.25);
@@ -67,5 +68,7 @@ $ribbon-radio-button-unselected-bgcolor: grey;
 
 // variables that can be used in JS code
 :export {
+    primary_color: $ribbon-primary-color;
+    secondary_color: $ribbon-secondary-color;
     ribbon_strip_slim_saturation_color: $ribbon-strip-slim-saturation-color;
 }

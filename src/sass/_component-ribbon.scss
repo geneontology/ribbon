@@ -321,6 +321,13 @@
             &--even {
                 background-color: $ribbon-table-row-even-color;
             }
+
+            &--focus {
+                border-left-style: 'solid';
+                border-left-width: 'thick';
+                border-left-color: $ribbon-table-row-focus-color;
+                font-style: 'italic';
+            }
                 
         }
 

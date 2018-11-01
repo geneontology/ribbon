@@ -9,6 +9,9 @@ import AssociationTerm from './AssociationTerm';
 import AssociationEvidence from './AssociationEvidence';
 import getKey from '../assocKey';
 
+import variables from '../sass/_variables.scss';
+
+
 export default class AssociationsView extends React.Component {
 
   state = {
@@ -56,28 +59,20 @@ export default class AssociationsView extends React.Component {
         </div>
         {
           assoc_list.map((assoc, index) => {
-            // var bgcolor = (shown % 2 === 0) ? config.evenRowColor : config.oddRowColor;
+            var row_style;
+            let focus = (focalblock !== undefined && focalblock.uniqueIDs.includes(getKey(assoc)));
+            if (focus) {
+              row_style = {
+                borderLeftStyle: 'solid',
+                borderLeftWidth: 'thick',
+                borderLeftColor: variables.secondary_color,
+                fontStyle: 'italic'
+              };
+            } else {
+              row_style = {
+              };
+            }
 
-            // let cssClasses = ['ontology-ribbon__assoc__row'];
-            // if(shown % 2 == 0) {
-            //   cssClasses.push('ontology-ribbon__assoc__row--even')
-            // } else {
-            //   cssClasses.push('ontology-ribbon__assoc__row--odd')              
-            // }
-            // var row_style;
-            // if (focalblock !== undefined && focalblock.uniqueIDs.includes(getKey(assoc))) {
-            //   row_style = {
-            //     backgroundColor: bgcolor,
-            //     borderLeftStyle: 'solid',
-            //     borderLeftWidth: 'thick',
-            //     borderLeftColor: config.highlightColor,
-            //     fontStyle: 'italic'
-            //   };
-            // } else {
-            //   row_style = {
-            //     backgroundColor: bgcolor
-            //   };
-            // }
 
             let e_map = assoc.evidence_map;
             let e_types = [];
@@ -88,7 +83,6 @@ export default class AssociationsView extends React.Component {
                 e_types.push(elt);
               });
             });
-//            console.log("types: " , e_types);
 
             let found = false;
             e_types.forEach(type => {
@@ -100,9 +94,9 @@ export default class AssociationsView extends React.Component {
             if (found) {
               shown++;            
             return (
-              // <div className={'ontology-ribbon__assoc__row'} key={index} style={row_style} >
 
-              <div className={'ontology-ribbon__assoc__row' + ' ' + (shown %2 == 0 ? 'ontology-ribbon__assoc__row--even' : 'ontology-ribbon__assoc__row--odd') } key={index} >
+              // <div className={'ontology-ribbon__assoc__row ' + (shown %2 == 0 ? ' ontology-ribbon__assoc__row--even ' : ' ontology-ribbon__assoc__row--odd ') + (focus ? ' ontology-ribbon__assoc__row--focus ' : ' ontology-ribbon__assoc__row--focus ' ) } key={index} >
+              <div className={'ontology-ribbon__assoc__row' + (shown %2 == 0 ? ' ontology-ribbon__assoc__row--even' : ' ontology-ribbon__assoc__row--odd') } key={index}  style={row_style} >
                 <div className='ontology-ribbon__term-column' key={'term' + index}>
                   <AssociationTerm assoc={assoc} config={config} row={index} />
                 </div>
