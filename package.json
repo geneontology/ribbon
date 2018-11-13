@@ -44,7 +44,7 @@
     "react-spinners": "0.0.30",
     "react-url-query": "^1.4.0"
   },
-  "author": "Suzanna Lewis, Sibyl Gao, Nathan Dunn",
+  "author": "Suzanna Lewis, Laurent-Philippe Albou, Sibyl Gao, Nathan Dunn",
   "homepage": "https://github.com/geneontology/ribbon#readme",
   "license": "BSD-3-Clause",
   "repository": {

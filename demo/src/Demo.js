@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { addUrlProps, UrlQueryParamTypes } from 'react-url-query';
 import { GridLoader } from 'react-spinners';
 
-// import '../../src/index.css';
 import '../../src/main.scss'
 
 import Ribbon, { RibbonDataProvider } from '../../src/index';

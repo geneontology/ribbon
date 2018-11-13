@@ -94,8 +94,6 @@ export default class AssociationsView extends React.Component {
             if (found) {
               shown++;            
             return (
-
-              // <div className={'ontology-ribbon__assoc__row ' + (shown %2 == 0 ? ' ontology-ribbon__assoc__row--even ' : ' ontology-ribbon__assoc__row--odd ') + (focus ? ' ontology-ribbon__assoc__row--focus ' : ' ontology-ribbon__assoc__row--focus ' ) } key={index} >
               <div className={'ontology-ribbon__assoc__row' + (shown %2 == 0 ? ' ontology-ribbon__assoc__row--even' : ' ontology-ribbon__assoc__row--odd') } key={index}  style={row_style} >
                 <div className='ontology-ribbon__term-column' key={'term' + index}>
                   <AssociationTerm assoc={assoc} config={config} row={index} />
