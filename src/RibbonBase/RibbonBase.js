@@ -10,19 +10,23 @@ export default class RibbonBase extends React.Component {
   render() {
     let blocks = this.props.blocks;
     let currentblock = this.props.currentblock;
+    let currentEntity = this.props.currentEntity;
     return (
       <div className='ontology-ribbon__strip'> {
         blocks.map((slimitem) => {
           let active = (currentblock !== undefined &&
-                        slimitem.class_id === currentblock.class_id);
+                        slimitem.class_id === currentblock.class_id &&
+                        currentEntity !== undefined &&
+                        currentEntity === this.props.entity
+                      );
           return (
             <Block
               config={this.props.config}
               isActive={active}
               key={slimitem.class_id}
-              onClick={() => this.props.onSlimSelect(slimitem)}
-              onMouseEnter={() => this.props.onSlimEnter(slimitem)}
-              onMouseLeave={() => this.props.onSlimLeave(slimitem)}
+              onClick={() => this.props.onSlimSelect(this.props.entity, slimitem)}
+              onMouseEnter={() => this.props.onSlimEnter(this.props.entity, slimitem)}
+              onMouseLeave={() => this.props.onSlimLeave(this.props.entity, slimitem)}
               showSeparatorLabel={this.props.showSeparatorLabels}
               showSeparatorLabelPrefix={this.props.showSeparatorLabelPrefixes}
               showTitle={this.props.showBlockTitles}
@@ -30,6 +34,7 @@ export default class RibbonBase extends React.Component {
             />
           );
         }) }
+        <span class="ontology-ribbon__label">{this.props.title}</span>
       </div>
     );
   }

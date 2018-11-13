@@ -60,7 +60,10 @@ export default class AssociationsView extends React.Component {
         {
           assoc_list.map((assoc, index) => {
             var row_style;
-            let focus = (focalblock !== undefined && focalblock.uniqueIDs.includes(getKey(assoc)));
+            let focus = false;
+            if(focalblock && focalblock.uniqueIDs) {
+              focus = focalblock.uniqueIDs.includes(getKey(assoc));
+            }
             if (focus) {
               row_style = {
                 borderLeftStyle: 'solid',

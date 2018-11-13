@@ -5,6 +5,26 @@
     line-height: 1;
     height: 2rem;
 
+    &__label {
+        display: table-cell;
+        vertical-align: bottom;
+        padding-left: 10px;                
+    }
+
+    &__separator {
+        width: 10px;
+        font-size: .9rem;
+
+        &__all {
+            padding-right: 4px;
+        }
+
+        &__other {
+            padding-left: 4px;
+        }
+    }
+    
+ 
     &__header {
         display: flex;
         padding: 4px 8px;
@@ -144,7 +164,8 @@
     }
 
     &__strip {
-        margin-top: 15px;
+        // margin-top: 15px;
+        margin-top: 5px;
     }
 
     &__strip-label {
@@ -225,7 +246,7 @@
             }
 
             &--selected {
-                border: 2px solid $ribbon-strip-tile-border-color-hover;
+                border: 1px solid $ribbon-strip-tile-border-color-hover;
                 transform: translateY(1px);
                 color: white;
                 text-shadow: 1px 1px 5px black;
@@ -234,7 +255,7 @@
 
             &:hover {
                 cursor: pointer;
-                border: 2px solid $ribbon-strip-tile-border-color-hover;
+                border: 1px solid $ribbon-strip-tile-border-color-hover;
                 transform: translateY(1px);
                 z-index: 10;
             }
@@ -309,6 +330,7 @@
         line-height: 1em;
         color: #26393D;
         text-decoration: none;
+        margin-top: 10px;
 
         &__row {
             display: flex;

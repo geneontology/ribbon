@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import variables from '../sass/_variables.scss';
 
+import {SlimType} from './../dataHelpers';
+
 class Block extends React.Component {
   componentDidMount() {
     this.updateHeight();
@@ -27,11 +29,17 @@ class Block extends React.Component {
       const tileHoverString = (count > 0) ?
         count == 1 ? count + ' class ' : count + ' classes ' :
         'No annotations to ' + slimitem.class_label;
-      const blockTitleClass = `ontology-ribbon__block ${
+
+      let blockTitleClass = `ontology-ribbon__block ${
         count > 0 ? 'ontology-ribbon__block--match' : ''
       } ${
         this.props.isActive ? 'ontology-ribbon__block--selected' : ''
+      } ${
+        slimitem.type == SlimType.AllFromAspect ? 'ontology-ribbon__all-separator' : ''
+      } ${
+        slimitem.type == SlimType.Other ? 'ontology-ribbon__other-separator' : ''
       }`;
+      
       return (
         <div className={blockTitleClass} ref={ref => this.blockRef = ref}>
           { this.props.showTitle &&
@@ -63,7 +71,7 @@ class Block extends React.Component {
       return (
         <div className="ontology-ribbon__block">
           <div className="ontology-ribbon__tile-separator">
-            {showSeparatorLabel &&
+            {/* {showSeparatorLabel &&
               <div
                 className={'ontology-ribbon__strip-label ' + (this.props.isActive ? 'ontology-ribbon__strip-label--selected' : '') }
                 onClick={this.props.onClick}
@@ -73,7 +81,7 @@ class Block extends React.Component {
               >
                 {showSeparatorLabelPrefix && prefix} {slimitem.class_label}
               </div>
-            }
+            } */}
           </div>
         </div>
 

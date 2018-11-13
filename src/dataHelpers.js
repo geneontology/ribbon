@@ -4,6 +4,11 @@ import taxa from './data/taxa';
 import getKey from './assocKey';
 import variables from './sass/_variables.scss';
 
+// Enum for Slim Block Type - Item contains data, Other are for unmapped terms, Aspect is for the general class representation, AllFromAspects gather all the annotations for that aspect / category
+var SlimType = {"Item":1, "Other":2, "Aspect":3, "AllFromAspect":4}
+Object.freeze(SlimType)
+export { SlimType };
+
 
 function addEvidence(prev_assoc, assocItem, eco_list) {
   var evidence_group;
@@ -50,13 +55,18 @@ function addEvidence(prev_assoc, assocItem, eco_list) {
 }
 
 export function unpackSlimItems(results, subject, config) {
+  console.log("datahelpers::received(" + subject + "): " , results);
   let title = subject;
   let eco_list = new Map();
   let queryResponse = [];
   let other = false;
   let globalclass_ids = [];
   let seen_before_in_slim = new Map;
-  let slimlist = config.slimlist;
+
+  // list in config, for instance linking to agr file
+  // we need a deep copy, not a shallow copy for this function to be stateless (e.g. for multiple GPs)
+  var slimlist = JSON.parse(JSON.stringify(config.slimlist));
+
 
   let all_block = {
     'class_id': 'All annotations',
@@ -75,6 +85,7 @@ export function unpackSlimItems(results, subject, config) {
 
   var aspect;
   var aspect_ids;
+  let aspects = new Set();
 
   /*
   bulk of the annotations initialized first
@@ -86,15 +97,21 @@ export function unpackSlimItems(results, subject, config) {
     slimitem.color = '#fff';
 
     other = slimitem.class_label.toLowerCase().includes('other');
+    slimitem.type = other ? SlimType.Other : SlimType.Item;
 
     if (slimitem.class_id.toLowerCase().indexOf('aspect') >= 0) {
       if (aspect !== undefined) {
         aspect.uniqueAssocs.sort(sortAssociations);
       }
+      slimitem.aspect = slimitem.class_id.split(" ")[0];
+      slimitem.type = SlimType.Aspect;
       aspect = slimitem;
       aspect_ids = [];
       slimitem.no_data = false;
+      aspects.add(aspect);
     }
+
+    slimitem.aspect = aspect.aspect;
 
     queryResponse.forEach(function (response) {
       if (response.assocs.length > 0) {
@@ -193,11 +210,27 @@ export function unpackSlimItems(results, subject, config) {
   }
   // insert a block with all annotations at the very first position
   if (all_block.uniqueAssocs.length > 0) {
-    all_block.class_label = 'Annotated to ' + all_block.uniqueAssocs.length + ' classes';
+    all_block.class_label = 'All annotations';
     all_block.uniqueAssocs.sort(sortAssociations);
     all_block.color = variables.ribbon_strip_slim_saturation_color;
   }
   blocks.splice(0, 0, all_block);
+
+
+  // adding ALL <aspect> category at the beginning of each block of slims
+  for(let asp of aspects) {
+    let aspectPos = blocks.findIndex(elt => {
+      return elt.aspect == asp.aspect && elt.type == SlimType.Aspect;
+    });
+
+    let aspectItem = blocks[aspectPos];
+    let aspectAllItem = gatherAllAnnotations(aspectItem, blocks, config);
+
+    let otherPos = blocks.findIndex(elt => {
+      return elt.aspect == asp.aspect && elt.type == SlimType.Item;
+    });
+    blocks.splice(otherPos, 0, aspectAllItem);
+  }
 
   return {
     blocks: blocks,
@@ -205,6 +238,46 @@ export function unpackSlimItems(results, subject, config) {
     title: title
   };
 }
+
+/**
+ * Create a slim item regrouping all the annotations & IDs for a given aspect
+ * @param {*} aspectItem 
+ * @param {*} blocks 
+ */
+function gatherAllAnnotations(aspectItem, blocks, config) {
+  let slimitem = { };
+  slimitem.uniqueIDs = [];
+  slimitem.uniqueAssocs = [];
+  slimitem.color = '#fff';
+  slimitem.class_label = "all " + aspectItem.class_label;
+  slimitem.class_id = aspectItem.aspect + " all";
+  slimitem.aspect = aspectItem.aspect;
+  slimitem.type = SlimType.AllFromAspect;
+
+  let setIDs = new Set();
+  let setAssocs = new Set();
+  for(let block of blocks) {
+    if(block.aspect === aspectItem.aspect) {
+      for(let id of block.uniqueIDs) {
+        setIDs.add(id);
+      }
+
+      for(let id of block.uniqueAssocs) {
+        setAssocs.add(id);
+      }
+    }
+  }
+  slimitem.uniqueIDs = Array.from(setIDs);
+  slimitem.uniqueAssocs = Array.from(setAssocs);
+
+  if (slimitem.uniqueAssocs.length > 0) {
+    slimitem.uniqueAssocs.sort(sortAssociations);
+    slimitem.color = heatColor(slimitem.uniqueAssocs.length, config.annot_color, config.heatLevels);
+  }
+
+  return slimitem;
+}
+
 
 function sortAssociations(assoc_a, assoc_b) {
   let taxa_ids = Array.from(taxa.keys());

@@ -26,8 +26,28 @@ export default class RibbonDataProvider extends Component {
     self.fetchData(config, subject);
   }
 
-  fetchData(config, subject) {
-    let title = subject;
+  /**
+   * Create a Map<bioentity, [results]> based on a list of [results]
+   * @param {BioLink Slimmer Result} results 
+   */
+  divide(results) {
+    var map = new Map();
+    results.forEach(elt => {
+      let list = [];
+      if (map.has(elt.subject)) {
+        list = map.get(elt.subject);
+      } else {
+        map.set(elt.subject, list);
+      }
+      list.push(elt);
+    })
+    return map;
+  }
+
+  fetchData(config, subjects) {
+    console.log("fetching data for subjects: ", subjects);
+    let title = "N/A";
+    // let title = subjects;
     let dataError = null;
     let self = this;
 
@@ -42,37 +62,55 @@ export default class RibbonDataProvider extends Component {
       }
     });
 
+    // required to launch the correct BioLink query with several subjects
+    let joinSubjects = subjects;
+    if(Array.isArray(subjects)) {
+      joinSubjects = subjects.join("&subject=");
+    }
+    
     /*
       Todo: this will have to be fixed on the biolink-api /slimmer side, but meanwhile, we ensure that ALL annotations are loaded
     */
-    let query = bio_link + '&subject=' + subject + "&rows=-1";
+    let query = bio_link + '&subject=' + joinSubjects + "&rows=-1";
     console.log('Query is ' + query);
     axios.get(query)
       .then(function (results) {
-        const {eco_list, title, blocks} = unpackSlimItems([results], subject, config);
+        let map = self.divide(results.data);
+        // console.log("map: ", map);
+        let entities = [];
+        map.forEach((value, key) => {
+          let {eco_list, title, blocks} = unpackSlimItems([{data: value}], key, config);
+          console.log("RDP::blocks(" + title + "): " , blocks);
+          entities.push({ subject: key, blocks: blocks, eco_list: eco_list, title: title });
+        })
+        // console.log("entities: ", entities);
+
         self.setState({
-          blocks: blocks,
+          entities: entities,
+          // blocks: blocks,
           config: config,
           dataError: null,
-          eco_list: eco_list,
+          // eco_list: eco_list,
           fetching: false,
-          title: title,
+          // title: title,
         });
+
+        console.log("state: ", self.state);
       })
       .catch(function (error) {
         if (error.response) {
           dataError = ('Unable to get data for ' +
-                subject +
+                subjects +
                 ' because ' +
                 error.status);
         } else if (error.request) {
           dataError = ('Unable to get data for ' +
-                subject +
+                subjects +
                 ' because ' +
                 error.request);
         } else {
           dataError = ('Unable to get data for ' +
-              subject +
+              subjects +
                 ' because ' +
                 error.message);
         }
@@ -85,20 +123,22 @@ export default class RibbonDataProvider extends Component {
   }
 
   render() {
-    const {blocks, config, dataError, eco_list, fetching, title} = this.state;
+    const {entities, config, dataError, fetching} = this.state;
     let self = this;
+    console.log("ribbondataprovider::render: ", entities);
     return self.props.children({
-      blocks,
+      entities,
       config,
       dataError,
-      dataReceived: !fetching && !dataError,
-      eco_list,
-      title,
+      dataReceived: !fetching && !dataError
     });
   }
 }
 
 RibbonDataProvider.propTypes = {
   mode: PropTypes.string,
-  subject: PropTypes.string.isRequired,
+  subject: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array
+  ]).isRequired
 };
