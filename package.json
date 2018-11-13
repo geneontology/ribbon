@@ -1,6 +1,6 @@
 {
   "name": "@geneontology/ribbon",
-  "version": "1.5.7",
+  "version": "1.5.8",
   "scripts": {
     "build": "nwb build-react-component --copy-files",
     "clean": "nwb clean-module && npm clean-demo",
@@ -38,12 +38,13 @@
     "eslint": "^4.19.1",
     "history": "4.6.1",
     "nwb": "^0.23.0",
+    "nwb-sass": "^0.9.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-spinners": "0.0.30",
     "react-url-query": "^1.4.0"
   },
-  "author": "Suzanna Lewis, Sibyl Gao, Nathan Dunn",
+  "author": "Suzanna Lewis, Laurent-Philippe Albou, Sibyl Gao, Nathan Dunn",
   "homepage": "https://github.com/geneontology/ribbon#readme",
   "license": "BSD-3-Clause",
   "repository": {

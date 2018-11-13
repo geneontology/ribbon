@@ -9,6 +9,9 @@ import AssociationTerm from './AssociationTerm';
 import AssociationEvidence from './AssociationEvidence';
 import getKey from '../assocKey';
 
+import variables from '../sass/_variables.scss';
+
+
 export default class AssociationsView extends React.Component {
 
   state = {
@@ -42,7 +45,7 @@ export default class AssociationsView extends React.Component {
 
     return (
       <div className={'ontology-ribbon__assoc'}>
-        <div className='ontology-ribbon__header' style={{ backgroundColor: config.annot_color }} >
+        <div className='ontology-ribbon__header' >
           <div style={{ fontWeight: 'bold', width: '50%' }}>
               Term
           </div>
@@ -56,22 +59,20 @@ export default class AssociationsView extends React.Component {
         </div>
         {
           assoc_list.map((assoc, index) => {
-            var bgcolor = (shown % 2 === 0) ? config.evenRowColor : config.oddRowColor;
-
             var row_style;
-            if (focalblock !== undefined && focalblock.uniqueIDs.includes(getKey(assoc))) {
+            let focus = (focalblock !== undefined && focalblock.uniqueIDs.includes(getKey(assoc)));
+            if (focus) {
               row_style = {
-                backgroundColor: bgcolor,
                 borderLeftStyle: 'solid',
                 borderLeftWidth: 'thick',
-                borderLeftColor: config.highlightColor,
+                borderLeftColor: variables.secondary_color,
                 fontStyle: 'italic'
               };
             } else {
               row_style = {
-                backgroundColor: bgcolor
               };
             }
+
 
             let e_map = assoc.evidence_map;
             let e_types = [];
@@ -82,7 +83,6 @@ export default class AssociationsView extends React.Component {
                 e_types.push(elt);
               });
             });
-//            console.log("types: " , e_types);
 
             let found = false;
             e_types.forEach(type => {
@@ -94,7 +94,7 @@ export default class AssociationsView extends React.Component {
             if (found) {
               shown++;            
             return (
-              <div className={'ontology-ribbon__assoc-row'} key={index} style={row_style} >
+              <div className={'ontology-ribbon__assoc__row' + (shown %2 == 0 ? ' ontology-ribbon__assoc__row--even' : ' ontology-ribbon__assoc__row--odd') } key={index}  style={row_style} >
                 <div className='ontology-ribbon__term-column' key={'term' + index}>
                   <AssociationTerm assoc={assoc} config={config} row={index} />
                 </div>

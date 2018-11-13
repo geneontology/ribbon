@@ -1,0 +1,62 @@
+.evidence-qualifier {
+    text-decoration: none;
+    color: #2C3339;
+    font-style: italic;
+    font-size: .8rem;
+}
+
+.evidence-qualifier:hover {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.ribbon-link {
+    display: inline-block;
+    text-decoration: none;
+    color: $ribbon-link-color;
+    transition: all 0.2s;
+}
+
+.ribbon-link:hover {
+    cursor: pointer;
+    // font-weight: 700;
+    color: $ribbon-link-hover-color;
+    text-decoration: underline;
+    transform: translateX(3px);
+}
+
+.link {
+    display: inline;
+    text-decoration: none;
+    color: $ribbon-link-color;
+    overflow-wrap: break-word;
+
+    &:hover {
+        cursor: pointer;
+        color: $ribbon-link-hover-color;
+        text-decoration: underline;
+    }
+}
+
+
+.closeable {
+    color: lightgray;
+    transform: scale(1.2);
+    transition: all 0.2s ease
+}
+
+.closeable:hover {
+    font-weight: bold;
+    transform: scale(1.4)
+}
+
+.bright {
+    color: #FF1998;
+    transform: scale(1.2);
+    transition: all 0.2s ease
+}
+
+.bright:hover {
+    font-weight: bold;
+    transform: scale(1.4)
+}

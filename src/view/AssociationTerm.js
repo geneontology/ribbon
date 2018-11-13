@@ -33,7 +33,7 @@ class AssociationTerm extends React.Component {
     return (
       <div className='ontology-ribbon__content'>
         <a
-          className='go-link'
+          className='ribbon-link'
           href={query}
           rel="noopener noreferrer"
           target='_blank'

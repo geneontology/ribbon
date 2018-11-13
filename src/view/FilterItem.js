@@ -16,10 +16,10 @@ class FilterItem extends Component {
     const {filter, selected} = this.props;
 
     let classes = ['ontology-ribbon__radio'];
-    classes.push(selected ? "ontology-ribbon__radio-selected" : "ontology-ribbon__radio-unselected");
+    classes.push(selected ? "ontology-ribbon__radio--selected" : "ontology-ribbon__radio--unselected");
 
     return (
-      <div className="ontology-ribbon__filter_row" key={filter} >
+      <div className="ontology-ribbon__filter__row" key={filter} >
         <div
           className={classes.join(" ")}
           onClick = { () => this.props.filterHandler(this.props.filter, !this.props.selected) }
