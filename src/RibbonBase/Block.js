@@ -35,9 +35,9 @@ class Block extends React.Component {
       } ${
         this.props.isActive ? 'ontology-ribbon__block--selected' : ''
       } ${
-        slimitem.type == SlimType.AllFromAspect ? 'ontology-ribbon__all-separator' : ''
+        slimitem.type == SlimType.AllFromAspect ? 'ontology-ribbon__separator--all' : ''
       } ${
-        slimitem.type == SlimType.Other ? 'ontology-ribbon__other-separator' : ''
+        slimitem.type == SlimType.Other ? 'ontology-ribbon__separator--other' : ''
       }`;
       
       return (
@@ -48,7 +48,11 @@ class Block extends React.Component {
             </div>
           }
           <div
-            className={"ontology-ribbon__block__tile " + (this.props.isActive ? "ontology-ribbon__block__tile--selected" : "") }
+            className={"ontology-ribbon__block__tile " + 
+                      (this.props.isActive ? "ontology-ribbon__block__tile--selected " : " ")  + 
+                      (slimitem.type == SlimType.AllFromAspect ? "ontology-ribbon__block__tile__aspect--all " : " ") +
+                      (slimitem.type == SlimType.Other ? "ontology-ribbon__block__tile__aspect--other " : " ") 
+                    }
             onClick={this.props.onClick}
             onMouseEnter={this.props.onMouseEnter}
             onMouseLeave={this.props.onMouseLeave}

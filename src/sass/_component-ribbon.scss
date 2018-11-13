@@ -10,20 +10,6 @@
         vertical-align: bottom;
         padding-left: 10px;                
     }
-
-    &__separator {
-        width: 10px;
-        font-size: .9rem;
-
-        &__all {
-            padding-right: 4px;
-        }
-
-        &__other {
-            padding-left: 4px;
-        }
-    }
-    
  
     &__header {
         display: flex;
@@ -245,6 +231,14 @@
                 background-color: $ribbon-strip-slim-saturation-color;
             }
 
+            &__aspect--all {
+                border-radius: 15px 0px 0px 15px;             
+            }
+
+            &__aspect--other {
+                border-radius: 5px 0px 15px 0px;
+            }
+
             &--selected {
                 border: 1px solid $ribbon-strip-tile-border-color-hover;
                 transform: translateY(1px);
@@ -270,6 +264,19 @@
         height: 16px;
         width: $ribbon-strip-tile-separator-width;
     }
+
+    &__separator {
+        width: 10px;
+        font-size: .9rem;
+
+        &--all {
+            padding-right: 2px;
+        }
+
+        &--other {
+            padding-left: 2px;
+        }
+    }    
 
     &__filter {
         &__list {
