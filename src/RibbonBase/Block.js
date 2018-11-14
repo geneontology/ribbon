@@ -35,9 +35,9 @@ class Block extends React.Component {
       } ${
         this.props.isActive ? 'ontology-ribbon__block--selected' : ''
       } ${
-        slimitem.type == SlimType.AllFromAspect ? 'ontology-ribbon__separator--all' : ''
+        slimitem.type == SlimType.AllFromAspect ? 'ontology-ribbon__block__tile__separator--all' : ''
       } ${
-        slimitem.type == SlimType.Other ? 'ontology-ribbon__separator--other' : ''
+        slimitem.type == SlimType.Other ? 'ontology-ribbon__block__tile__separator--other' : ''
       }`;
       
       return (
@@ -50,6 +50,7 @@ class Block extends React.Component {
           <div
             className={"ontology-ribbon__block__tile " + 
                       (this.props.isActive ? "ontology-ribbon__block__tile--selected " : " ")  + 
+                      (slimitem.type == SlimType.All ? "ontology-ribbon__block__tile--all " : " ") +
                       (slimitem.type == SlimType.AllFromAspect ? "ontology-ribbon__block__tile__aspect--all " : " ") +
                       (slimitem.type == SlimType.Other ? "ontology-ribbon__block__tile__aspect--other " : " ") 
                     }
@@ -74,7 +75,7 @@ class Block extends React.Component {
               slimitem.uniqueAssocs.length + ' classes:';
       return (
         <div className="ontology-ribbon__block">
-          <div className="ontology-ribbon__tile-separator">
+          <div className="ontology-ribbon__block__tile__separator">
             {/* {showSeparatorLabel &&
               <div
                 className={'ontology-ribbon__strip-label ' + (this.props.isActive ? 'ontology-ribbon__strip-label--selected' : '') }

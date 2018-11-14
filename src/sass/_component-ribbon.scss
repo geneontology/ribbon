@@ -222,23 +222,44 @@
             margin-right: -1px;
             text-align: center;
             vertical-align: middle;
-            // text-shadow: -1px 0 silver, 0 1px silver, 1px 0 silver, 0 -1px silver;
             box-sizing: content-box;
             border-radius: $ribbon-strip-tile-border-radius;
             transition: all 0.2s;
 
-            &--all {
-                background-color: $ribbon-strip-slim-saturation-color;
+
+            &__separator {
+                position: relative;
+                margin-right: -1px;
+                vertical-align: middle;
+                height: 16px;
+                width: $ribbon-strip-tile-separator-width;
+        
+                &--all {
+                    padding-right: 2px;
+                }
+        
+                &--other {
+                    padding-left: 2px;
+                }                        
             }
 
+            // for the tile--all: ALL annotations for the entity
+            &--all {
+                background-color: $ribbon-strip-slim-saturation-color;
+                border-radius: 5px;
+            }
+
+            // for the tile--aspect-all: ALL annotations fora given ASPECT of the entity
             &__aspect--all {
                 border-radius: 15px 0px 0px 15px;             
             }
 
+            // for the tile--aspect--other: OTHER annotations that could not be mapped to a slim for the entity
             &__aspect--other {
                 border-radius: 5px 0px 15px 0px;
             }
 
+            // effect when the tile is selected
             &--selected {
                 border: 1px solid $ribbon-strip-tile-border-color-hover;
                 transform: translateY(1px);
@@ -247,6 +268,7 @@
                 z-index: 10;
             }
 
+            // effect when the tile is hovered upon
             &:hover {
                 cursor: pointer;
                 border: 1px solid $ribbon-strip-tile-border-color-hover;
@@ -257,26 +279,6 @@
 
     }
 
-    &__tile-separator {
-        position: relative;
-        margin-right: -1px;
-        vertical-align: middle;
-        height: 16px;
-        width: $ribbon-strip-tile-separator-width;
-    }
-
-    &__separator {
-        width: 10px;
-        font-size: .9rem;
-
-        &--all {
-            padding-right: 2px;
-        }
-
-        &--other {
-            padding-left: 2px;
-        }
-    }    
 
     &__filter {
         &__list {

@@ -4,8 +4,8 @@ import taxa from './data/taxa';
 import getKey from './assocKey';
 import variables from './sass/_variables.scss';
 
-// Enum for Slim Block Type - Item contains data, Other are for unmapped terms, Aspect is for the general class representation, AllFromAspects gather all the annotations for that aspect / category
-var SlimType = {"Item":1, "Other":2, "Aspect":3, "AllFromAspect":4}
+// Enum for Slim Block Type - All is all annotations, Item contains a single slim data, Other are for unmapped terms, Aspect is for the general class representation, AllFromAspects gather all the annotations for that aspect / category
+var SlimType = { "All": 0, "Item": 1, "Other": 2, "Aspect": 3, "AllFromAspect": 4 }
 Object.freeze(SlimType)
 export { SlimType };
 
@@ -213,6 +213,7 @@ export function unpackSlimItems(results, subject, config) {
     all_block.class_label = 'All annotations';
     all_block.uniqueAssocs.sort(sortAssociations);
     all_block.color = variables.ribbon_strip_slim_saturation_color;
+    all_block.type = SlimType.All;
   }
   blocks.splice(0, 0, all_block);
 
