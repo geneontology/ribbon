@@ -10,6 +10,29 @@ Object.freeze(SlimType)
 export { SlimType };
 
 
+const prefixToSpecies = {
+  'HGNC': 'Homo sapiens',  // human
+  'UniProtKB': 'Homo sapiens',  // human
+  'MGI': 'Mus musculus',  // mouse
+  'RGD': 'Rattus norvegicus',  // rat
+  'ZFIN': 'Danio rerio',  // zebrafish
+  'FB': 'Drosophila melanogaster',  // fly
+  'WB': 'Caenorhabditis elegans',  // worm
+  'SGD': 'Saccharomyces cerevisiae',  // yeast
+};
+
+export function getPrefixForId(inputId) {
+
+  let idSplit = inputId.split(':');
+
+  if (idSplit.length === 0)
+    return null;
+
+  return prefixToSpecies[idSplit[0]];
+
+}
+
+
 function addEvidence(prev_assoc, assocItem, eco_list) {
   var evidence_group;
   let evidence_id = assocItem.evidence;
@@ -55,13 +78,14 @@ function addEvidence(prev_assoc, assocItem, eco_list) {
 }
 
 export function unpackSlimItems(results, subject, config) {
-  console.log("datahelpers::received(" + subject + "): " , results);
+  // console.log("datahelpers::received(" + subject + "): " , results);
   let title = subject;
   let eco_list = new Map();
   let queryResponse = [];
   let other = false;
   let globalclass_ids = [];
   let seen_before_in_slim = new Map;
+  let taxon = "N/A";
 
   // list in config, for instance linking to agr file
   // we need a deep copy, not a shallow copy for this function to be stateless (e.g. for multiple GPs)
@@ -138,9 +162,14 @@ export function unpackSlimItems(results, subject, config) {
             */
             let subjectID = assocItem.subject.id.replace('FlyBase', 'FB');
             assocItem.subject.id = subjectID;
-            if (subjectID === subject) {
-              title = assocItem.subject.label + ' (' + assocItem.subject.id + ')';
-            }
+
+            // I don't think we need to filter that as then some slim item / entity won't have a label
+            // if (subjectID === subject) {
+            //   title = assocItem.subject.label + ' (' + assocItem.subject.id + ')';
+            // }
+            title = assocItem.subject.label;
+
+            taxon = assocItem.subject.taxon.id;
 
             /* any given association may appear under >1 slim,
               but we only want to record the evidence for that assoc once
@@ -236,7 +265,8 @@ export function unpackSlimItems(results, subject, config) {
   return {
     blocks: blocks,
     eco_list: eco_list,
-    title: title
+    title: title,
+    taxon: taxon
   };
 }
 

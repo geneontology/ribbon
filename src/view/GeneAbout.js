@@ -5,27 +5,7 @@ import PropTypes from 'prop-types';
 import SpeciesIcon from './SpeciesIcon';
 import FaExternalLink from 'react-icons/lib/fa/external-link';
 
-const prefixToSpecies = {
-  'HGNC': 'Homo sapiens',  // human
-  'UniProtKB': 'Homo sapiens',  // human
-  'MGI': 'Mus musculus',  // mouse
-  'RGD': 'Rattus norvegicus',  // rat
-  'ZFIN': 'Danio rerio',  // zebrafish
-  'FB': 'Drosophila melanogaster',  // fly
-  'WB': 'Caenorhabditis elegans',  // worm
-  'SGD': 'Saccharomyces cerevisiae',  // yeast
-};
-
-function getPrefixForId(inputId) {
-
-  let idSplit = inputId.split(':');
-
-  if (idSplit.length === 0)
-    return null;
-
-  return prefixToSpecies[idSplit[0]];
-
-}
+import {getPrefixForId} from './../dataHelpers';
 
 export default class GeneAbout extends React.Component {
 

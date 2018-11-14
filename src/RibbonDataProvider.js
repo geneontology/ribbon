@@ -79,9 +79,9 @@ export default class RibbonDataProvider extends Component {
         // console.log("map: ", map);
         let entities = [];
         map.forEach((value, key) => {
-          let {eco_list, title, blocks} = unpackSlimItems([{data: value}], key, config);
-          console.log("RDP::blocks(" + title + "): " , blocks);
-          entities.push({ subject: key, blocks: blocks, eco_list: eco_list, title: title });
+          let {eco_list, title, blocks, taxon} = unpackSlimItems([{data: value}], key, config);
+          // console.log("RDP::blocks(" + title + "): " , blocks);
+          entities.push({ subject: key, taxon: taxon, blocks: blocks, eco_list: eco_list, title: title });
         })
         // console.log("entities: ", entities);
 
@@ -125,7 +125,7 @@ export default class RibbonDataProvider extends Component {
   render() {
     const {entities, config, dataError, fetching} = this.state;
     let self = this;
-    console.log("ribbondataprovider::render: ", entities);
+    // console.log("ribbondataprovider::render: ", entities);
     return self.props.children({
       entities,
       config,

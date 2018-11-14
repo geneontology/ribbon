@@ -100,7 +100,7 @@ export default class Ribbon extends Component {
 
   render() {
     const config = this.props.config;
-    console.log("RibbonBase::render ", this.props.entities);
+    // console.log("RibbonBase::render ", this.props.entities);
     return (
       <div>
         
