@@ -342,24 +342,24 @@ export function heatColor(associations_count, hexColor, heatLevels) {
   if (associations_count === 0)
     return '#fff';
 
-  let rgb = hexColor.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) => '#' + r + r + g + g + b + b)
+  let targetColor = hexColor.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) => '#' + r + r + g + g + b + b)
     .substring(1).match(/.{2}/g)
     .map(x => parseInt(x, 16));
 
   let blockColor = [];     // [r,g,b]
-  for (let i = 0; i < 3; i++) {
-    // logarithmic heatmap (with cutoff)
-    if (associations_count < heatLevels) {
-      // instead of just (256-rgb[i])/(Math.pow(2,associations_count)),
-      // which divides space from 'white' (255) down to target color level in halves,
-      // this starts at 3/4
-      const heatCoef = 3 * (256 - rgb[i]) / (Math.pow(2, associations_count + 1));
-      blockColor[i] = Math.round(rgb[i] + heatCoef);
-    }
-    else {
-      blockColor[i] = rgb[i];
-    }
-  }
+
+  // when no annotation
+  let initColor = [255, 255, 255];
+
+  // this is a linear version for interpolation
+  // let fraction = Math.min(associations_count, heatLevels) / heatLevels;
+
+  // this is the log version for interpolation (better highlight the most annotated classes)
+  let fraction = Math.min(10 * Math.log(associations_count + 1), heatLevels) / heatLevels;
+  blockColor[0] = initColor[0] + fraction * (targetColor[0] - initColor[0]);
+  blockColor[1] = initColor[1] + fraction * (targetColor[1] - initColor[1]);
+  blockColor[2] = initColor[2] + fraction * (targetColor[2] - initColor[2]);
+
   return 'rgb(' + blockColor[0] + ',' + blockColor[1] + ',' + blockColor[2] + ')';
 }
 
