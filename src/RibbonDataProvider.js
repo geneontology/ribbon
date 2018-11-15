@@ -76,23 +76,17 @@ export default class RibbonDataProvider extends Component {
     axios.get(query)
       .then(function (results) {
         let map = self.divide(results.data);
-        // console.log("map: ", map);
         let entities = [];
         map.forEach((value, key) => {
-          let {eco_list, title, blocks, taxon} = unpackSlimItems([{data: value}], key, config);
-          // console.log("RDP::blocks(" + title + "): " , blocks);
-          entities.push({ subject: key, taxon: taxon, blocks: blocks, eco_list: eco_list, title: title });
+          let {filters, title, blocks, taxon} = unpackSlimItems([{data: value}], key, config);
+          entities.push({ subject: key, taxon: taxon, blocks: blocks, filters: filters, title: title });
         })
-        // console.log("entities: ", entities);
 
         self.setState({
           entities: entities,
-          // blocks: blocks,
           config: config,
           dataError: null,
-          // eco_list: eco_list,
           fetching: false,
-          // title: title,
         });
 
         console.log("state: ", self.state);

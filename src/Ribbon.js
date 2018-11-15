@@ -100,7 +100,18 @@ export default class Ribbon extends Component {
 
   render() {
     const config = this.props.config;
-    // console.log("RibbonBase::render ", this.props.entities);
+
+    // Building the filters Map for ALL entities
+    const filters = new Map();
+    for(let entity of this.props.entities) {
+      for(let [filter, value] of entity.filters) {
+        if(!filters.has(filter)) {
+          filters.set(filter, true);
+        }
+      }
+    }
+    console.log("all filters: ", filters);
+
     return (
       <div>
         
@@ -144,7 +155,7 @@ export default class Ribbon extends Component {
                 blocks={this.state.currentEntity.blocks}
                 config={config}
                 currentblock={this.state.currentblock}
-                eco_list={this.state.currentEntity.eco_list}
+                filters={filters}
                 focalblock={this.state.focalblock}
               />
             </CSSTransition> :
@@ -159,10 +170,6 @@ export default class Ribbon extends Component {
 
 Ribbon.propTypes = {
   entities : PropTypes.array.isRequired,
-  // blocks: PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
-  // eco_list: PropTypes.object,
   showing: PropTypes.bool.isRequired,
-  // subject: PropTypes.string,
-  // title: PropTypes.string,
 };

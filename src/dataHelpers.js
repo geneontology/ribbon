@@ -33,13 +33,13 @@ export function getPrefixForId(inputId) {
 }
 
 
-function addEvidence(prev_assoc, assocItem, eco_list) {
+function addEvidence(prev_assoc, assocItem, filters) {
   var evidence_group;
   let evidence_id = assocItem.evidence;
   /* hack until issue ##182 is resolved in ontobio */
   if (assocItem.reference !== undefined) {
-    if (!eco_list.has(assocItem.evidence_type)) {
-      eco_list.set(assocItem.evidence_type, true);
+    if (!filters.has(assocItem.evidence_type)) {
+      filters.set(assocItem.evidence_type, true);
     }
     let withs = assocItem.evidence_with !== undefined ? assocItem.evidence_with : [];
     let quals = assocItem.qualifier !== undefined ? assocItem.qualifier : [];
@@ -52,8 +52,8 @@ function addEvidence(prev_assoc, assocItem, eco_list) {
       evidence_refs: filterDuplicateReferences(assocItem.reference), // this is an array
     };
   } else {
-    if (!eco_list.has(assocItem.evidence_label[0])) {
-      eco_list.set(assocItem.evidence_label[0], true);
+    if (!filters.has(assocItem.evidence_label[0])) {
+      filters.set(assocItem.evidence_label[0], true);
     }
     evidence_group = {
       evidence_id: evidence_id, // just for convenience
@@ -80,7 +80,7 @@ function addEvidence(prev_assoc, assocItem, eco_list) {
 export function unpackSlimItems(results, subject, config) {
   // console.log("datahelpers::received(" + subject + "): " , results);
   let title = subject;
-  let eco_list = new Map();
+  let filters = new Map();
   let queryResponse = [];
   let other = false;
   let globalclass_ids = [];
@@ -209,7 +209,7 @@ export function unpackSlimItems(results, subject, config) {
               }
               if (need2add_evidence) {
                 assocItem.evidence_map = new Map();
-                addEvidence(assocItem, assocItem, eco_list);
+                addEvidence(assocItem, assocItem, filters);
               } else {
                 let prev_assoc = all_block.uniqueAssocs[globalclass_ids.indexOf(key)];
                 assocItem.evidence_map = prev_assoc.evidence_map;
@@ -218,7 +218,7 @@ export function unpackSlimItems(results, subject, config) {
             } else {
               if (need2add_evidence) {
                 let prev_assoc = all_block.uniqueAssocs[globalclass_ids.indexOf(key)];
-                addEvidence(prev_assoc, assocItem, eco_list);
+                addEvidence(prev_assoc, assocItem, filters);
               }
               return false;
             }
@@ -264,7 +264,7 @@ export function unpackSlimItems(results, subject, config) {
 
   return {
     blocks: blocks,
-    eco_list: eco_list,
+    filters: filters,
     title: title,
     taxon: taxon
   };
