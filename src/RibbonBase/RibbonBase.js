@@ -29,7 +29,7 @@ export default class RibbonBase extends React.Component {
               key={slimitem.class_id}
               onClick={() => this.props.onSlimSelect(this.props.entity, slimitem)}
               onMouseEnter={() => this.props.onSlimEnter(this.props.entity, slimitem)}
-              onMouseLeave={() => this.props.onSlimLeave(this.props.entity, slimitem)}
+              onMouseLeave={() => this.props.onSlimLeave()}
               showSeparatorLabel={this.props.showSeparatorLabels}
               showSeparatorLabelPrefix={this.props.showSeparatorLabelPrefixes}
               showTitle={this.props.showBlockTitles}

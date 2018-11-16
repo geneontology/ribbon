@@ -19,6 +19,7 @@ export default class Ribbon extends Component {
       currentblock: undefined,
       fetching: false,
       focalblock: undefined,
+      focalEntity: undefined
     };
   }
 
@@ -27,17 +28,19 @@ export default class Ribbon extends Component {
     // this.patchHGNC(this.props.subject, this.props.title);
   }
 
-  handleSlimEnter (block) {
+  handleSlimEnter (entity, block) {
     let self = this;
     self.setState({
-      focalblock: block,
+      focalEntity: entity,
+      focalblock: block
     });
   }
 
   handleSlimLeave () {
     let self = this;
     self.setState({
-      focalblock: undefined,
+      focalEntity: undefined,
+      focalblock: undefined
     });
   }
 
@@ -110,7 +113,6 @@ export default class Ribbon extends Component {
         }
       }
     }
-    console.log("all filters: ", filters);
 
     return (
       <div>
@@ -124,7 +126,7 @@ export default class Ribbon extends Component {
               config={config}
               currentEntity={this.state.currentEntity}
               currentblock={this.state.currentblock}
-              onSlimEnter={(block) => this.handleSlimEnter(block)}
+              onSlimEnter={(entity, block) => this.handleSlimEnter(entity, block)}
               onSlimLeave={() => this.handleSlimLeave()}
               onSlimSelect={(entity, block) => this.handleSlimSelect(entity, block)}
               showBlockTitles={index === 0}

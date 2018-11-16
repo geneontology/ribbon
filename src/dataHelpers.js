@@ -111,6 +111,8 @@ export function unpackSlimItems(results, subject, config) {
   var aspect_ids;
   let aspects = new Set();
 
+
+  console.log("*************** STARTING UNPACK ***************");
   /*
   bulk of the annotations initialized first
   */
@@ -138,11 +140,16 @@ export function unpackSlimItems(results, subject, config) {
     slimitem.aspect = aspect.aspect;
 
     queryResponse.forEach(function (response) {
+
       if (response.assocs.length > 0) {
         // these are all the assocs under this slim class
         // we don't want the association map, just those for this slim
         if (response.slim === slimitem.class_id) {
+          if(slimitem.type == SlimType.Other) {
+            console.log("*** SLIMITEM: ", slimitem, " has ANNOTATIONS: ", response.assocs);
+          }
           slimitem.uniqueAssocs = response.assocs.filter(function (assocItem) {
+
             // skip noninformative annotations like protein binding
             for (let i = response.assocs.length - 1; i >= 0; i--) {
               let assoc = response.assocs[i];
@@ -150,16 +157,14 @@ export function unpackSlimItems(results, subject, config) {
                 return false;
               }
             }
-            /*
-              First a hack to accommodate swapping out HGNC ids for UniProtKB ids
-            */
+
+            // First a hack to accommodate swapping out HGNC ids for UniProtKB ids
             if (subject.startsWith('HGNC') && assocItem.subject.taxon.id === 'NCBITaxon:9606') {
               assocItem.subject.id = subject; // Clobber the UniProtKB id bioLink returns
             }
-            /*
-              Then another interim hack because of differences in resource naming
-              e.g. FlyBase === FB
-            */
+
+            // Then another interim hack because of differences in resource naming
+            // e.g. FlyBase === FB
             let subjectID = assocItem.subject.id.replace('FlyBase', 'FB');
             assocItem.subject.id = subjectID;
 
@@ -171,10 +176,9 @@ export function unpackSlimItems(results, subject, config) {
 
             taxon = assocItem.subject.taxon.id;
 
-            /* any given association may appear under >1 slim,
-              but we only want to record the evidence for that assoc once
-              so keep track of whether it's already been seen in another slim here
-            */
+            // any given association may appear under >1 slim,
+            // but we only want to record the evidence for that assoc once
+            // so keep track of whether it's already been seen in another slim here            
             var need2add_evidence;
             let key = getKey(assocItem);
             let earlier_slim = seen_before_in_slim.get(key);
@@ -184,20 +188,22 @@ export function unpackSlimItems(results, subject, config) {
             } else {
               need2add_evidence = (earlier_slim === slimitem);
             }
+
             if (!slimitem.uniqueIDs.includes(key)) {
               if (assocItem.evidence_type === 'ND') {
                 aspect.no_data = true;
                 return false;
               }
-              /*
-                The test below is assuming that the 'other' block is always at
-                the end of the strip for a particular aspect
-              */
+
+              // The test below is assuming that the 'other' block is always at
+              // the end of the strip for a particular aspect
               if (!other || (other && !aspect_ids.includes(key))) {
                 slimitem.uniqueIDs.push(key);
               } else {
+                // console.log("yeah this is the status of this other slim: ", slimitem , " and aspect_ids: ", aspect_ids);
                 return false;
               }
+
               if (!globalclass_ids.includes(key) && !aspect.no_data) {
                 globalclass_ids.push(key);
                 all_block.uniqueAssocs.push(assocItem);
@@ -215,6 +221,7 @@ export function unpackSlimItems(results, subject, config) {
                 assocItem.evidence_map = prev_assoc.evidence_map;
               }
               return true;
+              
             } else {
               if (need2add_evidence) {
                 let prev_assoc = all_block.uniqueAssocs[globalclass_ids.indexOf(key)];
@@ -223,14 +230,17 @@ export function unpackSlimItems(results, subject, config) {
               return false;
             }
           });
+
           if (slimitem.uniqueAssocs.length > 0) {
             slimitem.uniqueAssocs.sort(sortAssociations);
-            //          slimitem.uniqueAssocs = subjectFirst(subject, slimitem.uniqueAssocs);
             slimitem.color = heatColor(slimitem.uniqueAssocs.length, config.annot_color, config.heatLevels);
           }
         }
       }
     });
+    if(slimitem.type == SlimType.Other) {
+      console.log(slimitem);
+    }
     return slimitem;
   });
 
@@ -280,7 +290,7 @@ function gatherAllAnnotations(aspectItem, blocks, config) {
   slimitem.uniqueIDs = [];
   slimitem.uniqueAssocs = [];
   slimitem.color = '#fff';
-  slimitem.class_label = "all " + aspectItem.class_label;
+  slimitem.class_label = "All " + aspectItem.class_label.toLowerCase();
   slimitem.class_id = aspectItem.aspect + " all";
   slimitem.aspect = aspectItem.aspect;
   slimitem.type = SlimType.AllFromAspect;
