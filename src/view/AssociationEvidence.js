@@ -73,6 +73,7 @@ class AssociationEvidence extends Component {
         let suffix = (w_index < with_max) ? ', ' : '';
         let link = with_id.startsWith('MGI:MGI:') ? with_id.substr(4) : with_id;
         var url;
+
         if (with_id.match(/^(WB:WBVar).*/)) {
           url = `http://www.wormbase.org/get?name=${with_id.split(':')[1]}&class=Variation`;
         } else {
@@ -86,6 +87,7 @@ class AssociationEvidence extends Component {
             <div className="ontology-ribbon__content" key={base_key + '.' + w_index + '.with'}>
               <a className='link' href={url}>{link}{suffix}</a>
             </div>);
+
         } else if (w_index === with_max && this.isWithExpanded(eco_group.evidence_with)) {
           suffix = ' ';
           with_set.push(
@@ -96,6 +98,7 @@ class AssociationEvidence extends Component {
               {suffix}
               <FaCaretUp className='bright link' onClick={() => { this.onExpandCollapseWith(eco_group.evidence_with); }} />
             </div>);
+            
         } else if (w_index === this.rollupWithIndex && !this.isWithExpanded(eco_group.evidence_with)) {
           suffix = ' ... ';
           with_set.push(

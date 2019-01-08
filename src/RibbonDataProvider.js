@@ -1,10 +1,10 @@
 'use strict';
 
-import {Component} from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import {getConfig} from './config';
-import {unpackSlimItems} from './dataHelpers';
+import { getConfig } from './config';
+import { unpackSlimItems, createSlims } from './dataHelpers';
 
 export default class RibbonDataProvider extends Component {
 
@@ -16,14 +16,21 @@ export default class RibbonDataProvider extends Component {
   }
 
   componentDidMount() {
-    const {subject, mode} = this.props;
+    const { subject, mode } = this.props;
     let self = this;
 
-    self.setState({
-      fetching: true,
-    });
     let config = getConfig(mode);
-    self.fetchData(config, subject);
+    self.fetchData(config, subject)
+    .then(results => {
+      self.aggregateData(config, results)
+    })
+    .catch(error => {
+      this.setState({
+        fetching: false,
+        dataError: error
+      });
+      console.error(error);
+    })
   }
 
   /**
@@ -46,14 +53,13 @@ export default class RibbonDataProvider extends Component {
 
   fetchData(config, subjects) {
     console.log("fetching data for subjects: ", subjects);
-    let title = "N/A";
-    // let title = subjects;
-    let dataError = null;
-    let self = this;
+    this.setState({
+      fetching: true,
+    });
 
-    /*
-      Build up the query string by adding all the GO ids
-    */
+    let dataError = null;
+
+    // Build up the query string by adding all the GO ids
     let slimlist = config.slimlist;
     let bio_link = config.bio_link;
     slimlist.forEach(function (slimitem) {
@@ -64,60 +70,55 @@ export default class RibbonDataProvider extends Component {
 
     // required to launch the correct BioLink query with several subjects
     let joinSubjects = subjects;
-    if(Array.isArray(subjects)) {
+    if (Array.isArray(subjects)) {
       joinSubjects = subjects.join("&subject=");
     }
-    
-    /*
-      Todo: this will have to be fixed on the biolink-api /slimmer side, but meanwhile, we ensure that ALL annotations are loaded
-    */
+
+    // Todo: this will have to be fixed on the biolink-api /slimmer side, but meanwhile, we ensure that ALL annotations are loaded
     let query = bio_link + '&subject=' + joinSubjects + "&rows=-1";
     console.log('Query is ' + query);
-    axios.get(query)
-      .then(function (results) {
-        let map = self.divide(results.data);
-        let entities = [];
-        map.forEach((value, key) => {
-          let {filters, title, blocks, taxon} = unpackSlimItems([{data: value}], key, config);
-          entities.push({ subject: key, taxon: taxon, blocks: blocks, filters: filters, title: title });
-        })
+    return axios.get(query);
+  }
 
-        self.setState({
+  aggregateData(config, results) {
+    let map = this.divide(results.data);
+    let entities = [];
+
+    // for each entity retrieved
+    map.forEach((value, subject) => {
+
+      // retrieve association and map terms
+      unpackSlimItems([{ data: value }], subject, config)
+      .then(result => {
+        const { associations, termAspect } = result;
+        console.log("Promise retrieved: ", associations, termAspect);
+
+        let { filters, title, blocks, taxon } = createSlims(subject, config, associations, termAspect);
+        entities.push({ subject: subject, taxon: taxon, blocks: blocks, filters: filters, title: title });
+      })
+      .catch(error => {
+        this.setState({
+          dataError: error,
+          fetching: false,
+        });
+        console.error(error);
+      })
+      .finally(() => {
+        this.setState({
           entities: entities,
           config: config,
           dataError: null,
           fetching: false,
         });
-
         console.log("state: ", self.state);
-      })
-      .catch(function (error) {
-        if (error.response) {
-          dataError = ('Unable to get data for ' +
-                subjects +
-                ' because ' +
-                error.status);
-        } else if (error.request) {
-          dataError = ('Unable to get data for ' +
-                subjects +
-                ' because ' +
-                error.request);
-        } else {
-          dataError = ('Unable to get data for ' +
-              subjects +
-                ' because ' +
-                error.message);
-        }
-        self.setState({
-          fetching: false,
-          title: title,
-          dataError: dataError
-        });
       });
+
+    })
+
   }
 
   render() {
-    const {entities, config, dataError, fetching} = this.state;
+    const { entities, config, dataError, fetching } = this.state;
     let self = this;
     // console.log("ribbondataprovider::render: ", entities);
     return self.props.children({

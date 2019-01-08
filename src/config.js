@@ -6,8 +6,7 @@ import AGR_LIST from './data/agr';
 import getGOLinkTarget from './customized/GOurl';
 import getPhenoLinkTarget from './customized/HPOurl';
 
-// const BIOLINK = 'https://api.monarchinitiative.org/api/';
-const BIOLINK = 'http://localhost:5000/api/';
+const BIOLINK = 'https://api.monarchinitiative.org/api/';
 
 
 export function getConfig(mode) {

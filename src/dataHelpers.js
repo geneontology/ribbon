@@ -4,6 +4,9 @@ import taxa from './data/taxa';
 import getKey from './assocKey';
 import variables from './sass/_variables.scss';
 
+import axios from 'axios';
+
+
 // Enum for Slim Block Type - All is all annotations, Item contains a single slim data, Other are for unmapped terms, Aspect is for the general class representation, AllFromAspects gather all the annotations for that aspect / category
 var SlimType = { "All": 0, "Item": 1, "Other": 2, "Aspect": 3, "AllFromAspect": 4 }
 Object.freeze(SlimType)
@@ -17,6 +20,7 @@ const prefixToSpecies = {
   'RGD': 'Rattus norvegicus',  // rat
   'ZFIN': 'Danio rerio',  // zebrafish
   'FB': 'Drosophila melanogaster',  // fly
+  'FlyBase': 'Drosophila melanogaster',  // fly
   'WB': 'Caenorhabditis elegans',  // worm
   'SGD': 'Saccharomyces cerevisiae',  // yeast
 };
@@ -31,6 +35,8 @@ export function getPrefixForId(inputId) {
   return prefixToSpecies[idSplit[0]];
 
 }
+
+const irrelevantTerms = ["GO:0005515", "GO:0008022", "GO:0003682", "GO:0044877", "GO:0046982"];
 
 
 function addEvidence(prev_assoc, assocItem, filters) {
@@ -78,10 +84,47 @@ function addEvidence(prev_assoc, assocItem, filters) {
 }
 
 export function unpackSlimItems(results, subject, config) {
-  // console.log("datahelpers::received(" + subject + "): " , results);
+
+  return new Promise(function (resolve, reject) {
+
+    let associations = [];
+    results.forEach(function (result) {
+      if (result.data.length > 0) {
+        // merge these assocs into the overall response to this query
+        Array.prototype.push.apply(associations, result.data);
+      }
+    });
+
+    let terms = new Set();
+    associations.forEach(elt => {
+      terms.add(elt.slim);
+      elt.assocs.forEach(elt2 => {
+        terms.add(elt2.object.id);
+      });
+    })
+
+    // Temporary fix with an API able to send back the aspects of a list of GO terms
+    let url = "https://ksmod2v1qk.execute-api.us-west-1.amazonaws.com/prod/function?ids=" + Array.from(terms).join(",");
+    let termAspect = new Map();
+    axios.get(url)
+    .then(function (response) {
+      Object.keys(response.data).forEach(elt => {
+        termAspect.set(elt, response.data[elt]);
+      })
+      console.log("Term Aspect Mapping: ", termAspect);
+      resolve({ associations: associations, termAspect: termAspect });
+    })
+    .catch(function (error) {
+      console.error(error);
+      reject(error);
+    })
+  });
+
+}
+
+export function createSlims(subject, config, associations, termAspect) {
   let title = subject;
   let filters = new Map();
-  let queryResponse = [];
   let other = false;
   let globalclass_ids = [];
   let seen_before_in_slim = new Map;
@@ -99,23 +142,13 @@ export function unpackSlimItems(results, subject, config) {
     'uniqueIDs': [],
     'color': config.highlightColor,
   };
-
-  results.forEach(function (result) {
-    if (result.data.length > 0) {
-      // merge these assocs into the overall response to this query
-      Array.prototype.push.apply(queryResponse, result.data);
-    }
-  });
-
   var aspect;
   var aspect_ids;
   let aspects = new Set();
 
+  let slimterm;
 
-  console.log("*************** STARTING UNPACK ***************");
-  /*
-  bulk of the annotations initialized first
-  */
+  // 1 - we travel through all slims individually
   const blocks = slimlist.map(function (slimitem) {
     // set up uniques and color too
     slimitem.uniqueIDs = [];
@@ -139,107 +172,92 @@ export function unpackSlimItems(results, subject, config) {
 
     slimitem.aspect = aspect.aspect;
 
-    queryResponse.forEach(function (response) {
+    // getting the associations for that slim
+    let slim_associations = associations.find(elt => {
+      return elt.slim == slimitem.class_id;
+    })
 
-      if (response.assocs.length > 0) {
-        // these are all the assocs under this slim class
-        // we don't want the association map, just those for this slim
-        if (response.slim === slimitem.class_id) {
-          if(slimitem.type == SlimType.Other) {
-            console.log("*** SLIMITEM: ", slimitem, " has ANNOTATIONS: ", response.assocs);
+    // no association found
+    if (!slim_associations) return slimitem;
+
+    console.log(slimitem , slim_associations)    
+
+    // check all associations for that slim
+    for (let assocItem of slim_associations.assocs) {
+      // If No Data, do nothing
+      if (assocItem.evidence_type === 'ND') continue;
+
+      // If term is irrelevant, do nothing
+      if (irrelevantTerms.includes(assocItem.object.id)) continue;
+
+      // If term is not from the same aspect as this section (e.g. through trans-aspect relationships), do not include
+      if (termAspect && termAspect.get(slimitem.aspect) != termAspect.get(assocItem.object.id)) continue;
+
+      // Temp fix of FlyBase ID
+      let subjectID = assocItem.subject.id.replace('FlyBase', 'FB');
+      assocItem.subject.id = subjectID;
+
+      // Actually needed only once
+      title = assocItem.subject.label;
+      taxon = assocItem.subject.taxon.id;
+
+      // create unique key (subject - annotation)
+      let key = getKey(assocItem);
+
+      // if this key has never been seen, keep it and add this assoc to all_block
+      if (!globalclass_ids.includes(key)) {
+        globalclass_ids.push(key);
+        all_block.uniqueAssocs.push(assocItem);
+      }
+
+      var need2add_evidence;
+      let earlier_slim = seen_before_in_slim.get(key);
+      if (earlier_slim === undefined) {
+        seen_before_in_slim.set(key, slimitem);
+        need2add_evidence = true;
+      } else {
+        need2add_evidence = (earlier_slim === slimitem);
+      }
+
+      // if term not yet seen, add it to the slim
+      if (!slimitem.uniqueIDs.includes(key)) {
+        if (slimitem.type == SlimType.Other) {
+          if (!aspect_ids.includes(key)) {
+            slimitem.uniqueIDs.push(key);
+            slimitem.uniqueAssocs.push(assocItem);
           }
-          slimitem.uniqueAssocs = response.assocs.filter(function (assocItem) {
 
-            // skip noninformative annotations like protein binding
-            for (let i = response.assocs.length - 1; i >= 0; i--) {
-              let assoc = response.assocs[i];
-              if (assoc.object.id === 'GO:0005515') {
-                return false;
-              }
-            }
-
-            // First a hack to accommodate swapping out HGNC ids for UniProtKB ids
-            if (subject.startsWith('HGNC') && assocItem.subject.taxon.id === 'NCBITaxon:9606') {
-              assocItem.subject.id = subject; // Clobber the UniProtKB id bioLink returns
-            }
-
-            // Then another interim hack because of differences in resource naming
-            // e.g. FlyBase === FB
-            let subjectID = assocItem.subject.id.replace('FlyBase', 'FB');
-            assocItem.subject.id = subjectID;
-
-            // I don't think we need to filter that as then some slim item / entity won't have a label
-            // if (subjectID === subject) {
-            //   title = assocItem.subject.label + ' (' + assocItem.subject.id + ')';
-            // }
-            title = assocItem.subject.label;
-
-            taxon = assocItem.subject.taxon.id;
-
-            // any given association may appear under >1 slim,
-            // but we only want to record the evidence for that assoc once
-            // so keep track of whether it's already been seen in another slim here            
-            var need2add_evidence;
-            let key = getKey(assocItem);
-            let earlier_slim = seen_before_in_slim.get(key);
-            if (earlier_slim === undefined) {
-              seen_before_in_slim.set(key, slimitem);
-              need2add_evidence = true;
-            } else {
-              need2add_evidence = (earlier_slim === slimitem);
-            }
-
-            if (!slimitem.uniqueIDs.includes(key)) {
-              if (assocItem.evidence_type === 'ND') {
-                aspect.no_data = true;
-                return false;
-              }
-
-              // The test below is assuming that the 'other' block is always at
-              // the end of the strip for a particular aspect
-              if (!other || (other && !aspect_ids.includes(key))) {
-                slimitem.uniqueIDs.push(key);
-              } else {
-                // console.log("yeah this is the status of this other slim: ", slimitem , " and aspect_ids: ", aspect_ids);
-                return false;
-              }
-
-              if (!globalclass_ids.includes(key) && !aspect.no_data) {
-                globalclass_ids.push(key);
-                all_block.uniqueAssocs.push(assocItem);
-              }
-              if (aspect && !aspect_ids.includes(key) && !aspect.no_data) {
-                aspect_ids.push(key);
-                aspect.uniqueAssocs.push(assocItem);
-                aspect.uniqueIDs.push(key);
-              }
-              if (need2add_evidence) {
-                assocItem.evidence_map = new Map();
-                addEvidence(assocItem, assocItem, filters);
-              } else {
-                let prev_assoc = all_block.uniqueAssocs[globalclass_ids.indexOf(key)];
-                assocItem.evidence_map = prev_assoc.evidence_map;
-              }
-              return true;
-              
-            } else {
-              if (need2add_evidence) {
-                let prev_assoc = all_block.uniqueAssocs[globalclass_ids.indexOf(key)];
-                addEvidence(prev_assoc, assocItem, filters);
-              }
-              return false;
-            }
-          });
-
-          if (slimitem.uniqueAssocs.length > 0) {
-            slimitem.uniqueAssocs.sort(sortAssociations);
-            slimitem.color = heatColor(slimitem.uniqueAssocs.length, config.annot_color, config.heatLevels);
+        } else {
+          slimitem.uniqueIDs.push(key);
+          slimitem.uniqueAssocs.push(assocItem);
+          if (slimitem != aspect) {
+            aspect_ids.push(key);
+            aspect.uniqueAssocs.push(assocItem);
+            aspect.uniqueIDs.push(key);
           }
         }
+
+        if (need2add_evidence) {
+          assocItem.evidence_map = new Map();
+          addEvidence(assocItem, assocItem, filters);
+        } else {
+          let prev_assoc = all_block.uniqueAssocs[globalclass_ids.indexOf(key)];
+          assocItem.evidence_map = prev_assoc.evidence_map;
+        }
+
+        // If term already seen, just check if the evidence can still be added
+      } else {
+        if (need2add_evidence) {
+          let prev_assoc = all_block.uniqueAssocs[globalclass_ids.indexOf(key)];
+          addEvidence(prev_assoc, assocItem, filters);
+        }
+
       }
-    });
-    if(slimitem.type == SlimType.Other) {
-      console.log(slimitem);
+    }
+
+    if (slimitem.uniqueAssocs.length > 0) {
+      slimitem.uniqueAssocs.sort(sortAssociations);
+      slimitem.color = heatColor(slimitem.uniqueAssocs.length, config.annot_color, config.heatLevels);
     }
     return slimitem;
   });
@@ -258,7 +276,7 @@ export function unpackSlimItems(results, subject, config) {
 
 
   // adding ALL <aspect> category at the beginning of each block of slims
-  for(let asp of aspects) {
+  for (let asp of aspects) {
     let aspectPos = blocks.findIndex(elt => {
       return elt.aspect == asp.aspect && elt.type == SlimType.Aspect;
     });
@@ -286,7 +304,7 @@ export function unpackSlimItems(results, subject, config) {
  * @param {*} blocks 
  */
 function gatherAllAnnotations(aspectItem, blocks, config) {
-  let slimitem = { };
+  let slimitem = {};
   slimitem.uniqueIDs = [];
   slimitem.uniqueAssocs = [];
   slimitem.color = '#fff';
@@ -297,13 +315,13 @@ function gatherAllAnnotations(aspectItem, blocks, config) {
 
   let setIDs = new Set();
   let setAssocs = new Set();
-  for(let block of blocks) {
-    if(block.aspect === aspectItem.aspect) {
-      for(let id of block.uniqueIDs) {
+  for (let block of blocks) {
+    if (block.aspect === aspectItem.aspect) {
+      for (let id of block.uniqueIDs) {
         setIDs.add(id);
       }
 
-      for(let id of block.uniqueAssocs) {
+      for (let id of block.uniqueAssocs) {
         setAssocs.add(id);
       }
     }

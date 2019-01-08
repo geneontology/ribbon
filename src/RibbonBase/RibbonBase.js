@@ -10,6 +10,7 @@ import Block from './Block';
 export default class RibbonBase extends React.Component {
 
   render() {
+    console.log("ENTITY: ", this.props.entity)
     let blocks = this.props.blocks;
     let currentblock = this.props.currentblock;
     let currentEntity = this.props.currentEntity;
@@ -47,9 +48,11 @@ export default class RibbonBase extends React.Component {
 }
 
 RibbonBase.propTypes = {
+  entity: PropTypes.object,
   blocks: PropTypes.array.isRequired,
   config: PropTypes.object,
   currentblock: PropTypes.object,
+  currentEntity: PropTypes.object,
   onSlimEnter: PropTypes.func,
   onSlimLeave: PropTypes.func,
   onSlimSelect: PropTypes.func.isRequired,
