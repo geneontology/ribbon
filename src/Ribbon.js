@@ -15,40 +15,46 @@ export default class Ribbon extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentEntity: undefined,
       currentblock: undefined,
       fetching: false,
       focalblock: undefined,
+      focalEntity: undefined
     };
   }
 
   componentDidMount() {
-    this.patchHGNC(this.props.subject, this.props.title);
+    // have to correct this
+    // this.patchHGNC(this.props.subject, this.props.title);
   }
 
-  handleSlimEnter (block) {
+  handleSlimEnter (entity, block) {
     let self = this;
     self.setState({
-      focalblock: block,
+      focalEntity: entity,
+      focalblock: block
     });
   }
 
   handleSlimLeave () {
     let self = this;
     self.setState({
-      focalblock: undefined,
+      focalEntity: undefined,
+      focalblock: undefined
     });
   }
 
-  handleSlimSelect (block) {
+  handleSlimSelect (entity, block) {
     let self = this;
     if (block !== this.state.currentblock) {
       self.setState({
         currentblock: block,
+        currentEntity: entity
       });
-    }
-    else {
+    } else {
       self.setState({
         currentblock: undefined,
+        currentEntity: undefined
       });
     }
   }
@@ -96,19 +102,38 @@ export default class Ribbon extends Component {
   }
 
   render() {
-    const blocks = this.props.blocks;
     const config = this.props.config;
-    const eco_list = this.props.eco_list;
+
+    // Building the filters Map for ALL entities
+    const filters = new Map();
+    for(let entity of this.props.entities) {
+      for(let [filter, value] of entity.filters) {
+        if(!filters.has(filter)) {
+          filters.set(filter, true);
+        }
+      }
+    }
+
     return (
       <div>
-        <RibbonBase
-          blocks={blocks}
-          config={config}
-          currentblock={this.state.currentblock}
-          onSlimEnter={(block) => this.handleSlimEnter(block)}
-          onSlimLeave={() => this.handleSlimLeave()}
-          onSlimSelect={(block) => this.handleSlimSelect(block)}
-        />
+        
+        {
+          this.props.entities.map((entity, index) => {
+            return <RibbonBase 
+              entity={entity}
+              blocks={entity.blocks}
+              title={entity.title}
+              config={config}
+              currentEntity={this.state.currentEntity}
+              currentblock={this.state.currentblock}
+              onSlimEnter={(entity, block) => this.handleSlimEnter(entity, block)}
+              onSlimLeave={() => this.handleSlimLeave()}
+              onSlimSelect={(entity, block) => this.handleSlimSelect(entity, block)}
+              showBlockTitles={index === 0}
+              key={entity.subject}
+          />
+          })
+        }
 
         {
           this.state.subject &&
@@ -129,10 +154,10 @@ export default class Ribbon extends Component {
               timeout={{enter: 500, exit: 300}}
             >
               <AssociationsView
-                blocks={blocks}
+                blocks={this.state.currentEntity.blocks}
                 config={config}
                 currentblock={this.state.currentblock}
-                eco_list={eco_list}
+                filters={filters}
                 focalblock={this.state.focalblock}
               />
             </CSSTransition> :
@@ -146,10 +171,7 @@ export default class Ribbon extends Component {
 }
 
 Ribbon.propTypes = {
-  blocks: PropTypes.array.isRequired,
+  entities : PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
-  eco_list: PropTypes.object,
   showing: PropTypes.bool.isRequired,
-  subject: PropTypes.string,
-  title: PropTypes.string,
 };

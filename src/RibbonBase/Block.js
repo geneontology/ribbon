@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import variables from '../sass/_variables.scss';
 
+import {SlimType} from './../dataHelpers';
+
 class Block extends React.Component {
   componentDidMount() {
     this.updateHeight();
@@ -27,11 +29,17 @@ class Block extends React.Component {
       const tileHoverString = (count > 0) ?
         count == 1 ? count + ' class ' : count + ' classes ' :
         'No annotations to ' + slimitem.class_label;
-      const blockTitleClass = `ontology-ribbon__block ${
+
+      let blockTitleClass = `ontology-ribbon__block ${
         count > 0 ? 'ontology-ribbon__block--match' : ''
       } ${
         this.props.isActive ? 'ontology-ribbon__block--selected' : ''
+      } ${
+        slimitem.type == SlimType.AllFromAspect ? 'ontology-ribbon__block__tile__separator--all' : ''
+      } ${
+        slimitem.type == SlimType.Other ? 'ontology-ribbon__block__tile__separator--other' : ''
       }`;
+      
       return (
         <div className={blockTitleClass} ref={ref => this.blockRef = ref}>
           { this.props.showTitle &&
@@ -40,7 +48,12 @@ class Block extends React.Component {
             </div>
           }
           <div
-            className={"ontology-ribbon__block__tile " + (this.props.isActive ? "ontology-ribbon__block__tile--selected" : "") }
+            className={"ontology-ribbon__block__tile " + 
+                      (this.props.isActive ? "ontology-ribbon__block__tile--selected " : " ")  + 
+                      (slimitem.type == SlimType.All ? "ontology-ribbon__block__tile--all " : " ") +
+                      (slimitem.type == SlimType.AllFromAspect ? "ontology-ribbon__block__tile__aspect--all " : " ") +
+                      (slimitem.type == SlimType.Other ? "ontology-ribbon__block__tile__aspect--other " : " ") 
+                    }
             onClick={this.props.onClick}
             onMouseEnter={this.props.onMouseEnter}
             onMouseLeave={this.props.onMouseLeave}
@@ -62,8 +75,8 @@ class Block extends React.Component {
               slimitem.uniqueAssocs.length + ' classes:';
       return (
         <div className="ontology-ribbon__block">
-          <div className="ontology-ribbon__tile-separator">
-            {showSeparatorLabel &&
+          <div className="ontology-ribbon__block__tile__separator">
+            {/* {showSeparatorLabel &&
               <div
                 className={'ontology-ribbon__strip-label ' + (this.props.isActive ? 'ontology-ribbon__strip-label--selected' : '') }
                 onClick={this.props.onClick}
@@ -73,7 +86,7 @@ class Block extends React.Component {
               >
                 {showSeparatorLabelPrefix && prefix} {slimitem.class_label}
               </div>
-            }
+            } */}
           </div>
         </div>
 

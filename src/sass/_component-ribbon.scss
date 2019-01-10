@@ -5,6 +5,12 @@
     line-height: 1;
     height: 2rem;
 
+    &__label {
+        display: table-cell;
+        vertical-align: bottom;
+        padding-left: 10px;                
+    }
+ 
     &__header {
         display: flex;
         padding: 4px 8px;
@@ -88,9 +94,10 @@
         width: $ribbon-species-icon-width;
         height: $ribbon-species-icon-height;
         background-size: 700% 100%;
-        margin-right: 1rem !important;
+        margin-right: 0.5rem;
         padding: 5px;
         box-sizing: content-box;
+        vertical-align: middle;
 
         &.small {
             width: 26px;
@@ -144,7 +151,8 @@
     }
 
     &__strip {
-        margin-top: 15px;
+        // margin-top: 15px;
+        margin-top: 2px;
     }
 
     &__strip-label {
@@ -205,6 +213,14 @@
                 transform: translateY(-2px) rotate(-45deg);
                 transform-origin: -14px -8px;
             }
+
+            // affecting the TILE style when hovering the TITLE (see CSS combinator)     
+            &:hover ~ .ontology-ribbon__block__tile {
+                cursor: pointer;
+                border: 1px solid $ribbon-strip-tile-border-color-hover;
+                transform: translateY(1px) scale(1.2);
+                z-index: 10;
+            }
         }
         
         &__tile {
@@ -215,40 +231,72 @@
             margin-right: -1px;
             text-align: center;
             vertical-align: middle;
-            // text-shadow: -1px 0 silver, 0 1px silver, 1px 0 silver, 0 -1px silver;
             box-sizing: content-box;
             border-radius: $ribbon-strip-tile-border-radius;
             transition: all 0.2s;
 
-            &--all {
-                background-color: $ribbon-strip-slim-saturation-color;
+
+            &__separator {
+                position: relative;
+                margin-right: -1px;
+                vertical-align: middle;
+                height: 16px;
+                width: $ribbon-strip-tile-separator-width;
+        
+                &--all {
+                    padding-right: 2px;
+                }
+        
+                &--other {
+                    padding-left: 2px;
+                }                        
             }
 
+            // for the tile--all: ALL annotations for the entity
+            &--all {
+                background-color: $ribbon-strip-slim-saturation-color;
+                border-radius: 5px;
+            }
+
+            // for the tile--aspect-all: ALL annotations fora given ASPECT of the entity
+            &__aspect--all {
+                border-radius: 15px 0px 0px 15px;             
+            }
+
+            // for the tile--aspect--other: OTHER annotations that could not be mapped to a slim for the entity
+            &__aspect--other {
+                border-radius: 5px 0px 15px 0px;
+            }
+
+            // effect when the tile is selected
             &--selected {
-                border: 2px solid $ribbon-strip-tile-border-color-hover;
+                border: 1px solid $ribbon-strip-tile-border-color-hover;
                 transform: translateY(1px);
                 color: white;
                 text-shadow: 1px 1px 5px black;
                 z-index: 10;
             }
 
+            // effect when the tile is hovered upon
             &:hover {
                 cursor: pointer;
-                border: 2px solid $ribbon-strip-tile-border-color-hover;
-                transform: translateY(1px);
+                border: 1px solid $ribbon-strip-tile-border-color-hover;
+                transform: translateY(1px) scale(1.2);
                 z-index: 10;
             }
         }
 
+        // affecting the TITLE style when hovering the BLOCK (see CSS combinator)
+        &:hover .ontology-ribbon__block__title {
+            cursor: pointer;
+            text-decoration: underline;
+            color: $ribbon-link-color;
+            // font-weight: 700;
+            transform: translateY(-2px) rotate(-45deg);
+            transform-origin: -14px -8px;
+        } 
     }
 
-    &__tile-separator {
-        position: relative;
-        margin-right: -1px;
-        vertical-align: middle;
-        height: 16px;
-        width: $ribbon-strip-tile-separator-width;
-    }
 
     &__filter {
         &__list {
@@ -309,6 +357,7 @@
         line-height: 1em;
         color: #26393D;
         text-decoration: none;
+        margin-top: 10px;
 
         &__row {
             display: flex;

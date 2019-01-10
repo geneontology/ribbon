@@ -15,7 +15,7 @@ import variables from '../sass/_variables.scss';
 export default class AssociationsView extends React.Component {
 
   state = {
-    filters: this.props.eco_list
+    filters: this.props.filters
   }
 
   filterHandler = (filter, selected) => {
@@ -33,7 +33,7 @@ export default class AssociationsView extends React.Component {
   }
 
   render() {
-    const { blocks, config, currentblock, eco_list, focalblock } = this.props;
+    const { blocks, config, currentblock, filters, focalblock } = this.props;
     let assoc_list = [];
     blocks.forEach(function (slimitem) {
       if (slimitem.class_id === currentblock.class_id) {
@@ -60,7 +60,10 @@ export default class AssociationsView extends React.Component {
         {
           assoc_list.map((assoc, index) => {
             var row_style;
-            let focus = (focalblock !== undefined && focalblock.uniqueIDs.includes(getKey(assoc)));
+            let focus = false;
+            if(focalblock && focalblock.uniqueIDs) {
+              focus = focalblock.uniqueIDs.includes(getKey(assoc));
+            }
             if (focus) {
               row_style = {
                 borderLeftStyle: 'solid',
@@ -121,6 +124,6 @@ AssociationsView.propTypes = {
   ),
   config: PropTypes.object,
   currentblock: PropTypes.object,
-  eco_list: PropTypes.object,
+  filters: PropTypes.object,
   focalblock: PropTypes.object,
 };

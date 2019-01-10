@@ -51,18 +51,15 @@ class Demo extends React.Component {
       <div id='demo'>
         <RibbonDataProvider mode={mode} subject={subject} >
           {
-            ({blocks, config, dataError, dataReceived, eco_list, title}) => (
+            ({entities, config, dataError, dataReceived}) => (
               <div>
                 {
                   dataReceived ?
                     <Ribbon
-                      blocks={blocks}
+                      entities={entities}
                       config={config}
-                      eco_list={eco_list}
                       showing={true}
-                      subject={subject}
-                      title={title}
-                    /> :
+                  /> :
                     null
                 }
                 {dataError ? dataError : null}
@@ -89,7 +86,10 @@ class Demo extends React.Component {
 
 Demo.propTypes = {
   mode: PropTypes.string,
-  subject: PropTypes.string,
+  subject: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array
+  ])
 };
 
 /*

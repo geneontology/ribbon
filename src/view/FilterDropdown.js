@@ -33,11 +33,17 @@ class FilterDropdown extends Component {
     let count = 0;
 
     const filters = this.props.filters;
-    filters.forEach((selected, filter) => {
+
+    // used to show an ordered list of filters
+    const orderedArray = Array.from(filters.keys());
+    orderedArray.sort();
+
+    orderedArray.forEach(filter => {
       menu.push(
-        <FilterItem key={count++} filters={filters} filter={filter} selected={selected} filterHandler={this.props.filterHandler} />
+        <FilterItem key={count++} filters={filters} filter={filter} selected={filters.get(filter)} filterHandler={this.props.filterHandler} />
       );
-    });
+    })
+
     return ({ref, style, placement}) => (
       <div className='ontology-ribbon__filter__list' ref={ref} style={style} data-placement={placement}>
         <span className="checkbox" onClick={() => this.props.filterHandler("all", true)}>All</span>
