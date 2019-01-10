@@ -10,7 +10,6 @@ import Block from './Block';
 export default class RibbonBase extends React.Component {
 
   render() {
-    console.log("ENTITY: ", this.props.entity)
     let blocks = this.props.blocks;
     let currentblock = this.props.currentblock;
     let currentEntity = this.props.currentEntity;

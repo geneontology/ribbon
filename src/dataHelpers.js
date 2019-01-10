@@ -36,7 +36,8 @@ export function getPrefixForId(inputId) {
 
 }
 
-const irrelevantTerms = ["GO:0005515", "GO:0008022", "GO:0003682", "GO:0044877", "GO:0046982"];
+const irrelevantTerms = ["GO:0005515", "GO:0008022", "GO:0044877", "GO:0046982", "GO:0019899"];
+// how about "GO:0042277" (peptide binding), "GO:0003682" (chromatin binding) ?
 
 
 function addEvidence(prev_assoc, assocItem, filters) {
@@ -111,7 +112,6 @@ export function unpackSlimItems(results, subject, config) {
       Object.keys(response.data).forEach(elt => {
         termAspect.set(elt, response.data[elt]);
       })
-      console.log("Term Aspect Mapping: ", termAspect);
       resolve({ associations: associations, termAspect: termAspect });
     })
     .catch(function (error) {
@@ -123,7 +123,7 @@ export function unpackSlimItems(results, subject, config) {
 }
 
 export function createSlims(subject, config, associations, termAspect) {
-  let title = subject;
+  let label = subject;
   let filters = new Map();
   let other = false;
   let globalclass_ids = [];
@@ -180,8 +180,6 @@ export function createSlims(subject, config, associations, termAspect) {
     // no association found
     if (!slim_associations) return slimitem;
 
-    console.log(slimitem , slim_associations)    
-
     // check all associations for that slim
     for (let assocItem of slim_associations.assocs) {
       // If No Data, do nothing
@@ -198,7 +196,7 @@ export function createSlims(subject, config, associations, termAspect) {
       assocItem.subject.id = subjectID;
 
       // Actually needed only once
-      title = assocItem.subject.label;
+      label = assocItem.subject.label;
       taxon = assocItem.subject.taxon.id;
 
       // create unique key (subject - annotation)
@@ -293,7 +291,7 @@ export function createSlims(subject, config, associations, termAspect) {
   return {
     blocks: blocks,
     filters: filters,
-    title: title,
+    label: label,
     taxon: taxon
   };
 }

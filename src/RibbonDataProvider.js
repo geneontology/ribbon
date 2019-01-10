@@ -52,12 +52,9 @@ export default class RibbonDataProvider extends Component {
   }
 
   fetchData(config, subjects) {
-    console.log("fetching data for subjects: ", subjects);
     this.setState({
       fetching: true,
     });
-
-    let dataError = null;
 
     // Build up the query string by adding all the GO ids
     let slimlist = config.slimlist;
@@ -91,10 +88,8 @@ export default class RibbonDataProvider extends Component {
       unpackSlimItems([{ data: value }], subject, config)
       .then(result => {
         const { associations, termAspect } = result;
-        console.log("Promise retrieved: ", associations, termAspect);
-
-        let { filters, title, blocks, taxon } = createSlims(subject, config, associations, termAspect);
-        entities.push({ subject: subject, taxon: taxon, blocks: blocks, filters: filters, title: title });
+        let { filters, label, blocks, taxon } = createSlims(subject, config, associations, termAspect);
+        entities.push({ subject: subject, taxon: taxon, blocks: blocks, filters: filters, label: label });
       })
       .catch(error => {
         this.setState({
@@ -110,7 +105,6 @@ export default class RibbonDataProvider extends Component {
           dataError: null,
           fetching: false,
         });
-        console.log("state: ", self.state);
       });
 
     })
@@ -120,7 +114,6 @@ export default class RibbonDataProvider extends Component {
   render() {
     const { entities, config, dataError, fetching } = this.state;
     let self = this;
-    // console.log("ribbondataprovider::render: ", entities);
     return self.props.children({
       entities,
       config,
