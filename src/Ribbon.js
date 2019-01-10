@@ -122,7 +122,7 @@ export default class Ribbon extends Component {
             return <RibbonBase 
               entity={entity}
               blocks={entity.blocks}
-              title={entity.title}
+              title={entity.label}
               config={config}
               currentEntity={this.state.currentEntity}
               currentblock={this.state.currentblock}
