@@ -2,7 +2,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import SpeciesIcon from './../view/SpeciesIcon';
 import RibbonBaseLabel from './RibbonBaseLabel';
 import {getPrefixForId} from './../dataHelpers';
 
