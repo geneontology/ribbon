@@ -15,7 +15,7 @@ export default class RibbonBase extends React.Component {
     if(this.props.entityLabel == "left" && location == "left"
     || this.props.entityLabel == "right" && location == "right") {
       return (
-        <RibbonBaseLabel title={this.props.title} entity={this.props.entity}/>
+        <RibbonBaseLabel title={this.props.title} subject={this.props.entity.subject}/>
       )
     }
     return(
