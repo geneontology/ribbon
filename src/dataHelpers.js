@@ -36,8 +36,8 @@ export function getPrefixForId(inputId) {
 
 }
 
-const irrelevantTerms = ["GO:0005515", "GO:0008022", "GO:0044877", "GO:0046982", "GO:0019899"];
-// how about "GO:0042277" (peptide binding), "GO:0003682" (chromatin binding) ?
+// we still exclude protein binding term
+const irrelevantTerms = [ "GO:0005515" ];
 
 
 function addEvidence(prev_assoc, assocItem, filters) {
