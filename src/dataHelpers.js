@@ -381,10 +381,11 @@ export function heatColor(associations_count, hexColor, heatLevels) {
   // let fraction = Math.min(associations_count, heatLevels) / heatLevels;
 
   // this is the log version for interpolation (better highlight the most annotated classes)
+  // note: safari needs integer and not float for rgb function
   let fraction = Math.min(10 * Math.log(associations_count + 1), heatLevels) / heatLevels;
-  blockColor[0] = initColor[0] + fraction * (targetColor[0] - initColor[0]);
-  blockColor[1] = initColor[1] + fraction * (targetColor[1] - initColor[1]);
-  blockColor[2] = initColor[2] + fraction * (targetColor[2] - initColor[2]);
+  blockColor[0] = Math.round(initColor[0] + fraction * (targetColor[0] - initColor[0]));
+  blockColor[1] = Math.round(initColor[1] + fraction * (targetColor[1] - initColor[1]));
+  blockColor[2] = Math.round(initColor[2] + fraction * (targetColor[2] - initColor[2]));
 
   return 'rgb(' + blockColor[0] + ',' + blockColor[1] + ',' + blockColor[2] + ')';
 }
