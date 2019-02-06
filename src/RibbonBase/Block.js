@@ -27,8 +27,10 @@ class Block extends React.Component {
 
     if (slimitem.separator === undefined) {
       let count = slimitem.uniqueAssocs.length;
+      let countClasses = slimitem.uniqueAssocs ? slimitem.uniqueAssocs.length == 1 ? slimitem.uniqueAssocs.length + " " + this.props.classLabels[0] :  slimitem.uniqueAssocs.length + " " + this.props.classLabels[1] : "N/A"
+      let countAnnotations = slimitem.nbAnnotations ? slimitem.nbAnnotations == 1 ? slimitem.nbAnnotations + " " + this.props.annotationLabels[0] : slimitem.nbAnnotations + " " + this.props.annotationLabels[1] : "N/A"
       const tileHoverString = (count > 0) ?
-        count == 1 ? count + ' class ' : count + ' classes ' :
+        countClasses + ", " + countAnnotations :
         'No annotations to ' + slimitem.class_label;
 
       let blockTitleClass = `ontology-ribbon__block ${
@@ -112,6 +114,8 @@ Block.defaultProps = {
   showTitle: true,
   showSeparatorLabel: true,
   showSeparatorLabelPrefix: true,
+  classLabels : ["class", "classes"],
+  annotationLabels : ["annotation", "annotations"]
 };
 
 export default Block;

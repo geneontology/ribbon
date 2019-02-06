@@ -9,7 +9,6 @@ import Block from './Block';
 
 export default class RibbonBase extends React.Component {
 
-
   renderEntityLabel(location) {
     if(this.props.entityLabel == "left" && location == "left"
     || this.props.entityLabel == "right" && location == "right") {
@@ -49,6 +48,8 @@ export default class RibbonBase extends React.Component {
               showSeparatorLabelPrefix={this.props.showSeparatorLabelPrefixes}
               showTitle={this.props.showBlockTitles}
               slimitem={slimitem}
+              classLabels={this.props.classLabels}
+              annotationLabels={this.props.annotationLabels}
             />
           );
         }) }
@@ -76,5 +77,7 @@ RibbonBase.defaultProps = {
   showBlockTitles: true,
   showSeparatorLabelPrefixes: true,
   showSeparatorLabels: true,
-  entityLabel: "right" // left | right | none
+  entityLabel: "right", // left | right | none,
+  classLabels: ["class", "classes"],
+  annotationLabels: ["annotation", "annotations"]
 };
