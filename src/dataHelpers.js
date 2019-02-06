@@ -153,6 +153,7 @@ export function createSlims(subject, config, associations, termAspect) {
     // set up uniques and color too
     slimitem.uniqueIDs = [];
     slimitem.uniqueAssocs = [];
+    slimitem.nbAnnotations = 0;
     slimitem.color = '#fff';
 
     other = slimitem.class_label.toLowerCase().includes('other');
@@ -255,7 +256,9 @@ export function createSlims(subject, config, associations, termAspect) {
 
     if (slimitem.uniqueAssocs.length > 0) {
       slimitem.uniqueAssocs.sort(sortAssociations);
+      slimitem.nbAnnotations = countAnnotations(slimitem);
       slimitem.color = heatColor(slimitem.uniqueAssocs.length, config.annot_color, config.heatLevels);
+      slimitem.colorNbAnnotations = heatColor(slimitem.nbAnnotations, config.annot_color, config.heatLevels);
     }
     return slimitem;
   });
@@ -305,6 +308,7 @@ function gatherAllAnnotations(aspectItem, blocks, config) {
   let slimitem = {};
   slimitem.uniqueIDs = [];
   slimitem.uniqueAssocs = [];
+  slimitem.nbAnnotations = 0;
   slimitem.color = '#fff';
   slimitem.class_label = "All " + aspectItem.class_label.toLowerCase();
   slimitem.class_id = aspectItem.aspect + " all";
@@ -329,10 +333,22 @@ function gatherAllAnnotations(aspectItem, blocks, config) {
 
   if (slimitem.uniqueAssocs.length > 0) {
     slimitem.uniqueAssocs.sort(sortAssociations);
+    slimitem.nbAnnotations = countAnnotations(slimitem);
     slimitem.color = heatColor(slimitem.uniqueAssocs.length, config.annot_color, config.heatLevels);
+    slimitem.colorNbAnnotations = heatColor(slimitem.nbAnnotations, config.annot_color, config.heatLevels);
   }
 
   return slimitem;
+}
+
+function countAnnotations(slimitem) {
+  let count = 0;
+  slimitem.uniqueAssocs.forEach(elt => {
+    elt.evidence_map.forEach((v, k) => {
+		count += v.length;
+    })
+  })  
+  return count;
 }
 
 

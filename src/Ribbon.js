@@ -20,7 +20,9 @@ export default class Ribbon extends Component {
       fetching: false,
       focalblock: undefined,
       focalEntity: undefined,
-      entityLabel: this.props.entityLabel // left | right | none
+      entityLabel: this.props.entityLabel, // left | right | none
+      classLabels: this.props.classLabels,
+      annotationLabels: this.props.annotationLabels
     };
   }
 
@@ -133,6 +135,8 @@ export default class Ribbon extends Component {
               showBlockTitles={index === 0}
               key={entity.subject}
               entityLabel={this.state.entityLabel}
+              classLabels={this.state.classLabels}
+              annotationLabels={this.state.annotationLabels}
           />
           })
         }
@@ -179,5 +183,7 @@ Ribbon.propTypes = {
 };
 
 Ribbon.defaultProps = {
-  entityLabel: "right" // left | right | none
+  entityLabel: "right", // left | right | none
+  classLabels: ["class", "classes"],
+  annotationLabels: ["annotation", "annotations"]
 };
