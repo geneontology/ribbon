@@ -19,7 +19,8 @@ export default class Ribbon extends Component {
       currentblock: undefined,
       fetching: false,
       focalblock: undefined,
-      focalEntity: undefined
+      focalEntity: undefined,
+      entityLabel: this.props.entityLabel // left | right | none
     };
   }
 
@@ -131,6 +132,7 @@ export default class Ribbon extends Component {
               onSlimSelect={(entity, block) => this.handleSlimSelect(entity, block)}
               showBlockTitles={index === 0}
               key={entity.subject}
+              entityLabel={this.state.entityLabel}
           />
           })
         }
@@ -173,5 +175,9 @@ export default class Ribbon extends Component {
 Ribbon.propTypes = {
   entities : PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
-  showing: PropTypes.bool.isRequired,
+  showing: PropTypes.bool.isRequired
+};
+
+Ribbon.defaultProps = {
+  entityLabel: "right" // left | right | none
 };

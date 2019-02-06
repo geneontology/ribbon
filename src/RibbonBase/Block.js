@@ -6,6 +6,7 @@ import variables from '../sass/_variables.scss';
 import {SlimType} from './../dataHelpers';
 
 class Block extends React.Component {
+  
   componentDidMount() {
     this.updateHeight();
   }

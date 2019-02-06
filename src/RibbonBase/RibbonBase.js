@@ -2,12 +2,25 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import SpeciesIcon from './../view/SpeciesIcon';
+import RibbonBaseLabel from './RibbonBaseLabel';
 import {getPrefixForId} from './../dataHelpers';
 
 import Block from './Block';
 
 export default class RibbonBase extends React.Component {
+
+
+  renderEntityLabel(location) {
+    if(this.props.entityLabel == "left" && location == "left"
+    || this.props.entityLabel == "right" && location == "right") {
+      return (
+        <RibbonBaseLabel label={this.props.title} id={this.props.entity.subject}/>
+      )
+    }
+    return(
+      <div></div>
+    )
+  }
 
   render() {
     let blocks = this.props.blocks;
@@ -15,7 +28,9 @@ export default class RibbonBase extends React.Component {
     let currentEntity = this.props.currentEntity;
 
     return (
-      <div className='ontology-ribbon__strip'> {
+      <div className='ontology-ribbon__strip'> 
+      {this.renderEntityLabel('left')}
+      {
         blocks.map((slimitem) => {
           let active = (currentblock !== undefined &&
                         slimitem.class_id === currentblock.class_id &&
@@ -37,10 +52,7 @@ export default class RibbonBase extends React.Component {
             />
           );
         }) }
-        <a href={"http://amigo.geneontology.org/amigo/gene_product/" + this.props.entity.subject.replace("MGI:","MGI:MGI:")} className="ontology-ribbon__label ribbon-link" target="blank">
-        <SpeciesIcon species={getPrefixForId(this.props.entity.subject)} />
-        {this.props.title}
-        </a>
+        {this.renderEntityLabel('right')}
       </div>
     );
   }
@@ -64,4 +76,5 @@ RibbonBase.defaultProps = {
   showBlockTitles: true,
   showSeparatorLabelPrefixes: true,
   showSeparatorLabels: true,
+  entityLabel: "right" // left | right | none
 };
