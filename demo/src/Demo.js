@@ -30,6 +30,7 @@ function mapUrlToProps(url) {
   return {
     subject: url.subject,
     mode: url.mode,
+    entityLabel : url.entitylabel
   };
 }
 
@@ -45,11 +46,11 @@ class Demo extends React.Component {
   }
 
   render() {
-    const {subject, mode} = this.props;
+    const {subject, mode, entityLabel} = this.props;
 
     return (
       <div id='demo'>
-        <RibbonDataProvider mode={mode} subject={subject} >
+        <RibbonDataProvider mode={mode} subject={subject}>
           {
             ({entities, config, dataError, dataReceived}) => (
               <div>
@@ -59,6 +60,7 @@ class Demo extends React.Component {
                       entities={entities}
                       config={config}
                       showing={true}
+                      entityLabel={entityLabel}
                   /> :
                     null
                 }

@@ -8,7 +8,8 @@
     &__label {
         display: table-cell;
         vertical-align: bottom;
-        padding-left: 10px;                
+        padding: 0px 5px;
+        width: 90px;
     }
  
     &__header {
@@ -153,6 +154,10 @@
     &__strip {
         // margin-top: 15px;
         margin-top: 2px;
+
+        &__label {
+            display: contents;
+        }
     }
 
     &__strip-label {
