@@ -11,7 +11,7 @@
         padding: 0px 5px;
         width: 90px;
     }
- 
+
     &__header {
         display: flex;
         padding: 4px 8px;
@@ -27,19 +27,19 @@
         flex: 50%;
         flex-direction: column;
     }
-    
+
     &__evidence-column {
         display: flex;
         max-width: 50%;
         flex: 50%;
         flex-direction: column;
     }
-    
+
     &__evidence-row {
         display: flex;
         font-size: $ribbon-table-row-font-size;
     }
-    
+
     &__eco {
         display: flex;
         max-width: 20%;
@@ -47,33 +47,33 @@
         flex-direction: column;
         vertical-align: middle;
     }
-    
+
     &__eco-group-column {
         display: flex;
         max-width: 80%;
         flex: 80%;
         flex-direction: column;
     }
-    
+
     &__eco-group-row {
         display: flex;
         padding: .25rem;
-        
+
         &:hover {
             background-color: $ribbon-table-evidence-hover-color;
             border: none;
             border-radius: .5rem;
         }
     }
-    
-    
+
+
     &__with-column {
         display: flex;
         max-width: 50%;
         flex: 50%;
         flex-direction: column;
     }
-    
+
     &__ref-column {
         display: flex;
         max-width: 50%;
@@ -81,13 +81,13 @@
         flex-direction: column;
         padding-bottom: .0rem;
     }
-    
+
     &__content {
         vertical-align: middle;
         word-break: break-word;
         margin-right: 3px;
         font-size: $ribbon-table-row-font-size;
-    }    
+    }
 
     &__species-icon--agr {
         display: inline-block;
@@ -135,7 +135,7 @@
         &.Danio-rerio {
             /* zebrafish */
             background-position: 100% 0;
-        }    
+        }
     }
 
     &__about {
@@ -219,7 +219,7 @@
                 transform-origin: -14px -8px;
             }
 
-            // affecting the TILE style when hovering the TITLE (see CSS combinator)     
+            // affecting the TILE style when hovering the TITLE (see CSS combinator)
             &:hover ~ .ontology-ribbon__block__tile {
                 cursor: pointer;
                 border: 1px solid $ribbon-strip-tile-border-color-hover;
@@ -227,7 +227,7 @@
                 z-index: 10;
             }
         }
-        
+
         &__tile {
             position: relative;
             border: 1px solid $ribbon-strip-tile-border-color;
@@ -247,30 +247,30 @@
                 vertical-align: middle;
                 height: 16px;
                 width: $ribbon-strip-tile-separator-width;
-        
+
                 &--all {
                     padding-right: 2px;
                 }
-        
+
                 &--other {
                     padding-left: 2px;
-                }                        
+                }
             }
 
             // for the tile--all: ALL annotations for the entity
             &--all {
                 background-color: $ribbon-strip-slim-saturation-color;
-                border-radius: 5px;
+                border-radius: $ribbon-strip-tile-border-radius;
             }
 
             // for the tile--aspect-all: ALL annotations fora given ASPECT of the entity
             &__aspect--all {
-                border-radius: 15px 0px 0px 15px;             
+                border-radius: $ribbon-strip-tile-border-radius*3 0 0 $ribbon-strip-tile-border-radius*3;
             }
 
             // for the tile--aspect--other: OTHER annotations that could not be mapped to a slim for the entity
             &__aspect--other {
-                border-radius: 5px 0px 15px 0px;
+                border-radius: $ribbon-strip-tile-border-radius 0 $ribbon-strip-tile-border-radius*3 0;
             }
 
             // effect when the tile is selected
@@ -299,7 +299,7 @@
             // font-weight: 700;
             transform: translateY(-2px) rotate(-45deg);
             transform-origin: -14px -8px;
-        } 
+        }
     }
 
 
@@ -372,7 +372,7 @@
             &--odd {
                 background-color: $ribbon-table-row-odd-color;
             }
-    
+
             &--even {
                 background-color: $ribbon-table-row-even-color;
             }
@@ -383,11 +383,11 @@
                 border-left-color: $ribbon-table-row-focus-color;
                 font-style: 'italic';
             }
-                
+
         }
 
     }
-        
+
     &-assoc__row {
         display: flex;
         flex-direction: row;
