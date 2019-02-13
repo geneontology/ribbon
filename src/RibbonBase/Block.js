@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import variables from '../sass/_variables.scss';
+import { COLOR_BY } from '../enums';
 
 import {SlimType} from './../dataHelpers';
 
+
 class Block extends React.Component {
-  
+
   componentDidMount() {
     this.updateHeight();
   }
@@ -21,6 +23,54 @@ class Block extends React.Component {
       this.blockRef.style.height = `${titleRect.height + 18}px`;
     }
   }
+
+  toRGB(array) {
+    return 'rgb(' + array[0] + ',' + array[1] + ',' + array[2] + ')';
+  }
+
+  /**
+   * Return a color based on interpolation (count, minColor, maxColor) and normalized by maxHeatLevel
+   * @param {*} count 
+   * @param {*} maxHeatLevel 
+   */
+  heatColor(count, maxHeatLevel) {
+    let maxHexColor = this.toRGB(this.props.maxColor);
+
+    if (count === 0) {
+      return this.toRGB(this.props.minColor);
+    }
+
+    if (this.props.binaryColor) {
+      return this.toRGB(this.props.maxColor);
+    }
+
+    // this is a linear version for interpolation
+    // let fraction = Math.min(count, maxHeatLevel) / maxHeatLevel;
+  
+    // this is the log version for interpolation (better highlight the most annotated classes)
+    // note: safari needs integer and not float for rgb function
+    let fraction = Math.min(10 * Math.log(count + 1), maxHeatLevel) / maxHeatLevel;
+
+    // there are some annotations and we want a continuous color (r, g, b)
+    let blockColor = [];     // [r,g,b]
+    blockColor[0] = Math.round(this.props.minColor[0] + fraction * (this.props.maxColor[0] - this.props.minColor[0]));
+    blockColor[1] = Math.round(this.props.minColor[1] + fraction * (this.props.maxColor[1] - this.props.minColor[1]));
+    blockColor[2] = Math.round(this.props.minColor[2] + fraction * (this.props.maxColor[2] - this.props.minColor[2]));
+  
+    return this.toRGB(blockColor);
+  }
+
+  /**
+   * Utility function to return a color either based on the class count or the annotation count for a given slim item
+   * @param {*} slimitem 
+   */
+  blockColor(slimitem) {
+    if(this.props.colorBy == COLOR_BY.CLASS_COUNT) {
+      return this.heatColor(slimitem.uniqueAssocs.length, this.props.maxHeatLevels);
+    }
+    return this.heatColor(slimitem.nbAnnotations, this.props.maxHeatLevels);
+  }
+
 
   render() {
     const {slimitem, config, showSeparatorLabel, showSeparatorLabelPrefix} = this.props;
@@ -42,6 +92,7 @@ class Block extends React.Component {
       } ${
         slimitem.type == SlimType.Other ? 'ontology-ribbon__block__tile__separator--other' : ''
       }`;
+
       
       return (
         <div className={blockTitleClass} ref={ref => this.blockRef = ref}>
@@ -52,19 +103,23 @@ class Block extends React.Component {
           }
           <div
             className={"ontology-ribbon__block__tile " + 
-                      (this.props.isActive ? "ontology-ribbon__block__tile--selected " : " ")  + 
-                      (slimitem.type == SlimType.All ? "ontology-ribbon__block__tile--all " : " ") +
-                      (slimitem.type == SlimType.AllFromAspect ? "ontology-ribbon__block__tile__aspect--all " : " ") +
-                      (slimitem.type == SlimType.Other ? "ontology-ribbon__block__tile__aspect--other " : " ") 
+                      (this.props.disabled ? "ontology-ribbon__block__tile--disabled" :
+                        (this.props.isActive ? "ontology-ribbon__block__tile--selected " : " ")  + 
+                        (slimitem.type == SlimType.All ? "ontology-ribbon__block__tile--all " : " ") +
+                        (slimitem.type == SlimType.AllFromAspect ? "ontology-ribbon__block__tile__aspect--all " : " ") +
+                        (slimitem.type == SlimType.Other ? "ontology-ribbon__block__tile__aspect--other " : " ") 
+                      )
                     }
-            onClick={this.props.onClick}
-            onMouseEnter={this.props.onMouseEnter}
-            onMouseLeave={this.props.onMouseLeave}
-            style={{backgroundColor: slimitem.color}}
-            title={tileHoverString}
+            onClick={( this.props.disabled ? null : this.props.onClick )}
+            onMouseEnter={( this.props.disabled ? null : this.props.onMouseEnter )}
+            onMouseLeave={( this.props.disabled ? null : this.props.onMouseLeave )}
+            style={{ backgroundColor: this.blockColor(slimitem) }}
+            title={ tileHoverString }
           >
-            {
-              this.props.isActive ? <span>&#10005;</span> : null
+            { this.props.disabled ? "/" : (
+                  this.props.isActive ? <span>&#10005;</span> : 
+                  null
+                ) 
             }
           </div>
         </div>
@@ -108,6 +163,14 @@ Block.propTypes = {
   showSeparatorLabel: PropTypes.bool,
   showSeparatorLabelPrefix: PropTypes.bool,
   slimitem: PropTypes.object.isRequired,
+  
+  minColor: PropTypes.array,
+  maxColor: PropTypes.array,
+  colorBy: PropTypes.number,
+  maxHeatLevels: PropTypes.number,
+  binaryColor: PropTypes.bool,
+
+  disabled : PropTypes.bool
 };
 
 Block.defaultProps = {
@@ -115,7 +178,16 @@ Block.defaultProps = {
   showSeparatorLabel: true,
   showSeparatorLabelPrefix: true,
   classLabels : ["class", "classes"],
-  annotationLabels : ["annotation", "annotations"]
+  annotationLabels : ["annotation", "annotations"],
+
+  minColor: [255, 255, 255],
+  maxColor: [24, 73, 180],
+  colorBy: COLOR_BY.ANNOTATION_COUNT,  // color defined by .CLASS_COUNT or .ANNOTATION_COUNT
+  maxHeatLevels : 48,             // increase or decrease the displayed intensity
+  binaryColor : false,            // continuous or binary color
+
+  disabled : false                // whether this block will show information and users can interact with
+
 };
 
 export default Block;

@@ -7,6 +7,7 @@ import '../../src/main.scss'
 
 import Ribbon, { RibbonDataProvider } from '../../src/index';
 import history from './history';
+import { POSITION, COLOR_BY } from '../../src/enums';
 
 /**
  * Specify how the URL gets decoded here. This is an object that takes the prop
@@ -30,7 +31,9 @@ function mapUrlToProps(url) {
   return {
     subject: url.subject,
     mode: url.mode,
-    entityLabel : url.entitylabel
+    entityLabel : url.entityLabel ? +url.entitylabel : POSITION.RIGHT,  // expect a number, see enums.POSITION
+    colorBy : url.colorBy ? +url.colorBy : COLOR_BY.CLASS_COUNT,        // expect a number, see enums.COLOR_BY
+    binaryColor : (url.binaryColor == 'true')
   };
 }
 
@@ -46,7 +49,7 @@ class Demo extends React.Component {
   }
 
   render() {
-    const {subject, mode, entityLabel} = this.props;
+    const {subject, mode, entityLabel, colorBy, binaryColor} = this.props;
 
     return (
       <div id='demo'>
@@ -61,6 +64,8 @@ class Demo extends React.Component {
                       config={config}
                       showing={true}
                       entityLabel={entityLabel}
+                      colorBy={colorBy}
+                      binaryColor={binaryColor}
                   /> :
                     null
                 }

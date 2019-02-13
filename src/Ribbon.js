@@ -10,6 +10,8 @@ import AssociationsView from './view/AssociationsView';
 import GeneAbout from './view/GeneAbout';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
 
+import { COLOR_BY, POSITION } from './enums';
+
 export default class Ribbon extends Component {
 
   constructor(props) {
@@ -20,9 +22,16 @@ export default class Ribbon extends Component {
       fetching: false,
       focalblock: undefined,
       focalEntity: undefined,
-      entityLabel: this.props.entityLabel, // left | right | none
+      entityLabel: this.props.entityLabel,
       classLabels: this.props.classLabels,
-      annotationLabels: this.props.annotationLabels
+      annotationLabels: this.props.annotationLabels,
+
+      minColor: this.props.minColor,
+      maxColor: this.props.maxColor,
+      colorBy : this.props.colorBy,
+      maxHeatLevels: this.props.maxHeatLevels,
+      binaryColor: this.props.binaryColor
+
     };
   }
 
@@ -137,6 +146,12 @@ export default class Ribbon extends Component {
               entityLabel={this.state.entityLabel}
               classLabels={this.state.classLabels}
               annotationLabels={this.state.annotationLabels}
+
+              minColor={this.state.minColor}
+              maxColor={this.state.maxColor}
+              colorBy={this.state.colorBy}
+              maxHeatLevels={this.state.maxHeatLevels}
+              binaryColor={this.state.binaryColor}
           />
           })
         }
@@ -179,11 +194,26 @@ export default class Ribbon extends Component {
 Ribbon.propTypes = {
   entities : PropTypes.array.isRequired,
   config: PropTypes.object.isRequired,
-  showing: PropTypes.bool.isRequired
+  showing: PropTypes.bool.isRequired,
+    
+  entityLabel: PropTypes.number,
+  minColor: PropTypes.array,
+  maxColor: PropTypes.array,
+  colorBy: PropTypes.number,
+  maxHeatLevels: PropTypes.number,
+  binaryColor: PropTypes.bool,
+  
 };
 
 Ribbon.defaultProps = {
-  entityLabel: "right", // left | right | none
   classLabels: ["class", "classes"],
-  annotationLabels: ["annotation", "annotations"]
+  annotationLabels: ["annotation", "annotations"],
+
+  entityLabel: POSITION.RIGHT,    // position the entity label (.NONE, .LEFT, .RIGHT)
+  minColor: [255, 255, 255],
+  maxColor: [24, 73, 180],
+  colorBy: COLOR_BY.CLASS_COUNT,  // color defined by .CLASS_COUNT or .ANNOTATION_COUNT
+  maxHeatLevels : 48,             // increase or decrease the displayed intensity
+  binaryColor : false,            // continuous or binary color
+
 };

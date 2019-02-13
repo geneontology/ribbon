@@ -240,7 +240,16 @@
             border-radius: $ribbon-strip-tile-border-radius;
             transition: all 0.2s;
 
-
+            &--disabled {
+                cursor: not-allowed !important;
+                background-color: black !important;
+                color: white !important;
+            }
+            &--disabled:hover {
+                cursor: not-allowed !important;
+                transform: none !important;
+            }
+        
             &__separator {
                 position: relative;
                 margin-right: -1px;

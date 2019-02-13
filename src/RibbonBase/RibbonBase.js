@@ -6,12 +6,14 @@ import RibbonBaseLabel from './RibbonBaseLabel';
 import {getPrefixForId} from './../dataHelpers';
 
 import Block from './Block';
+import { COLOR_BY, POSITION } from '../enums';
+
 
 export default class RibbonBase extends React.Component {
 
   renderEntityLabel(location) {
-    if(this.props.entityLabel == "left" && location == "left"
-    || this.props.entityLabel == "right" && location == "right") {
+    if(this.props.entityLabel == POSITION.LEFT && location == POSITION.LEFT
+    || this.props.entityLabel == POSITION.RIGHT && location == POSITION.RIGHT) {
       return (
         <RibbonBaseLabel label={this.props.title} id={this.props.entity.subject}/>
       )
@@ -28,7 +30,7 @@ export default class RibbonBase extends React.Component {
 
     return (
       <div className='ontology-ribbon__strip'> 
-      {this.renderEntityLabel('left')}
+      {this.renderEntityLabel(POSITION.LEFT)}
       {
         blocks.map((slimitem) => {
           let active = (currentblock !== undefined &&
@@ -50,10 +52,17 @@ export default class RibbonBase extends React.Component {
               slimitem={slimitem}
               classLabels={this.props.classLabels}
               annotationLabels={this.props.annotationLabels}
+
+              minColor={this.props.minColor}
+              maxColor={this.props.maxColor}
+              colorBy={this.props.colorBy}
+              maxHeatLevels={this.props.maxHeatLevels}
+              binaryColor={this.props.binaryColor}
+              disabled={slimitem.disabled}
             />
           );
         }) }
-        {this.renderEntityLabel('right')}
+        {this.renderEntityLabel(POSITION.RIGHT)}
       </div>
     );
   }
@@ -71,13 +80,28 @@ RibbonBase.propTypes = {
   showBlockTitles: PropTypes.bool,
   showSeparatorLabelPrefixes: PropTypes.bool,
   showSeparatorLabels: PropTypes.bool,
+    
+  entityLabel: PropTypes.number,
+  minColor: PropTypes.array,
+  maxColor: PropTypes.array,
+  colorBy: PropTypes.number,
+  maxHeatLevels: PropTypes.number,
+  binaryColor: PropTypes.bool,
+
 };
 
 RibbonBase.defaultProps = {
   showBlockTitles: true,
   showSeparatorLabelPrefixes: true,
   showSeparatorLabels: true,
-  entityLabel: "right", // left | right | none,
+  entityLabel: POSITION.RIGHT,    // position the entity label (.NONE, .LEFT, .RIGHT)
   classLabels: ["class", "classes"],
-  annotationLabels: ["annotation", "annotations"]
+  annotationLabels: ["annotation", "annotations"],
+
+  minColor: [255, 255, 255],
+  maxColor: [24, 73, 180],
+  colorBy: COLOR_BY.CLASS_COUNT,  // color defined by .CLASS_COUNT or .ANNOTATION_COUNT
+  maxHeatLevels : 48,             // increase or decrease the displayed intensity
+  binaryColor : false,            // continuous or binary color
+
 };
