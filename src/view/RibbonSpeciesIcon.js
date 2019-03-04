@@ -9,7 +9,7 @@ const sizeToScale = {
   large: 1,
 };
 
-const SpeciesIcon = ({species, theme, size}) => {
+const RibbonSpeciesIcon = ({species, theme, size}) => {
   const speciesClass = species.replace(' ', '-');
   const scale = sizeToScale[size];
 
@@ -21,15 +21,15 @@ const SpeciesIcon = ({species, theme, size}) => {
   );
 };
 
-SpeciesIcon.defaultProps = {
+RibbonSpeciesIcon.defaultProps = {
   theme: 'agr',
   size: 'small',
 };
 
-SpeciesIcon.propTypes = {
+RibbonSpeciesIcon.propTypes = {
   size: PropTypes.string,
   species: PropTypes.string.isRequired,
   theme: PropTypes.string,
 };
 
-export default SpeciesIcon;
+export default RibbonSpeciesIcon;

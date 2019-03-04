@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import SpeciesIcon from './SpeciesIcon';
+import RibbonSpeciesIcon from './RibbonSpeciesIcon';
 import FaExternalLink from 'react-icons/lib/fa/external-link';
 
 import {getPrefixForId} from './../dataHelpers';
@@ -33,7 +33,7 @@ export default class GeneAbout extends React.Component {
       return (
         <div className='ontology-ribbon__about'>
           {subject &&
-            <SpeciesIcon species={speciesName} {...iconProps} />
+            <RibbonSpeciesIcon species={speciesName} {...iconProps} />
           }
           <span>
             <span className='ontology-ribbon__about-text' style={{fontStyle: 'italic'}}>
