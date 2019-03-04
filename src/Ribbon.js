@@ -228,7 +228,7 @@ Ribbon.defaultProps = {
   binaryColor : false,            // continuous or binary color
   
   tableLabel: "GO Annotations",
-  oddEvenColor: false,
-  borderBottom: true
+  oddEvenColor: true,
+  borderBottom: false
 
 };

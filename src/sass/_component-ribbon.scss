@@ -107,7 +107,7 @@
 
     &__species-icon--agr {
         display: inline-block;
-        background-image: url(./icon/speciesSprite.png);
+        background-image: url($ribbon-species-icon);
         width: $ribbon-species-icon-width;
         height: $ribbon-species-icon-height;
         background-size: 700% 100%;
