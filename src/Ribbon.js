@@ -30,7 +30,11 @@ export default class Ribbon extends Component {
       maxColor: this.props.maxColor,
       colorBy : this.props.colorBy,
       maxHeatLevels: this.props.maxHeatLevels,
-      binaryColor: this.props.binaryColor
+      binaryColor: this.props.binaryColor,
+
+      tableLabel: this.props.tableLabel,
+      oddEvenColor: this.props.oddEvenColor,
+      borderBottom: this.props.borderBottom
 
     };
   }
@@ -180,6 +184,9 @@ export default class Ribbon extends Component {
                 currentblock={this.state.currentblock}
                 filters={filters}
                 focalblock={this.state.focalblock}
+                tableLabel={this.state.tableLabel}
+                oddEvenColor={this.state.oddEvenColor}
+                borderBottom={this.state.borderBottom}
               />
             </CSSTransition> :
             null
@@ -202,7 +209,11 @@ Ribbon.propTypes = {
   colorBy: PropTypes.number,
   maxHeatLevels: PropTypes.number,
   binaryColor: PropTypes.bool,
-  
+
+  tableLabel: PropTypes.string,
+  oddEvenColor: PropTypes.bool,
+  borderBottom: PropTypes.bool
+
 };
 
 Ribbon.defaultProps = {
@@ -215,5 +226,9 @@ Ribbon.defaultProps = {
   colorBy: COLOR_BY.CLASS_COUNT,  // color defined by .CLASS_COUNT or .ANNOTATION_COUNT
   maxHeatLevels : 48,             // increase or decrease the displayed intensity
   binaryColor : false,            // continuous or binary color
+  
+  tableLabel: "GO Annotations",
+  oddEvenColor: false,
+  borderBottom: true
 
 };
