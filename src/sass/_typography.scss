@@ -39,24 +39,38 @@
 }
 
 
-.closeable {
-    color: lightgray;
+// .closeable {
+//     color: lightgray;
+//     transform: scale(1.2);
+//     transition: all 0.2s ease
+// }
+
+// .closeable:hover {
+//     font-weight: bold;
+//     transform: scale(1.4)
+// }
+
+// .bright {
+//     color: #FF1998;
+//     transform: scale(1.2);
+//     transition: all 0.2s ease
+// }
+
+// .bright:hover {
+//     font-weight: bold;
+//     transform: scale(1.4)
+// }
+
+.filter-evidence-icon {
+    color: $ribbon-table-filter-icon-color;
+    width: $ribbon-table-filter-icon-size;
+    height: $ribbon-table-filter-icon-size;
     transform: scale(1.2);
-    transition: all 0.2s ease
-}
+    transition: all 0.2s ease;
 
-.closeable:hover {
-    font-weight: bold;
-    transform: scale(1.4)
-}
-
-.bright {
-    color: #FF1998;
-    transform: scale(1.2);
-    transition: all 0.2s ease
-}
-
-.bright:hover {
-    font-weight: bold;
-    transform: scale(1.4)
+    &:hover {
+        transform: scale(1.4);
+        font-weight: bold;
+        cursor: pointer;
+    }
 }

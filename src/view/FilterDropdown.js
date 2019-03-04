@@ -60,8 +60,8 @@ class FilterDropdown extends Component {
       <span ref={ref}>
         {
           this.state.isOpen ?
-            (<FaClose className='closeable link' onClick={() => { this.handleMouseDown(); }} />) :
-            (<FaFilter className='bright link' onClick={() => { this.handleMouseDown(); }} />)
+            (<FaClose className='filter-evidence-icon' onClick={() => { this.handleMouseDown(); }} />) :
+            (<FaFilter className='filter-evidence-icon' onClick={() => { this.handleMouseDown(); }} />)
         }
       </span>
     );

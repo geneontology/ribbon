@@ -12,10 +12,15 @@ import { COLOR_BY, POSITION } from '../enums';
 export default class RibbonBase extends React.Component {
 
   renderEntityLabel(location) {
+    // console.log("container: ", location , "position: ", this.props.entityLabel);
     if(this.props.entityLabel == POSITION.LEFT && location == POSITION.LEFT
     || this.props.entityLabel == POSITION.RIGHT && location == POSITION.RIGHT) {
       return (
         <RibbonBaseLabel label={this.props.title} id={this.props.entity.subject}/>
+      )
+    } else if(this.props.entityLabel == POSITION.BOTTOM && location == POSITION.RIGHT) {
+      return (
+        <RibbonBaseLabel displayContents={false} label={this.props.title} id={this.props.entity.subject}/>
       )
     }
     return(

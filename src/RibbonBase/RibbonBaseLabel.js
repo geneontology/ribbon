@@ -11,7 +11,7 @@ export default class RibbonBaseLabel extends React.Component {
 
     render() {
         return (
-            <div className='ontology-ribbon__strip__label'>
+            <div className={this.props.displayContents ? 'ontology-ribbon__strip__label' : ''}>
                 <a href={"http://amigo.geneontology.org/amigo/gene_product/" + this.props.id.replace("MGI:", "MGI:MGI:")} className="ontology-ribbon__label ribbon-link" target="blank">
                     <RibbonSpeciesIcon species={getPrefixForId(this.props.id)} />
                     {this.props.label}
@@ -19,4 +19,11 @@ export default class RibbonBaseLabel extends React.Component {
             </div>
         )
     }
+}
+
+RibbonBaseLabel.propTypes = {
+    displayContents: PropTypes.bool
+}
+RibbonBaseLabel.defaultProps = {
+    displayContents : true
 }

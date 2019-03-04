@@ -28,6 +28,7 @@ const urlPropsQueryConfig = {
  * as strings since we did not pass a `urlPropsQueryConfig` to addUrlProps.
  */
 function mapUrlToProps(url) {
+  console.log("url: ", url)
   return {
     subject: url.subject,
     mode: url.mode,
@@ -50,7 +51,7 @@ class Demo extends React.Component {
 
   render() {
     const {subject, mode, entityLabel, colorBy, binaryColor} = this.props;
-
+    console.log("label position: ", entityLabel);
     return (
       <div id='demo'>
         <RibbonDataProvider mode={mode} subject={subject}>

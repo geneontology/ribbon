@@ -18,7 +18,23 @@
         background-color: $ribbon-table-header-bgcolor;
         font-size: $ribbon-table-header-font-size;
         color: $ribbon-table-header-color;
-        border-radius: 25px;
+        border-radius: $ribbon-table-header-border-radius;
+
+        &--border-bottom {
+            border-bottom: 2.5px solid rgba(128, 128, 128, 0.2);                
+        }    
+    }
+
+    &__headline {
+        font-size: $ribbon-table-headline-font-size;
+        color: $ribbon-table-headline-color;
+        line-height: initial;
+        margin: 5px;
+        width: 100%;
+
+        &--border-bottom {
+            border-bottom: 2.5px solid rgba(128, 128, 128, 0.2);                
+        }    
     }
 
     &__term-column {
@@ -377,6 +393,7 @@
             display: flex;
             padding: 4px 8px;
             font-size: .9rem;
+            line-height: 1.5;
 
             &--odd {
                 background-color: $ribbon-table-row-odd-color;
@@ -384,6 +401,10 @@
 
             &--even {
                 background-color: $ribbon-table-row-even-color;
+            }
+
+            &--border-bottom:not(:last-child) {
+                border-bottom: 1.5px solid rgba(128, 128, 128, 0.2);                
             }
 
             &--focus {

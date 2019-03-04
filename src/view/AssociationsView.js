@@ -45,7 +45,8 @@ export default class AssociationsView extends React.Component {
 
     return (
       <div className={'ontology-ribbon__assoc'}>
-        <div className='ontology-ribbon__header' >
+        <div className={'ontology-ribbon__headline ' + (this.props.borderBottom ? 'ontology-ribbon__headline--border-bottom' : '') }>{this.props.tableLabel}</div>
+        <div className={'ontology-ribbon__header ' + (this.props.borderBottom ? 'ontology-ribbon__header--border-bottom' : '') } >
           <div style={{ fontWeight: 'bold', width: '50%' }}>
               Term
           </div>
@@ -95,9 +96,18 @@ export default class AssociationsView extends React.Component {
             })
 
             if (found) {
-              shown++;            
+              shown++;
             return (
-              <div className={'ontology-ribbon__assoc__row' + (shown %2 == 0 ? ' ontology-ribbon__assoc__row--even' : ' ontology-ribbon__assoc__row--odd') } key={index}  style={row_style} >
+              <div className={'ontology-ribbon__assoc__row' + (this.props.oddEvenColor ? 
+                                                                  (shown %2 == 0 ? ' ontology-ribbon__assoc__row--even' : ' ontology-ribbon__assoc__row--odd') 
+                                                                  : ''
+                                                              ) + 
+                                                              (this.props.borderBottom ?
+                                                                  ' ontology-ribbon__assoc__row--border-bottom'
+                                                                  : ''
+                                                              )
+                              } 
+                                                              key={index}  style={row_style} >
                 <div className='ontology-ribbon__term-column' key={'term' + index}>
                   <AssociationTerm assoc={assoc} config={config} row={index} />
                 </div>
@@ -126,4 +136,13 @@ AssociationsView.propTypes = {
   currentblock: PropTypes.object,
   filters: PropTypes.object,
   focalblock: PropTypes.object,
+  tableLabel: PropTypes.string,
+  oddEvenColor: PropTypes.bool,
+  borderBottom: PropTypes.bool
 };
+
+AssociationsView.defaultProps = {
+  tableLabel: "GO Annotations",
+  oddEvenColor: true,
+  borderBottom: true
+}
