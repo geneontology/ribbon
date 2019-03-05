@@ -8,7 +8,8 @@
     margin: 0px 2px;
     border: 1px solid black;
     border-radius: 5px;
-    background-color: grey;
+    background-color: $ribbon-table-filter-checkbox-bgcolor;
+    color: $ribbon-table-filter-checkbox-color;
     display: inline-block;
     transition: all 0.2s;
     box-sizing: content-box;
@@ -18,8 +19,4 @@
         cursor: pointer;
     }
 
-    &:active {
-        background-color: $ribbon-radio-button-selected-bgcolor;
-        color: white;
-    }
 }
