@@ -85,14 +85,14 @@ class AssociationEvidence extends Component {
           (this.isWithExpanded(eco_group.evidence_with) && w_index < with_max)) {
           with_set.push(
             <div className="ontology-ribbon__content" key={base_key + '.' + w_index + '.with'}>
-              <a className='link' href={url}>{link}{suffix}</a>
+              <a className='link' href={url} target='_blank'>{link}{suffix}</a>
             </div>);
 
         } else if (w_index === with_max && this.isWithExpanded(eco_group.evidence_with)) {
           suffix = ' ';
           with_set.push(
             <div className="ontology-ribbon__content" key={base_key + '.' + w_index + '.with'}>
-              <a className='link' href={url} onClick={() => { this.onExpandCollapseWith(eco_group.evidence_with); }} >
+              <a className='link' href={url} target='_blank' onClick={() => { this.onExpandCollapseWith(eco_group.evidence_with); }} >
                 {link}
               </a>
               {suffix}
@@ -103,9 +103,9 @@ class AssociationEvidence extends Component {
           suffix = ' ... ';
           with_set.push(
             <div className="ontology-ribbon__content" key={base_key + '.' + w_index + '.with'}>
-              <a className='link' href={url}> {link} </a>
+              <a className='link' href={url} target='_blank'> {link} </a>
               &nbsp;
-              <a className='link' onClick={() => { this.onExpandCollapseWith(eco_group.evidence_with); }} >
+              <a className='link' target='_blank' onClick={() => { this.onExpandCollapseWith(eco_group.evidence_with); }} >
                 {suffix}
                 <FaCaretRight className='bright link' />
               </a>
@@ -128,13 +128,13 @@ class AssociationEvidence extends Component {
         (this.isRefExpanded(eco_group.evidence_refs) && r_index < ref_max)) {
         ref_set.push(
           <div className="ontology-ribbon__content" key={base_key + '.' + r_index + '.ref'}>
-            <a className='link' href={url}>{ref}{suffix}</a>
+            <a className='link' href={url} target='_blank'>{ref}{suffix}</a>
           </div>);
       } else if (r_index === ref_max && this.isRefExpanded(eco_group.evidence_refs)) {
         suffix = ' ';
         ref_set.push(
           <div className="ontology-ribbon__content" key={base_key + '.' + r_index + '.ref'}>
-            <a className='link' href={url} onClick={() => { this.onExpandCollapseRef(eco_group.evidence_refs); }} >
+            <a className='link' href={url} target='_blank' onClick={() => { this.onExpandCollapseRef(eco_group.evidence_refs); }} >
               {ref}
             </a>
             {suffix}
@@ -144,9 +144,9 @@ class AssociationEvidence extends Component {
         suffix = ' ... ';
         ref_set.push(
           <div className="ontology-ribbon__content" key={base_key + '.' + r_index + '.ref'}>
-            <a className='link' href={url}> {ref} </a>
+            <a className='link' href={url} target='_blank'> {ref} </a>
             &nbsp;
-            <a className='link' onClick={() => { this.onExpandCollapseRef(eco_group.evidence_refs); }} >
+            <a className='link' target='_blank' onClick={() => { this.onExpandCollapseRef(eco_group.evidence_refs); }} >
               {suffix}
               <FaCaretRight className='bright link' />
             </a>
@@ -190,6 +190,7 @@ class AssociationEvidence extends Component {
               href={'http://geneontology.org/page/go-qualifiers'}
               key={'q' + row + eco_index + group_index + index}
               rel="noopener noreferrer"
+              target='_blank'
               title={q}
             >
               {q}{suffix}
@@ -232,6 +233,7 @@ class AssociationEvidence extends Component {
                 href={`http://www.evidenceontology.org/term/${eco_id}`}
                 key={row + '.' + eco_index + '.' + eco_id}
                 title={eco_label}
+                target='_blank'
               >
                 {eco}
               </a>
