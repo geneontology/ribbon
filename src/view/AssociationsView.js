@@ -143,6 +143,6 @@ AssociationsView.propTypes = {
 
 AssociationsView.defaultProps = {
   tableLabel: "GO Annotations",
-  oddEvenColor: true,
-  borderBottom: true
+  oddEvenColor: false,
+  borderBottom: false
 }

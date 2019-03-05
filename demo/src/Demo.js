@@ -67,6 +67,7 @@ class Demo extends React.Component {
                       entityLabel={entityLabel}
                       colorBy={colorBy}
                       binaryColor={binaryColor}
+                      oddEvenColor
                   /> :
                     null
                 }
