@@ -1,23 +1,31 @@
-import expect from 'expect'
-import React from 'react'
-import {render, unmountComponentAtNode} from 'react-dom'
+// import expect from 'expect'
+// import React from 'react'
+// import {render, unmountComponentAtNode} from 'react-dom'
 
-import component from 'demo/src/'
+// import component from 'demo/src/'
 
-describe('component', () => {
-  let node
+// describe('component', () => {
+//   let node
 
-  beforeEach(() => {
-    node = document.createElement('div')
-  })
+//   beforeEach(() => {
+//     node = document.createElement('div')
+//   })
 
-  afterEach(() => {
-    unmountComponentAtNode(node)
-  })
+//   afterEach(() => {
+//     unmountComponentAtNode(node)
+//   })
 
-  it('displays a welcome message', () => {
-    render(<component/>, node, () => {
-      expect(node.innerHTML).toContain('Welcome to React components')
-    })
-  })
-})
+//   it('displays a welcome message', () => {
+//     render(<component/>, node, () => {
+//       expect(node.innerHTML).toContain('Welcome to React components')
+//     })
+//   })
+// })
+
+
+var assert = require('assert');
+describe('Ribbon ToDo Test', function () {
+  it('Dummy Test', function () {
+    assert.equal("Hello".length, 5);
+  });
+});
