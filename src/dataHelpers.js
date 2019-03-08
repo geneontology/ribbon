@@ -2,7 +2,6 @@
 
 import taxa from './data/taxa';
 import getKey from './assocKey';
-import variables from './sass/_variables.scss';
 
 import axios from 'axios';
 
@@ -257,8 +256,6 @@ export function createSlims(subject, config, associations, termAspect) {
     if (slimitem.uniqueAssocs.length > 0) {
       slimitem.uniqueAssocs.sort(sortAssociations);
       slimitem.nbAnnotations = countAnnotations(slimitem);
-      slimitem.color = heatColor(slimitem.uniqueAssocs.length, config.annot_color, config.heatLevels);
-      slimitem.colorNbAnnotations = heatColor(slimitem.nbAnnotations, config.annot_color, config.heatLevels);
     }
     return slimitem;
   });
@@ -270,7 +267,6 @@ export function createSlims(subject, config, associations, termAspect) {
   if (all_block.uniqueAssocs.length > 0) {
     all_block.class_label = 'All annotations';
     all_block.uniqueAssocs.sort(sortAssociations);
-    all_block.color = variables.ribbon_strip_slim_saturation_color;
     all_block.type = SlimType.All;
   }
   blocks.splice(0, 0, all_block);
@@ -334,8 +330,6 @@ function gatherAllAnnotations(aspectItem, blocks, config) {
   if (slimitem.uniqueAssocs.length > 0) {
     slimitem.uniqueAssocs.sort(sortAssociations);
     slimitem.nbAnnotations = countAnnotations(slimitem);
-    slimitem.color = heatColor(slimitem.uniqueAssocs.length, config.annot_color, config.heatLevels);
-    slimitem.colorNbAnnotations = heatColor(slimitem.nbAnnotations, config.annot_color, config.heatLevels);
   }
 
   return slimitem;
@@ -378,33 +372,6 @@ function sortAssociations(assoc_a, assoc_b) {
   return 0;
 }
 
-export function heatColor(associations_count, hexColor, heatLevels) {
-  hexColor = variables.ribbon_strip_slim_saturation_color;
-
-  if (associations_count === 0)
-    return '#fff';
-
-  let targetColor = hexColor.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i, (m, r, g, b) => '#' + r + r + g + g + b + b)
-    .substring(1).match(/.{2}/g)
-    .map(x => parseInt(x, 16));
-
-  let blockColor = [];     // [r,g,b]
-
-  // when no annotation
-  let initColor = [255, 255, 255];
-
-  // this is a linear version for interpolation
-  // let fraction = Math.min(associations_count, heatLevels) / heatLevels;
-
-  // this is the log version for interpolation (better highlight the most annotated classes)
-  // note: safari needs integer and not float for rgb function
-  let fraction = Math.min(10 * Math.log(associations_count + 1), heatLevels) / heatLevels;
-  blockColor[0] = Math.round(initColor[0] + fraction * (targetColor[0] - initColor[0]));
-  blockColor[1] = Math.round(initColor[1] + fraction * (targetColor[1] - initColor[1]));
-  blockColor[2] = Math.round(initColor[2] + fraction * (targetColor[2] - initColor[2]));
-
-  return 'rgb(' + blockColor[0] + ',' + blockColor[1] + ',' + blockColor[2] + ')';
-}
 
 
 /**
