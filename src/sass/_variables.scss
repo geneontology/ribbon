@@ -1,90 +1,89 @@
-// define those variables directly in your SASS theme file
 
-// // Primary color will automatically drive the general appearance of the Ribbon
-// // $ribbon-primary-color: rgb(7, 101, 101);
-// $ribbon-primary-color: #1849b4 !default;
-// $ribbon-secondary-color: #3263CE !default;
-// $ribbon-tertiary-color: #7EAFFF !default;
-// $ribbon-quaternary-color: #c7c5c5 !default;
-
-
-// // Ribbon Strip
-// $ribbon-strip-font-default: Lato, Helvetica, sans-serif !default;
-// $ribbon-strip-font-size-default: 0.8rem !default;
-
-// // Ribbon Strip Tile
-// $ribbon-strip-tile-border-color: silver !default;
-// $ribbon-strip-tile-border-color-hover: #247bbd !default;
-// $ribbon-strip-tile-tile-width: 16px !default;
-// $ribbon-strip-tile-separator-width: 16px !default;
-// $ribbon-strip-tile-border-radius: 5px !default; // make the slim box rounder
-
-// // Ribbon Strip Sliem
-// $ribbon-strip-slim-selected-color: #247bbd !default;
-// $ribbon-strip-slim-selected-weight: 700 !default;
-// $ribbon-strip-slim-selected-decoration: underline !default;
-
-// // Ribbon Strip Density Color
-// $ribbon-strip-slim-saturation-color: $ribbon-primary-color !default;
-
-// // Ribon Strip Group Label
-// $ribbon-strip-group-label-color: #247bbd !default;
-// $ribbon-strip-group-label-hover-color: #18517d !default;
+// Primary color will automatically drive the general appearance of the Ribbon
+// $ribbon-primary-color: rgb(7, 101, 101);
+$ribbon-primary-color: #1849b4 !default;
+$ribbon-secondary-color: #3263CE !default;
+$ribbon-tertiary-color: #7EAFFF !default;
+$ribbon-quaternary-color: #c7c5c5 !default;
 
 
+// Ribbon Strip
+$ribbon-strip-font-default: Lato, Helvetica, sans-serif !default;
+$ribbon-strip-font-size-default: 0.8rem !default;
 
-// // Ribbon Table Header
-// $ribbon-table-header-font-size: $ribbon-strip-font-size-default !default;
-// $ribbon-table-header-color: #FFFAE4 !default;
-// $ribbon-table-header-bgcolor: $ribbon-primary-color !default;
-// $ribbon-table-header-border-radius: 25px !default;
-// $ribbon-table-filter-bgcolor: $ribbon-tertiary-color !default;
-// $ribbon-table-filter-checkbox-bgcolor: $ribbon-primary-color !default;
-// $ribbon-table-filter-checkbox-color: white !default;
-// $ribbon-table-filter-icon-color: #FFFAE4 !default;
-// $ribbon-table-filter-icon-size: 14px !default;
+// Ribbon Strip Tile
+$ribbon-strip-tile-border-color: silver !default;
+$ribbon-strip-tile-border-color-hover: #247bbd !default;
+$ribbon-strip-tile-tile-width: 16px !default;
+$ribbon-strip-tile-separator-width: 16px !default;
+$ribbon-strip-tile-border-radius: 5px !default; // make the slim box rounder
 
-// $ribbon-table-headline-font-size : 2rem !default;
-// $ribbon-table-headline-color : black !default;
+// Ribbon Strip Sliem
+$ribbon-strip-slim-selected-color: #247bbd !default;
+$ribbon-strip-slim-selected-weight: 700 !default;
+$ribbon-strip-slim-selected-decoration: underline !default;
 
+// Ribbon Strip Density Color
+$ribbon-strip-slim-saturation-color: $ribbon-primary-color !default;
 
-// // Ribbon Table Row
-// $ribbon-table-row-font-size: $ribbon-strip-font-size-default !default;
-// $ribbon-table-row-odd-color: #ffffff !default;
-// $ribbon-table-row-even-color: #1d55cd !default;
-// $ribbon-table-row-focus-color: #1d55cd !default;
-
-// // Table Based On Section
-// $ribbon-table-evidence-hover-color: #4B7CE7 !default;
+// Ribon Strip Group Label
+$ribbon-strip-group-label-color: #247bbd !default;
+$ribbon-strip-group-label-hover-color: #18517d !default;
 
 
 
-// // Species icon width & height
-// $ribbon-species-icon-width: 10px !default;
-// $ribbon-species-icon-height: 11.25px !default;
-// $ribbon-species-icon: './icon/speciesSprite.png' !default;
+// Ribbon Table Header
+$ribbon-table-header-font-size: $ribbon-strip-font-size-default !default;
+$ribbon-table-header-color: #FFFAE4 !default;
+$ribbon-table-header-bgcolor: $ribbon-primary-color !default;
+$ribbon-table-header-border-radius: 25px !default;
+$ribbon-table-filter-bgcolor: $ribbon-tertiary-color !default;
+$ribbon-table-filter-checkbox-bgcolor: $ribbon-primary-color !default;
+$ribbon-table-filter-checkbox-color: white !default;
+$ribbon-table-filter-icon-color: #FFFAE4 !default;
+$ribbon-table-filter-icon-size: 14px !default;
 
-// // $ribbon-species-icon-width: 12px !default;
-// // $ribbon-species-icon-height: 13.5px !default;
+$ribbon-table-headline-font-size : 2rem !default;
+$ribbon-table-headline-color : black !default;
+
+
+// Ribbon Table Row
+$ribbon-table-row-font-size: $ribbon-strip-font-size-default !default;
+$ribbon-table-row-odd-color: #ffffff !default;
+$ribbon-table-row-even-color: #1d55cd !default;
+$ribbon-table-row-focus-color: #1d55cd !default;
+
+// Table Based On Section
+$ribbon-table-evidence-hover-color: #4B7CE7 !default;
 
 
 
+// Species icon width & height
+$ribbon-species-icon-width: 10px !default;
+$ribbon-species-icon-height: 11.25px !default;
+$ribbon-species-icon: './icon/speciesSprite.png' !default;
 
-// // Default Link Colors
-// $ribbon-link-color: #247bbd !default;
-// $ribbon-link-hover-color: #18517d !default;
-
-// // Default Radio Button Colors
-// $ribbon-radio-button-selected-bgcolor: $ribbon-secondary-color !default;
-// $ribbon-radio-button-unselected-bgcolor: $ribbon-quaternary-color !default;
+// $ribbon-species-icon-width: 12px !default;
+// $ribbon-species-icon-height: 13.5px !default;
 
 
 
 
+// Default Link Colors
+$ribbon-link-color: #247bbd !default;
+$ribbon-link-hover-color: #18517d !default;
 
-// // variables that can be used in JS code
-// :export {
-//     primary_color: $ribbon-primary-color;
-//     secondary_color: $ribbon-secondary-color;
-//     ribbon_strip_slim_saturation_color: $ribbon-strip-slim-saturation-color;
-// }
+// Default Radio Button Colors
+$ribbon-radio-button-selected-bgcolor: $ribbon-secondary-color !default;
+$ribbon-radio-button-unselected-bgcolor: $ribbon-quaternary-color !default;
+
+
+
+
+
+// variables that can be used in JS code
+:export {
+    primary_color: $ribbon-primary-color;
+    secondary_color: $ribbon-secondary-color;
+    ribbon_strip_slim_saturation_color: $ribbon-strip-slim-saturation-color;
+}
