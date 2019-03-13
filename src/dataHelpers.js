@@ -124,8 +124,7 @@ export function unpackSlimItems(results, subject, config) {
 export function createSlims(subject, config, associations, termAspect) {
   let label = subject;
   let filters = new Map();
-  let other = false;
-  let globalclass_ids = [];
+  let isOtherType = false;
   let seen_before_in_slim = new Map;
   let taxon = "N/A";
 
@@ -134,7 +133,7 @@ export function createSlims(subject, config, associations, termAspect) {
   var slimlist = JSON.parse(JSON.stringify(config.slimlist));
 
 
-  let all_block = {
+  let all_blocks = {
     'class_id': 'All annotations',
     'class_label': 'All annotations',
     'uniqueAssocs': [],
@@ -142,21 +141,21 @@ export function createSlims(subject, config, associations, termAspect) {
     'color': config.highlightColor,
   };
   var aspect;
-  var aspect_ids;
   let aspects = new Set();
 
   let slimterm;
 
   // 1 - we travel through all slims individually
   const blocks = slimlist.map(function (slimitem) {
+
     // set up uniques and color too
     slimitem.uniqueIDs = [];
     slimitem.uniqueAssocs = [];
     slimitem.nbAnnotations = 0;
     slimitem.color = '#fff';
 
-    other = slimitem.class_label.toLowerCase().includes('other');
-    slimitem.type = other ? SlimType.Other : SlimType.Item;
+    isOtherType = slimitem.class_label.toLowerCase().includes('other');
+    slimitem.type = isOtherType ? SlimType.Other : SlimType.Item;
 
     if (slimitem.class_id.toLowerCase().indexOf('aspect') >= 0) {
       if (aspect !== undefined) {
@@ -165,7 +164,6 @@ export function createSlims(subject, config, associations, termAspect) {
       slimitem.aspect = slimitem.class_id.split(" ")[0];
       slimitem.type = SlimType.Aspect;
       aspect = slimitem;
-      aspect_ids = [];
       slimitem.no_data = false;
       aspects.add(aspect);
     }
@@ -202,12 +200,18 @@ export function createSlims(subject, config, associations, termAspect) {
       // create unique key (subject - annotation)
       let key = getKey(assocItem);
 
-      // if this key has never been seen, keep it and add this assoc to all_block
-      if (!globalclass_ids.includes(key)) {
-        globalclass_ids.push(key);
-        all_block.uniqueAssocs.push(assocItem);
+      // if this key has never been seen, add the item at the global level
+      if (!all_blocks.uniqueIDs.includes(key)) {
+        all_blocks.uniqueIDs.push(key);
+        all_blocks.uniqueAssocs.push(assocItem);
       }
 
+      // if this key has never been seen, add the item at the section level
+      if (!aspect.uniqueIDs.includes(key) && slimitem.type != SlimType.Other) {
+        aspect.uniqueIDs.push(key);      
+        aspect.uniqueAssocs.push(assocItem);
+      }
+      
       var need2add_evidence;
       let earlier_slim = seen_before_in_slim.get(key);
       if (earlier_slim === undefined) {
@@ -219,34 +223,33 @@ export function createSlims(subject, config, associations, termAspect) {
 
       // if term not yet seen, add it to the slim
       if (!slimitem.uniqueIDs.includes(key)) {
+
+        // if we are filling the "Other" slim box 
+        // Note: MUST be treated ONLY at the end of a section - requirement for data access
         if (slimitem.type == SlimType.Other) {
-          if (!aspect_ids.includes(key)) {
+          if (!aspect.uniqueIDs.includes(key)) {
             slimitem.uniqueIDs.push(key);
             slimitem.uniqueAssocs.push(assocItem);
           }
 
+        // Normal slim box
         } else {
           slimitem.uniqueIDs.push(key);
           slimitem.uniqueAssocs.push(assocItem);
-          if (slimitem != aspect) {
-            aspect_ids.push(key);
-            aspect.uniqueAssocs.push(assocItem);
-            aspect.uniqueIDs.push(key);
-          }
         }
 
         if (need2add_evidence) {
           assocItem.evidence_map = new Map();
           addEvidence(assocItem, assocItem, filters);
         } else {
-          let prev_assoc = all_block.uniqueAssocs[globalclass_ids.indexOf(key)];
+          let prev_assoc = all_blocks.uniqueAssocs[all_blocks.uniqueIDs.indexOf(key)];
           assocItem.evidence_map = prev_assoc.evidence_map;
         }
 
         // If term already seen, just check if the evidence can still be added
       } else {
         if (need2add_evidence) {
-          let prev_assoc = all_block.uniqueAssocs[globalclass_ids.indexOf(key)];
+          let prev_assoc = all_blocks.uniqueAssocs[all_blocks.uniqueIDs.indexOf(key)];
           addEvidence(prev_assoc, assocItem, filters);
         }
 
@@ -263,14 +266,15 @@ export function createSlims(subject, config, associations, termAspect) {
   if (aspect !== undefined) {
     aspect.uniqueAssocs.sort(sortAssociations);
   }
+
   // insert a block with all annotations at the very first position
-  if (all_block.uniqueAssocs.length > 0) {
-    all_block.class_label = 'All annotations';
-    all_block.uniqueAssocs.sort(sortAssociations);
-    all_block.nbAnnotations = countAnnotations(all_block);
-    all_block.type = SlimType.All;
+  if (all_blocks.uniqueAssocs.length > 0) {
+    all_blocks.class_label = 'All annotations';
+    all_blocks.uniqueAssocs.sort(sortAssociations);
+    all_blocks.nbAnnotations = countAnnotations(all_blocks);
+    all_blocks.type = SlimType.All;
   }
-  blocks.splice(0, 0, all_block);
+  blocks.splice(0, 0, all_blocks);
 
 
   // adding ALL <aspect> category at the beginning of each block of slims
@@ -280,7 +284,7 @@ export function createSlims(subject, config, associations, termAspect) {
     });
 
     let aspectItem = blocks[aspectPos];
-    let aspectAllItem = gatherAllAnnotations(aspectItem, blocks, config);
+    let aspectAllItem = createAspectAnnotations(aspectItem, blocks, config);
 
     let otherPos = blocks.findIndex(elt => {
       return elt.aspect == asp.aspect && elt.type == SlimType.Item;
@@ -301,28 +305,31 @@ export function createSlims(subject, config, associations, termAspect) {
  * @param {*} aspectItem 
  * @param {*} blocks 
  */
-function gatherAllAnnotations(aspectItem, blocks, config) {
-  let slimitem = {};
-  slimitem.uniqueIDs = [];
-  slimitem.uniqueAssocs = [];
-  slimitem.nbAnnotations = 0;
-  slimitem.color = '#fff';
-  slimitem.class_label = "All " + aspectItem.class_label.toLowerCase();
-  slimitem.class_id = aspectItem.aspect + " all";
-  slimitem.aspect = aspectItem.aspect;
-  slimitem.type = SlimType.AllFromAspect;
+function createAspectAnnotations(aspectItem, blocks, config) {
+  let slimitem = {
+    uniqueIDs : [],
+    uniqueAssocs : [],
+    nbAnnotations : 0,
+    color : '#fff',
+    class_label : "All " + aspectItem.class_label.toLowerCase(),
+    class_id : aspectItem.aspect + " all",
+    aspect : aspectItem.aspect,
+    type : SlimType.AllFromAspect
+  };
 
   let setIDs = new Set();
   let setAssocs = new Set();
   for (let block of blocks) {
-    if (block.aspect === aspectItem.aspect) {
-      for (let id of block.uniqueIDs) {
-        setIDs.add(id);
+    // fill only with the blocks of the given aspect and DO NOT add items from the Other category
+    if (block.aspect === aspectItem.aspect && block.type != SlimType.Other) {
+
+      for(let index in block.uniqueAssocs) {
+        if(!setIDs.has(block.uniqueIDs[index])) {
+          setIDs.add(block.uniqueIDs[index]);
+          setAssocs.add(block.uniqueAssocs[index]);
+        }
       }
 
-      for (let id of block.uniqueAssocs) {
-        setAssocs.add(id);
-      }
     }
   }
   slimitem.uniqueIDs = Array.from(setIDs);
