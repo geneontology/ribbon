@@ -43,18 +43,18 @@ $ribbon-table-filter-checkbox-color: white !default;
 $ribbon-table-filter-icon-color: #FFFAE4 !default;
 $ribbon-table-filter-icon-size: 14px !default;
 
-$ribbon-table-headline-font-size : 2rem !default;
+$ribbon-table-headline-font-size : 1.5rem !default;
 $ribbon-table-headline-color : black !default;
 
 
 // Ribbon Table Row
 $ribbon-table-row-font-size: $ribbon-strip-font-size-default !default;
 $ribbon-table-row-odd-color: #ffffff !default;
-$ribbon-table-row-even-color: #1d55cd !default;
+$ribbon-table-row-even-color: rgba(29, 85, 205, 0.2) !default;
 $ribbon-table-row-focus-color: #1d55cd !default;
 
 // Table Based On Section
-$ribbon-table-evidence-hover-color: #4B7CE7 !default;
+$ribbon-table-evidence-hover-color: rgba(29, 85, 205, 0.3) !default;
 
 
 
