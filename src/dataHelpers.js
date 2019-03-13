@@ -267,6 +267,7 @@ export function createSlims(subject, config, associations, termAspect) {
   if (all_block.uniqueAssocs.length > 0) {
     all_block.class_label = 'All annotations';
     all_block.uniqueAssocs.sort(sortAssociations);
+    all_block.nbAnnotations = countAnnotations(all_block);
     all_block.type = SlimType.All;
   }
   blocks.splice(0, 0, all_block);
