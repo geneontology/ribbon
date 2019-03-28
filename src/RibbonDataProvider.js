@@ -22,14 +22,13 @@ export default class RibbonDataProvider extends Component {
     let config = getConfig(mode);
     self.fetchData(config, subject)
     .then(results => {
-      self.aggregateData(config, results)
+      self.aggregateData(config, results)    
     })
     .catch(error => {
       this.setState({
         fetching: false,
         dataError: error
       });
-      console.error(error);
     })
   }
 
@@ -81,6 +80,16 @@ export default class RibbonDataProvider extends Component {
     let map = this.divide(results.data);
     let entities = [];
 
+    // no results retrieved
+    if(map.size == 0) {
+      this.setState({
+        entities: entities,
+        config: config,
+        dataError: null,
+        fetching: false,
+      });
+  }
+
     // for each entity retrieved
     map.forEach((value, subject) => {
 
@@ -96,7 +105,7 @@ export default class RibbonDataProvider extends Component {
           dataError: error,
           fetching: false,
         });
-        console.error(error);
+        console.error("Error while unpacking slim items: ", error);
       })
       .finally(() => {
         this.setState({

@@ -51,7 +51,7 @@ class Demo extends React.Component {
 
   render() {
     const {subject, mode, entityLabel, colorBy, binaryColor} = this.props;
-    console.log("label position: ", entityLabel);
+    // console.log("label position: ", entityLabel);
     return (
       <div id='demo'>
         <RibbonDataProvider mode={mode} subject={subject}>
