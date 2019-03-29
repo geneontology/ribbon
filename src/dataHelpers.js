@@ -320,8 +320,8 @@ function createAspectAnnotations(aspectItem, blocks, config) {
   let setIDs = new Set();
   let setAssocs = new Set();
   for (let block of blocks) {
-    // fill only with the blocks of the given aspect and DO NOT add items from the Other category
-    if (block.aspect === aspectItem.aspect && block.type != SlimType.Other) {
+    // fill only with the blocks of the given aspect and ADD items from the Other category (1539)
+    if (block.aspect === aspectItem.aspect) {
 
       for(let index in block.uniqueAssocs) {
         if(!setIDs.has(block.uniqueIDs[index])) {
