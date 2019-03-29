@@ -7,10 +7,6 @@ import amigo_gen from 'amigo2-instance-data';
 import FaCaretUp from 'react-icons/lib/fa/caret-up';
 import FaCaretRight from 'react-icons/lib/fa/caret-right';
 
-
-import QUALIFIERS from '../enums';
-
-
 class AssociationEvidence extends Component {
 
   constructor() {
@@ -185,25 +181,13 @@ class AssociationEvidence extends Component {
     if (q_set !== undefined) {
       let qual_max = q_set.length - 1;
       q_set.forEach((q, index) => {
-        let url = "http://geneontology.org/docs/go-annotations/";
-        switch(q) {
-          case "contributes_to": 
-            url += "#the-contributes-to-qualifier"
-            break;
-          case "colocalizes_with": 
-            url += "#the-colocalizes-with-qualifier";
-            break;
-          default:
-            url += "#annotation-qualifiers";
-
-        }
         // we exclude the NOT qualifier as it is handled separately
         let suffix = (index < qual_max) ? ', ' : '';
         if (q !== 'not') {
           quals.push(
             <a
               className='evidence-qualifier'
-              href={url}
+              href={'http://geneontology.org/page/go-qualifiers'}
               key={'q' + row + eco_index + group_index + index}
               rel="noopener noreferrer"
               target='_blank'
