@@ -27,7 +27,6 @@ class FilterDropdown extends Component {
 
   handleClick(e) {
     this.filterDomElement = ReactDOM.findDOMNode(this);
-    console.log(this.filterDomElement);
 
     // outside the panel
     if(!this.filterDomElement.contains(e.target)) {
