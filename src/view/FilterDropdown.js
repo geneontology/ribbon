@@ -5,10 +5,15 @@ import PropTypes from 'prop-types';
 import FaFilter from 'react-icons/lib/fa/filter'
 import FaClose from 'react-icons/lib/fa/close'
 import FilterItem from './FilterItem';
+import ReactDOM from "react-dom";
 
 import { Manager, Reference, Popper } from 'react-popper';
 
+
 class FilterDropdown extends Component {
+
+  filterDomElement = null;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -16,16 +21,30 @@ class FilterDropdown extends Component {
     };
   }
 
-  handleMouseDown() {
-    let self = this;
-    let closing = this.state.isOpen;
-    if (closing) {
-      // broadcast the current selection to filter
-      this.props.fireChangeEvent;
+  componentWillMount() {
+    document.addEventListener('click', (e) => this.handleClick(e), false);    
+  }
+
+  handleClick(e) {
+    this.filterDomElement = ReactDOM.findDOMNode(this);
+    console.log(this.filterDomElement);
+
+    // outside the panel
+    if(!this.filterDomElement.contains(e.target)) {
+      // close if the panel was open
+      if(this.state.isOpen) { 
+        this.setState({
+          isOpen: false
+        });      
+      }
+
+    // inside the panel
+    } else {
+      this.setState({
+        isOpen: true
+      });
+        
     }
-    self.setState({
-      isOpen: !this.state.isOpen
-    });
   }
 
   buildMenu() {
@@ -59,9 +78,7 @@ class FilterDropdown extends Component {
     const arrow = ({ref}) => (
       <span ref={ref}>
         {
-          this.state.isOpen ?
-            (<FaClose className='filter-evidence-icon' onClick={() => { this.handleMouseDown(); }} />) :
-            (<FaFilter className='filter-evidence-icon' onClick={() => { this.handleMouseDown(); }} />)
+            (<FaFilter className='filter-evidence-icon'  />)
         }
       </span>
     );
