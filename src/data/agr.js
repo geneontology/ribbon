@@ -264,7 +264,7 @@ export default
     },
     {
       'class_id': 'GO:0005575',
-      'class_label': 'other components',
+      'class_label': 'other components'
     }
   
 ];
