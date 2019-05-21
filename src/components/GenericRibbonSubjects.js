@@ -23,6 +23,8 @@ class GenericRibbonSubjects extends Component {
             maxHeatLevel: props.maxHeatLevel,
             isValid: props.subjects.length > 0,
 
+            subjectBaseURL : props.subjectBaseURL,
+
             subjectEnter : props.subjectEnter,
             subjectLeave : props.subjectLeave,
             subjectOver : props.subjectOver,
@@ -60,6 +62,8 @@ class GenericRibbonSubjects extends Component {
                                                     minColor={this.state.minColor}
                                                     maxColor={this.state.maxColor}
                                                     maxHeatLevel={this.state.maxHeatLevel}    
+
+                                                    subjectBaseURL={this.state.subjectBaseURL}
                                                     
                                                     itemEnter={this.state.itemEnter}
                                                     itemLeave={this.state.itemLeave}
@@ -89,6 +93,8 @@ GenericRibbonSubjects.propTypes = {
     minColor: PropTypes.array,
     maxColor: PropTypes.array,
     maxHeatLevel: PropTypes.number,
+
+    subjectBaseURL : PropTypes.string,
 
     subjectEnter : PropTypes.func,
     subjectLeave : PropTypes.func,

@@ -285,10 +285,11 @@
             &--empty {
                 height: $ribbon-strip-tile-tile-width;
                 width: $ribbon-strip-tile-tile-width;
+                margin: 0px;
+                padding: 0px;
                 margin-right: -1px;
                 border: 1px solid rgba(1, 1, 1, 0);
                 border-radius: 0px;
-                width: $ribbon-strip-tile-tile-width;
                 height: 0px;
 
                 &:hover {

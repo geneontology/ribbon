@@ -12,7 +12,9 @@ class GenericRibbonSubjectLabel extends Component {
     super(props);
     this.state = {
       subjectId : props.subjectId,
-      show : props.show
+      subjectLabel : props.subjectLabel,
+      subjectBaseURL : props.subjectBaseURL,
+      hide : props.hide
     }
   }
   
@@ -28,14 +30,10 @@ class GenericRibbonSubjectLabel extends Component {
 
   render() {
     return (
-      <div  className={!this.props.hide ? 'ontology-ribbon__item__category' : ''}
-            
-              >
-          <a href={"http://amigo.geneontology.org/amigo/gene_product/" + this.props.subjectId.replace("MGI:", "MGI:MGI:")} className="ontology-ribbon__label ribbon-link" target="blank"
-
-              >
-              <RibbonSpeciesIcon species={this.getPrefixForId(this.props.subjectId)} />
-              {this.props.subjectLabel}
+      <div  className={!this.state.hide ? 'ontology-ribbon__item__category' : ''}>
+          <a href={ this.state.subjectBaseURL + this.state.subjectId.replace("MGI:", "MGI:MGI:")} className="ontology-ribbon__label ribbon-link" target="blank">
+              <RibbonSpeciesIcon species={this.getPrefixForId(this.state.subjectId)} />
+              {this.state.subjectLabel}
           </a>
       </div>
     )
@@ -67,6 +65,7 @@ class GenericRibbonSubjectLabel extends Component {
 GenericRibbonSubjectLabel.propTypes = {
   subjectId : PropTypes.string.isRequired,
   subjectLabel : PropTypes.string.isRequired,
+  subjectBaseURL : PropTypes.string.isRequired,
   hide : PropTypes.bool
 }
 

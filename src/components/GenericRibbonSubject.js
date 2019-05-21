@@ -23,6 +23,8 @@ class GenericRibbonSubject extends Component {
       maxColor: props.maxColor,
       maxHeatLevel: props.maxHeatLevel,
 
+      subjectBaseURL : props.subjectBaseURL,
+
       itemEnter : props.itemEnter,
       itemLeave : props.itemLeave,
       itemOver : props.itemOver,
@@ -81,7 +83,9 @@ class GenericRibbonSubject extends Component {
 
         }
         {
-          <GenericRibbonSubjectLabel subjectId={this.state.subject.id} subjectLabel={this.state.subject.label} />
+          <GenericRibbonSubjectLabel  subjectId={this.state.subject.id} 
+                                      subjectLabel={this.state.subject.label}
+                                      subjectBaseURL={this.state.subjectBaseURL} />
         }
       </div>
     )
@@ -102,6 +106,8 @@ GenericRibbonSubject.propTypes = {
   minColor: PropTypes.array,
   maxColor: PropTypes.array,
   maxHeatLevel: PropTypes.number,
+
+  subjectBaseURL : PropTypes.string,
 
   itemEnter : PropTypes.func,
   itemLeave : PropTypes.func,

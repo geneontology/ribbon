@@ -26,6 +26,8 @@ class GenericRibbon extends Component {
             maxHeatLevel: props.maxHeatLevel,
             isValid: props.subjects.length > 0,
 
+            subjectBaseURL : props.subjectBaseURL,
+
             subjectEnter : props.subjectEnter,
             subjectLeave : props.subjectLeave,
             subjectOver : props.subjectOver,
@@ -71,6 +73,8 @@ class GenericRibbon extends Component {
                                         minColor={this.state.minColor}
                                         maxColor={this.state.maxColor}
                                         maxHeatLevel={this.state.maxHeatLevel} 
+
+                                        subjectBaseURL={this.state.subjectBaseURL}
                                         
                                         itemEnter={this.state.itemEnter}
                                         itemLeave={this.state.itemLeave}
@@ -96,6 +100,8 @@ GenericRibbon.propTypes = {
     maxColor: PropTypes.array,
     maxHeatLevel: PropTypes.number,
 
+    subjectBaseURL : PropTypes.subjectBaseURL,
+
     subjectEnter : PropTypes.func,
     subjectLeave : PropTypes.func,
     subjectOver : PropTypes.func,
@@ -115,7 +121,11 @@ GenericRibbon.defaultProps = {
     binaryColor: false,
     minColor: [255, 255, 255],
     maxColor: [24, 73, 180],
-    maxHeatLevel: 48
+    maxHeatLevel: 48,
+
+    subjectBaseURL : "http://amigo.geneontology.org/amigo/gene_product/",
+    // subjectBaseURL : "https://www.alliancegenome.org/gene/",
+
 }
 
 export default GenericRibbon;
