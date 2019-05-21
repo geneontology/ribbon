@@ -51,7 +51,7 @@ class GenericRibbon extends Component {
     }
 
     render() {
-        console.log("GENERIC RIBBON: ", this.state);
+        // console.log("GENERIC RIBBON: ", this.state);
         return (
             <div>
                 {this.state.isValid ?
