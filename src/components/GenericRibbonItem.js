@@ -56,7 +56,7 @@ class GenericRibbonItem extends Component {
     }
 
     return (
-      <div className='ontology-ribbon__block'>
+      <div className='ontology-ribbon__item'>
         <div className='ontology-ribbon__block__title'></div>
         <div  className={itemClass} style={itemStyle}
               onMouseEnter={(event) => this.state.itemEnter(this.state.subject, this.state.group) }

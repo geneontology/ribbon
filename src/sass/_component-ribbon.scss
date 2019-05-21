@@ -3,7 +3,7 @@
     justify-content: flex-start;
     font-family: $ribbon-strip-font-default;
     line-height: 1;
-    height: 2rem;
+    // height: 2rem;
 
     &__label {
         display: table-cell;
@@ -201,12 +201,25 @@
 
     &__category {
         display: inline-block;
-        height: 16px;
+        height: 200px;
         padding-right: $ribbon-strip-tile-separator-width;
     }
 
+    &__item {
+        font-size: $ribbon-strip-font-size-default;
+        display: table-cell;
+        vertical-align: bottom;
+
+
+        &__category {
+            display: inline-block;
+            padding-right: $ribbon-strip-tile-separator-width;
+        }
+
+    }
+
     &__subjects {
-        height: 16px;
+        // height: 16px;
     }
 
     &__block {

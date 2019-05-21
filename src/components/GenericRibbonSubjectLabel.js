@@ -28,7 +28,7 @@ class GenericRibbonSubjectLabel extends Component {
 
   render() {
     return (
-      <div  className={!this.props.hide ? 'ontology-ribbon__category' : ''}
+      <div  className={!this.props.hide ? 'ontology-ribbon__item__category' : ''}
             
               >
           <a href={"http://amigo.geneontology.org/amigo/gene_product/" + this.props.subjectId.replace("MGI:", "MGI:MGI:")} className="ontology-ribbon__label ribbon-link" target="blank"

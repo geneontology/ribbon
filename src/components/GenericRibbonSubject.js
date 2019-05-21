@@ -50,7 +50,7 @@ class GenericRibbonSubject extends Component {
           this.state.categories.map((category, index) => {
             
             return (
-              <div  className='ontology-ribbon__category'
+              <div  className='ontology-ribbon__item__category'
                     key={this.state.subject + "_" + category.id}>
               {
                 category.groups.map((group, index) => {
