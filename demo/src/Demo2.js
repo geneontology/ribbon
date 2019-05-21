@@ -135,11 +135,11 @@ class Demo2 extends React.Component {
 
     this.fetchAssociationData(subject.id, group.id)
     .then(data => {
-      console.log("retrieved data: " , data);
+      // console.log("retrieved data: " , data);
       this.setState({ selected : {
         subject : subject,
         group : group,
-        data : data
+        data : data.data[0].assocs
       }})
     })
   }
