@@ -3,6 +3,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import GenericRibbonHeaderCategory from './GenericRibbonHeaderCategory';
+
 class GenericRibbonHeader extends Component {
 
   constructor(props) {
@@ -27,15 +29,13 @@ class GenericRibbonHeader extends Component {
   }
 
   render() {
+    // console.log("Header: ", this.state.categories);
     return (
       <div className='ontology-ribbon__strip'>
-        <h2>Categories</h2>
         {
           this.state.categories.map((category, index) => {
             return (
-              <li key={index}>
-                <a href={category.id} target='blank'>{category.label}</a>
-              </li>
+              <GenericRibbonHeaderCategory category={category} key={index} />
             )
           })
         }

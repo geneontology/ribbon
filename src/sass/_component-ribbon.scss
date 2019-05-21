@@ -9,7 +9,7 @@
         display: table-cell;
         vertical-align: bottom;
         padding: 0px 5px;
-        width: 90px;
+        width: 100px;
     }
 
     &__header {
@@ -199,10 +199,21 @@
         }
     }
 
+    &__category {
+        display: inline-block;
+        height: 16px;
+        padding-right: $ribbon-strip-tile-separator-width;
+    }
+
+    &__subjects {
+        height: 16px;
+    }
+
     &__block {
         font-size: $ribbon-strip-font-size-default;
         display: table-cell;
         vertical-align: bottom;
+        height: 200px;
 
         &--match {
             font-weight: bold;
@@ -244,6 +255,7 @@
             }
         }
 
+
         &__tile {
             position: relative;
             border: 1px solid $ribbon-strip-tile-border-color;
@@ -255,6 +267,22 @@
             box-sizing: content-box;
             border-radius: $ribbon-strip-tile-border-radius;
             transition: all 0.2s;
+
+
+            &--empty {
+                height: $ribbon-strip-tile-tile-width;
+                width: $ribbon-strip-tile-tile-width;
+                margin-right: -1px;
+                border: 1px solid rgba(1, 1, 1, 0);
+                border-radius: 0px;
+                width: $ribbon-strip-tile-tile-width;
+                height: 0px;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+    
 
             &--disabled {
                 cursor: not-allowed !important;

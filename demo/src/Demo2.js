@@ -6,12 +6,14 @@ import { addUrlProps, UrlQueryParamTypes } from 'react-url-query';
 import { GridLoader } from 'react-spinners';
 
 import GenericRibbon from '../../src/components/GenericRibbon';
+import AssociationsView from '../../src/view/AssociationsView';
+
 import { POSITION, COLOR_BY } from '../../src/enums';
 import '../../src/main.scss'
 
 
 // const goApiUrl = 'https://api.geneontology.org/api/ontology/ribbon/';
-const goApiUrl = 'http://127.0.0.1:5000/api/ontology/ribbon/';
+const goApiUrl = 'http://127.0.0.1:5000/api/';
 
 /**
  * Specify how the URL gets decoded here. This is an object that takes the prop
@@ -47,7 +49,12 @@ class Demo2 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading : true
+      loading : true,
+      selected : {
+        subject : null,
+        group : null,
+        data : null        
+      }
     }
   }
 
@@ -64,17 +71,79 @@ class Demo2 extends React.Component {
     if(subjects instanceof Array) {
       subjects = subjects.join("&subject=");
     }
-    let query = goApiUrl + "?subset=" + subset + '&subject=' + subjects;
+    let query = goApiUrl + "ontology/ribbon/?subset=" + subset + '&subject=' + subjects;
+    console.log('Query is ' + query);
+    return axios.get(query);
+  }
+
+  fetchAssociationData = (subject, group) => {
+    let query = goApiUrl + "bioentityset/slimmer/function?slim=" + group + '&subject=' + subject + '&rows=-1';
     console.log('Query is ' + query);
     return axios.get(query);
   }
 
   render() {
     console.log("RENDER: ", this.state);
+
     return (
-      <div>{ this.state.loading ? "Loading..." : <GenericRibbon categories={this.state.ribbon.categories} subjects={this.state.ribbon.subjects}></GenericRibbon>}</div>
+      <div style={{ width : '1300px' }}>
+            { this.state.loading 
+                  ? "Loading..." 
+                  : <GenericRibbon  categories={this.state.ribbon.categories} 
+                                    subjects={this.state.ribbon.subjects} 
+                                    
+                                    itemEnter={this.itemEnter}
+                                    itemLeave={this.itemLeave}
+                                    itemOver={this.itemOver}
+                                    itemClick={this.itemClick.bind(this)}
+                                    />
+            }
+            {
+              !this.state.selected.data
+                  ? ""
+                  : <AssociationsView blocks={null}
+                                      config={null}
+                                      currentblock={null}
+                                      filters={null}
+                                      focalblock={null}
+                                      tableLabel={null}
+                                      />
+           }
+      </div>
     )
   }
+
+  itemEnter(subject, group) {
+    // console.log("ITEM ENTER: ", subject , group);
+  }
+
+  itemLeave(subject, group) {
+    // console.log("ITEM LEAVE: ", subject , group);
+  }
+
+  itemOver(subject, group) {
+    // console.log("ITEM OVER: ", subject , group);
+  }
+
+  itemClick(subject, group) {
+    console.log("ITEM CLICK: ", subject , group);
+    this.setState({ selected : {
+      subject : subject,
+      group : group,
+      data : null
+    }})
+
+    this.fetchAssociationData(subject.id, group.id)
+    .then(data => {
+      console.log("retrieved data: " , data);
+      this.setState({ selected : {
+        subject : subject,
+        group : group,
+        data : data
+      }})
+    })
+  }
+
 }
 
 Demo2.propTypes = {

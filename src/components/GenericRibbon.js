@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { COLOR_BY, POSITION } from '../enums';
 
 import GenericRibbonHeader from './GenericRibbonHeader';
-import GenericRibbonLine from './GenericRibbonLine';
+import GenericRibbonSubjects from './GenericRibbonSubjects';
 
 class GenericRibbon extends Component {
 
@@ -15,6 +15,7 @@ class GenericRibbon extends Component {
         this.state = {
             categories: props.categories,
             subjects: props.subjects,
+
             entityLabelPosition: props.entityLabelPosition,
             classLabels: props.classLabels,
             annotationLabels: props.annotationLabels,
@@ -25,13 +26,15 @@ class GenericRibbon extends Component {
             maxHeatLevel: props.maxHeatLevel,
             isValid: props.subjects.length > 0,
 
-            entityEnter : null,
-            entityLeave : null,
-            entityClick : null,
+            subjectEnter : props.subjectEnter,
+            subjectLeave : props.subjectLeave,
+            subjectOver : props.subjectOver,
+            subjectClick : props.subjectClick,
 
-            blockEnter : null,
-            blockLeave : null,
-            blockClick : null            
+            itemEnter : props.itemEnter,
+            itemLeave : props.itemLeave,
+            itemOver : props.itemOver,
+            itemClick : props.itemClick    
         }
     }
 
@@ -58,20 +61,22 @@ class GenericRibbon extends Component {
     }
 
     renderRibbon() {
-
-        var subjects = this.state.subjects.map((subject, index) => {
-            return (
-                <GenericRibbonLine subject={subject} key={index} />
-            )
-        });
-
-
         return (
-            <div>
-                <GenericRibbonHeader categories={this.state.categories}/>
-
-                <h2>Subjects</h2>
-                {subjects}
+            <div className='ontology-ribbon' style={{ display: 'block' }}>
+                <GenericRibbonHeader categories={this.state.categories} />
+                <GenericRibbonSubjects  categories={this.state.categories} 
+                                        subjects={this.state.subjects} 
+                                        colorBy={this.state.colorBy} 
+                                        binaryColor={this.state.binaryColor} 
+                                        minColor={this.state.minColor}
+                                        maxColor={this.state.maxColor}
+                                        maxHeatLevel={this.state.maxHeatLevel} 
+                                        
+                                        itemEnter={this.state.itemEnter}
+                                        itemLeave={this.state.itemLeave}
+                                        itemOver={this.state.itemOver}
+                                        itemClick={this.state.itemClick} 
+                                        />
             </div>
         )
     }
@@ -82,7 +87,7 @@ GenericRibbon.propTypes = {
     categories: PropTypes.array.isRequired,
     subjects: PropTypes.array.isRequired,
 
-    entityLabelPosition: PropTypes.number,
+    subjectLabelPosition: PropTypes.number,
     classLabels: PropTypes.array,
     annotationLabels: PropTypes.array,
     colorBy: PropTypes.number,
@@ -91,13 +96,15 @@ GenericRibbon.propTypes = {
     maxColor: PropTypes.array,
     maxHeatLevel: PropTypes.number,
 
-    entityEnter : PropTypes.func,
-    entityLeave : PropTypes.func,
-    entityClick : PropTypes.func,
+    subjectEnter : PropTypes.func,
+    subjectLeave : PropTypes.func,
+    subjectOver : PropTypes.func,
+    subjectClick : PropTypes.func,
     
-    blockEnter : PropTypes.func,
-    blockLeave : PropTypes.func,
-    blockClick : PropTypes.func    
+    itemEnter : PropTypes.func,
+    itemLeave : PropTypes.func,
+    itemOver : PropTypes.func,
+    itemClick : PropTypes.func    
 }
 
 GenericRibbon.defaultProps = {
