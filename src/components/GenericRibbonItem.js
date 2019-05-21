@@ -70,7 +70,7 @@ class GenericRibbonItem extends Component {
   }
 
   showToolTip() {
-    console.log(this);
+//    console.log(this);
   }
 
 

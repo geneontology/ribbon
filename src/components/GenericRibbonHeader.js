@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import GenericRibbonHeaderCategory from './GenericRibbonHeaderCategory';
+import { POSITION } from '../enums';
 
 class GenericRibbonHeader extends Component {
 
@@ -11,6 +12,7 @@ class GenericRibbonHeader extends Component {
     super(props);
     this.state = {
       categories: props.categories,
+      subjectLabelPosition : props.subjectLabelPosition,
 
       onEnter: props.onEnter,
       onLeave: props.onLeave,
@@ -32,6 +34,15 @@ class GenericRibbonHeader extends Component {
     // console.log("Header: ", this.state.categories);
     return (
       <div className='ontology-ribbon__strip'>
+
+        { (this.state.subjectLabelPosition == POSITION.LEFT) ?
+          <div style={{ display : 'inline-block',
+                        width: '100px',
+                        padding: '0px 13px'
+                      }} />
+                                      : ''
+        }      
+      
         {
           this.state.categories.map((category, index) => {
             return (
@@ -48,6 +59,7 @@ class GenericRibbonHeader extends Component {
 
 GenericRibbonHeader.propTypes = {
   categories: PropTypes.array.isRequired,
+  subjectLabelPosition : PropTypes.number,
 
   onEnter: PropTypes.func,
   onLeave: PropTypes.func,

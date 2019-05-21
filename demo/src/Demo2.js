@@ -98,7 +98,7 @@ class Demo2 extends React.Component {
                                     itemClick={this.itemClick.bind(this)}
                                     />
             }
-            {
+            {/* {
               !this.state.selected.data
                   ? ""
                   : <AssociationsView blocks={null}
@@ -108,7 +108,7 @@ class Demo2 extends React.Component {
                                       focalblock={null}
                                       tableLabel={null}
                                       />
-           }
+           } */}
       </div>
     )
   }

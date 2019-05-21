@@ -16,7 +16,9 @@ class GenericRibbon extends Component {
             categories: props.categories,
             subjects: props.subjects,
 
-            entityLabelPosition: props.entityLabelPosition,
+            subjectLabelPosition: props.subjectLabelPosition,
+            subjectBaseURL : props.subjectBaseURL,
+
             classLabels: props.classLabels,
             annotationLabels: props.annotationLabels,
             colorBy: props.colorBy,
@@ -25,8 +27,6 @@ class GenericRibbon extends Component {
             maxColor: props.maxColor,
             maxHeatLevel: props.maxHeatLevel,
             isValid: props.subjects.length > 0,
-
-            subjectBaseURL : props.subjectBaseURL,
 
             subjectEnter : props.subjectEnter,
             subjectLeave : props.subjectLeave,
@@ -65,7 +65,8 @@ class GenericRibbon extends Component {
     renderRibbon() {
         return (
             <div className='ontology-ribbon' style={{ display: 'block' }}>
-                <GenericRibbonHeader categories={this.state.categories} />
+                <GenericRibbonHeader    categories={this.state.categories}
+                                        subjectLabelPosition={this.state.subjectLabelPosition} />
                 <GenericRibbonSubjects  categories={this.state.categories} 
                                         subjects={this.state.subjects} 
                                         colorBy={this.state.colorBy} 
@@ -74,6 +75,7 @@ class GenericRibbon extends Component {
                                         maxColor={this.state.maxColor}
                                         maxHeatLevel={this.state.maxHeatLevel} 
 
+                                        subjectLabelPosition={this.state.subjectLabelPosition}
                                         subjectBaseURL={this.state.subjectBaseURL}
                                         
                                         itemEnter={this.state.itemEnter}
@@ -92,6 +94,8 @@ GenericRibbon.propTypes = {
     subjects: PropTypes.array.isRequired,
 
     subjectLabelPosition: PropTypes.number,
+    subjectBaseURL : PropTypes.string,
+
     classLabels: PropTypes.array,
     annotationLabels: PropTypes.array,
     colorBy: PropTypes.number,
@@ -99,8 +103,6 @@ GenericRibbon.propTypes = {
     minColor: PropTypes.array,
     maxColor: PropTypes.array,
     maxHeatLevel: PropTypes.number,
-
-    subjectBaseURL : PropTypes.subjectBaseURL,
 
     subjectEnter : PropTypes.func,
     subjectLeave : PropTypes.func,
@@ -114,7 +116,7 @@ GenericRibbon.propTypes = {
 }
 
 GenericRibbon.defaultProps = {
-    entityLabelPosition: POSITION.RIGHT,
+    subjectLabelPosition: POSITION.RIGHT,
     classLabels: ["class", "classes"],
     annotationLabels: ["annotation", "annotations"],
     colorBy: COLOR_BY.CLASS_COUNT,
@@ -123,8 +125,8 @@ GenericRibbon.defaultProps = {
     maxColor: [24, 73, 180],
     maxHeatLevel: 48,
 
-    subjectBaseURL : "http://amigo.geneontology.org/amigo/gene_product/",
-    // subjectBaseURL : "https://www.alliancegenome.org/gene/",
+    subjectBaseURL : "http://amigo.geneontology.org/amigo/gene_product/"
+    // subjectBaseURL : "https://www.alliancegenome.org/gene/"
 
 }
 

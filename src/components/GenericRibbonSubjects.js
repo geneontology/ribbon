@@ -13,7 +13,9 @@ class GenericRibbonSubjects extends Component {
             categories : props.categories,
             subjects: props.subjects,
 
-            entityLabelPosition: props.entityLabelPosition,
+            subjectLabelPosition : props.subjectLabelPosition,
+            subjectBaseURL : props.subjectBaseURL,
+
             classLabels: props.classLabels,
             annotationLabels: props.annotationLabels,
             colorBy: props.colorBy,
@@ -22,8 +24,6 @@ class GenericRibbonSubjects extends Component {
             maxColor: props.maxColor,
             maxHeatLevel: props.maxHeatLevel,
             isValid: props.subjects.length > 0,
-
-            subjectBaseURL : props.subjectBaseURL,
 
             subjectEnter : props.subjectEnter,
             subjectLeave : props.subjectLeave,
@@ -63,6 +63,7 @@ class GenericRibbonSubjects extends Component {
                                                     maxColor={this.state.maxColor}
                                                     maxHeatLevel={this.state.maxHeatLevel}    
 
+                                                    subjectLabelPosition={this.state.subjectLabelPosition}
                                                     subjectBaseURL={this.state.subjectBaseURL}
                                                     
                                                     itemEnter={this.state.itemEnter}
@@ -86,6 +87,8 @@ GenericRibbonSubjects.propTypes = {
     subjects: PropTypes.array.isRequired,
 
     subjectLabelPosition: PropTypes.number,
+    subjectBaseURL : PropTypes.string,
+
     classLabels: PropTypes.array,
     annotationLabels: PropTypes.array,
     colorBy: PropTypes.number,
@@ -93,8 +96,6 @@ GenericRibbonSubjects.propTypes = {
     minColor: PropTypes.array,
     maxColor: PropTypes.array,
     maxHeatLevel: PropTypes.number,
-
-    subjectBaseURL : PropTypes.string,
 
     subjectEnter : PropTypes.func,
     subjectLeave : PropTypes.func,

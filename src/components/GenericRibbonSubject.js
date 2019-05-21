@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 import GenericRibbonItem from './GenericRibbonItem';
 import GenericRibbonSubjectLabel from './GenericRibbonSubjectLabel';
+import { POSITION } from '../enums';
 
 class GenericRibbonSubject extends Component {
 
@@ -14,7 +15,9 @@ class GenericRibbonSubject extends Component {
       categories: props.categories,
       subject: props.subject,
 
-      entityLabelPosition: props.entityLabelPosition,
+      subjectLabelPosition: props.subjectLabelPosition,
+      subjectBaseURL : props.subjectBaseURL,
+
       classLabels: props.classLabels,
       annotationLabels: props.annotationLabels,
       colorBy: props.colorBy,
@@ -22,8 +25,6 @@ class GenericRibbonSubject extends Component {
       minColor: props.minColor,
       maxColor: props.maxColor,
       maxHeatLevel: props.maxHeatLevel,
-
-      subjectBaseURL : props.subjectBaseURL,
 
       itemEnter : props.itemEnter,
       itemLeave : props.itemLeave,
@@ -47,10 +48,16 @@ class GenericRibbonSubject extends Component {
     // console.log("Subject: ", this.state.subject);
     return (
       <div className='ontology-ribbon__strip'>
-        {
 
-          this.state.categories.map((category, index) => {
-            
+        { (this.state.subjectLabelPosition == POSITION.LEFT) ?
+          <GenericRibbonSubjectLabel  subjectId={this.state.subject.id} 
+                                      subjectLabel={this.state.subject.label}
+                                      subjectBaseURL={this.state.subjectBaseURL} />
+                                      : ''
+        }      
+
+        {
+          this.state.categories.map((category, index) => {   
             return (
               <div  className='ontology-ribbon__item__category'
                     key={this.state.subject + "_" + category.id}>
@@ -82,10 +89,12 @@ class GenericRibbonSubject extends Component {
           })
 
         }
-        {
+        
+        { (this.state.subjectLabelPosition == POSITION.RIGHT) ?
           <GenericRibbonSubjectLabel  subjectId={this.state.subject.id} 
                                       subjectLabel={this.state.subject.label}
                                       subjectBaseURL={this.state.subjectBaseURL} />
+                                      : ''
         }
       </div>
     )
@@ -99,6 +108,8 @@ GenericRibbonSubject.propTypes = {
   subject: PropTypes.object.isRequired,
 
   subjectLabelPosition: PropTypes.number,
+  subjectBaseURL : PropTypes.string,
+
   classLabels: PropTypes.array,
   annotationLabels: PropTypes.array,
   colorBy: PropTypes.number,
@@ -106,8 +117,6 @@ GenericRibbonSubject.propTypes = {
   minColor: PropTypes.array,
   maxColor: PropTypes.array,
   maxHeatLevel: PropTypes.number,
-
-  subjectBaseURL : PropTypes.string,
 
   itemEnter : PropTypes.func,
   itemLeave : PropTypes.func,
