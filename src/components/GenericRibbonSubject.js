@@ -15,6 +15,8 @@ class GenericRibbonSubject extends Component {
       categories: props.categories,
       subject: props.subject,
 
+      showItemAll : props.showItemAll,
+
       subjectLabelPosition: props.subjectLabelPosition,
       subjectBaseURL : props.subjectBaseURL,
 
@@ -45,16 +47,55 @@ class GenericRibbonSubject extends Component {
 
   //   ontology-ribbon__block__tile--all
   render() {
-    // console.log("Subject: ", this.state.subject);
+    console.log("Subject: ", this.state.subject);
     return (
       <div className='ontology-ribbon__strip'>
 
         { (this.state.subjectLabelPosition == POSITION.LEFT) ?
           <GenericRibbonSubjectLabel  subjectId={this.state.subject.id} 
                                       subjectLabel={this.state.subject.label}
+                                      subjectTaxon={this.state.subject.taxon_label}
                                       subjectBaseURL={this.state.subjectBaseURL} />
                                       : ''
         }      
+
+        { (this.state.showItemAll) ?
+          <div  className='ontology-ribbon__item__category'>        
+          <GenericRibbonItem          subject={this.state.subject}
+                                      group={ 
+                                        {
+                                          "id" : "all",
+                                          "label" : "All annotations",
+                                          "description" : "Contains all the annotations for all groups",
+                                          "type" : "GlobalAll"
+                                        }
+                                      } 
+                                      data={
+                                        {
+                                          "ALL": {
+                                            "nb_classes" : this.state.subject.nb_classes,
+                                            "nb_annotations": this.state.subject.nb_annotations
+                                          }
+                                        }
+                                      } 
+
+                                      classLabels={this.state.classLabels}
+                                      annotationLabels={this.state.annotationLabels}
+                                      colorBy={this.state.colorBy} 
+                                      binaryColor={this.state.binaryColor} 
+                                      minColor={this.state.minColor}
+                                      maxColor={this.state.maxColor}
+                                      maxHeatLevel={this.state.maxHeatLevel}    
+                          
+                                      itemEnter={this.state.itemEnter}
+                                      itemLeave={this.state.itemLeave}
+                                      itemOver={this.state.itemOver}
+                                      itemClick={this.state.itemClick}
+                                                                  
+                                      />                        
+                                      </div>
+                                      : ''
+        }
 
         {
           this.state.categories.map((category, index) => {   
@@ -68,6 +109,8 @@ class GenericRibbonSubject extends Component {
                                         group={group} 
                                         data={this.state.subject.groups[group.id]} 
 
+                                        classLabels={this.state.classLabels}
+                                        annotationLabels={this.state.annotationLabels}
                                         colorBy={this.state.colorBy} 
                                         binaryColor={this.state.binaryColor} 
                                         minColor={this.state.minColor}
@@ -93,6 +136,7 @@ class GenericRibbonSubject extends Component {
         { (this.state.subjectLabelPosition == POSITION.RIGHT) ?
           <GenericRibbonSubjectLabel  subjectId={this.state.subject.id} 
                                       subjectLabel={this.state.subject.label}
+                                      subjectTaxon={this.state.subject.taxon_label}
                                       subjectBaseURL={this.state.subjectBaseURL} />
                                       : ''
         }
@@ -106,6 +150,8 @@ class GenericRibbonSubject extends Component {
 GenericRibbonSubject.propTypes = {
   categories: PropTypes.array.isRequired,
   subject: PropTypes.object.isRequired,
+
+  showItemAll : PropTypes.bool,
 
   subjectLabelPosition: PropTypes.number,
   subjectBaseURL : PropTypes.string,

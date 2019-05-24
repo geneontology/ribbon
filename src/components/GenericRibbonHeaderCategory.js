@@ -36,7 +36,9 @@ class GenericRibbonHeaderCategory extends Component {
             return (
               <div className='ontology-ribbon__block' key={index}>
                 <div  className='ontology-ribbon__block__title'
-                      style={this.labelStyle(group)}>
+                      style={this.labelStyle(group)}
+                      title={group.description ? group.description : null}
+                      >
                         {group.label}
                 </div>
                 <div  className='ontology-ribbon__block__tile--empty'

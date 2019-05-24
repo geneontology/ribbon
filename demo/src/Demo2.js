@@ -46,6 +46,8 @@ function mapUrlToProps(url) {
 
 class Demo2 extends React.Component {
 
+  subjectBaseURL : "http://amigo.geneontology.org/amigo/gene_product/";
+
   constructor(props) {
     super(props);
     this.state = {
@@ -53,7 +55,8 @@ class Demo2 extends React.Component {
       selected : {
         subject : null,
         group : null,
-        data : null        
+        data : null,
+        ready : false    
       }
     }
   }
@@ -71,7 +74,8 @@ class Demo2 extends React.Component {
     if(subjects instanceof Array) {
       subjects = subjects.join("&subject=");
     }
-    let query = goApiUrl + "ontology/ribbon/?subset=" + subset + '&subject=' + subjects;
+    // let query = goApiUrl + "ontology/ribbon/?subset=" + subset + '&subject=' + subjects;
+    let query = "https://build.alliancegenome.org/api/gene/" + subjects + "/disease-ribbon-summary";
     console.log('Query is ' + query);
     return axios.get(query);
   }
@@ -82,15 +86,70 @@ class Demo2 extends React.Component {
     return axios.get(query);
   }
 
+  /** 
+   * building the filters from the keys contained in the subject.groups field of the data response
+  */
+  buildFilters() {
+    var filters = new Map();
+    for(var subject of this.state.ribbon.subjects) {
+      for (var group in subject.groups) {
+        for(var eco in subject.groups[group]) {
+          if(eco.toLowerCase() != "all") {
+            filters.set(eco, true);
+          }
+        }
+      }
+    }
+    return filters;
+  }
+
+  /** 
+   * build from the association response of BioLink
+  */
+  buildEvidenceMap() {
+    console.log("build: ", this.state.selected.data);
+    for(var assoc of this.state.selected.data) {
+      assoc.evidence_map = new Map();
+        assoc.evidence_map.set(assoc.evidence, [
+          {
+            evidence_id : assoc.evidence,
+            evidence_label : assoc.evidence_label,
+            evidence_qualifier : [],
+            evidence_refs : assoc.reference,
+            evidence_type : assoc.evidence_type,
+            evidence_with : assoc.evidence_with ? assoc.evidence_with : []
+          }
+        ]
+        )
+    }
+    this.setState({ 
+      selected : {
+        subject : this.state.selected.subject,
+        group : this.state.selected.group,
+        data : this.state.selected.data,
+        ready : true
+      }
+    })
+//    this.state.selected.ready = true;
+  }
+
+  defaultConfig() {
+    return {
+      termUrlFormatter : this.subjectBaseURL
+    }
+  }
+
   render() {
     console.log("RENDER: ", this.state);
-
     return (
-      <div style={{ width : '1300px' }}>
+      <div style={{ width : '1400px' }}>
             { this.state.loading 
                   ? "Loading..." 
                   : <GenericRibbon  categories={this.state.ribbon.categories} 
                                     subjects={this.state.ribbon.subjects} 
+
+                                    subjectLabelPosition={POSITION.RIGHT}
+                                    colorBy={COLOR_BY.CLASS_COUNT}
                                     
                                     itemEnter={this.itemEnter}
                                     itemLeave={this.itemLeave}
@@ -98,17 +157,18 @@ class Demo2 extends React.Component {
                                     itemClick={this.itemClick.bind(this)}
                                     />
             }
-            {/* {
-              !this.state.selected.data
-                  ? ""
-                  : <AssociationsView blocks={null}
-                                      config={null}
+            {
+              (this.state.selected.data && this.state.selected.ready)
+                  ? <AssociationsView blocks={null}
+                                      config={this.defaultConfig()}
                                       currentblock={null}
-                                      filters={null}
+                                      filters={this.buildFilters()}
                                       focalblock={null}
                                       tableLabel={null}
+                                      provided_list={this.state.selected.data}
                                       />
-           } */}
+                  : ""
+           }
       </div>
     )
   }
@@ -127,21 +187,24 @@ class Demo2 extends React.Component {
 
   itemClick(subject, group) {
     console.log("ITEM CLICK: ", subject , group);
-    this.setState({ selected : {
-      subject : subject,
-      group : group,
-      data : null
-    }})
+    // this.setState({ selected : {
+    //   subject : subject,
+    //   group : group,
+    //   data : null,
+    //   ready : false
+    // }})
 
-    this.fetchAssociationData(subject.id, group.id)
-    .then(data => {
-      // console.log("retrieved data: " , data);
-      this.setState({ selected : {
-        subject : subject,
-        group : group,
-        data : data.data[0].assocs
-      }})
-    })
+    // this.fetchAssociationData(subject.id, group.id)
+    // .then(data => {
+    //   console.log("retrieved data: " , data);
+    //   this.setState({ selected : {
+    //     subject : subject,
+    //     group : group,
+    //     data : data.data[0].assocs,
+    //     ready : false
+    //   }})
+    //   this.buildEvidenceMap();
+    // })
   }
 
 }

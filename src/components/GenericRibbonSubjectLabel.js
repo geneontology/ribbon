@@ -13,6 +13,7 @@ class GenericRibbonSubjectLabel extends Component {
     this.state = {
       subjectId : props.subjectId,
       subjectLabel : props.subjectLabel,
+      subjectTaxon : props.subjectTaxon,
       subjectBaseURL : props.subjectBaseURL,
       hide : props.hide
     }
@@ -30,11 +31,19 @@ class GenericRibbonSubjectLabel extends Component {
 
   render() {
     return (
-      <div  className={!this.state.hide ? 'ontology-ribbon__item__category' : ''}>
-          <a href={ this.state.subjectBaseURL + this.state.subjectId.replace("MGI:", "MGI:MGI:")} className="ontology-ribbon__label ribbon-link" target="blank">
-              <RibbonSpeciesIcon species={this.getPrefixForId(this.state.subjectId)} />
-              {this.state.subjectLabel}
-          </a>
+      <div  className={!this.state.hide ? 'ontology-ribbon__item__category' : ''}
+            title={this.state.subjectLabel + ((this.state.subjectTaxon) ? " (" + this.state.subjectTaxon + ")" : "") }
+            >
+            {
+            (this.state.subjectBaseURL) ?
+              <a href={ this.state.subjectBaseURL + this.state.subjectId.replace("MGI:", "MGI:MGI:")} className="ontology-ribbon__label ribbon-link" target="blank">
+                  <RibbonSpeciesIcon species={this.getPrefixForId(this.state.subjectId)} />
+                  {this.state.subjectLabel}
+              </a> :
+              <span>
+              <RibbonSpeciesIcon species={this.getPrefixForId(this.state.subjectId)}/>
+              {this.state.subjectLabel}</span>
+            }
       </div>
     )
   }
@@ -65,7 +74,8 @@ class GenericRibbonSubjectLabel extends Component {
 GenericRibbonSubjectLabel.propTypes = {
   subjectId : PropTypes.string.isRequired,
   subjectLabel : PropTypes.string.isRequired,
-  subjectBaseURL : PropTypes.string.isRequired,
+  subjectBaseURL : PropTypes.string,
+  subjectTaxon : PropTypes.string,
   hide : PropTypes.bool
 }
 

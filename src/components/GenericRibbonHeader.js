@@ -12,6 +12,7 @@ class GenericRibbonHeader extends Component {
     super(props);
     this.state = {
       categories: props.categories,
+      showItemAll : props.showItemAll,
       subjectLabelPosition : props.subjectLabelPosition,
 
       onEnter: props.onEnter,
@@ -35,6 +36,13 @@ class GenericRibbonHeader extends Component {
     return (
       <div className='ontology-ribbon__strip'>
 
+        {/* { (this.state.showItemAll) ?
+          <div style={{ display : 'inline-block',
+                        padding: '0px 16px'
+                      }} />
+                                      : ''
+        }       */}
+
         { (this.state.subjectLabelPosition == POSITION.LEFT) ?
           <div style={{ display : 'inline-block',
                         width: '100px',
@@ -43,6 +51,11 @@ class GenericRibbonHeader extends Component {
                                       : ''
         }      
       
+        { (this.state.showItemAll) ?
+            <GenericRibbonHeaderCategory category={ { groups : [ { id: "all", type: "All", label: "all annotations" } ] } } />
+            : ''
+        }
+
         {
           this.state.categories.map((category, index) => {
             return (
@@ -59,6 +72,7 @@ class GenericRibbonHeader extends Component {
 
 GenericRibbonHeader.propTypes = {
   categories: PropTypes.array.isRequired,
+  showItemAll : PropTypes.bool,
   subjectLabelPosition : PropTypes.number,
 
   onEnter: PropTypes.func,

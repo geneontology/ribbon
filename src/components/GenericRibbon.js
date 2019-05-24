@@ -16,6 +16,8 @@ class GenericRibbon extends Component {
             categories: props.categories,
             subjects: props.subjects,
 
+            showItemAll : props.showItemAll,
+
             subjectLabelPosition: props.subjectLabelPosition,
             subjectBaseURL : props.subjectBaseURL,
 
@@ -66,9 +68,16 @@ class GenericRibbon extends Component {
         return (
             <div className='ontology-ribbon' style={{ display: 'block' }}>
                 <GenericRibbonHeader    categories={this.state.categories}
-                                        subjectLabelPosition={this.state.subjectLabelPosition} />
+                                        subjectLabelPosition={this.state.subjectLabelPosition} 
+                                        showItemAll={this.state.showItemAll}
+                                        />
                 <GenericRibbonSubjects  categories={this.state.categories} 
                                         subjects={this.state.subjects} 
+
+                                        showItemAll={this.state.showItemAll}
+                                        classLabels={this.state.classLabels}
+                                        annotationLabels={this.state.annotationLabels}
+
                                         colorBy={this.state.colorBy} 
                                         binaryColor={this.state.binaryColor} 
                                         minColor={this.state.minColor}
@@ -93,6 +102,8 @@ GenericRibbon.propTypes = {
     categories: PropTypes.array.isRequired,
     subjects: PropTypes.array.isRequired,
 
+    showItemAll : PropTypes.bool,
+
     subjectLabelPosition: PropTypes.number,
     subjectBaseURL : PropTypes.string,
 
@@ -116,6 +127,7 @@ GenericRibbon.propTypes = {
 }
 
 GenericRibbon.defaultProps = {
+    showItemAll : true,
     subjectLabelPosition: POSITION.RIGHT,
     classLabels: ["class", "classes"],
     annotationLabels: ["annotation", "annotations"],

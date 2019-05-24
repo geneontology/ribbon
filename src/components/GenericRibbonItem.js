@@ -14,6 +14,8 @@ class GenericRibbonItem extends Component {
       group : props.group,
       data : props.data,
 
+      classLabels: props.classLabels,
+      annotationLabels: props.annotationLabels,
       colorBy: props.colorBy,
       binaryColor: props.binaryColor,
       minColor: props.minColor,
@@ -56,7 +58,7 @@ class GenericRibbonItem extends Component {
     }
 
     return (
-      <div className='ontology-ribbon__item' onMouseOver={this.showToolTip.bind(this)}>
+      <div className='ontology-ribbon__item' title={this.itemTitle()}>
         <div className='ontology-ribbon__block__title'></div>
         <div  className={itemClass} style={itemStyle}
               onMouseEnter={(event) => this.state.itemEnter(this.state.subject, this.state.group) }
@@ -69,8 +71,9 @@ class GenericRibbonItem extends Component {
     )
   }
 
-  showToolTip() {
-//    console.log(this);
+  itemTitle() {
+    return  this.state.data['ALL'].nb_classes + " " + this.state.classLabels[(this.state.data['ALL'].nb_classes > 1) ? 1 : 0] + ", " + 
+            this.state.data['ALL'].nb_annotations + " " + this.state.annotationLabels[(this.state.data['ALL'].nb_annotations > 1) ? 1 : 0]
   }
 
 
@@ -128,6 +131,8 @@ GenericRibbonItem.propTypes = {
   group : PropTypes.object.isRequired,
   data : PropTypes.object,
 
+  classLabels: PropTypes.array,
+  annotationLabels: PropTypes.array,
   colorBy: PropTypes.number,
   binaryColor: PropTypes.bool,
   minColor: PropTypes.array,
