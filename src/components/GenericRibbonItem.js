@@ -61,10 +61,10 @@ class GenericRibbonItem extends Component {
       <div className='ontology-ribbon__item' title={this.itemTitle()}>
         <div className='ontology-ribbon__block__title'></div>
         <div  className={itemClass} style={itemStyle}
-              onMouseEnter={(event) => this.state.itemEnter(this.state.subject, this.state.group) }
-              onMouseLeave={(event) => this.state.itemLeave(this.state.subject, this.state.group) }
-              onMouseOver={(event) => this.state.itemOver(this.state.subject, this.state.group) }
-              onClick={(event) => this.state.itemClick(this.state.subject, this.state.group) }
+              onMouseEnter={(event) => this.state.itemEnter ? this.state.itemEnter(this.state.subject, this.state.group) : '' }
+              onMouseLeave={(event) => this.state.itemLeave ? this.state.itemLeave(this.state.subject, this.state.group) : '' }
+              onMouseOver={(event) => this.state.itemOver ? this.state.itemOver(this.state.subject, this.state.group) : '' }
+              onClick={(event) => this.state.itemClick ? this.state.itemClick(this.state.subject, this.state.group) : '' }
               >
         </div>
       </div>
