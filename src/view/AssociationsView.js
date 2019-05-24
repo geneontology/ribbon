@@ -33,7 +33,7 @@ export default class AssociationsView extends React.Component {
   }
 
   render() {
-    console.log("AssocView: start");
+    // console.log("AssocView: start");
     const { blocks, config, currentblock, filters, focalblock, provided_list } = this.props;
     let assoc_list = [];
     if(provided_list) {
@@ -46,7 +46,7 @@ export default class AssociationsView extends React.Component {
       });
     }
 
-    console.log("AssocView -- List: ", assoc_list);
+    // console.log("AssocView -- List: ", assoc_list);
 
     var shown = 0;
 
