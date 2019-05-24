@@ -33,13 +33,20 @@ export default class AssociationsView extends React.Component {
   }
 
   render() {
-    const { blocks, config, currentblock, filters, focalblock } = this.props;
+    console.log("AssocView: start");
+    const { blocks, config, currentblock, filters, focalblock, provided_list } = this.props;
     let assoc_list = [];
-    blocks.forEach(function (slimitem) {
-      if (slimitem.class_id === currentblock.class_id) {
-        assoc_list = slimitem.uniqueAssocs;
-      }
-    });
+    if(provided_list) {
+      assoc_list = provided_list;
+    } else {
+      blocks.forEach(function (slimitem) {
+        if (slimitem.class_id === currentblock.class_id) {
+          assoc_list = slimitem.uniqueAssocs;
+        }
+      });
+    }
+
+    console.log("AssocView -- List: ", assoc_list);
 
     var shown = 0;
 
