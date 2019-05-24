@@ -1,6 +1,6 @@
 {
   "name": "@geneontology/ribbon",
-  "version": "1.9.18",
+  "version": "1.9.19",
   "scripts": {
     "build": "nwb build-react-component --copy-files",
     "clean": "nwb clean-module && npm clean-demo",
