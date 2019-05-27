@@ -19,10 +19,13 @@ class FilterDropdown extends Component {
     this.state = {
       isOpen: false
     };
+    this.handleClick = this.handleClick.bind(this);
   }
-
-  componentWillMount() {
-    document.addEventListener('click', (e) => this.handleClick(e), false);    
+  componentDidMount() {
+    document.addEventListener('click', this.handleClick, false);   
+  }
+  componentWillUnmount(){
+    document.removeEventListener('click',this.handleClick);     
   }
 
   handleClick(e) {
