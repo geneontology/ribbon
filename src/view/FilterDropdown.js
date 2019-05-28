@@ -25,7 +25,7 @@ class FilterDropdown extends Component {
     document.addEventListener('click', this.handleClick, false);   
   }
   componentWillUnmount(){
-    document.removeEventListener('click',this.handleClick);     
+    document.removeEventListener('click', this.handleClick);     
   }
 
   handleClick(e) {
