@@ -50,7 +50,7 @@ class GenericRibbonSubjects extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        console.log("GRSS::componentWillReceiveProps: " , nextProps);
+        // console.log("GRSS::componentWillReceiveProps: " , nextProps);
         this.setState({
             categories : nextProps.categories,
             subjects: nextProps.subjects,
@@ -79,11 +79,11 @@ class GenericRibbonSubjects extends Component {
             itemOver : nextProps.itemOver,
             itemClick : nextProps.itemClick     
         });
-        console.log("GRSS::componentWillReceiveProps: (state)" , this.state);
+        // console.log("GRSS::componentWillReceiveProps: (state)" , this.state);
     }
 
     render() {
-        console.log("GRSS::render (state): ", this.state);
+        // console.log("GRSS::render (state): ", this.state);
         return (
             <div className='ontology-ribbon__subjects'>
                 {

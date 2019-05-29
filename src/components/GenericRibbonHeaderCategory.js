@@ -34,7 +34,7 @@ class GenericRibbonHeaderCategory extends Component {
         {
           this.state.category.groups.map((group, index) => {
             return (
-              <div className='ontology-ribbon__block' key={index}>
+              <div className='ontology-ribbon__category__block' key={index}>
                 <div  className='ontology-ribbon__block__title'
                       style={this.labelStyle(group)}
                       title={group.description ? group.description : null}

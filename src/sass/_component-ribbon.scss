@@ -203,6 +203,13 @@
         display: inline-block;
         height: 200px;
         padding-right: $ribbon-strip-tile-separator-width;
+
+        &__block {
+            font-size: $ribbon-strip-font-size-default;
+            display: table-cell;
+            vertical-align: bottom;
+            height: 200px;
+        }            
     }
 
     &__item {
@@ -216,6 +223,9 @@
             padding-right: $ribbon-strip-tile-separator-width;
         }
 
+        &__subject {
+            display: inline-block;
+        }
     }
 
     &__subjects {
@@ -226,7 +236,6 @@
         font-size: $ribbon-strip-font-size-default;
         display: table-cell;
         vertical-align: bottom;
-        height: 200px;
 
         &--match {
             font-weight: bold;

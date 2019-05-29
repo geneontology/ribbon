@@ -31,7 +31,7 @@ class GenericRibbonSubjectLabel extends Component {
 
   render() {
     return (
-      <div  className={!this.state.hide ? 'ontology-ribbon__item__category' : ''}
+      <div  className={!this.state.hide ? 'ontology-ribbon__item__subject' : ''}
             title={this.state.subjectLabel + ((this.state.subjectTaxon) ? " (" + this.state.subjectTaxon + ")" : "") }
             >
             {

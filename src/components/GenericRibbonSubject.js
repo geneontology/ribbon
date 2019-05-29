@@ -46,7 +46,7 @@ class GenericRibbonSubject extends Component {
   }
 
   render() {
-    console.log("GRS(" + this.state.subject.id + ")::render (state): ", this.state);
+    // console.log("GRS(" + this.state.subject.id + ")::render (state): ", this.state);
     return (
       <div className='ontology-ribbon__strip'>
 
