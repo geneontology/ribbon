@@ -52,6 +52,38 @@ class GenericRibbon extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
     }
 
+    componentWillReceiveProps(nextProps){
+        this.setState({
+            categories: nextProps.categories,
+            subjects: nextProps.subjects,
+
+            showItemAll : nextProps.showItemAll,
+
+            subjectLabelPosition: nextProps.subjectLabelPosition,
+            subjectBaseURL : nextProps.subjectBaseURL,
+
+            classLabels: nextProps.classLabels,
+            annotationLabels: nextProps.annotationLabels,
+            colorBy: nextProps.colorBy,
+            binaryColor: nextProps.binaryColor,
+            minColor: nextProps.minColor,
+            maxColor: nextProps.maxColor,
+            maxHeatLevel: nextProps.maxHeatLevel,
+            isValid: nextProps.subjects.length > 0,
+
+            subjectEnter : nextProps.subjectEnter,
+            subjectLeave : nextProps.subjectLeave,
+            subjectOver : nextProps.subjectOver,
+            subjectClick : nextProps.subjectClick,
+
+            itemEnter : nextProps.itemEnter,
+            itemLeave : nextProps.itemLeave,
+            itemOver : nextProps.itemOver,
+            itemClick : nextProps.itemClick    
+        });
+    }
+
+
     render() {
         // console.log("GENERIC RIBBON: ", this.state);
         return (
@@ -123,7 +155,7 @@ GenericRibbon.propTypes = {
     itemEnter : PropTypes.func,
     itemLeave : PropTypes.func,
     itemOver : PropTypes.func,
-    itemClick : PropTypes.func    
+    itemClick : PropTypes.func 
 }
 
 GenericRibbon.defaultProps = {

@@ -169,8 +169,13 @@ class Demo2 extends React.Component {
                                       />
                   : ""
            }
+           <button onClick={this.doathing.bind(this)}>Test Button</button>
       </div>
     )
+  }
+  
+  doathing() {
+    console.log("Test button activated");
   }
 
   itemEnter(subject, group) {
