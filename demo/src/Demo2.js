@@ -76,13 +76,13 @@ class Demo2 extends React.Component {
     }
     // let query = goApiUrl + "ontology/ribbon/?subset=" + subset + '&subject=' + subjects;
     let query = "https://build.alliancegenome.org/api/gene/" + subjects + "/disease-ribbon-summary";
-    console.log('Query is ' + query);
+    // console.log('Query is ' + query);
     return axios.get(query);
   }
 
   fetchAssociationData = (subject, group) => {
     let query = goApiUrl + "bioentityset/slimmer/function?slim=" + group + '&subject=' + subject + '&rows=-1';
-    console.log('Query is ' + query);
+    // console.log('Query is ' + query);
     return axios.get(query);
   }
 

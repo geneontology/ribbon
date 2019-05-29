@@ -45,9 +45,8 @@ class GenericRibbonSubject extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
   }
 
-  //   ontology-ribbon__block__tile--all
   render() {
-    console.log("Subject: ", this.state.subject);
+    // console.log("Subject: ", this.state.subject);
     return (
       <div className='ontology-ribbon__strip'>
 
