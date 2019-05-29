@@ -53,6 +53,7 @@ class GenericRibbon extends Component {
     }
 
     componentWillReceiveProps(nextProps){
+        console.log("GR::componentWillReceiveProps: " , nextProps);
         this.setState({
             categories: nextProps.categories,
             subjects: nextProps.subjects,
@@ -81,11 +82,12 @@ class GenericRibbon extends Component {
             itemOver : nextProps.itemOver,
             itemClick : nextProps.itemClick    
         });
+        console.log("GR::componentWillReceiveProps: (state)" , this.state);
     }
 
 
     render() {
-        // console.log("GENERIC RIBBON: ", this.state);
+        console.log("GR::render:", this.state);
         return (
             <div>
                 {this.state.isValid ?

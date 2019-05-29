@@ -56,8 +56,9 @@ class Demo2 extends React.Component {
         subject : null,
         group : null,
         data : null,
-        ready : false    
-      }
+        ready : false,
+      },
+      search : ""
     }
   }
 
@@ -74,9 +75,9 @@ class Demo2 extends React.Component {
     if(subjects instanceof Array) {
       subjects = subjects.join("&subject=");
     }
-    // let query = goApiUrl + "ontology/ribbon/?subset=" + subset + '&subject=' + subjects;
-    let query = "https://build.alliancegenome.org/api/gene/" + subjects + "/disease-ribbon-summary";
-    // console.log('Query is ' + query);
+    let query = goApiUrl + "ontology/ribbon/?subset=" + subset + '&subject=' + subjects;
+    // let query = "https://build.alliancegenome.org/api/gene/" + subjects + "/disease-ribbon-summary";
+    console.log('Query is ' + query);
     return axios.get(query);
   }
 
@@ -130,7 +131,6 @@ class Demo2 extends React.Component {
         ready : true
       }
     })
-//    this.state.selected.ready = true;
   }
 
   defaultConfig() {
@@ -169,13 +169,27 @@ class Demo2 extends React.Component {
                                       />
                   : ""
            }
-           <button onClick={this.doathing.bind(this)}>Test Button</button>
+          <div style={{marginTop: '2rem'}}>
+            <small>Use gene identifiers as input (e.g. RGD:3889 or MGI:88276, etc)</small><br/>
+            <input type="text" value={this.state.search} onChange={(event) => this.setState({ search: event.target.value })}></input>
+            <button onClick={this.doathing.bind(this)}>Add Gene</button>
+          </div>
       </div>
     )
   }
+
+  handleChange(event) {
+    this.setState({ search : event.target.value });
+  }
   
   doathing() {
-    console.log("Test button activated");
+    console.log("Test button activated (" , this.state.search + ")");
+    this.fetchData("goslim_agr", this.state.search)
+    .then(data => {
+      var oldSubs = this.state.ribbon.subjects;
+      oldSubs.push(data.data.subjects[0]);
+      this.setState({ loading : false, subjects : oldSubs })
+    })
   }
 
   itemEnter(subject, group) {
