@@ -49,6 +49,39 @@ class GenericRibbonSubjects extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
     }
 
+    componentWillReceiveProps(nextProps){
+        console.log("GRSS::componentWillReceiveProps: " , nextProps);
+        this.setState({
+            categories : nextProps.categories,
+            subjects: nextProps.subjects,
+
+            showItemAll : nextProps.showItemAll,
+
+            subjectLabelPosition : nextProps.subjectLabelPosition,
+            subjectBaseURL : nextProps.subjectBaseURL,
+
+            classLabels: nextProps.classLabels,
+            annotationLabels: nextProps.annotationLabels,
+            colorBy: nextProps.colorBy,
+            binaryColor: nextProps.binaryColor,
+            minColor: nextProps.minColor,
+            maxColor: nextProps.maxColor,
+            maxHeatLevel: nextProps.maxHeatLevel,
+            isValid: nextProps.subjects.length > 0,
+
+            subjectEnter : nextProps.subjectEnter,
+            subjectLeave : nextProps.subjectLeave,
+            subjectOver : nextProps.subjectOver,
+            subjectClick : nextProps.subjectClick,
+
+            itemEnter : nextProps.itemEnter,
+            itemLeave : nextProps.itemLeave,
+            itemOver : nextProps.itemOver,
+            itemClick : nextProps.itemClick     
+        });
+        console.log("GRSS::componentWillReceiveProps: (state)" , this.state);
+    }
+
     render() {
         console.log("GRSS::render (state): ", this.state);
         return (
