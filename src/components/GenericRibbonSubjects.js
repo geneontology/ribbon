@@ -50,7 +50,7 @@ class GenericRibbonSubjects extends Component {
     }
 
     render() {
-        // console.log("Subjects: ", this.state.subjects);
+        console.log("GRSS::render (state): ", this.state);
         return (
             <div className='ontology-ribbon__subjects'>
                 {
