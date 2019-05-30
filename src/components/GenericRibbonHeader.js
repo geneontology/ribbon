@@ -13,6 +13,7 @@ class GenericRibbonHeader extends Component {
     this.state = {
       categories: props.categories,
       showItemAll : props.showItemAll,
+      addSubjectLabelWidth : props.addSubjectLabelWidth,
       subjectLabelPosition : props.subjectLabelPosition,
 
       onEnter: props.onEnter,
@@ -31,6 +32,19 @@ class GenericRibbonHeader extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
   }
 
+  componentWillReceiveProps(nextProps){
+    this.setState({
+      categories: nextProps.categories,
+      showItemAll : nextProps.showItemAll,
+      addSubjectLabelWidth : nextProps.addSubjectLabelWidth,
+      subjectLabelPosition : nextProps.subjectLabelPosition,
+
+      onEnter: nextProps.onEnter,
+      onLeave: nextProps.onLeave,
+      onClick: nextProps.onClick
+    });
+  }
+
   render() {
     // console.log("Header: ", this.state.categories);
     return (
@@ -43,7 +57,7 @@ class GenericRibbonHeader extends Component {
                                       : ''
         }       */}
 
-        { (this.state.subjectLabelPosition == POSITION.LEFT) ?
+        { (this.state.subjectLabelPosition == POSITION.LEFT && this.state.addSubjectLabelWidth) ?
           <div style={{ display : 'inline-block',
                         width: '100px',
                         padding: '0px 1px'
@@ -73,6 +87,7 @@ class GenericRibbonHeader extends Component {
 GenericRibbonHeader.propTypes = {
   categories: PropTypes.array.isRequired,
   showItemAll : PropTypes.bool,
+  addSubjectLabelWidth : PropTypes.bool,
   subjectLabelPosition : PropTypes.number,
 
   onEnter: PropTypes.func,

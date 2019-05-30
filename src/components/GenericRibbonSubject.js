@@ -17,6 +17,7 @@ class GenericRibbonSubject extends Component {
 
       showItemAll : props.showItemAll,
 
+      hideLabel: props.hideLabel,
       subjectLabelPosition: props.subjectLabelPosition,
       subjectBaseURL : props.subjectBaseURL,
 
@@ -32,7 +33,7 @@ class GenericRibbonSubject extends Component {
       itemLeave : props.itemLeave,
       itemOver : props.itemOver,
       itemClick : props.itemClick    
-}
+    }
   }
 
   componentDidMount() {
@@ -45,12 +46,38 @@ class GenericRibbonSubject extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
   }
 
+  componentWillReceiveProps(nextProps){
+    this.setState({
+      categories: nextProps.categories,
+      subject: nextProps.subject,
+
+      showItemAll : nextProps.showItemAll,
+
+      hideLabel: nextProps.hideLabel,
+      subjectLabelPosition: nextProps.subjectLabelPosition,
+      subjectBaseURL : nextProps.subjectBaseURL,
+
+      classLabels: nextProps.classLabels,
+      annotationLabels: nextProps.annotationLabels,
+      colorBy: nextProps.colorBy,
+      binaryColor: nextProps.binaryColor,
+      minColor: nextProps.minColor,
+      maxColor: nextProps.maxColor,
+      maxHeatLevel: nextProps.maxHeatLevel,
+
+      itemEnter : nextProps.itemEnter,
+      itemLeave : nextProps.itemLeave,
+      itemOver : nextProps.itemOver,
+      itemClick : nextProps.itemClick    
+    });
+  }
+
   render() {
     // console.log("GRS(" + this.state.subject.id + ")::render (state): ", this.state);
     return (
       <div className='ontology-ribbon__strip'>
 
-        { (this.state.subjectLabelPosition == POSITION.LEFT) ?
+        { (this.state.subjectLabelPosition == POSITION.LEFT && !this.state.hideLabel) ?
           <GenericRibbonSubjectLabel  subjectId={this.state.subject.id} 
                                       subjectLabel={this.state.subject.label}
                                       subjectTaxon={this.state.subject.taxon_label}
@@ -132,7 +159,7 @@ class GenericRibbonSubject extends Component {
 
         }
         
-        { (this.state.subjectLabelPosition == POSITION.RIGHT) ?
+        { (this.state.subjectLabelPosition == POSITION.RIGHT && !this.state.hideLabel) ?
           <GenericRibbonSubjectLabel  subjectId={this.state.subject.id} 
                                       subjectLabel={this.state.subject.label}
                                       subjectTaxon={this.state.subject.taxon_label}
@@ -152,6 +179,7 @@ GenericRibbonSubject.propTypes = {
 
   showItemAll : PropTypes.bool,
 
+  hideLabel: PropTypes.bool,
   subjectLabelPosition: PropTypes.number,
   subjectBaseURL : PropTypes.string,
 

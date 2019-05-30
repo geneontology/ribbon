@@ -148,6 +148,7 @@ class Demo2 extends React.Component {
                   : <GenericRibbon  categories={this.state.ribbon.categories} 
                                     subjects={this.state.ribbon.subjects} 
 
+                                    hideFirstSubjectLabel={false}
                                     subjectLabelPosition={POSITION.RIGHT}
                                     colorBy={COLOR_BY.CLASS_COUNT}
                                     
@@ -170,9 +171,9 @@ class Demo2 extends React.Component {
                   : ""
            }
           <div style={{marginTop: '2rem'}}>
-            <small>Use gene identifiers as input (e.g. RGD:3889 or MGI:88276, etc)</small><br/>
-            <input type="text" value={this.state.search} onChange={(event) => this.setState({ search: event.target.value })}></input>
-            <button onClick={this.doathing.bind(this)}>Add Gene</button>
+            <b>Enter one or more gene IDs separated by commas or new lines</b><br/><small><i>(e.g. RGD:3889 or MGI:88276, or ZFIN:ZDB-GENE-010320-2,HGNC:6876, etc)</i></small><br/>
+            <textarea rows="5" cols="40" value={this.state.search} onChange={(event) => this.setState({ search: event.target.value })}/>
+            <button onClick={this.addGenes.bind(this)} style={{display : 'block'}} title="Enter one or more gene IDs separated by commas or new lines">Add Gene(s)</button>
           </div>
       </div>
     )
@@ -182,12 +183,17 @@ class Demo2 extends React.Component {
     this.setState({ search : event.target.value });
   }
   
-  doathing() {
-    console.log("Test button activated (" , this.state.search + ")");
-    this.fetchData("goslim_agr", this.state.search)
+  addGenes() {
+    // console.log("Test button activated (" , this.state.search + ")");
+    var subjects = this.state.search;
+    if(subjects.includes(",")) { subjects = subjects.split(","); }
+    if(subjects.includes("\n")) { subjects = subjects.split("\n"); }
+    this.fetchData("goslim_agr", subjects)
     .then(data => {
       var oldSubs = this.state.ribbon.subjects;
-      oldSubs.push(data.data.subjects[0]);
+      for(var sub of data.data.subjects) {
+        oldSubs.push(sub);
+      }
       this.setState({ loading : false, subjects : oldSubs })
     })
   }

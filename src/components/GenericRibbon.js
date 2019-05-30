@@ -18,6 +18,7 @@ class GenericRibbon extends Component {
 
             showItemAll : props.showItemAll,
 
+            hideFirstSubjectLabel : props.hideFirstSubjectLabel,
             subjectLabelPosition: props.subjectLabelPosition,
             subjectBaseURL : props.subjectBaseURL,
 
@@ -60,6 +61,7 @@ class GenericRibbon extends Component {
 
             showItemAll : nextProps.showItemAll,
 
+            hideFirstSubjectLabel : nextProps.hideFirstSubjectLabel,
             subjectLabelPosition: nextProps.subjectLabelPosition,
             subjectBaseURL : nextProps.subjectBaseURL,
 
@@ -92,7 +94,7 @@ class GenericRibbon extends Component {
             <div>
                 {this.state.isValid ?
                     this.renderRibbon() :
-                    "An error occured, please check you provided a valid subject (" + this.state.subjects + ")"
+                    "Please provide at least one subject to display the ribbon"
                 }
             </div>
         )
@@ -102,6 +104,7 @@ class GenericRibbon extends Component {
         return (
             <div className='ontology-ribbon' style={{ display: 'block' }}>
                 <GenericRibbonHeader    categories={this.state.categories}
+                                        addSubjectLabelWidth={(!this.state.hideFirstSubjectLabel) || (this.state.hideFirstSubjectLabel && this.state.subjects.length > 1)}
                                         subjectLabelPosition={this.state.subjectLabelPosition} 
                                         showItemAll={this.state.showItemAll}
                                         />
@@ -118,6 +121,7 @@ class GenericRibbon extends Component {
                                         maxColor={this.state.maxColor}
                                         maxHeatLevel={this.state.maxHeatLevel} 
 
+                                        hideFirstSubjectLabel={this.state.hideFirstSubjectLabel}
                                         subjectLabelPosition={this.state.subjectLabelPosition}
                                         subjectBaseURL={this.state.subjectBaseURL}
                                         
@@ -138,6 +142,7 @@ GenericRibbon.propTypes = {
 
     showItemAll : PropTypes.bool,
 
+    hideFirstSubjectLabel : PropTypes.bool,
     subjectLabelPosition: PropTypes.number,
     subjectBaseURL : PropTypes.string,
 
@@ -161,6 +166,7 @@ GenericRibbon.propTypes = {
 }
 
 GenericRibbon.defaultProps = {
+    hideFirstSubjectLabel : false,
     showItemAll : true,
     subjectLabelPosition: POSITION.RIGHT,
     classLabels: ["class", "classes"],
