@@ -149,8 +149,10 @@ class Demo2 extends React.Component {
                                     subjects={this.state.ribbon.subjects} 
 
                                     hideFirstSubjectLabel={false}
+                                    subjectUseTaxonIcon={true}
                                     subjectLabelPosition={POSITION.RIGHT}
                                     colorBy={COLOR_BY.CLASS_COUNT}
+                                    // subjectBaseURL={null}
                                     
                                     itemEnter={this.itemEnter}
                                     itemLeave={this.itemLeave}

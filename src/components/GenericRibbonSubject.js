@@ -18,6 +18,7 @@ class GenericRibbonSubject extends Component {
       showItemAll : props.showItemAll,
 
       hideLabel: props.hideLabel,
+      useTaxonIcon : props.useTaxonIcon,
       subjectLabelPosition: props.subjectLabelPosition,
       subjectBaseURL : props.subjectBaseURL,
 
@@ -54,6 +55,7 @@ class GenericRibbonSubject extends Component {
       showItemAll : nextProps.showItemAll,
 
       hideLabel: nextProps.hideLabel,
+      useTaxonIcon : nextProps.useTaxonIcon,
       subjectLabelPosition: nextProps.subjectLabelPosition,
       subjectBaseURL : nextProps.subjectBaseURL,
 
@@ -73,6 +75,7 @@ class GenericRibbonSubject extends Component {
   }
 
   render() {
+    // console.log('subject: ', this.state.subject);
     // console.log("GRS(" + this.state.subject.id + ")::render (state): ", this.state);
     return (
       <div className='ontology-ribbon__strip'>
@@ -81,7 +84,9 @@ class GenericRibbonSubject extends Component {
           <GenericRibbonSubjectLabel  subjectId={this.state.subject.id} 
                                       subjectLabel={this.state.subject.label}
                                       subjectTaxon={this.state.subject.taxon_label}
-                                      subjectBaseURL={this.state.subjectBaseURL} />
+                                      subjectBaseURL={this.state.subjectBaseURL} 
+                                      useTaxonIcon={this.state.useTaxonIcon}
+                                      />
                                       : ''
         }      
 
@@ -163,7 +168,9 @@ class GenericRibbonSubject extends Component {
           <GenericRibbonSubjectLabel  subjectId={this.state.subject.id} 
                                       subjectLabel={this.state.subject.label}
                                       subjectTaxon={this.state.subject.taxon_label}
-                                      subjectBaseURL={this.state.subjectBaseURL} />
+                                      subjectBaseURL={this.state.subjectBaseURL}
+                                      useTaxonIcon={this.state.useTaxonIcon}
+                                      />                                      
                                       : ''
         }
       </div>
@@ -180,6 +187,7 @@ GenericRibbonSubject.propTypes = {
   showItemAll : PropTypes.bool,
 
   hideLabel: PropTypes.bool,
+  useTaxonIcon : PropTypes.bool,
   subjectLabelPosition: PropTypes.number,
   subjectBaseURL : PropTypes.string,
 

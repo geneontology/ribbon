@@ -15,6 +15,7 @@ class GenericRibbonSubjectLabel extends Component {
       subjectLabel : props.subjectLabel,
       subjectTaxon : props.subjectTaxon,
       subjectBaseURL : props.subjectBaseURL,
+      useTaxonIcon : props.useTaxonIcon,
       hide : props.hide
     }
   }
@@ -37,17 +38,23 @@ class GenericRibbonSubjectLabel extends Component {
             {
             (this.state.subjectBaseURL) ?
               <a href={ this.state.subjectBaseURL + this.state.subjectId.replace("MGI:", "MGI:MGI:")} className="ontology-ribbon__label ribbon-link" target="blank">
-                  <RibbonSpeciesIcon species={this.getPrefixForId(this.state.subjectId)} />
-                  {this.state.subjectLabel}
+                  { this.state.useTaxonIcon ?   <span><RibbonSpeciesIcon species={this.getPrefixForId(this.state.subjectId)} /> {this.state.subjectLabel}</span>
+                                            :   this.state.subjectLabel + "(" + this.species3LCode(this.state.subjectTaxon) + ")" }                  
               </a> :
               <span>
-              <RibbonSpeciesIcon species={this.getPrefixForId(this.state.subjectId)}/>
-              {this.state.subjectLabel}</span>
+                  { this.state.useTaxonIcon ?   <span><RibbonSpeciesIcon species={this.getPrefixForId(this.state.subjectId)} /> {this.state.subjectLabel}</span>
+                                            :   this.state.subjectLabel + "(" + this.species3LCode(this.state.subjectTaxon) + ")" }                  
+              </span>
             }
       </div>
     )
   }
 
+  species3LCode(species) {
+    console.log('receive: ', species);
+    var split = species.split("\s");
+    return split[0].charAt(0) + split[1].substring(1, 3);
+  }
 
 
   prefixToSpecies = {
@@ -76,6 +83,7 @@ GenericRibbonSubjectLabel.propTypes = {
   subjectLabel : PropTypes.string.isRequired,
   subjectBaseURL : PropTypes.string,
   subjectTaxon : PropTypes.string,
+  useTaxonIcon : PropTypes.bool,
   hide : PropTypes.bool
 }
 
