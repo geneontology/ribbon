@@ -16,6 +16,7 @@ class GenericRibbon extends Component {
             categories: props.categories,
             subjects: props.subjects,
 
+            selected : props.selected,
             showItemAll : props.showItemAll,
 
             hideFirstSubjectLabel : props.hideFirstSubjectLabel,
@@ -60,6 +61,7 @@ class GenericRibbon extends Component {
             categories: nextProps.categories,
             subjects: nextProps.subjects,
 
+            selected : nextProps.selected,
             showItemAll : nextProps.showItemAll,
 
             hideFirstSubjectLabel : nextProps.hideFirstSubjectLabel,
@@ -113,6 +115,7 @@ class GenericRibbon extends Component {
                 <GenericRibbonSubjects  categories={this.state.categories} 
                                         subjects={this.state.subjects} 
 
+                                        selected={this.state.selected}
                                         showItemAll={this.state.showItemAll}
                                         classLabels={this.state.classLabels}
                                         annotationLabels={this.state.annotationLabels}
@@ -143,6 +146,7 @@ GenericRibbon.propTypes = {
     categories: PropTypes.array.isRequired,
     subjects: PropTypes.array.isRequired,
 
+    selected : PropTypes.object,
     showItemAll : PropTypes.bool,
 
     hideFirstSubjectLabel : PropTypes.bool,

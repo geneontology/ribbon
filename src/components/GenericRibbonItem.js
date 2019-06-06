@@ -14,6 +14,9 @@ class GenericRibbonItem extends Component {
       group : props.group,
       data : props.data,
 
+      isDisabled : props.isDisabled,
+      isSelected : props.isSelected,
+
       classLabels: props.classLabels,
       annotationLabels: props.annotationLabels,
       colorBy: props.colorBy,
@@ -39,6 +42,31 @@ class GenericRibbonItem extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
   }
 
+
+  componentWillReceiveProps(nextProps){
+    this.setState({
+      subject : nextProps.subject,
+      group : nextProps.group,
+      data : nextProps.data,
+
+      isDisabled : nextProps.isDisabled,
+      isSelected : nextProps.isSelected,
+
+      classLabels: nextProps.classLabels,
+      annotationLabels: nextProps.annotationLabels,
+      colorBy: nextProps.colorBy,
+      binaryColor: nextProps.binaryColor,
+      minColor: nextProps.minColor,
+      maxColor: nextProps.maxColor,
+      maxHeatLevel: nextProps.maxHeatLevel,   
+      
+      itemEnter : nextProps.itemEnter,
+      itemLeave : nextProps.itemLeave,
+      itemOver : nextProps.itemOver,
+      itemClick : nextProps.itemClick
+    });
+  }
+
   render() {
     // console.log("item: ", this.state.group , this.state.data);
     var itemClass = 'ontology-ribbon__block__tile ';
@@ -47,6 +75,10 @@ class GenericRibbonItem extends Component {
                         : (this.state.group.type == "Other")
                                 ? 'ontology-ribbon__block__tile__aspect--other'
                                 : ''
+    
+    if(this.state.isSelected) {
+      itemClass += " ontology-ribbon__block__tile--selected";
+    }
 
     var itemStyle = {
       backgroundColor : this.itemColor()
@@ -66,6 +98,12 @@ class GenericRibbonItem extends Component {
               onMouseOver={(event) => this.state.itemOver ? this.state.itemOver(this.state.subject, this.state.group) : '' }
               onClick={(event) => this.state.itemClick ? this.state.itemClick(this.state.subject, this.state.group) : '' }
               >
+            { this.state.isDisabled ? "/" : (
+                  this.state.isSelected ? <span>&#10005;</span> : 
+                  null
+                ) 
+            }
+              
         </div>
       </div>
     )
@@ -131,6 +169,9 @@ GenericRibbonItem.propTypes = {
   group : PropTypes.object.isRequired,
   data : PropTypes.object,
 
+  isSelected : PropTypes.bool,
+  isDisabled : PropTypes.bool,
+
   classLabels: PropTypes.array,
   annotationLabels: PropTypes.array,
   colorBy: PropTypes.number,
@@ -151,7 +192,9 @@ GenericRibbonItem.defaultProps = {
       nb_classes: 0,
       nb_annotations: 0
     }
-  }
+  },
+  isSelected : false,
+  isDisabled : false
 }
 
 export default GenericRibbonItem;

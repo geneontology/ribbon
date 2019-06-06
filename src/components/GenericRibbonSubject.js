@@ -15,6 +15,8 @@ class GenericRibbonSubject extends Component {
       categories: props.categories,
       subject: props.subject,
 
+      selected : props.selected,
+
       showItemAll : props.showItemAll,
 
       hideLabel: props.hideLabel,
@@ -51,6 +53,8 @@ class GenericRibbonSubject extends Component {
     this.setState({
       categories: nextProps.categories,
       subject: nextProps.subject,
+
+      selected : nextProps.selected,
 
       showItemAll : nextProps.showItemAll,
 
@@ -138,7 +142,10 @@ class GenericRibbonSubject extends Component {
                   return (
                     <GenericRibbonItem  subject={this.state.subject}
                                         group={group} 
-                                        data={this.state.subject.groups[group.id]} 
+                                        data={this.state.subject.groups[group.id]}
+
+                                        isSelected={(this.state.selected.group)  ? this.state.selected.group.id == group.id 
+                                                                                                  : false}
 
                                         classLabels={this.state.classLabels}
                                         annotationLabels={this.state.annotationLabels}
@@ -185,6 +192,7 @@ GenericRibbonSubject.propTypes = {
   subject: PropTypes.object.isRequired,
 
   showItemAll : PropTypes.bool,
+  selected : PropTypes.object,
 
   hideLabel: PropTypes.bool,
   useTaxonIcon : PropTypes.bool,

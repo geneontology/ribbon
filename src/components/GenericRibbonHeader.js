@@ -59,7 +59,7 @@ class GenericRibbonHeader extends Component {
 
         { (this.state.subjectLabelPosition == POSITION.LEFT && this.state.addSubjectLabelWidth) ?
           <div style={{ display : 'inline-block',
-                        width: '100px',
+                        width: '180px',
                         padding: '0px 1px'
                       }} />
                                       : ''

@@ -7,7 +7,6 @@ import RibbonSpeciesIcon from '../view/RibbonSpeciesIcon'
 
 class GenericRibbonSubjectLabel extends Component {
 
-
   constructor(props) {
     super(props);
     this.state = {
@@ -30,6 +29,13 @@ class GenericRibbonSubjectLabel extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
   }
 
+  getSubjectID() {
+    if(this.state.subjectBaseURL.includes("amigo.geneontology.org")) {
+      return this.state.subjectId.replace("MGI:", "MGI:MGI:");
+    }
+    return this.state.subjectId;
+  }
+
   render() {
     return (
       <div  className={!this.state.hide ? 'ontology-ribbon__item__subject' : ''}
@@ -37,7 +43,7 @@ class GenericRibbonSubjectLabel extends Component {
             >
             {
             (this.state.subjectBaseURL) ?
-              <a href={ this.state.subjectBaseURL + this.state.subjectId.replace("MGI:", "MGI:MGI:")} className="ontology-ribbon__label ribbon-link" target="blank">
+              <a href={ this.state.subjectBaseURL + this.getSubjectID()} className="ontology-ribbon__label ribbon-link" target="blank">
                   { this.state.useTaxonIcon ?   <span><RibbonSpeciesIcon species={this.getPrefixForId(this.state.subjectId)} /> {this.state.subjectLabel}</span>
                                             :   this.state.subjectLabel + "(" + this.species3LCode(this.state.subjectTaxon) + ")" }                  
               </a> :

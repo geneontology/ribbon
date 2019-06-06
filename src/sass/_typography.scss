@@ -3,12 +3,23 @@
     color: #2C3339;
     font-style: italic;
     font-size: .8rem;
+
+    // display: inline;
+    color: $ribbon-link-color;
+    // overflow-wrap: break-word;
+
+    &:hover {
+        cursor: pointer;
+        color: $ribbon-link-hover-color;
+        text-decoration: underline;
+    }
+    
 }
 
-.evidence-qualifier:hover {
-    cursor: pointer;
-    font-weight: bold;
-}
+// .evidence-qualifier:hover {
+//     cursor: pointer;
+//     font-weight: bold;
+// }
 
 .ribbon-link {
     display: inline-block;

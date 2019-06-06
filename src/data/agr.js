@@ -232,7 +232,7 @@ export default
     },
     {
         "class_id": "GO:0005794",
-        "class_label": "golgi apparatus"
+        "class_label": "Golgi apparatus"
     },
     {
         "class_id": "GO:0005783",

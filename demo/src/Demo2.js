@@ -46,12 +46,11 @@ function mapUrlToProps(url) {
 
 class Demo2 extends React.Component {
 
-  subjectBaseURL : "http://amigo.geneontology.org/amigo/gene_product/";
-
   constructor(props) {
     super(props);
     this.state = {
       loading : true,
+      subjectBaseURL : props.subjectBaseURL,
       selected : {
         subject : null,
         group : null,
@@ -71,12 +70,13 @@ class Demo2 extends React.Component {
     }
   }
 
+
   fetchData = (subset, subjects) => {
     if(subjects instanceof Array) {
       subjects = subjects.join("&subject=");
     }
-    let query = goApiUrl + "ontology/ribbon/?subset=" + subset + '&subject=' + subjects;
-    // let query = "https://build.alliancegenome.org/api/gene/" + subjects + "/disease-ribbon-summary";
+    // let query = goApiUrl + "ontology/ribbon/?subset=" + subset + '&subject=' + subjects;
+    let query = "https://build.alliancegenome.org/api/gene/" + subjects + "/disease-ribbon-summary";
     console.log('Query is ' + query);
     return axios.get(query);
   }
@@ -140,7 +140,7 @@ class Demo2 extends React.Component {
   }
 
   render() {
-    console.log("RENDER: ", this.state);
+    // console.log("RENDER: ", this.state);
     return (
       <div style={{ width : '1400px' }}>
             { this.state.loading 
@@ -148,11 +148,12 @@ class Demo2 extends React.Component {
                   : <GenericRibbon  categories={this.state.ribbon.categories} 
                                     subjects={this.state.ribbon.subjects} 
 
+                                    selected={this.state.selected}
                                     hideFirstSubjectLabel={false}
                                     subjectUseTaxonIcon={true}
-                                    subjectLabelPosition={POSITION.RIGHT}
+                                    subjectLabelPosition={POSITION.LEFT}
                                     colorBy={COLOR_BY.CLASS_COUNT}
-                                    // subjectBaseURL={null}
+                                    subjectBaseURL={this.state.subjectBaseURL}
                                     
                                     itemEnter={this.itemEnter}
                                     itemLeave={this.itemLeave}
@@ -214,12 +215,13 @@ class Demo2 extends React.Component {
 
   itemClick(subject, group) {
     console.log("ITEM CLICK: ", subject , group);
-    // this.setState({ selected : {
-    //   subject : subject,
-    //   group : group,
-    //   data : null,
-    //   ready : false
-    // }})
+
+    this.setState({ selected : {
+      subject : subject,
+      group : group,
+      data : null,
+      ready : false
+    }})
 
     // this.fetchAssociationData(subject.id, group.id)
     // .then(data => {
@@ -238,11 +240,21 @@ class Demo2 extends React.Component {
 
 Demo2.propTypes = {
   mode: PropTypes.string,
+  subjectBaseURL : PropTypes.string,
   subject: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.array
   ])
 };
+
+Demo2.defaultProps = {
+  subjectBaseURL : "http://amigo.geneontology.org/amigo/gene_product/"
+  // subjectBaseURL : "https://www.alliancegenome.org/gene/"
+}
+
+
+
+
 
 /*
  * We use the addUrlProps higher-order component to map URL query parameters
