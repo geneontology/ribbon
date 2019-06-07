@@ -114,6 +114,9 @@ class GenericRibbonSubject extends Component {
                                         }
                                       } 
 
+                                      isSelected={(this.state.selected.group)  ? this.state.selected.group.id == "all"
+                                        : false}
+
                                       classLabels={this.state.classLabels}
                                       annotationLabels={this.state.annotationLabels}
                                       colorBy={this.state.colorBy} 
