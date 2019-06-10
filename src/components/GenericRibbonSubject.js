@@ -20,6 +20,7 @@ class GenericRibbonSubject extends Component {
       showItemAll : props.showItemAll,
 
       hideLabel: props.hideLabel,
+      newTab : props.newTab,
       useTaxonIcon : props.useTaxonIcon,
       subjectLabelPosition: props.subjectLabelPosition,
       subjectBaseURL : props.subjectBaseURL,
@@ -59,6 +60,7 @@ class GenericRibbonSubject extends Component {
       showItemAll : nextProps.showItemAll,
 
       hideLabel: nextProps.hideLabel,
+      newTab : nextProps.newTab,
       useTaxonIcon : nextProps.useTaxonIcon,
       subjectLabelPosition: nextProps.subjectLabelPosition,
       subjectBaseURL : nextProps.subjectBaseURL,
@@ -90,6 +92,7 @@ class GenericRibbonSubject extends Component {
                                       subjectTaxon={this.state.subject.taxon_label}
                                       subjectBaseURL={this.state.subjectBaseURL} 
                                       useTaxonIcon={this.state.useTaxonIcon}
+                                      newTab={this.state.newTab}
                                       />
                                       : ''
         }      
@@ -180,6 +183,7 @@ class GenericRibbonSubject extends Component {
                                       subjectTaxon={this.state.subject.taxon_label}
                                       subjectBaseURL={this.state.subjectBaseURL}
                                       useTaxonIcon={this.state.useTaxonIcon}
+                                      newTab={this.state.newTab}
                                       />                                      
                                       : ''
         }
@@ -198,6 +202,7 @@ GenericRibbonSubject.propTypes = {
   selected : PropTypes.object,
 
   hideLabel: PropTypes.bool,
+  newTab : PropTypes.bool,
   useTaxonIcon : PropTypes.bool,
   subjectLabelPosition: PropTypes.number,
   subjectBaseURL : PropTypes.string,

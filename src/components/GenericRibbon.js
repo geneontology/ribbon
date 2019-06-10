@@ -20,6 +20,7 @@ class GenericRibbon extends Component {
             showItemAll : props.showItemAll,
 
             hideFirstSubjectLabel : props.hideFirstSubjectLabel,
+            newTab : props.newTab,
             subjectUseTaxonIcon : props.subjectUseTaxonIcon,
             subjectLabelPosition: props.subjectLabelPosition,
             subjectBaseURL : props.subjectBaseURL,
@@ -65,6 +66,7 @@ class GenericRibbon extends Component {
             showItemAll : nextProps.showItemAll,
 
             hideFirstSubjectLabel : nextProps.hideFirstSubjectLabel,
+            newTab : nextProps.newTab,
             subjectUseTaxonIcon : nextProps.subjectUseTaxonIcon,
             subjectLabelPosition: nextProps.subjectLabelPosition,
             subjectBaseURL : nextProps.subjectBaseURL,
@@ -127,6 +129,7 @@ class GenericRibbon extends Component {
                                         maxHeatLevel={this.state.maxHeatLevel} 
 
                                         hideFirstSubjectLabel={this.state.hideFirstSubjectLabel}
+                                        newTab={this.state.newTab}
                                         subjectUseTaxonIcon={this.state.subjectUseTaxonIcon}
                                         subjectLabelPosition={this.state.subjectLabelPosition}
                                         subjectBaseURL={this.state.subjectBaseURL}
@@ -150,6 +153,7 @@ GenericRibbon.propTypes = {
     showItemAll : PropTypes.bool,
 
     hideFirstSubjectLabel : PropTypes.bool,
+    newTab : PropTypes.bool,
     subjectUseTaxonIcon : PropTypes.bool,
     subjectLabelPosition: PropTypes.number,
     subjectBaseURL : PropTypes.string,
@@ -175,6 +179,7 @@ GenericRibbon.propTypes = {
 
 GenericRibbon.defaultProps = {
     hideFirstSubjectLabel : false,
+    newTab : true,
     subjectUseTaxonIcon : true,
     showItemAll : true,
     subjectLabelPosition: POSITION.RIGHT,

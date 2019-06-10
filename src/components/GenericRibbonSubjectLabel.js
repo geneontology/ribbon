@@ -15,7 +15,8 @@ class GenericRibbonSubjectLabel extends Component {
       subjectTaxon : props.subjectTaxon,
       subjectBaseURL : props.subjectBaseURL,
       useTaxonIcon : props.useTaxonIcon,
-      hide : props.hide
+      hide : props.hide,
+      newTab : props.newTab
     }
   }
   
@@ -43,7 +44,7 @@ class GenericRibbonSubjectLabel extends Component {
             >
             {
             (this.state.subjectBaseURL) ?
-              <a href={ this.state.subjectBaseURL + this.getSubjectID()} className="ontology-ribbon__label ribbon-link" target="blank">
+              <a href={ this.state.subjectBaseURL + this.getSubjectID()} className="ontology-ribbon__label ribbon-link" target={this.state.newTab ? '_blank' : '_self'}>
                   { this.state.useTaxonIcon ?   <span><RibbonSpeciesIcon species={this.getPrefixForId(this.state.subjectId)} /> {this.state.subjectLabel}</span>
                                             :   this.state.subjectLabel + "(" + this.species3LCode(this.state.subjectTaxon) + ")" }                  
               </a> :
@@ -90,11 +91,13 @@ GenericRibbonSubjectLabel.propTypes = {
   subjectBaseURL : PropTypes.string,
   subjectTaxon : PropTypes.string,
   useTaxonIcon : PropTypes.bool,
-  hide : PropTypes.bool
+  hide : PropTypes.bool,
+  newTab : PropTypes.bool
 }
 
 GenericRibbonSubjectLabel.defaultProps = {
-  hide : false
+  hide : false,
+  newTab : PropTypes.bool
 }
 
 export default GenericRibbonSubjectLabel;
