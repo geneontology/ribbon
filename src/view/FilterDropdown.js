@@ -25,24 +25,31 @@ class FilterDropdown extends Component {
     document.addEventListener('click', (e) => this.handleClick(e), false);    
   }
 
+  componentWillUnmount() {
+  }
+
   handleClick(e) {
-    this.filterDomElement = ReactDOM.findDOMNode(this);
+    try {
+      this.filterDomElement = ReactDOM.findDOMNode(this);
 
-    // outside the panel
-    if(!this.filterDomElement.contains(e.target)) {
-      // close if the panel was open
-      if(this.state.isOpen) { 
+      // outside the panel
+      if(!this.filterDomElement.contains(e.target)) {
+        // close if the panel was open
+        if(this.state.isOpen) { 
+          this.setState({
+            isOpen: false
+          });      
+        }
+  
+      // inside the panel
+      } else {
         this.setState({
-          isOpen: false
-        });      
-      }
-
-    // inside the panel
-    } else {
-      this.setState({
-        isOpen: true
-      });
-        
+          isOpen: true
+        });
+          
+      }      
+    } catch (error) {
+      
     }
   }
 

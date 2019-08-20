@@ -123,6 +123,7 @@ export default class RibbonDataProvider extends Component {
   render() {
     const { entities, config, dataError, fetching } = this.state;
     let self = this;
+    console.log("entities: ", entities);
     return self.props.children({
       entities,
       config,

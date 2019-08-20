@@ -104,25 +104,26 @@ export default class AssociationsView extends React.Component {
 
             if (found) {
               shown++;
-            return (
-              <div className={'ontology-ribbon__assoc__row' + (this.props.oddEvenColor ? 
-                                                                  (shown %2 == 0 ? ' ontology-ribbon__assoc__row--even' : ' ontology-ribbon__assoc__row--odd') 
-                                                                  : ''
-                                                              ) + 
-                                                              (this.props.borderBottom ?
-                                                                  ' ontology-ribbon__assoc__row--border-bottom'
-                                                                  : ''
-                                                              )
-                              } 
-                                                              key={index}  style={row_style} >
-                <div className='ontology-ribbon__term-column' key={'term' + index}>
-                  <AssociationTerm assoc={assoc} config={config} row={index} />
+              return (
+                <div  className={'ontology-ribbon__assoc__row' + (this.props.oddEvenColor ? 
+                                                                    (shown %2 == 0 ? ' ontology-ribbon__assoc__row--even' : ' ontology-ribbon__assoc__row--odd') 
+                                                                    : ''
+                                                                ) + 
+                                                                (this.props.borderBottom ?
+                                                                    ' ontology-ribbon__assoc__row--border-bottom'
+                                                                    : ''
+                                                                )
+                                } 
+                      key={index}  style={row_style} >
+                                                                
+                  <div className='ontology-ribbon__term-column' key={'term' + index}>
+                    <AssociationTerm assoc={assoc} config={config} row={index} termURL={this.props.termURL} termInNewPage={this.props.termInNewPage}/>
+                  </div>
+                  <div className='ontology-ribbon__evidence-column' key={'evidence' + index}>
+                      <AssociationEvidence assoc={assoc} filters={this.state.filters} row={index} />
+                  </div>
                 </div>
-                <div className='ontology-ribbon__evidence-column' key={'evidence' + index}>
-                    <AssociationEvidence assoc={assoc} filters={this.state.filters} row={index} />
-                </div>
-              </div>
-            );
+              );
           } else {
             return null;
           }
@@ -145,7 +146,9 @@ AssociationsView.propTypes = {
   focalblock: PropTypes.object,
   tableLabel: PropTypes.string,
   oddEvenColor: PropTypes.bool,
-  borderBottom: PropTypes.bool
+  borderBottom: PropTypes.bool,
+  termURL : PropTypes.string,
+  termInNewPage : PropTypes.bool
 };
 
 AssociationsView.defaultProps = {

@@ -132,6 +132,9 @@ export function createSlims(subject, config, associations, termAspect) {
   // we need a deep copy, not a shallow copy for this function to be stateless (e.g. for multiple GPs)
   var slimlist = JSON.parse(JSON.stringify(config.slimlist));
 
+  console.log("DH-subject: ", subject);
+  console.log("DH-associations: ", associations);
+
 
   let all_blocks = {
     'class_id': 'All annotations',
@@ -291,6 +294,8 @@ export function createSlims(subject, config, associations, termAspect) {
     });
     blocks.splice(otherPos, 0, aspectAllItem);
   }
+
+  console.log("DH-blocks: ", blocks);
 
   return {
     blocks: blocks,

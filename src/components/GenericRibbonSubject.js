@@ -150,8 +150,9 @@ class GenericRibbonSubject extends Component {
                                         group={group} 
                                         data={this.state.subject.groups[group.id]}
 
-                                        isSelected={(this.state.selected.group)  ? this.state.selected.group.id == group.id 
-                                                                                                  : false}
+                                        isSelected={(this.state.selected.group)   ? (this.state.selected.group.id == group.id 
+                                                                                    && this.state.selected.subject.id == this.state.subject.id)
+                                                                                  : false}
 
                                         classLabels={this.state.classLabels}
                                         annotationLabels={this.state.annotationLabels}

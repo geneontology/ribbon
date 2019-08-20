@@ -187,6 +187,8 @@ export default class Ribbon extends Component {
                 tableLabel={this.state.tableLabel}
                 oddEvenColor={this.state.oddEvenColor}
                 borderBottom={this.state.borderBottom}
+                termURL={"http://amigo.geneontology.org/amigo/term/"}
+                termInNewPage={true}
               />
             </CSSTransition> :
             null

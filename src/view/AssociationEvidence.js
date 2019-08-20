@@ -11,7 +11,6 @@ class AssociationEvidence extends Component {
 
   constructor() {
     super();
-
     this.state = {
       expanded_withs: [],
       expanded_refs: []

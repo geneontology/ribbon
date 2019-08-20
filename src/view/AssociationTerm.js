@@ -2,17 +2,13 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import amigo_gen from 'amigo2-instance-data';
 
 class AssociationTerm extends React.Component {
 
-  constructor() {
-    super();
-
-    this.linker = (new amigo_gen()).linker;
+  constructor(props) {
+    super(props);
     this.renderTerm = this.renderTerm.bind(this);
   }
-
 
   renderTerm(assoc) {
     if (assoc.negated === true) {
@@ -29,14 +25,18 @@ class AssociationTerm extends React.Component {
   render() {
     const {assoc, config} = this.props;
     let self = this;
-    let query = config.termUrlFormatter + assoc.object.id;
+    let query = this.props.termURL + assoc.object.id;
+    let target = "_self";
+    if(this.props.termInNewPage) {
+      target = "_blank";
+    }
     return (
       <div className='ontology-ribbon__content'>
         <a
           className='ribbon-link'
           href={query}
           rel="noopener noreferrer"
-          target='_blank'
+          target={target}
           title={assoc.object.id}
         >
           {self.renderTerm(assoc)}
@@ -50,6 +50,8 @@ AssociationTerm.propTypes = {
   assoc: PropTypes.object.isRequired,
   config: PropTypes.object,
   row: PropTypes.number,
+  termURL : PropTypes.string,
+  termInNewPage : PropTypes.bool
 };
 
 export default AssociationTerm;
