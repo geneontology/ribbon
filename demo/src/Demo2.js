@@ -159,7 +159,7 @@ class Demo2 extends React.Component {
   
   associationKey(assoc) {
     if(assoc.qualifier) {
-      return assoc.subject.id + "@" + assoc.object.id + "@" + assoc.negated + "@" + "-".join(assoc.qualifier);      
+      return assoc.subject.id + "@" + assoc.object.id + "@" + assoc.negated + "@" + assoc.qualifier.join("-");      
     }
     return assoc.subject.id + "@" + assoc.object.id + "@" + assoc.negated;
   }
@@ -412,11 +412,15 @@ class Demo2 extends React.Component {
   }
 
   itemClick(subject, group) {
-    // console.log("ITEM CLICK: ", subject , group, "state.group: ", this.state.selected.group);
+    console.log("ITEM CLICK: subject: ", subject , "group: ", group, "state.group: ", this.state.selected.group);
 
-    if(group == this.state.selected.group
-      && subject.id == this.state.selected.subject.id) {
-      group = undefined;
+    if(this.state.selected.group) {
+        var sameGroupID = group.id == this.state.selected.group.id;
+        var sameGroupType = group.type == this.state.selected.group.type
+        var sameSubject = subject.id == this.state.selected.subject.id;
+        if(sameGroupID && sameGroupType && sameSubject) {
+          group = undefined;
+      }
     }
 
     this.setState({ selected : {

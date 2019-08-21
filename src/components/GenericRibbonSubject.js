@@ -81,6 +81,7 @@ class GenericRibbonSubject extends Component {
   }
 
   render() {
+    console.log("GRS: ", this.state);
     // console.log('subject: ', this.state.subject);
     // console.log("GRS(" + this.state.subject.id + ")::render (state): ", this.state);
     return (
@@ -117,8 +118,13 @@ class GenericRibbonSubject extends Component {
                                         }
                                       } 
 
-                                      isSelected={(this.state.selected.group)  ? this.state.selected.group.id == "all"
-                                        : false}
+                                      isSelected={
+                                        (this.state.selected && this.state.selected.subject && this.state.selected.group) 
+                                            ? this.state.selected.subject.id == this.state.subject.id 
+                                              && this.state.selected.group.id == "all"
+                                            : false
+                                      }
+
 
                                       classLabels={this.state.classLabels}
                                       annotationLabels={this.state.annotationLabels}
@@ -150,10 +156,14 @@ class GenericRibbonSubject extends Component {
                                         group={group} 
                                         data={this.state.subject.groups[group.id]}
 
-                                        isSelected={(this.state.selected.group)   ? (this.state.selected.group.id == group.id 
-                                                                                    && this.state.selected.subject.id == this.state.subject.id)
-                                                                                  : false}
-
+                                        isSelected={
+                                          (this.state.selected && this.state.selected.subject && this.state.selected.group) 
+                                              ? this.state.selected.subject.id == this.state.subject.id 
+                                                && this.state.selected.group.id == group.id 
+                                                && this.state.selected.group.type == group.type 
+                                              : false
+                                        }
+  
                                         classLabels={this.state.classLabels}
                                         annotationLabels={this.state.annotationLabels}
                                         colorBy={this.state.colorBy} 
