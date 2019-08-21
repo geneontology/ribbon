@@ -59,7 +59,7 @@ export default class AssociationsView extends React.Component {
           </div>
           <FilterDropdown filters={this.state.filters} filterHandler={this.filterHandler} counts = {this.state.counts} />
           <div style={{ fontWeight: 'bold', width: '20%' }}>
-              Based on
+              With/From
           </div>
           <div style={{ fontWeight: 'bold', width: '20%' }}>
               Reference
