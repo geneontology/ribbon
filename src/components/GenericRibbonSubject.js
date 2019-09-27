@@ -190,15 +190,17 @@ class GenericRibbonSubject extends Component {
 
         }
 
-        { (this.state.subjectLabelPosition == POSITION.RIGHT && !this.state.hideLabel) ?
-          <GenericRibbonSubjectLabel  subjectId={this.state.subject.id}
-                                      subjectLabel={this.state.subject.label}
-                                      subjectTaxon={this.state.subject.taxon_label}
-                                      subjectBaseURL={this.state.subjectBaseURL}
-                                      useTaxonIcon={this.state.useTaxonIcon}
-                                      newTab={this.state.newTab}
-                                      />
-                                      : ''
+        { (this.state.subjectLabelPosition == POSITION.RIGHT && !this.state.hideLabel) &&
+          (this.props.subjectLabel ?
+            <div className='ontology-ribbon__item__subject'>{this.props.subjectLabel(this.state.subject)}</div> :
+            <GenericRibbonSubjectLabel  subjectId={this.state.subject.id}
+                                        subjectLabel={this.state.subject.label}
+                                        subjectTaxon={this.state.subject.taxon_label}
+                                        subjectBaseURL={this.state.subjectBaseURL}
+                                        useTaxonIcon={this.state.useTaxonIcon}
+                                        newTab={this.state.newTab}
+                                        />
+          )
         }
       </div>
     )
