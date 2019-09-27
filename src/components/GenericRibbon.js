@@ -42,7 +42,7 @@ class GenericRibbon extends Component {
             itemEnter : props.itemEnter,
             itemLeave : props.itemLeave,
             itemOver : props.itemOver,
-            itemClick : props.itemClick    
+            itemClick : props.itemClick
         }
     }
 
@@ -88,7 +88,7 @@ class GenericRibbon extends Component {
             itemEnter : nextProps.itemEnter,
             itemLeave : nextProps.itemLeave,
             itemOver : nextProps.itemOver,
-            itemClick : nextProps.itemClick    
+            itemClick : nextProps.itemClick
         });
         // console.log("GR::componentWillReceiveProps: (state)" , this.state);
     }
@@ -108,36 +108,37 @@ class GenericRibbon extends Component {
 
     renderRibbon() {
         return (
-            <div className='ontology-ribbon' style={{ display: 'block' }}>
+            <div className='ontology-ribbon' style={{ display: 'table' }}>
                 <GenericRibbonHeader    categories={this.state.categories}
                                         addSubjectLabelWidth={(!this.state.hideFirstSubjectLabel) || (this.state.hideFirstSubjectLabel && this.state.subjects.length > 1)}
-                                        subjectLabelPosition={this.state.subjectLabelPosition} 
+                                        subjectLabelPosition={this.state.subjectLabelPosition}
                                         showItemAll={this.state.showItemAll}
                                         />
-                <GenericRibbonSubjects  categories={this.state.categories} 
-                                        subjects={this.state.subjects} 
+                <GenericRibbonSubjects  categories={this.state.categories}
+                                        subjects={this.state.subjects}
 
                                         selected={this.state.selected}
                                         showItemAll={this.state.showItemAll}
                                         classLabels={this.state.classLabels}
                                         annotationLabels={this.state.annotationLabels}
 
-                                        colorBy={this.state.colorBy} 
-                                        binaryColor={this.state.binaryColor} 
+                                        colorBy={this.state.colorBy}
+                                        binaryColor={this.state.binaryColor}
                                         minColor={this.state.minColor}
                                         maxColor={this.state.maxColor}
-                                        maxHeatLevel={this.state.maxHeatLevel} 
+                                        maxHeatLevel={this.state.maxHeatLevel}
 
                                         hideFirstSubjectLabel={this.state.hideFirstSubjectLabel}
                                         newTab={this.state.newTab}
                                         subjectUseTaxonIcon={this.state.subjectUseTaxonIcon}
+                                        subjectLabel={this.props.subjectLabel}
                                         subjectLabelPosition={this.state.subjectLabelPosition}
                                         subjectBaseURL={this.state.subjectBaseURL}
-                                        
+
                                         itemEnter={this.state.itemEnter}
                                         itemLeave={this.state.itemLeave}
                                         itemOver={this.state.itemOver}
-                                        itemClick={this.state.itemClick} 
+                                        itemClick={this.state.itemClick}
                                         />
             </div>
         )
@@ -155,6 +156,7 @@ GenericRibbon.propTypes = {
     hideFirstSubjectLabel : PropTypes.bool,
     newTab : PropTypes.bool,
     subjectUseTaxonIcon : PropTypes.bool,
+    subjectLabel : PropTypes.func,
     subjectLabelPosition: PropTypes.number,
     subjectBaseURL : PropTypes.string,
 
@@ -170,11 +172,11 @@ GenericRibbon.propTypes = {
     subjectLeave : PropTypes.func,
     subjectOver : PropTypes.func,
     subjectClick : PropTypes.func,
-    
+
     itemEnter : PropTypes.func,
     itemLeave : PropTypes.func,
     itemOver : PropTypes.func,
-    itemClick : PropTypes.func 
+    itemClick : PropTypes.func
 }
 
 GenericRibbon.defaultProps = {

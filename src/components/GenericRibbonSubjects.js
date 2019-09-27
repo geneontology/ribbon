@@ -40,7 +40,7 @@ class GenericRibbonSubjects extends Component {
             itemEnter : props.itemEnter,
             itemLeave : props.itemLeave,
             itemOver : props.itemOver,
-            itemClick : props.itemClick    
+            itemClick : props.itemClick
         }
     }
 
@@ -59,7 +59,7 @@ class GenericRibbonSubjects extends Component {
         this.setState({
             categories : nextProps.categories,
             subjects: nextProps.subjects,
-            
+
             selected : nextProps.selected,
 
             showItemAll : nextProps.showItemAll,
@@ -87,51 +87,45 @@ class GenericRibbonSubjects extends Component {
             itemEnter : nextProps.itemEnter,
             itemLeave : nextProps.itemLeave,
             itemOver : nextProps.itemOver,
-            itemClick : nextProps.itemClick     
+            itemClick : nextProps.itemClick
         });
         // console.log("GRSS::componentWillReceiveProps: (state)" , this.state);
     }
 
     render() {
         // console.log("GRSS::render (state): ", this.state);
-        return (
-            <div className='ontology-ribbon__subjects'>
-                {
-                    this.state.subjects.map((subject, index) => {
+        return this.state.subjects.map((subject) => {
                         return (
-                            <GenericRibbonSubject   categories={this.state.categories} 
-                                                    subject={subject} 
+                            <GenericRibbonSubject   categories={this.state.categories}
+                                                    subject={subject}
 
                                                     selected={this.state.selected}
 
                                                     showItemAll={this.state.showItemAll}
                                                     classLabels={this.state.classLabels}
                                                     annotationLabels={this.state.annotationLabels}
-            
-                                                    colorBy={this.state.colorBy} 
-                                                    binaryColor={this.state.binaryColor} 
+
+                                                    colorBy={this.state.colorBy}
+                                                    binaryColor={this.state.binaryColor}
                                                     minColor={this.state.minColor}
                                                     maxColor={this.state.maxColor}
-                                                    maxHeatLevel={this.state.maxHeatLevel}    
+                                                    maxHeatLevel={this.state.maxHeatLevel}
 
                                                     hideLabel={this.state.hideFirstSubjectLabel && this.state.subjects.length == 1}
                                                     newTab={this.state.newTab}
                                                     useTaxonIcon={this.state.subjectUseTaxonIcon}
+                                                    subjectLabel={this.props.subjectLabel}
                                                     subjectLabelPosition={this.state.subjectLabelPosition}
                                                     subjectBaseURL={this.state.subjectBaseURL}
-                                                    
+
                                                     itemEnter={this.state.itemEnter}
                                                     itemLeave={this.state.itemLeave}
                                                     itemOver={this.state.itemOver}
                                                     itemClick={this.state.itemClick}
 
-                                                    key={"subject_" + index} />
+                                                    key={"subject_" + subject.id} />
                         )
-                    })
-                }
-            </div>
-        )
-
+                    });
     }
 
 }
@@ -147,6 +141,7 @@ GenericRibbonSubjects.propTypes = {
     hideFirstSubjectLabel : PropTypes.bool,
     newTab : PropTypes.bool,
     subjectUseTaxonIcon : PropTypes.bool,
+    subjectLabel : PropTypes.func,
     subjectLabelPosition: PropTypes.number,
     subjectBaseURL : PropTypes.string,
 
@@ -162,11 +157,11 @@ GenericRibbonSubjects.propTypes = {
     subjectLeave : PropTypes.func,
     subjectOver : PropTypes.func,
     subjectClick : PropTypes.func,
-    
+
     itemEnter : PropTypes.func,
     itemLeave : PropTypes.func,
     itemOver : PropTypes.func,
-    itemClick : PropTypes.func    
+    itemClick : PropTypes.func
 }
 
 GenericRibbonSubjects.defaultProps = {
