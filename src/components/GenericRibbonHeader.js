@@ -58,13 +58,10 @@ class GenericRibbonHeader extends Component {
         }       */}
 
         { (this.state.subjectLabelPosition == POSITION.LEFT && this.state.addSubjectLabelWidth) ?
-          <div style={{ display : 'inline-block',
-                        width: '180px',
-                        padding: '0px 1px'
-                      }} />
+          <div className='ontology-ribbon__item__subject' />
                                       : ''
-        }      
-      
+        }
+
         { (this.state.showItemAll) ?
             <GenericRibbonHeaderCategory category={ { groups : [ { id: "all", type: "All", label: "All annotations" } ] } } />
             : ''

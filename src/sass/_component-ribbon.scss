@@ -9,7 +9,6 @@
         display: table-cell;
         vertical-align: bottom;
         padding: 0px 5px;
-        width: 180px;
     }
 
     &__header {
@@ -21,8 +20,8 @@
         border-radius: $ribbon-table-header-border-radius;
 
         &--border-bottom {
-            border-bottom: 2.5px solid rgba(128, 128, 128, 0.2);                
-        }    
+            border-bottom: 2.5px solid rgba(128, 128, 128, 0.2);
+        }
     }
 
     &__headline {
@@ -33,8 +32,8 @@
         width: 100%;
 
         &--border-bottom {
-            border-bottom: 2.5px solid rgba(128, 128, 128, 0.2);                
-        }    
+            border-bottom: 2.5px solid rgba(128, 128, 128, 0.2);
+        }
     }
 
     &__term-column {
@@ -169,6 +168,7 @@
 
     &__strip {
         // margin-top: 15px;
+        display: table-row;
         margin-top: 2px;
 
         &__label {
@@ -209,7 +209,7 @@
             display: table-cell;
             vertical-align: bottom;
             height: 200px;
-        }            
+        }
     }
 
     &__item {
@@ -224,7 +224,7 @@
         }
 
         &__subject {
-            display: inline-block;
+            display: table-cell;
         }
     }
 
@@ -305,7 +305,7 @@
                     cursor: pointer;
                 }
             }
-    
+
 
             &--disabled {
                 cursor: not-allowed !important;
@@ -316,7 +316,7 @@
                 cursor: not-allowed !important;
                 transform: none !important;
             }
-        
+
             &__separator {
                 position: relative;
                 margin-right: -1px;
@@ -455,7 +455,7 @@
             }
 
             &--border-bottom:not(:last-child) {
-                border-bottom: 1.5px solid rgba(128, 128, 128, 0.2);                
+                border-bottom: 1.5px solid rgba(128, 128, 128, 0.2);
             }
 
             &--focus {

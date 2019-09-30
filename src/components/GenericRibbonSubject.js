@@ -36,7 +36,7 @@ class GenericRibbonSubject extends Component {
       itemEnter : props.itemEnter,
       itemLeave : props.itemLeave,
       itemOver : props.itemOver,
-      itemClick : props.itemClick    
+      itemClick : props.itemClick
     }
   }
 
@@ -76,7 +76,7 @@ class GenericRibbonSubject extends Component {
       itemEnter : nextProps.itemEnter,
       itemLeave : nextProps.itemLeave,
       itemOver : nextProps.itemOver,
-      itemClick : nextProps.itemClick    
+      itemClick : nextProps.itemClick
     });
   }
 
@@ -87,28 +87,30 @@ class GenericRibbonSubject extends Component {
     return (
       <div className='ontology-ribbon__strip'>
 
-        { (this.state.subjectLabelPosition == POSITION.LEFT && !this.state.hideLabel) ?
-          <GenericRibbonSubjectLabel  subjectId={this.state.subject.id} 
-                                      subjectLabel={this.state.subject.label}
-                                      subjectTaxon={this.state.subject.taxon_label}
-                                      subjectBaseURL={this.state.subjectBaseURL} 
-                                      useTaxonIcon={this.state.useTaxonIcon}
-                                      newTab={this.state.newTab}
-                                      />
-                                      : ''
-        }      
+        { (this.state.subjectLabelPosition == POSITION.LEFT && !this.state.hideLabel) &&
+          (this.props.subjectLabel ?
+            <div className='ontology-ribbon__item__subject'>{this.props.subjectLabel(this.state.subject)}</div> :
+            <GenericRibbonSubjectLabel subjectId={this.state.subject.id}
+                                       subjectLabel={this.state.subject.label}
+                                       subjectTaxon={this.state.subject.taxon_label}
+                                       subjectBaseURL={this.state.subjectBaseURL}
+                                       useTaxonIcon={this.state.useTaxonIcon}
+                                       newTab={this.state.newTab}
+            />
+          )
+        }
 
         { (this.state.showItemAll) ?
-          <div  className='ontology-ribbon__item__category'>        
+          <div  className='ontology-ribbon__item__category'>
           <GenericRibbonItem          subject={this.state.subject}
-                                      group={ 
+                                      group={
                                         {
                                           "id" : "all",
                                           "label" : "All annotations",
                                           "description" : "Contains all the annotations for all groups",
                                           "type" : "GlobalAll"
                                         }
-                                      } 
+                                      }
                                       data={
                                         {
                                           "ALL": {
@@ -116,11 +118,11 @@ class GenericRibbonSubject extends Component {
                                             "nb_annotations": this.state.subject.nb_annotations
                                           }
                                         }
-                                      } 
+                                      }
 
                                       isSelected={
-                                        (this.state.selected && this.state.selected.subject && this.state.selected.group) 
-                                            ? this.state.selected.subject.id == this.state.subject.id 
+                                        (this.state.selected && this.state.selected.subject && this.state.selected.group)
+                                            ? this.state.selected.subject.id == this.state.subject.id
                                               && this.state.selected.group.id == "all"
                                             : false
                                       }
@@ -128,24 +130,24 @@ class GenericRibbonSubject extends Component {
 
                                       classLabels={this.state.classLabels}
                                       annotationLabels={this.state.annotationLabels}
-                                      colorBy={this.state.colorBy} 
-                                      binaryColor={this.state.binaryColor} 
+                                      colorBy={this.state.colorBy}
+                                      binaryColor={this.state.binaryColor}
                                       minColor={this.state.minColor}
                                       maxColor={this.state.maxColor}
-                                      maxHeatLevel={this.state.maxHeatLevel}    
-                          
+                                      maxHeatLevel={this.state.maxHeatLevel}
+
                                       itemEnter={this.state.itemEnter}
                                       itemLeave={this.state.itemLeave}
                                       itemOver={this.state.itemOver}
                                       itemClick={this.state.itemClick}
-                                                                  
-                                      />                        
+
+                                      />
                                       </div>
                                       : ''
         }
 
         {
-          this.state.categories.map((category, index) => {   
+          this.state.categories.map((category) => {
             return (
               <div  className='ontology-ribbon__item__category'
                     key={this.state.subject + "_" + category.id}>
@@ -153,30 +155,30 @@ class GenericRibbonSubject extends Component {
                 category.groups.map((group, index) => {
                   return (
                     <GenericRibbonItem  subject={this.state.subject}
-                                        group={group} 
+                                        group={group}
                                         data={this.state.subject.groups[group.id]}
 
                                         isSelected={
-                                          (this.state.selected && this.state.selected.subject && this.state.selected.group) 
-                                              ? this.state.selected.subject.id == this.state.subject.id 
-                                                && this.state.selected.group.id == group.id 
-                                                && this.state.selected.group.type == group.type 
+                                          (this.state.selected && this.state.selected.subject && this.state.selected.group)
+                                              ? this.state.selected.subject.id == this.state.subject.id
+                                                && this.state.selected.group.id == group.id
+                                                && this.state.selected.group.type == group.type
                                               : false
                                         }
-  
+
                                         classLabels={this.state.classLabels}
                                         annotationLabels={this.state.annotationLabels}
-                                        colorBy={this.state.colorBy} 
-                                        binaryColor={this.state.binaryColor} 
+                                        colorBy={this.state.colorBy}
+                                        binaryColor={this.state.binaryColor}
                                         minColor={this.state.minColor}
                                         maxColor={this.state.maxColor}
-                                        maxHeatLevel={this.state.maxHeatLevel}    
-                            
+                                        maxHeatLevel={this.state.maxHeatLevel}
+
                                         itemEnter={this.state.itemEnter}
                                         itemLeave={this.state.itemLeave}
                                         itemOver={this.state.itemOver}
                                         itemClick={this.state.itemClick}
-                                                                    
+
                                         key={this.state.subject + "_" + category.id + "_" + group.id + "_" + index} />
                   )
                 })
@@ -187,16 +189,18 @@ class GenericRibbonSubject extends Component {
           })
 
         }
-        
-        { (this.state.subjectLabelPosition == POSITION.RIGHT && !this.state.hideLabel) ?
-          <GenericRibbonSubjectLabel  subjectId={this.state.subject.id} 
-                                      subjectLabel={this.state.subject.label}
-                                      subjectTaxon={this.state.subject.taxon_label}
-                                      subjectBaseURL={this.state.subjectBaseURL}
-                                      useTaxonIcon={this.state.useTaxonIcon}
-                                      newTab={this.state.newTab}
-                                      />                                      
-                                      : ''
+
+        { (this.state.subjectLabelPosition == POSITION.RIGHT && !this.state.hideLabel) &&
+          (this.props.subjectLabel ?
+            <div className='ontology-ribbon__item__subject'>{this.props.subjectLabel(this.state.subject)}</div> :
+            <GenericRibbonSubjectLabel  subjectId={this.state.subject.id}
+                                        subjectLabel={this.state.subject.label}
+                                        subjectTaxon={this.state.subject.taxon_label}
+                                        subjectBaseURL={this.state.subjectBaseURL}
+                                        useTaxonIcon={this.state.useTaxonIcon}
+                                        newTab={this.state.newTab}
+                                        />
+          )
         }
       </div>
     )
@@ -215,6 +219,7 @@ GenericRibbonSubject.propTypes = {
   hideLabel: PropTypes.bool,
   newTab : PropTypes.bool,
   useTaxonIcon : PropTypes.bool,
+  subjectLabel : PropTypes.func,
   subjectLabelPosition: PropTypes.number,
   subjectBaseURL : PropTypes.string,
 
@@ -229,7 +234,7 @@ GenericRibbonSubject.propTypes = {
   itemEnter : PropTypes.func,
   itemLeave : PropTypes.func,
   itemOver : PropTypes.func,
-  itemClick : PropTypes.func  
+  itemClick : PropTypes.func
 }
 
 GenericRibbonSubject.defaultProps = {
