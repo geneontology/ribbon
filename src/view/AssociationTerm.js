@@ -30,7 +30,7 @@ class AssociationTerm extends React.Component {
     if(this.props.termInNewPage) {
       target = "_blank";
     }
-    console.log("object:" , assoc.object);
+    // console.log("object:" , assoc.object);
     return (
       <div className='ontology-ribbon__content'>
         <a
