@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import GenericRibbonItem from './GenericRibbonItem';
 import GenericRibbonSubjectLabel from './GenericRibbonSubjectLabel';
-import { POSITION } from '../enums';
+import { POSITION, SELECTION } from '../enums';
 
 class GenericRibbonSubject extends Component {
 
@@ -16,6 +16,7 @@ class GenericRibbonSubject extends Component {
       subject: props.subject,
 
       selected : props.selected,
+      selectionMode : props.selectionMode,
 
       showItemAll : props.showItemAll,
 
@@ -56,6 +57,7 @@ class GenericRibbonSubject extends Component {
       subject: nextProps.subject,
 
       selected : nextProps.selected,
+      selectionMode : nextProps.selectionMode,
 
       showItemAll : nextProps.showItemAll,
 
@@ -79,6 +81,7 @@ class GenericRibbonSubject extends Component {
       itemClick : nextProps.itemClick
     });
   }
+
 
   render() {
     // console.log("GRS: ", this.state);
@@ -122,8 +125,9 @@ class GenericRibbonSubject extends Component {
 
                                       isSelected={
                                         (this.state.selected && this.state.selected.subject && this.state.selected.group)
-                                            ? this.state.selected.subject.id == this.state.subject.id
-                                              && this.state.selected.group.id == "all"
+                                            ? (this.state.selectionMode == SELECTION.CELL && this.state.selected.subject.id == this.state.subject.id && this.state.selected.group.id == "all")
+                                              || 
+                                              (this.state.selectionMode == SELECTION.COLUMN && this.state.selected.group.id == "all")
                                             : false
                                       }
 
@@ -156,13 +160,14 @@ class GenericRibbonSubject extends Component {
                   return (
                     <GenericRibbonItem  subject={this.state.subject}
                                         group={group}
-                                        data={this.state.subject.groups[group.id]}
+                                        data={this.state.subject.groups[group.id + (group.type == "Other" ? "-other" : "")]}
 
                                         isSelected={
                                           (this.state.selected && this.state.selected.subject && this.state.selected.group)
-                                              ? this.state.selected.subject.id == this.state.subject.id
-                                                && this.state.selected.group.id == group.id
-                                                && this.state.selected.group.type == group.type
+                                              ? 
+                                              (this.state.selectionMode == SELECTION.CELL && this.state.selected.subject.id == this.state.subject.id && this.state.selected.group.id == group.id && this.state.selected.group.type == group.type)
+                                              ||
+                                              (this.state.selectionMode == SELECTION.COLUMN && this.state.selected.group.id == group.id && this.state.selected.group.type == group.type)
                                               : false
                                         }
 
@@ -215,6 +220,7 @@ GenericRibbonSubject.propTypes = {
 
   showItemAll : PropTypes.bool,
   selected : PropTypes.object,
+  selectionMode : PropTypes.number,
 
   hideLabel: PropTypes.bool,
   newTab : PropTypes.bool,
