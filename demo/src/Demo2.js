@@ -8,13 +8,13 @@ import { GridLoader } from 'react-spinners';
 import GenericRibbon from '../../src/components/GenericRibbon';
 import AssociationsView from '../../src/view/AssociationsView';
 
-import { POSITION, COLOR_BY } from '../../src/enums';
+import { POSITION, COLOR_BY, SELECTION } from '../../src/enums';
 import '../../src/main.scss'
 
 
 // const goApiUrl = 'https://api.geneontology.org/api/ontology/ribbon/';
-const goApiUrl = 'http://api.geneontology.org/api/';
-// const goApiUrl = 'http://127.0.0.1:5000/api/';
+// const goApiUrl = 'http://api.geneontology.org/api/';
+const goApiUrl = 'http://127.0.0.1:5000/api/';
 
 /**
  * Specify how the URL gets decoded here. This is an object that takes the prop
@@ -52,6 +52,7 @@ class Demo2 extends React.Component {
     this.state = {
       loading : true,
       subjectBaseURL : props.subjectBaseURL,
+      selectionMode : props.selectionMode,
       selected : {
         subject : null,
         group : null,
@@ -83,14 +84,15 @@ class Demo2 extends React.Component {
     return axios.get(query);
   }
 
-  fetchAssociationData = (subject, group) => {
+  fetchAssociationData = (subjects, group) => {
     if(group == "all") {
       var groups = this.state.ribbon.categories.map(elt => {
         return elt.id;
       })
       group = groups.join("&slim=");
     }
-    let query = goApiUrl + "bioentityset/slimmer/function?slim=" + group + '&subject=' + subject + '&rows=-1';
+    let subs = "&subject=" + subjects.join("&subject=");
+    let query = goApiUrl + "bioentityset/slimmer/function?slim=" + group + subs + '&rows=-1';
     // console.log('Fetch query is ' + query);
     return axios.get(query);
   }
@@ -325,6 +327,7 @@ class Demo2 extends React.Component {
                                     subjects={this.state.ribbon.subjects} 
 
                                     selected={this.state.selected}
+                                    selectionMode={this.state.selectionMode}
                                     hideFirstSubjectLabel={false}
                                     subjectUseTaxonIcon={true}
                                     subjectLabelPosition={POSITION.LEFT}
@@ -362,6 +365,33 @@ class Demo2 extends React.Component {
 
   handleChange(event) {
     this.setState({ search : event.target.value });
+  }
+
+  getSubjectItem(subject_id, group_id) {
+    for(let sub of this.state.ribbon.subjects) {
+      if(sub.id == subject_id) {
+        return sub.groups[group_id];
+      }
+    }
+  }
+
+  filterOther(assocs, subjects, group) {
+    console.log("assocs: ", assocs);
+    console.log("group: ", group);
+
+    // Hard coded subjects[0]
+    var subject_id = subjects[0];
+    console.log("subject_id: ", group.id + (group.type == "Other" ? "-other" : "") , subject_id);
+    var item = this.getSubjectItem(subject_id, group.id + (group.type == "Other" ? "-other" : ""));
+    console.log("item: ", item);
+    
+    var filteredAssocs = [];
+    for(let assoc of assocs) {
+      if(item.ALL.terms.includes(assoc.object.id)) {
+        filteredAssocs.push(assoc);
+      }
+    }
+    return filteredAssocs;
   }
   
   addGenes() {
@@ -414,10 +444,22 @@ class Demo2 extends React.Component {
   itemClick(subject, group) {
     console.log("ITEM CLICK: subject: ", subject , "group: ", group, "state.group: ", this.state.selected.group);
 
+    var subjects = []
+    if(this.state.selectionMode == SELECTION.COLUMN) {
+      // console.log("COLUMN SELECTION MODE: " , this.state.ribbon.subjects);
+      for(let sub of this.state.ribbon.subjects) {
+        subjects.push(sub.id);
+      }
+      // console.log("subjects: ", subjects);
+    } else {
+      subjects.push(subject.id);
+    }
+
+
     if(this.state.selected.group) {
         var sameGroupID = group.id == this.state.selected.group.id;
         var sameGroupType = group.type == this.state.selected.group.type
-        var sameSubject = subject.id == this.state.selected.subject.id;
+        var sameSubject = subjects.length > 1 || (subject.id == this.state.selected.subject.id);
         if(sameGroupID && sameGroupType && sameSubject) {
           group = undefined;
       }
@@ -431,11 +473,15 @@ class Demo2 extends React.Component {
     }})
 
     if(group) {
-      this.fetchAssociationData(subject.id, group.id)
+      this.fetchAssociationData(subjects, group.id)
       .then(data => {
+        console.log("retrieved data: " , data);
         var sorted_assocs = data.data[0].assocs;
         sorted_assocs.sort((a, b)=> a.object.label.localeCompare(b.object.label))
-        console.log("retrieved data: " , data);
+        if(group.type == "Other") {
+          sorted_assocs = this.filterOther(sorted_assocs, subjects, group);
+          console.log("Filtered assocs: ", sorted_assocs);
+        }
         this.setState({ selected : {
           subject : subject,
           group : group,
@@ -451,6 +497,7 @@ class Demo2 extends React.Component {
 
 Demo2.propTypes = {
   mode: PropTypes.string,
+  selectionMode : PropTypes.number,
   subjectBaseURL : PropTypes.string,
   subject: PropTypes.oneOfType([
     PropTypes.string,
@@ -459,7 +506,8 @@ Demo2.propTypes = {
 };
 
 Demo2.defaultProps = {
-  subjectBaseURL : "http://amigo.geneontology.org/amigo/gene_product/"
+  subjectBaseURL : "http://amigo.geneontology.org/amigo/gene_product/",
+  selectionMode : SELECTION.CELL
   // subjectBaseURL : "https://www.alliancegenome.org/gene/"
 }
 

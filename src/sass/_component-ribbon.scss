@@ -260,13 +260,18 @@
             }
 
             &:hover {
-                cursor: pointer;
-                text-decoration: underline;
-                color: $ribbon-link-color;
-                // font-weight: 700;
+                cursor: help;
                 transform: translateY(-2px) rotate(-45deg);
                 transform-origin: -14px -8px;
             }
+            // &:hover {
+            //     cursor: pointer;
+            //     text-decoration: underline;
+            //     color: $ribbon-link-color;
+            //     // font-weight: 700;
+            //     transform: translateY(-2px) rotate(-45deg);
+            //     transform-origin: -14px -8px;
+            // }
 
             // affecting the TILE style when hovering the TITLE (see CSS combinator)
             &:hover ~ .ontology-ribbon__block__tile {

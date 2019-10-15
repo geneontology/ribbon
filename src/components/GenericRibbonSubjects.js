@@ -14,6 +14,7 @@ class GenericRibbonSubjects extends Component {
             subjects: props.subjects,
 
             selected : props.selected,
+            selectionMode : props.selectionMode,
 
             showItemAll : props.showItemAll,
 
@@ -61,6 +62,7 @@ class GenericRibbonSubjects extends Component {
             subjects: nextProps.subjects,
 
             selected : nextProps.selected,
+            selectionMode : nextProps.selectionMode,
 
             showItemAll : nextProps.showItemAll,
 
@@ -100,6 +102,7 @@ class GenericRibbonSubjects extends Component {
                                                     subject={subject}
 
                                                     selected={this.state.selected}
+                                                    selectionMode={this.state.selectionMode}
 
                                                     showItemAll={this.state.showItemAll}
                                                     classLabels={this.state.classLabels}
@@ -135,6 +138,7 @@ GenericRibbonSubjects.propTypes = {
     subjects: PropTypes.array.isRequired,
 
     selected : PropTypes.object,
+    selectionMode : PropTypes.number,
 
     showItemAll : PropTypes.bool,
 

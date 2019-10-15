@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { COLOR_BY, POSITION } from '../enums';
+import { COLOR_BY, POSITION, SELECTION } from '../enums';
 
 import GenericRibbonHeader from './GenericRibbonHeader';
 import GenericRibbonSubjects from './GenericRibbonSubjects';
@@ -17,6 +17,7 @@ class GenericRibbon extends Component {
             subjects: props.subjects,
 
             selected : props.selected,
+            selectionMode : props.selectionMode,
             showItemAll : props.showItemAll,
 
             hideFirstSubjectLabel : props.hideFirstSubjectLabel,
@@ -63,6 +64,7 @@ class GenericRibbon extends Component {
             subjects: nextProps.subjects,
 
             selected : nextProps.selected,
+            selectionMode : nextProps.selectionMode,
             showItemAll : nextProps.showItemAll,
 
             hideFirstSubjectLabel : nextProps.hideFirstSubjectLabel,
@@ -118,6 +120,7 @@ class GenericRibbon extends Component {
                                         subjects={this.state.subjects}
 
                                         selected={this.state.selected}
+                                        selectionMode={this.state.selectionMode}
                                         showItemAll={this.state.showItemAll}
                                         classLabels={this.state.classLabels}
                                         annotationLabels={this.state.annotationLabels}
@@ -151,6 +154,7 @@ GenericRibbon.propTypes = {
     subjects: PropTypes.array.isRequired,
 
     selected : PropTypes.object,
+    selectionMode : PropTypes.number,
     showItemAll : PropTypes.bool,
 
     hideFirstSubjectLabel : PropTypes.bool,
@@ -185,6 +189,7 @@ GenericRibbon.defaultProps = {
     subjectUseTaxonIcon : true,
     showItemAll : true,
     subjectLabelPosition: POSITION.RIGHT,
+    selectionMode: SELECTION.COLUMN,
     classLabels: ["class", "classes"],
     annotationLabels: ["annotation", "annotations"],
     colorBy: COLOR_BY.CLASS_COUNT,
