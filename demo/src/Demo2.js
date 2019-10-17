@@ -53,6 +53,10 @@ class Demo2 extends React.Component {
       loading : true,
       subjectBaseURL : props.subjectBaseURL,
       selectionMode : props.selectionMode,
+      crossAspect : false,
+      excludePB : true,
+      excludeIBA : true,
+      onlyEXP : false,
       selected : {
         subject : null,
         group : null,
@@ -482,16 +486,71 @@ class Demo2 extends React.Component {
           sorted_assocs = this.filterOther(sorted_assocs, subjects, group);
           console.log("Filtered assocs: ", sorted_assocs);
         }
+        var filtered = sorted_assocs;
+        if(this.state.excludePB) {
+          filtered = this.filterPB(filtered);
+        }
+        if(this.state.onlyEXP) {
+          filtered = this.getEXP(filtered);
+        }
+        if(!this.state.crossAspect) {
+          filtered = this.filterCrossAspect(group, filtered);
+        }
         this.setState({ selected : {
           subject : subject,
           group : group,
-          data : sorted_assocs, // assoc data from BioLink
+          data : filtered, // assoc data from BioLink
           ready : false
         }})
         this.buildEvidenceMap();
       })
     }
   }
+
+
+  filterPB(assocs) {
+    var list = [];
+    for(var assoc of assocs) {
+      if(assoc.object.id != 'GO:0005515') {
+        list.push(assoc);
+      }
+    }
+    return list;
+  }
+
+  getEXP(assocs) {
+    var list = [];
+    for(var assoc of assocs) {
+      if(assoc.evidence_type in exp_codes) {
+        list.push(assoc);
+      }
+    }
+    return list;
+  }
+
+  getAspect(group) {
+    for(let cat of this.state.ribbon.categories) {
+      let found = cat.groups.filter(elt => {
+        return elt.id == group.id;
+      });
+      if(found.length > 0) {
+        return [ cat.id , cat.label ];
+      }
+    }
+    return undefined;
+  }
+
+  filterCrossAspect(group, assocs) {
+    var list = [];
+    var aspect = this.getAspect(group);
+    for(var assoc of assocs) {
+      let cat = assoc.object.category[0] == 'molecular_activity' ? 'molecular_function' : assoc.object.category[0];
+      if(cat == aspect[1]) {
+        list.push(assoc);
+      }
+    }
+    return list;
+  }  
 
 }
 
