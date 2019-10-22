@@ -13,8 +13,8 @@ import '../../src/main.scss'
 
 
 // const goApiUrl = 'https://api.geneontology.org/api/ontology/ribbon/';
-// const goApiUrl = 'http://api.geneontology.org/api/';
-const goApiUrl = 'http://127.0.0.1:5000/api/';
+const goApiUrl = 'https://api.geneontology.org/api/';
+// const goApiUrl = 'http://127.0.0.1:5000/api/';
 
 /**
  * Specify how the URL gets decoded here. This is an object that takes the prop
