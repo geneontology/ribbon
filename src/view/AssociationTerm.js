@@ -15,7 +15,10 @@ class AssociationTerm extends React.Component {
       var styles = {
         color: 'gray',
       };
-      return <del style={styles}><span>{assoc.object.label}</span></del>;
+      return <span>
+              <span className='association-table__not-qualifier' title='NOT able to carry out the function of the associated GO term'>NOT</span> 
+              <span>{assoc.object.label}</span>
+            </span>;
     }
     else {
       return assoc.object.label;

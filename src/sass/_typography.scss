@@ -85,3 +85,16 @@
         cursor: pointer;
     }
 }
+
+.association-table {
+
+    &__not-qualifier {
+        color: red;
+        text-transform: uppercase;
+        font-weight: bold;
+        border: 1px solid red;
+        padding: 2px;
+        margin-right: 10px;
+    }
+
+}
