@@ -69,9 +69,8 @@ class Demo2 extends React.Component {
 
   componentDidMount() {
     if (this.state.loading) {
-      this.fetchData("goslim_agr", this.props.subject)
+      this.fetchData('goslim_agr', this.props.subject)
       .then(data => {
-//        console.log("fetch data: ", data);
         this.setState({ loading : false, ribbon : data.data })
       })
     }
@@ -80,23 +79,25 @@ class Demo2 extends React.Component {
 
   fetchData = (subset, subjects) => {
     if(subjects instanceof Array) {
-      subjects = subjects.join("&subject=");
+      subjects = subjects.join('&subject=');
     }
-    let query = goApiUrl + "ontology/ribbon/?subset=" + subset + '&subject=' + subjects;
+    let query = goApiUrl + 'ontology/ribbon/?subset=' + subset + '&subject=' + subjects;
     // let query = "https://build.alliancegenome.org/api/gene/" + subjects + "/disease-ribbon-summary";
     console.log('Query is ' + query);
     return axios.get(query);
   }
 
   fetchAssociationData = (subjects, group) => {
-    if(group == "all") {
+    if(group == 'all') {
       var groups = this.state.ribbon.categories.map(elt => {
         return elt.id;
       })
-      group = groups.join("&slim=");
-    }
-    let subs = "&subject=" + subjects.join("&subject=");
-    let query = goApiUrl + "bioentityset/slimmer/function?slim=" + group + subs + '&rows=-1';
+      group = groups.join('&slim=');
+    } else if (group instanceof Array) {
+      group = group.join('&slim=');
+    } 
+    let subs = '&subject=' + subjects.join('&subject=');
+    let query = goApiUrl + 'bioentityset/slimmer/function?slim=' + group + subs + '&rows=-1';
     // console.log('Fetch query is ' + query);
     return axios.get(query);
   }
@@ -109,7 +110,7 @@ class Demo2 extends React.Component {
     for(var subject of this.state.ribbon.subjects) {
       for (var group in subject.groups) {
         for(var eco in subject.groups[group]) {
-          if(eco.toLowerCase() != "all") {
+          if(eco.toLowerCase() != 'all') {
             filters.set(eco, true);
           }
         }
@@ -160,14 +161,38 @@ class Demo2 extends React.Component {
   }
 
   evidenceAssociationKey(assoc) {
-    return this.associationKey(assoc) + "@" + assoc.evidence_type;    
+    return this.associationKey(assoc) + '@' + assoc.evidence_type;    
   }
   
   associationKey(assoc) {
     if(assoc.qualifier) {
-      return assoc.subject.id + "@" + assoc.object.id + "@" + assoc.negated + "@" + assoc.qualifier.join("-");      
+      return assoc.subject.id + '@' + assoc.object.id + '@' + assoc.negated + '@' + assoc.qualifier.join("-");      
     }
-    return assoc.subject.id + "@" + assoc.object.id + "@" + assoc.negated;
+    return assoc.subject.id + '@' + assoc.object.id + '@' + assoc.negated;
+  }
+
+  fullAssociationKey(assoc) {
+    var key = this.associationKey(assoc) + '@' + assoc.evidence_type + '@' + assoc.provided_by + '@' + assoc.reference.join('#');
+    return key;
+  }
+
+  diffAssociations(assocs_all, assocs_exclude) {
+    var list = [];
+    for(let assoc of assocs_all) {
+      let found = false;
+      let key_all = this.fullAssociationKey(assoc);
+      for(let exclude of assocs_exclude) {
+        let key_exclude= this.fullAssociationKey(exclude);
+        if(key_all == key_exclude) {
+          found = true;
+          break;
+        }
+      }
+      if(!found) {
+        list.push(assoc);
+      }
+    }
+    return list;
   }
 
   /**
@@ -201,7 +226,6 @@ class Demo2 extends React.Component {
         for(var item of array) {
           current.push(item);
         }
-        // console.log("concatenated map: (" , key , "): ", current);
       } else {
         map.set(key, map2.get(key));
       }
@@ -212,29 +236,24 @@ class Demo2 extends React.Component {
   mergeEvidences(grouped_map) {
     var merged = []
     for(var [key, group] of grouped_map.entries()) {
-      // console.log("group: ", group);
       if(group.length == 1) {
         merged.push(group[0])
       } else {
         // merge evidences
         var evidence_map = new Map();
         for(var i = 0; i < group.length; i++) {
-          // console.log("group(" + i + "): ", group[i].evidence_map);
           evidence_map = this.concatMaps(evidence_map, group[i].evidence_map);
         }
         
-        // console.log("group-0: ", group[0]);
-        // console.log("using: ", evidence_map);
         group[0].evidence_map = evidence_map;
-        // console.log("group-0-a: ", group[0]);
 
         // merge publications
         var pubs = new Set();
         for(var i = 0; i < group.length; i++) {
           if(group[i].publications) {
-          for(var pub of group[i].publications) {
-            pubs.add(pub);
-          }
+            for(var pub of group[i].publications) {
+              pubs.add(pub);
+            }
           }
         }
         group[0].publications = Array.from(pubs);
@@ -243,9 +262,9 @@ class Demo2 extends React.Component {
         var refs = new Set();
         for(var i = 0; i < group.length; i++) {
           if(group[i].reference) {
-          for(var ref of group[i].reference) {
-            refs.add(ref);
-          }
+            for(var ref of group[i].reference) {
+              refs.add(ref);
+            }
           }
         }
         group[0].reference = Array.from(refs);
@@ -262,7 +281,7 @@ class Demo2 extends React.Component {
    * build from the association response of BioLink
   */
   buildEvidenceMap() {
-    console.log("assoc_data: ", this.state.selected.data);
+    console.log('assoc_data: ', this.state.selected.data);
     for(var assoc of this.state.selected.data) {
       assoc.evidence_map = new Map();
         assoc.evidence_map.set(assoc.evidence, [
@@ -274,11 +293,10 @@ class Demo2 extends React.Component {
             evidence_with : assoc.evidence_with ? assoc.evidence_with : [],
             evidence_refs : assoc.reference ? assoc.reference.filter(ref => ref.startsWith("PMID:")) : []
           }
-        ])
+        ]);
     }
 
     var grouped_map = this.groupAssociations(this.state.selected.data);
-    // console.log("grouped map: ", grouped_map);
     var merged_map = this.mergeEvidences(grouped_map);
 
     this.setState({ 
@@ -288,7 +306,7 @@ class Demo2 extends React.Component {
         data : merged_map,
         ready : true
       }
-    })
+    });
   }
 
   defaultConfig() {
@@ -477,33 +495,79 @@ class Demo2 extends React.Component {
     }})
 
     if(group) {
-      this.fetchAssociationData(subjects, group.id)
-      .then(data => {
-        console.log("retrieved data: " , data);
-        var sorted_assocs = data.data[0].assocs;
-        sorted_assocs.sort((a, b)=> a.object.label.localeCompare(b.object.label))
-        if(group.type == "Other") {
-          sorted_assocs = this.filterOther(sorted_assocs, subjects, group);
-          console.log("Filtered assocs: ", sorted_assocs);
-        }
-        var filtered = sorted_assocs;
-        if(this.state.excludePB) {
-          filtered = this.filterPB(filtered);
-        }
-        if(this.state.onlyEXP) {
-          filtered = this.getEXP(filtered);
-        }
-        if(!this.state.crossAspect) {
-          filtered = this.filterCrossAspect(group, filtered);
-        }
-        this.setState({ selected : {
-          subject : subject,
-          group : group,
-          data : filtered, // assoc data from BioLink
-          ready : false
-        }})
-        this.buildEvidenceMap();
-      })
+      if(group.type == 'Other') {
+        let aspect = this.getAspect(group);
+        var terms = aspect.groups.filter(elt => {
+          return elt.type == 'Term';
+        })
+        terms = terms.map(elt => { return elt.id });
+        this.fetchAssociationData(subjects, group.id)
+        .then(data_all => {
+          var sorted_all = [];
+          for(let array of data_all.data) {
+            sorted_all = sorted_all.concat(array.assocs);
+          }
+            
+          this.fetchAssociationData(subjects, terms)
+          .then(data_terms => {
+            var sorted_terms = [];
+            for(let array of data_terms.data) {
+              sorted_terms = sorted_terms.concat(array.assocs);
+            }
+
+            var other_assocs = this.diffAssociations(sorted_all, sorted_terms);
+
+            var filtered = other_assocs;
+            if(this.state.excludePB) {
+              filtered = this.filterPB(filtered);
+            }
+            if(this.state.onlyEXP) {
+              filtered = this.getEXP(filtered);
+            }
+            if(!this.state.crossAspect) {
+              filtered = this.filterCrossAspect(group, filtered);
+            }
+            this.setState({ selected : {
+              subject : subject,
+              group : group,
+              data : filtered, // assoc data from BioLink
+              ready : false
+            }})
+            this.buildEvidenceMap();
+
+            
+          });
+
+        });
+      } else {
+
+        this.fetchAssociationData(subjects, group.id)
+        .then(data => {
+          console.log('retrieved data: ' , data);
+          var sorted_assocs = [];
+          for(let array of data) {
+            sorted_assocs = sorted_assocs.concat(array.assocs);
+          }
+          sorted_assocs.sort((a, b)=> a.object.label.localeCompare(b.object.label))
+          var filtered = sorted_assocs;
+          if(this.state.excludePB) {
+            filtered = this.filterPB(filtered);
+          }
+          if(this.state.onlyEXP) {
+            filtered = this.getEXP(filtered);
+          }
+          if(!this.state.crossAspect) {
+            filtered = this.filterCrossAspect(group, filtered);
+          }
+          this.setState({ selected : {
+            subject : subject,
+            group : group,
+            data : filtered, // assoc data from BioLink
+            ready : false
+          }})
+          this.buildEvidenceMap();
+        })
+      }
     }
   }
 
@@ -534,15 +598,27 @@ class Demo2 extends React.Component {
         return elt.id == group.id;
       });
       if(found.length > 0) {
-        return [ cat.id , cat.label ];
+        return cat;
       }
     }
     return undefined;
   }
 
+  getAspectIdLabel(group) {
+    for(let cat of this.state.ribbon.categories) {
+      let found = cat.groups.filter(elt => {
+        return elt.id == group.id;
+      });
+      if(found.length > 0) {
+        return [ cat.id , cat.label ];
+      }
+    }
+    return undefined;
+  }
+  
   filterCrossAspect(group, assocs) {
     var list = [];
-    var aspect = this.getAspect(group);
+    var aspect = this.getAspectIdLabel(group);
     for(var assoc of assocs) {
       let cat = assoc.object.category[0] == 'molecular_activity' ? 'molecular_function' : assoc.object.category[0];
       if(cat == aspect[1]) {
