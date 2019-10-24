@@ -110,7 +110,7 @@ class GenericRibbonSubject extends Component {
                                         {
                                           "id" : "all",
                                           "label" : "All annotations",
-                                          "description" : "Contains all the annotations for all groups",
+                                          "description" : "Show all annotations",
                                           "type" : "GlobalAll"
                                         }
                                       }

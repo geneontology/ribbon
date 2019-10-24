@@ -499,8 +499,8 @@ class Demo2 extends React.Component {
         let aspect = this.getAspect(group);
         var terms = aspect.groups.filter(elt => {
           return elt.type == 'Term';
-        })
-        terms = terms.map(elt => { return elt.id });
+        });
+        terms = terms.map(elt => { return elt.id; });
         this.fetchAssociationData(subjects, group.id)
         .then(data_all => {
           var sorted_all = [];
@@ -532,7 +532,7 @@ class Demo2 extends React.Component {
               group : group,
               data : filtered, // assoc data from BioLink
               ready : false
-            }})
+            }});
             this.buildEvidenceMap();
 
             
@@ -545,10 +545,10 @@ class Demo2 extends React.Component {
         .then(data => {
           console.log('retrieved data: ' , data);
           var sorted_assocs = [];
-          for(let array of data) {
+          for(let array of data.data) {
             sorted_assocs = sorted_assocs.concat(array.assocs);
           }
-          sorted_assocs.sort((a, b)=> a.object.label.localeCompare(b.object.label))
+          sorted_assocs.sort((a, b)=> a.object.label.localeCompare(b.object.label));
           var filtered = sorted_assocs;
           if(this.state.excludePB) {
             filtered = this.filterPB(filtered);
@@ -564,7 +564,7 @@ class Demo2 extends React.Component {
             group : group,
             data : filtered, // assoc data from BioLink
             ready : false
-          }})
+          }});
           this.buildEvidenceMap();
         })
       }
@@ -621,12 +621,12 @@ class Demo2 extends React.Component {
     var aspect = this.getAspectIdLabel(group);
     for(var assoc of assocs) {
       let cat = assoc.object.category[0] == 'molecular_activity' ? 'molecular_function' : assoc.object.category[0];
-      if(cat == aspect[1]) {
+      if(aspect == undefined || cat == aspect[1]) {
         list.push(assoc);
       }
     }
     return list;
-  }  
+  }
 
 }
 

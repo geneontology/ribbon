@@ -26,7 +26,6 @@ class GenericRibbonHeaderCategory extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
   }
 
-  //   ontology-ribbon__block__tile--all
   render() {
     // console.log("Category: ", this.state.category);
     return (

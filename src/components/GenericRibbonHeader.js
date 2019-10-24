@@ -63,7 +63,7 @@ class GenericRibbonHeader extends Component {
         }
 
         { (this.state.showItemAll) ?
-            <GenericRibbonHeaderCategory category={ { groups : [ { id: "all", type: "All", label: "All annotations" } ] } } />
+            <GenericRibbonHeaderCategory category={ { groups : [ { id: "all", type: "All", label: "All annotations", description: "Show all annotations" } ] } } />
             : ''
         }
 
