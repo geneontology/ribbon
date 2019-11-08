@@ -68,9 +68,9 @@ class GenericRibbonHeader extends Component {
         }
 
         {
-          this.state.categories.map((category, index) => {
+          this.state.categories.map(category => {
             return (
-              <GenericRibbonHeaderCategory category={category} key={index} />
+              <GenericRibbonHeaderCategory category={category} key={category.id + '-' + category.label} />
             )
           })
         }
