@@ -1,5 +1,10 @@
-# ribbon
+# ribbon (DEPRECATED)
 Short form matrix view of all GO annotations for a given gene
+
+This REACT version of the ribbon has been deprecated. Users should now use or migrate to the Web Component version of the GO ribbon, richer in functionalities, and easier to install: 
+
+https://github.com/geneontology/wc-ribbon/tree/master/wc-go-ribbon
+
 
 ## Installation
 - Once node.js is on your machine then dependent packages need to be brought in. Running `npm install` in the components's root directory will install everything you need for development.
